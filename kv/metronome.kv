@@ -1,0 +1,90 @@
+#:kivy 2.0.0
+
+<BeatSelectButton@ToggleButton>:
+    group: 'BeatSelectButtons'
+    font_size: 30
+    halign: 'center'
+    on_press: self.state = 'down' if self.state == 'down' else 'down'
+
+<BpsChangeButton@Button>:
+    size_hint_x: 0.4
+    font_size: 30
+    on_press: app.root.bps += int(self.text)
+
+<MetronomeView>:
+
+    BoxLayout:
+        size: root.size
+        orientation: 'vertical'
+        Label:
+            font_size: 40
+            text: 'メトロノーム'
+        BoxLayout:
+            orientation: 'vertical'
+            BoxLayout:
+                orientation: 'horizontal'
+                Label:
+                    font_size: 40
+                    size_hint_x: 0.2
+                    text: 'BPS'
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint_x: 0.7
+                    BpsChangeButton:
+                        text: '-10'
+                    BpsChangeButton:
+                        text: '-1'
+                    Label:
+                        size_hint_x: 0.8
+                        font_size: 40
+                        text: str(root.bps)
+                    BpsChangeButton:
+                        text: '+1'
+                    BpsChangeButton:
+                        text: '+10'
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint_x: 0.3
+                    ToggleButton:
+                        font_size: 40
+                        text: '鳴らす'
+                        on_press: app.root.sound()
+        BoxLayout:
+            orientation: 'horizontal'
+            Label:
+                font_size: 40
+                size_hint_x: 0.2
+                text: '単純 \n 拍子'
+            BoxLayout:
+                orientation: 'horizontal'
+                BeatSelectButton:
+                    text: '2\n2'
+                BeatSelectButton:
+                    text: '3\n2'
+                BeatSelectButton:
+                    text: '2\n4'
+                BeatSelectButton:
+                    text: '3\n4'
+                BeatSelectButton:
+                    text: '4\n4'
+                    state: 'down'
+                BeatSelectButton:
+                    text: '3\n8'
+        BoxLayout:
+            orientation: 'horizontal'
+            Label:
+                font_size: 40
+                size_hint_x: 0.2
+                text: '複合 \n 拍子'
+            BoxLayout:
+                orientation: 'horizontal'
+                BeatSelectButton:
+                    text: '2+2\n4'
+                BeatSelectButton:
+                    text: '3+3\n4'
+                BeatSelectButton:
+                    text: '2+2+2\n4'
+                BeatSelectButton:
+                    text: '3+3\n8'
+                BeatSelectButton:
+                    text: '2+2+2\n8'
