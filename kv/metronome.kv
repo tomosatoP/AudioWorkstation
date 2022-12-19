@@ -48,7 +48,9 @@
                     ToggleButton:
                         font_size: 40
                         text: '鳴らす'
-                        on_press: app.root.sound()
+                        on_press: 
+                            app.root.sound_on() if self.state == 'down' \
+                            else app.root.sound_off()
         BoxLayout:
             orientation: 'horizontal'
             Label:

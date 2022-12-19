@@ -18,10 +18,14 @@ FLUID_OK = 0
 
 _libfs = CDLL(find_library('fluidsynth'), use_errno=True)
 
+# SequencerFS data
+class client_data_t(Structure):
+    pass
+
 # fluid_event_callback_t
 # Event callback function prototype for destination clients.
 FLUID_EVENT_CALLBACK_T = \
-    CFUNCTYPE(None, c_uint, c_void_p, c_void_p, c_void_p)
+    CFUNCTYPE(None, c_uint, c_void_p, c_void_p, POINTER(client_data_t))
 # handle_midi_event_func_t
 # Generic callback function prototype for MIDI event handler.
 HANDLE_MIDI_EVENT_FUNC_T = \
@@ -34,6 +38,7 @@ FLUID_SETTINGS_FOREACH_OPTION_T = \
 # Callback function type used with fluid_settings_foreach()
 FLUID_SETTINGS_FOREACH_T = \
     CFUNCTYPE(None, c_void_p, c_char_p, c_int)
+
 
 # FluidSynth API prototype: Audio output
 
@@ -550,7 +555,7 @@ class SequencerFS(SynthesizerFS):
     def timer_at(
             self,
             ticks: c_uint,
-            data: c_void_p = None,
+            data: POINTER(client_data_t) = None,
             source: c_short = -1,
             destination: c_short = -1,
             absolute: bool = True) -> None:
