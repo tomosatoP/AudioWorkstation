@@ -12,6 +12,7 @@
     on_press: app.root.bps += int(self.text)
 
 <MetronomeView>:
+    bps_layout: bps_boxlayout
 
     BoxLayout:
         size: root.size
@@ -28,6 +29,7 @@
                     size_hint_x: 0.2
                     text: 'BPS'
                 BoxLayout:
+                    id: bps_boxlayout
                     orientation: 'horizontal'
                     size_hint_x: 0.7
                     BpsChangeButton:
@@ -46,6 +48,7 @@
                     orientation: 'horizontal'
                     size_hint_x: 0.3
                     ToggleButton:
+                        border: (0, 0 , 0 ,0)
                         font_size: 40
                         text: '鳴らす'
                         on_press: 

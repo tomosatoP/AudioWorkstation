@@ -1,0 +1,9 @@
+audio/old/
+audio/ref/
+pongame/
+*/__pycache__/
+
+*.mid
+*.MID
+*.sf2
+*.sf3

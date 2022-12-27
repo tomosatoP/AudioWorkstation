@@ -1,0 +1,45 @@
+#:kivy 2.0.0
+
+<MidiTitleButton@ToggleButton>:
+    group: 'MidiTitleButtons'
+    font_size: 30
+    size_hint_y: None
+    height: 50
+
+
+<PlayerView>:
+    BoxLayout:
+        size: root.size
+        orientation: 'vertical'
+        Label:
+            size_hint_y: 0.25
+            font_size: 40
+            text: '伴奏'
+        BoxLayout:
+            orientation: 'horizontal'
+            ScrollView:
+                do_scroll_x: False
+                do_scroll_y: True
+                bar_width: 30
+                BoxLayout:
+                    orientation: 'vertical'
+                    height: self.minimum_height
+                    size_hint_y: None
+                    MidiTitleButton:
+                        text: 'MIDI Title'
+                    MidiTitleButton:
+                        text: 'MIDI Title'
+                    MidiTitleButton:
+                        text: 'MIDI Title'
+                    MidiTitleButton:
+                        text: 'MIDI Title'
+                    MidiTitleButton:
+                        text: 'MIDI Title'
+                    MidiTitleButton:
+                        text: 'MIDI Title'
+                    MidiTitleButton:
+                        text: 'MIDI Title'
+            Label:
+                font_size: 40
+                text: 'rules'
+
