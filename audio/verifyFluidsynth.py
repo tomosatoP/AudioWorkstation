@@ -137,7 +137,7 @@ def verify_midi_player():
     mpfs.change_rule('audio/rule.mute_chan_0.json')
 
     mpfs.gain(70)
-    mpfs.play('mid/bolero_maurice_ravel.mid')
+    mpfs.play('mid/111867.MID')
     sleep(8)
     mpfs.pause()
     sleep(1)
@@ -146,10 +146,10 @@ def verify_midi_player():
     mpfs.stop()
 
     mpfs.gain(40)
-    mpfs.cueing('mid/geki_teikokukagekidan.mid', 7)
+    mpfs.cueing('mid/gikiteikoku.mid', 7)
     mpfs.cueing('mid/l3008_05.mid', 7)
     mpfs.gain(70)
-    mpfs.cueing('mid/bolero_maurice_ravel.mid', 7)
+    mpfs.cueing('mid/111867.MID', 7)
 
 if __name__ == '__main__':
     verify_synthesizer()

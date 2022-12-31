@@ -1,13 +1,16 @@
 #:kivy 2.0.0
 
-<MidiTitleButton@ToggleButton>:
+<MidiTitleButton>:
     group: 'MidiTitleButtons'
-    font_size: 30
+    font_size: 25
     size_hint_y: None
-    height: 50
-
+    height: 40
+    on_press: self.state = 'down' if self.state == 'down' else 'down'       
 
 <PlayerView>:
+    playlist: boxlayout_play_list
+    rules: gridlayout_rules
+
     BoxLayout:
         size: root.size
         orientation: 'vertical'
@@ -22,24 +25,11 @@
                 do_scroll_y: True
                 bar_width: 30
                 BoxLayout:
+                    id: boxlayout_play_list
                     orientation: 'vertical'
                     height: self.minimum_height
                     size_hint_y: None
-                    MidiTitleButton:
-                        text: 'MIDI Title'
-                    MidiTitleButton:
-                        text: 'MIDI Title'
-                    MidiTitleButton:
-                        text: 'MIDI Title'
-                    MidiTitleButton:
-                        text: 'MIDI Title'
-                    MidiTitleButton:
-                        text: 'MIDI Title'
-                    MidiTitleButton:
-                        text: 'MIDI Title'
-                    MidiTitleButton:
-                        text: 'MIDI Title'
-            Label:
-                font_size: 40
-                text: 'rules'
-
+            GridLayout:
+                id: gridlayout_rules
+                cols: 2
+                rows: 8

@@ -556,6 +556,7 @@ class SynthesizerFS:
         return(fluid_version_str().decode())
     
     def _gm_system_on(self) -> int:
+        print('gm system on')
         result = fluid_synth_sysex(
             synth=self.synthesizer,
             data=(c_char*3)(0x7E, 0x09, 0x01),

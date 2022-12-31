@@ -21,43 +21,44 @@ class StandardMidiFile():
 
     def __init__(self, smf_bytes: bytes) -> None:
         self.header = list()
-        self.tracks = list()
-        self.channels = [[]] * 16
+        self._tracks = list()
         self._last_event_type = None
+    
+        self.header, queue = self._header_chunk(smf_bytes)
 
-        self.header, data = self._header_chunk(smf_bytes)
-        for i in range(self.header[3]):
-            ckID, ckSize, = self._unpac(data, CKDR)
-            track = data[struct.calcsize(CKDR):struct.calcsize(CKDR) + ckSize]
-            data = data[struct.calcsize(CKDR) + ckSize:]
+        for _ in range(self.header[3]):
+            ckID, ckSize = self._unpac(queue, CKDR)
+            queue_track = queue[struct.calcsize(CKDR):struct.calcsize(CKDR) + ckSize]
+            queue = queue[struct.calcsize(CKDR) + ckSize:]
 
-            total_time = int(0)
+            current_time = int(0)
             list_event = list()
-            while track:
-                delta_time, track = self._delta_time(track)
-                list_data, track = self._event(track)
-                total_time += delta_time
-                list_event.append([total_time, *list_data])
+            while queue_track:
+                delta_time, queue_track = self._delta_time(queue_track)
+                event, queue_track = self._dequeue_event(queue_track)
+                current_time += delta_time
+                list_event.append([current_time, *event])
             
-            self.tracks += [list_event]
+            self._tracks += [list_event]
 
     def channels_preset(self):
-        for track in self.tracks:
+        channels = [[]]*16
+        for track in self._tracks:
             for event in track:
                 if event[1] == 0xC:
-                    self.channels[event[2]] = event[3]
-        print(self.channels)
+                    channels[event[2]] = event[3]
+        return(channels)
 
 
     def title(self) -> str:
-        for event in self.tracks[0]:
+        for event in self._tracks[0]:
             if all([event[1] == 0xFF, event[2] == 0x03]):
                 return(event[3].decode('sjis'))
         return('-')
 
     def instruments(self):
         names = list()
-        for track in self.tracks:
+        for track in self._tracks:
             for event in track:
                 if all([event[1] == 0xFF, event[2] == 0x04]):
                     names += [event[3].decode('sjis')]
@@ -65,13 +66,13 @@ class StandardMidiFile():
 
     def lyrics(self):
         texts = list()
-        for track in self.tracks:
+        for track in self._tracks:
             for event in track:
                 if all([event[1] == 0xFF, event[2] == 0x05]):
                     texts += [event[3].decode('sjis')]
         return(texts)
 
-    def _midi_event(self, data:bytes) -> tuple:
+    def _dequeue_as_midi_event(self, data:bytes) -> tuple:
         event_type, = self._unpac(data, '>''B')
         param = event_type >> 4
         channel = event_type & 0xF
@@ -82,17 +83,17 @@ class StandardMidiFile():
             dummy, value, = self._unpac(data, '>''BB')
             return([param, channel, value], data[2:])
 
-    def _meta_event(self, data:bytes) -> tuple:
+    def _dequeue_as_meta_event(self, data:bytes) -> tuple:
         event_type, meta_type, length = self._unpac(data, '>''BBB')
         data = data[struct.calcsize('>''BBB'):]
         return([event_type, meta_type, data[0:length]], data[length:])
 
-    def _sysex_event(self, data:bytes) -> tuple:
+    def _dequeue_as_sysex_event(self, data:bytes) -> tuple:
         event_type, length = self._unpac(data, '>''BB')
         data = data[struct.calcsize('>''BB'):]
         return([event_type, data[0:length]], data[length:])
 
-    def _event(self, data:bytes) -> tuple:
+    def _dequeue_event(self, data:bytes) -> tuple:
         event_type, = self._unpac(data, BYTE)
         if self._is_status_byte(event_type):
             self._last_event_type = event_type
@@ -102,11 +103,11 @@ class StandardMidiFile():
             data = struct.pack('>''B', event_type) + data
 
         if event_type == 0xFF:
-            return(self._meta_event(data))
+            return(self._dequeue_as_meta_event(data))
         elif any([event_type == 0xF0, event_type == 0xF7]):
-            return(self._sysex_event(data))
+            return(self._dequeue_as_sysex_event(data))
         else:
-            return(self._midi_event(data))
+            return(self._dequeue_as_midi_event(data))
 
     def _header_chunk(self, data:bytes) -> tuple:
         ''' <Header Chunk>, <Track Chunk>+ <- <Standard MIDI File> '''
