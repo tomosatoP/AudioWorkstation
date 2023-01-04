@@ -10,7 +10,7 @@ def verify_synthesizer():
     fs = SynthesizerFS(**kwargs)
 
     print('soundfont preset')
-    for i in fs.sfonts_preset():
+    for i in fs.sfonts_preset(is_percussion=True):
         for j in i:
             print(j)
     print('channel preset')

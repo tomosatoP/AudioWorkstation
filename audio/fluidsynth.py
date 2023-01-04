@@ -583,17 +583,19 @@ class SynthesizerFS:
         else:
             return(fluid_synth_set_gain(self.synthesizer, self._to_gain(value)))
 
-    def sfonts_preset(self) -> list:
+    def sfonts_preset(self, is_percussion:bool = False) -> list:
         result = list()
+        ''' GM system level 1'''
+        bank = 0 if not(is_percussion) else 128
         for n in range(fluid_synth_sfcount(self.synthesizer)):
             sfont = fluid_synth_get_sfont(self.synthesizer, n)
-            result += [self._sfont_preset(sfont)]
+            result += [self._sfont_preset(sfont, bank)]
         return(result)
 
-    def _sfont_preset(self, sfont: c_void_p) -> list:
+    def _sfont_preset(self, sfont: c_void_p, bank:int) -> list:
         result = list()
         for n in range(128):
-            preset = fluid_sfont_get_preset(sfont, 0, n)
+            preset = fluid_sfont_get_preset(sfont, bank, n)
             result += [self._preset(preset)]
         return(result)
 
@@ -609,10 +611,16 @@ class SynthesizerFS:
     
     def _preset(self, preset:int) -> dict:
         result = dict()
-        result['name'] = fluid_preset_get_name(preset).decode()
-        result['num'] = fluid_preset_get_num(preset)
-        result['bank'] = fluid_preset_get_banknum(preset)
-        result['sfont_id'] = fluid_sfont_get_id(fluid_preset_get_sfont(preset))
+        if preset:
+            result['name'] = fluid_preset_get_name(preset).decode()
+            result['num'] = fluid_preset_get_num(preset)
+            result['bank'] = fluid_preset_get_banknum(preset)
+            result['sfont_id'] = fluid_sfont_get_id(fluid_preset_get_sfont(preset))
+        else:
+            result['name'] = None
+            result['num'] = None
+            result['bank'] = None
+            result['sfont_id'] = None
         return(result)
 
     def pitch_bend(self, chan:int, val:int) -> int:

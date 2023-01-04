@@ -1,0 +1,223 @@
+{
+    "NOTE: unmute chan 0": {
+        "type": 0,
+        "chan": {
+            "min": 0,
+            "max": 0,
+            "mul": 1.0,
+            "add": 0
+        },
+        "param1": null,
+        "param2": null
+    },
+    "NOTE: unmute chan 1": {
+        "type": 0,
+        "chan": {
+            "min": 1,
+            "max": 1,
+            "mul": 1.0,
+            "add": 0
+        },
+        "param1": null,
+        "param2": null
+    },
+    "NOTE: unmute chan 2": {
+        "type": 0,
+        "chan": {
+            "min": 2,
+            "max": 2,
+            "mul": 1.0,
+            "add": 0
+        },
+        "param1": null,
+        "param2": null
+    },
+    "NOTE: unmute chan 3": {
+        "type": 0,
+        "chan": {
+            "min": 3,
+            "max": 3,
+            "mul": 1.0,
+            "add": 0
+        },
+        "param1": null,
+        "param2": null
+    },
+    "NOTE: unmute chan 4": {
+        "type": 0,
+        "chan": {
+            "min": 4,
+            "max": 4,
+            "mul": 1.0,
+            "add": 0
+        },
+        "param1": null,
+        "param2": null
+    },
+    "NOTE: unmute chan 5": {
+        "type": 0,
+        "chan": {
+            "min": 5,
+            "max": 5,
+            "mul": 1.0,
+            "add": 0
+        },
+        "param1": null,
+        "param2": null
+    },
+    "NOTE: unmute chan 6": {
+        "type": 0,
+        "chan": {
+            "min": 6,
+            "max": 6,
+            "mul": 1.0,
+            "add": 0
+        },
+        "param1": null,
+        "param2": null
+    },
+    "NOTE: unmute chan 7": {
+        "type": 0,
+        "chan": {
+            "min": 7,
+            "max": 7,
+            "mul": 1.0,
+            "add": 0
+        },
+        "param1": null,
+        "param2": null
+    },
+    "NOTE: unmute chan 8": {
+        "type": 0,
+        "chan": {
+            "min": 8,
+            "max": 8,
+            "mul": 1.0,
+            "add": 0
+        },
+        "param1": null,
+        "param2": null
+    },
+    "NOTE: unmute chan 9": {
+        "type": 0,
+        "chan": {
+            "min": 9,
+            "max": 9,
+            "mul": 1.0,
+            "add": 0
+        },
+        "param1": null,
+        "param2": null
+    },
+    "NOTE: unmute chan 10": {
+        "type": 0,
+        "chan": {
+            "min": 10,
+            "max": 10,
+            "mul": 1.0,
+            "add": 0
+        },
+        "param1": null,
+        "param2": null
+    },
+    "NOTE: unmute chan 11": {
+        "type": 0,
+        "chan": {
+            "min": 11,
+            "max": 11,
+            "mul": 1.0,
+            "add": 0
+        },
+        "param1": null,
+        "param2": null
+    },
+    "NOTE: unmute chan 12": {
+        "type": 0,
+        "chan": {
+            "min": 12,
+            "max": 12,
+            "mul": 1.0,
+            "add": 0
+        },
+        "param1": null,
+        "param2": null
+    },
+    "NOTE: mute chan 13": {
+        "type": 0,
+        "chan": {
+            "min": 13,
+            "max": 13,
+            "mul": 1.0,
+            "add": 0
+        },
+        "param1": null,
+        "param2": {
+            "min": 0,
+            "max": 127,
+            "mul": 0.0,
+            "add": 0
+        }
+    },
+    "NOTE: mute chan 14": {
+        "type": 0,
+        "chan": {
+            "min": 14,
+            "max": 14,
+            "mul": 1.0,
+            "add": 0
+        },
+        "param1": null,
+        "param2": {
+            "min": 0,
+            "max": 127,
+            "mul": 0.0,
+            "add": 0
+        }
+    },
+    "NOTE: mute chan 15": {
+        "type": 0,
+        "chan": {
+            "min": 15,
+            "max": 15,
+            "mul": 1.0,
+            "add": 0
+        },
+        "param1": null,
+        "param2": {
+            "min": 0,
+            "max": 127,
+            "mul": 0.0,
+            "add": 0
+        }
+    },
+    "CC": {
+        "type": 1,
+        "chan": null,
+        "param1": null,
+        "param2": null
+    },
+    "PROG_CHANGER": {
+        "type": 2,
+        "chan": null,
+        "param1": null,
+        "param2": null
+    },
+    "PITCH_BEND": {
+        "type": 3,
+        "chan": null,
+        "param1": null,
+        "param2": null
+    },
+    "CHANNEL_PRESSURE": {
+        "type": 4,
+        "chan": null,
+        "param1": null,
+        "param2": null
+    },
+    "KEY_PRESSURE": {
+        "type": 5,
+        "chan": null,
+        "param1": null,
+        "param2": null
+    }
+}

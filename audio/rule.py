@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 from fluidsynth import *
-from time import sleep
 
 '''
 [NOTE]
