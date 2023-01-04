@@ -11,6 +11,7 @@ reference
 '''
 
 import struct
+from pathlib import Path
 
 FOURCC = '>''4s'
 CKDR = FOURCC + 'L'
@@ -19,26 +20,30 @@ BYTE = '>''B'
 
 class StandardMidiFile():
 
-    def __init__(self, smf_bytes: bytes) -> None:
+    def __init__(self, smf:Path) -> None:
         self.header = list()
         self._tracks = list()
         self._last_event_type = None
+
+        smf = smf.read_bytes()
     
-        self.header, queue = self._header_chunk(smf_bytes)
+        offset = int()
+        self.header, offset = self._header_chunk(smf)
 
         for _ in range(self.header[3]):
-            ckID, ckSize = self._unpac(queue, CKDR)
-            queue_track = queue[struct.calcsize(CKDR):struct.calcsize(CKDR) + ckSize]
-            queue = queue[struct.calcsize(CKDR) + ckSize:]
+            ckID, ckSize, offset = self._unpac(smf, offset, CKDR)
 
             current_time = int(0)
             list_event = list()
-            while queue_track:
-                delta_time, queue_track = self._delta_time(queue_track)
-                event, queue_track = self._dequeue_event(queue_track)
+            while ckSize:
+                ckSize += offset
+                delta_time, offset = self._delta_time(smf, offset)
                 current_time += delta_time
+
+                event, offset = self._dequeue_event(smf, offset)
                 list_event.append([current_time, *event])
-            
+                ckSize -= offset
+
             self._tracks += [list_event]
 
     def channels_preset(self):
@@ -48,7 +53,6 @@ class StandardMidiFile():
                 if event[1] == 0xC:
                     channels[event[2]] = event[3]
         return(channels)
-
 
     def title(self) -> str:
         for event in self._tracks[0]:
@@ -72,66 +76,67 @@ class StandardMidiFile():
                     texts += [event[3].decode('sjis')]
         return(texts)
 
-    def _dequeue_as_midi_event(self, data:bytes) -> tuple:
-        event_type, = self._unpac(data, '>''B')
+    def _dequeue_as_midi_event(self, smf:Path, event_type:bytes, offset:int) -> tuple:
         param = event_type >> 4
         channel = event_type & 0xF
         if any([param == 0x8, param == 0x9, param == 0xA, param == 0xB, param == 0xE]):
-            dummy, value0, value1 = self._unpac(data, '>''BBB')
-            return([param, channel, value0, value1], data[3:])
+            value0, value1, offset = self._unpac(smf, offset, '>''BB')
+            return([param, channel, value0, value1], offset)
         elif any([param == 0xC, param == 0xD]):
-            dummy, value, = self._unpac(data, '>''BB')
-            return([param, channel, value], data[2:])
+            value, offset = self._unpac(smf, offset, '>''B')
+            return([param, channel, value], offset)
 
-    def _dequeue_as_meta_event(self, data:bytes) -> tuple:
-        event_type, meta_type, length = self._unpac(data, '>''BBB')
-        data = data[struct.calcsize('>''BBB'):]
-        return([event_type, meta_type, data[0:length]], data[length:])
+    def _dequeue_as_meta_event(self, smf:Path, event_type:bytes, offset:int) -> tuple:
+        meta_type, length, offset = self._unpac(smf, offset, '>''BB')
+        return(
+            [event_type, meta_type, smf[offset: offset + length]],
+            offset + length)
 
-    def _dequeue_as_sysex_event(self, data:bytes) -> tuple:
-        event_type, length = self._unpac(data, '>''BB')
-        data = data[struct.calcsize('>''BB'):]
-        return([event_type, data[0:length]], data[length:])
+    def _dequeue_as_sysex_event(self, smf:Path, event_type:bytes, offset:int) -> tuple:
+        length, offset = self._unpac(smf, offset, '>''B')
+        return(
+            [event_type, smf[offset: offset + length]],
+            offset + length)
 
-    def _dequeue_event(self, data:bytes) -> tuple:
-        event_type, = self._unpac(data, BYTE)
+    def _dequeue_event(self, smf:Path, offset:int) -> tuple:
+        event_type, offset = self._unpac(smf, offset, BYTE)
         if self._is_status_byte(event_type):
             self._last_event_type = event_type
         else:
             ''' running status '''
             event_type = self._last_event_type
-            data = struct.pack('>''B', event_type) + data
+            offset -= 1
 
         if event_type == 0xFF:
-            return(self._dequeue_as_meta_event(data))
+            return(self._dequeue_as_meta_event(smf, event_type, offset))
         elif any([event_type == 0xF0, event_type == 0xF7]):
-            return(self._dequeue_as_sysex_event(data))
+            return(self._dequeue_as_sysex_event(smf, event_type, offset))
         else:
-            return(self._dequeue_as_midi_event(data))
+            return(self._dequeue_as_midi_event(smf, event_type, offset))
 
-    def _header_chunk(self, data:bytes) -> tuple:
+    def _header_chunk(self, smf:Path) -> tuple:
         ''' <Header Chunk>, <Track Chunk>+ <- <Standard MIDI File> '''
-        ckID, ckSize, format, ntrks, division = self._unpac(data, HEADER_CHUNK)
-        return([ckID.decode(), ckSize, format, ntrks, division], data[struct.calcsize(HEADER_CHUNK):])
+        ckID, ckSize, format, ntrks, division, offset = self._unpac(smf, 0, HEADER_CHUNK)
+        return([ckID.decode(), ckSize, format, ntrks, division], offset)
 
     def _is_status_byte(self, value: bytes) -> bool:
         return(True if value & 0x80 else False)
     
-    def _delta_time(self, data: bytes) -> tuple:
+    def _delta_time(self, smf:Path, offset:int) -> tuple:
         ''' <delta-time>, <event>+ <- <MTrk event> '''
         while True:
             delta_time = 0
-            temp, = self._unpac(data, BYTE)
+            temp, offset = self._unpac(smf, offset, BYTE)
             delta_time = temp & 0x7F
-            data = data[struct.calcsize(BYTE):]
             while self._is_status_byte(temp):
-                temp, = self._unpac(data, BYTE)
+                temp, offset = self._unpac(smf, offset, BYTE)
                 delta_time = (temp & 0x7f) + (delta_time << 7)
-                data = data[struct.calcsize(BYTE):]
-            return(delta_time, data)
+            return(delta_time, offset)
 
-    def _unpac(self, data: bytes, format:str) -> tuple:
-        return(struct.unpack_from(format, data[0: struct.calcsize(format)]))
+    def _unpac(self, smf:Path, offset:int, format:str) -> tuple:
+        return(
+            *struct.unpack_from(format, smf, offset),
+            offset + struct.calcsize(format))
 
 
 if __name__ == '__main__':

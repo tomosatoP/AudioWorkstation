@@ -14,10 +14,21 @@
     BoxLayout:
         size: root.size
         orientation: 'vertical'
-        Label:
+        BoxLayout:
+            orientation: 'horizontal'
             size_hint_y: 0.25
-            font_size: 40
-            text: '伴奏'
+            Label:
+                font_size: 40
+                text: '伴奏'
+            ToggleButton:
+                border: (0, 0 , 0 ,0)
+                size_hint_x: 0.25
+                font_size: 40
+                state: 'normal'
+                text: '鳴らす'
+                on_press: 
+                    root.sound_on() if self.state == 'down' \
+                    else root.sound_off()
         BoxLayout:
             orientation: 'horizontal'
             ScrollView:
