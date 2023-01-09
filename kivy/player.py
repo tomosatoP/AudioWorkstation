@@ -16,8 +16,9 @@ from kivy.resources import resource_add_path
 resource_add_path('/usr/share/fonts/opentype/ipaexfont-gothic')
 LabelBase.register(DEFAULT_FONT, 'ipaexg.ttf')
 
-from concurrent import futures
 from midifile import *
+from concurrent import futures
+
 
 class MidiTitleButton(ToggleButton):
     index = NumericProperty()
@@ -53,11 +54,20 @@ class PlayerView(Widget):
         self.set_presets_for_rule_list(0)
 
     def sound_on(self) -> None:
-        self._disable_buttons(True)
         print(self._mute_rules())
-        self.executor.submit(
+        future = self.executor.submit(
             self.midi_player.start, self._selected_midi_filename())
-        print('sound on')
+        future.add_done_callback(self.eof_callback)
+        self._disable_buttons(True)
+
+    def pause(self):
+        self.midi_player.pause()
+
+    def restart(self):
+        self.midi_player.restart()
+
+    def eof_callback(self, future):
+        self.sound_off()
 
     def sound_off(self) -> None:
         self.midi_player.stop()
@@ -118,6 +128,7 @@ class PlayerView(Widget):
         return(i + 1)
 
 class Player(App):
+
     def build(self):
         p = PlayerView()
         p.open_list_and_rules()

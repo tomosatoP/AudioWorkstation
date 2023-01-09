@@ -38,9 +38,8 @@ class PatternSeqFS():
     data = SequencerEventCallbackData()
     sfs.register_client('metronome', client_callback, pointer(data))
 
-    def start(self, volume: int, bps: float, beat: list) -> None:
-        print(f'sound on [volume: {volume}, tempo: {bps}, beat: {beat}]')
-        sfs.gain(volume)
+    def start(self, bps: float, beat: list) -> None:
+        print(f'sound on [tempo: {bps}, beat: {beat}]')
         sfs.set_bps(bps)
         self.data.quit = False
         self.data.rhythm = beat[0].encode()

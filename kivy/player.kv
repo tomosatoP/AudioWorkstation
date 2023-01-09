@@ -16,19 +16,32 @@
         orientation: 'vertical'
         BoxLayout:
             orientation: 'horizontal'
-            size_hint_y: 0.25
+            size_hint_y: 0.2
             Label:
+                size_hint_x: 0.2
                 font_size: 40
                 text: '伴奏'
             ToggleButton:
                 border: (0, 0 , 0 ,0)
-                size_hint_x: 0.25
+                size_hint_x: 0.1
                 font_size: 40
                 state: 'normal'
-                text: '鳴らす'
+                text: '▶'
                 on_press: 
                     root.sound_on() if self.state == 'down' \
                     else root.sound_off()
+            ToggleButton:
+                size_hint_x: 0.1
+                font_size: 40
+                state: 'normal'
+                disabled: True
+                text: '||'
+                on_press:
+                    root.pause() if self.state == 'down' \
+                    else root.restart()
+            Slider:
+                size_hint_x: 0.6
+                disabled: True
         BoxLayout:
             orientation: 'horizontal'
             ScrollView:

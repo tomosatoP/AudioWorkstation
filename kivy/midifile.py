@@ -12,13 +12,19 @@ class MidiPlayer():
             'soundfont': 'sf2/FluidR3_GM.sf2'}
         self._player = MidiPlayerFS(**kwargs)
 
-    def start(self, filename:str) -> None:
-        self._player.gain(20)
+    def start(self, filename:str) -> str:
         self._player.change_rule('kivy/rule.mute_chan.json')
-        self._player.play(filename)
+        self._player.play(midifile=filename, wait=True)
+        return(f'{filename}')
 
     def stop(self) -> None:
         self._player.stop()
+
+    def pause(self) -> None:
+        self._player.pause()
+
+    def restart(self) -> None:
+        self._player.restart()
 
 def sfont_presets_name(is_percussion:bool = False) -> list:
     kwargs = {

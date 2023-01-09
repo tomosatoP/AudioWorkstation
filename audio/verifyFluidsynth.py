@@ -17,20 +17,16 @@ def verify_synthesizer():
     for i in fs.channels_preset():
         print(i)
 
-    print(fs.gain())
-    fs.gain(70)
-    print(fs.gain())
-
     fs.sustain_on(0)
     fs.modulation_wheel(0, 100)
-    fs.volume(0, 30)
+    fs.volume(0, 100)
     for i in fs.sfonts_preset():
         for j in i:
             fs.program_select(0, j['sfont_id'], j['bank'], j['num'])
             print(j['name'])
-            fs.note_on(0, 64, 60)
-            fs.note_on(0, 66, 60)
-            fs.note_on(0, 68, 60)
+            fs.note_on(0, 64, 127)
+            fs.note_on(0, 66, 127)
+            fs.note_on(0, 68, 127)
             sleep(0.5)
             fs.note_off(0, 64)
             fs.note_off(0, 66)
@@ -102,7 +98,6 @@ def verify_sequencer():
     
     sfs = SequencerFS(**kwargs)
     
-    sfs.gain(30)
     data = SequencerEventCallbackData()
     sfs.register_client('metronome', client_callback, pointer(data))
     
@@ -120,7 +115,6 @@ def verify_sequencer():
     data.quit = True
     sleep(4)
 
-    sfs.gain(50)
     sfs.note_on(9, 34, 80)
     sleep(1)
     return(True)
@@ -136,8 +130,7 @@ def verify_midi_player():
 
     mpfs.change_rule('audio/rule.mute_chan_0.json')
 
-    mpfs.gain(70)
-    mpfs.play('mid/111867.MID')
+    mpfs.play(midifile='mid/111867.MID', wait=False)
     sleep(8)
     mpfs.pause()
     sleep(1)
@@ -145,10 +138,8 @@ def verify_midi_player():
     sleep(8)
     mpfs.stop()
 
-    mpfs.gain(40)
     mpfs.cueing('mid/gikiteikoku.mid', 7)
     mpfs.cueing('mid/l3008_05.mid', 7)
-    mpfs.gain(70)
     mpfs.cueing('mid/111867.MID', 7)
 
 if __name__ == '__main__':

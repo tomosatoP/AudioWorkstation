@@ -567,21 +567,12 @@ class SynthesizerFS:
             dryrun=False)
         return(result)
 
-    def _from_gain(self, gain: float) -> int:
-        '''
-        Converts 'gain' between 0 and 100, just like hearing..
-        If the 'gain' is less than 0.01, it is set to 0.
-        '''
-        return(int(70.0 + 30.0 * log10(gain)) if round(gain, 2) != 0.0 else 0)
-    
-    def _to_gain(self, value: int) -> float:
-        return(round(pow(10, (value - 70.0) / 30.0), ndigits=2))
+    def set_gain(self, value:float=0.2) -> float:
+        fluid_synth_set_gain(self.synthesizer, value)
+        return(fluid_synth_get_gain(self.synthesizer))
 
-    def gain(self, value: int = None) -> int:
-        if value is None:
-            return(self._from_gain(fluid_synth_get_gain(self.synthesizer)))
-        else:
-            return(fluid_synth_set_gain(self.synthesizer, self._to_gain(value)))
+    def get_gain(self) -> float:
+        return(fluid_synth_get_gain(self.synthesizer))
 
     def sfonts_preset(self, is_percussion:bool = False) -> list:
         result = list()
@@ -781,7 +772,6 @@ class MidiRouterFS(SynthesizerFS):
             if rd['param2'] is not None:
                 fluid_midi_router_rule_set_param2(rule, *rd['param2'].values())
             fluid_midi_router_add_rule(self.midi_router, rule, rd['type'])
-
         return(FLUID_OK)
 
 class MidiDriverFS(MidiRouterFS):
@@ -826,19 +816,21 @@ class MidiPlayerFS(MidiRouterFS):
         delete_fluid_player(self.player)
         super().__del__()
     
-    def play(self, midifile):
+    def play(self, midifile:str, wait:bool=True) -> None:
         status = fluid_player_get_status(self.player)
         if FLUID_PLAYER_STATUS(status) is FLUID_PLAYER_STATUS.STOPPING:
             fluid_player_add(self.player, midifile.encode())
             fluid_player_play(self.player)
+            if wait:
+                fluid_player_join(self.player)
     
-    def restart(self):
+    def restart(self) -> None:
         status = fluid_player_get_status(self.player)
         if FLUID_PLAYER_STATUS(status) is FLUID_PLAYER_STATUS.STOPPING:
             fluid_player_seek(self.player, self.pause_tick)
             fluid_player_play(self.player)
 
-    def stop(self):
+    def stop(self) -> None:
         status = fluid_player_get_status(self.player)
         if any([
                 FLUID_PLAYER_STATUS(status) is FLUID_PLAYER_STATUS.PLAYING,
@@ -848,14 +840,14 @@ class MidiPlayerFS(MidiRouterFS):
             fluid_player_seek(self.player, fluid_player_get_total_ticks(self.player))
             fluid_player_join(self.player)
     
-    def pause(self) -> int:
+    def pause(self) -> None:
         status = fluid_player_get_status(self.player)
         if FLUID_PLAYER_STATUS(status) is FLUID_PLAYER_STATUS.PLAYING:
             self.pause_tick = fluid_player_get_current_tick(self.player)
             fluid_player_stop(self.player)
 
-    def cueing(self, midifile, duration):
-        self.play(midifile)
+    def cueing(self, midifile:str, duration:float) -> None:
+        self.play(midifile=midifile, wait=False)
         sleep(duration)
         self.stop()
 

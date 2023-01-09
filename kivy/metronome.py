@@ -35,8 +35,8 @@ class MetronomeView(Widget):
 
     def sound_on(self) -> None:
         self.disable_buttons(disable= True)
-        self.executor.submit(self.pSFS.start,
-            40, self.bps, self.beat().splitlines())
+        self.executor.submit(
+            self.pSFS.start, self.bps, self.beat().splitlines())
     
     def sound_off(self) -> None:
         self.disable_buttons(disable= False)
