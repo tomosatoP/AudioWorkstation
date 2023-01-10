@@ -567,11 +567,9 @@ class SynthesizerFS:
             dryrun=False)
         return(result)
 
-    def set_gain(self, value:float=0.2) -> float:
-        fluid_synth_set_gain(self.synthesizer, value)
-        return(fluid_synth_get_gain(self.synthesizer))
-
-    def get_gain(self) -> float:
+    def gain(self, value:float=None) -> float:
+        if value != None:
+            fluid_synth_set_gain(self.synthesizer, value)
         return(fluid_synth_get_gain(self.synthesizer))
 
     def sfonts_preset(self, is_percussion:bool = False) -> list:

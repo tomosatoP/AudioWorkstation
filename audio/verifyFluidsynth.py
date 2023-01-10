@@ -2,12 +2,14 @@
 # -*- coding: utf-8 -*-
 
 from fluidsynth import *
+from amixer import *
 from time import sleep
 
 # test class SynthesizerFS
 def verify_synthesizer():
     kwargs = {'settings': 'audio/settings.json'}
     fs = SynthesizerFS(**kwargs)
+    print(f'gain: {fs.gain():.1f}')
 
     print('soundfont preset')
     for i in fs.sfonts_preset(is_percussion=True):
@@ -52,7 +54,8 @@ def verify_midi_driver():
         'handler': fluid_midi_dump_prerouter}
     
     mdfs = MidiDriverFS(**kwargs)
-    
+    print(f'gain: {mdfs.gain():.1f}')
+
     print('default rule')
     sleep(5)
     
@@ -97,6 +100,7 @@ def verify_sequencer():
         'soundfont': 'sf2/FluidR3_GM.sf2'}
     
     sfs = SequencerFS(**kwargs)
+    print(f'gain: {sfs.gain():.1f}')
     
     data = SequencerEventCallbackData()
     sfs.register_client('metronome', client_callback, pointer(data))
@@ -129,6 +133,7 @@ def verify_midi_player():
     mpfs = MidiPlayerFS(**kwargs)
 
     mpfs.change_rule('audio/rule.mute_chan_0.json')
+    print(f'gain: {mpfs.gain(1.0):.1f}')
 
     mpfs.play(midifile='mid/111867.MID', wait=False)
     sleep(8)
@@ -138,11 +143,15 @@ def verify_midi_player():
     sleep(8)
     mpfs.stop()
 
+    print(f'gain: {mpfs.gain(0.2):.1f}')
     mpfs.cueing('mid/gikiteikoku.mid', 7)
     mpfs.cueing('mid/l3008_05.mid', 7)
+
+    print(f'gain: {mpfs.gain(1.0):.1f}')
     mpfs.cueing('mid/111867.MID', 7)
 
 if __name__ == '__main__':
+    print(f'master volume: {master_volume()}')
     verify_synthesizer()
     verify_sequencer()
     verify_midi_driver()

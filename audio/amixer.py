@@ -4,14 +4,7 @@
 import subprocess
 
 # Master Volume (PulseAudio)
-'''
-amixer sget Master
-
-amixer sset Master 100%,100% -M unmute
-amixer sset Master 10%+,10%+ -M unmute
-amixer sset Master 10%-,10%- -M unmute
-'''
-master_volume = ['amixer', 'sset', 'Master', '50%,50%', '-M', 'unmute']
+amixer_master = ['amixer', 'sset', 'Master', '50%,50%', '-M', 'unmute']
 
 # If using S (USB-Audio - Sharkoon Gmaing DAC Pro S/ latency 4ms)
 using_S = [
@@ -45,27 +38,35 @@ using_Headphones = [
     ['jack_control', 'start'],
     ['amixer', '-c', 'Headphones', 'sset', 'Headphone', '100%', '-M', 'unmute']]
 
-result = filter(lambda i: subprocess.run(i).returncode != 0, using_S)
-print('start jack server') if len(list(result)) == 0 \
-    else print('Error: Failed to open jack server')
+def master_volume(percentage:str=None) -> str:
+    '''
+    usage:
+     master_volume()
+     master_volume('100%,100%')
+     master_volume('10%+,10%+')
+     master_volume('10%-,10%-')
+    '''
 
-result = subprocess.run(master_volume, capture_output=True, text=True)
-a = result.stdout.splitlines()
-listc = list()
-for b in a:
-    listb = list()
-    for c in b.strip().split(':'):
-        listb += [c.strip()]
-    listc.append(listb)
+    if percentage == None:
+        ''' jackd server and playback volume settings '''
+        result = filter(lambda i: subprocess.run(i).returncode != 0, using_S)
+        print('start jack server') if len(list(result)) == 0 \
+            else print('Error: Failed to open jack server')
+    else:
+        ''' master playback volume settings '''
+        amixer_master[3] = percentage
 
-print(listc)
-'''
-Simple mixer control 'Master',0
- Capabilities: pvolume pswitch pswitch-joined
- playback channels: Front Left - Front Right
- Limits: playback 0 - 65536
- Mono:
- Front Left: Playback 65536 [100%] [on]
- Front Right: Playback 65536 [100%] [on]
-'''
+    result = subprocess.run(amixer_master, capture_output=True, text=True)
+    dict_master = dict()
+    for line_buffer in result.stdout.splitlines():
+        listb = line_buffer.strip().split(':')
+        if len(listb) > 1:
+            dict_master[listb[0]] = listb[1].strip()
 
+    l_vol = dict_master['Front Left'].split()[2].strip('[]')
+    r_vol = dict_master['Front Right'].split()[2].strip('[]')
+
+    return(f'{l_vol},{r_vol}')
+
+if __name__ == '__main__':
+    print('amixer')
