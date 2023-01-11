@@ -22,6 +22,7 @@ from concurrent import futures
 
 class MidiTitleButton(ToggleButton):
     index = NumericProperty()
+    total_tick = NumericProperty()
     filename = StringProperty()
     channels_preset = ListProperty()
 
@@ -33,15 +34,16 @@ class MidiTitleButton(ToggleButton):
         return super().on_touch_down(touch)
 
 class PlayerView(Widget):
+    play_button = ObjectProperty(None)
+    pause_button = ObjectProperty(None)
+    playlist = ObjectProperty(None)
     rules = ObjectProperty(None)
-    playlist= ObjectProperty(None)
     sfont_presets_name = list()
     sfont_presets_pname = list()
     midi_player = MidiPlayer()
     executor = futures.ThreadPoolExecutor()
     
     def open_list_and_rules(self) -> None:
-        ''' todo: MIDIファイル情報取得の待ち時間に工夫 '''
         extension = ['.mid','.MID']
         list_midifile = [i for i in Path().glob('mid/*.*') if i.suffix in extension]
         for i in list_midifile:
@@ -55,19 +57,24 @@ class PlayerView(Widget):
 
     def sound_on(self) -> None:
         print(self._mute_rules())
+        filename, total_tick = self._selected_midifile_info()
+        print(total_tick)
         future = self.executor.submit(
-            self.midi_player.start, self._selected_midi_filename())
+            self.midi_player.start, filename)
         future.add_done_callback(self.eof_callback)
         self._disable_buttons(True)
 
-    def pause(self):
+    def pause(self) -> None:
+        self.play_button.disabled = True
         self.midi_player.pause()
 
-    def restart(self):
+    def restart(self) -> None:
+        self.play_button.disabled = False
         self.midi_player.restart()
 
-    def eof_callback(self, future):
-        self.sound_off()
+    def eof_callback(self, future) -> None:
+        if self.pause_button.state == 'normal':
+            self.sound_off()
 
     def sound_off(self) -> None:
         self.midi_player.stop()
@@ -96,13 +103,14 @@ class PlayerView(Widget):
             self.rules.children[15 - i].state = 'down' if text != '-' else 'normal'
 
     def _disable_buttons(self, disable:bool) -> None:
+        self.pause_button.disabled = not disable
         self.playlist.disabled = disable
         self.rules.disabled = disable
 
-    def _selected_midi_filename(self) -> str:
+    def _selected_midifile_info(self) -> tuple:
         for i in self.playlist.children:
             if i.state == 'down':
-                return(i.filename)
+                return(i.filename, i.total_tick)
 
     def _add_play_list(self, midifile:Path) -> int:
         smf = StandardMidiFile(midifile)
@@ -111,6 +119,7 @@ class PlayerView(Widget):
             MidiTitleButton(
                 text=smf.title(),
                 index=index,
+                total_tick=smf.total_tick(),
                 filename='mid/' + midifile.name,
                 channels_preset=smf.channels_preset()))
         return(index)

@@ -9,7 +9,7 @@ reference
         2. MIDI 1.0
         4. スタンダードMIDIファイル1.0
 '''
-
+import cython
 import struct
 from pathlib import Path
 
@@ -33,20 +33,20 @@ class StandardMidiFile():
         for _ in range(self.header[3]):
             ckID, ckSize, offset = self._unpac(smf, offset, CKDR)
 
-            current_time = int(0)
+            current_tick = int(0)
             list_event = list()
             while ckSize:
                 ckSize += offset
                 delta_time, offset = self._delta_time(smf, offset)
-                current_time += delta_time
+                current_tick += delta_time
 
                 event, offset = self._dequeue_event(smf, offset)
-                list_event.append([current_time, *event])
+                list_event.append([current_tick, *event])
                 ckSize -= offset
 
             self._tracks += [list_event]
 
-    def channels_preset(self):
+    def channels_preset(self) ->list:
         channels = [[]]*16
         for track in self._tracks:
             for event in track:
@@ -60,7 +60,7 @@ class StandardMidiFile():
                 return(event[3].decode('sjis'))
         return('-')
 
-    def instruments(self):
+    def instruments(self) -> list:
         names = list()
         for track in self._tracks:
             for event in track:
@@ -68,7 +68,7 @@ class StandardMidiFile():
                     names += [event[3].decode('sjis')]
         return(names)
 
-    def lyrics(self):
+    def lyrics(self) -> list:
         texts = list()
         for track in self._tracks:
             for event in track:
@@ -76,7 +76,14 @@ class StandardMidiFile():
                     texts += [event[3].decode('sjis')]
         return(texts)
 
-    def _dequeue_as_midi_event(self, smf:Path, event_type:bytes, offset:int) -> tuple:
+    def total_tick(self) -> int:
+        result:int=0
+        for track in self._tracks:
+            temp = track[len(track)-1][0]
+            result = temp if temp > result else result
+        return(result)
+
+    def _dequeue_as_midi_event(self, smf:bytes, event_type:int, offset:int) -> tuple:
         param = event_type >> 4
         channel = event_type & 0xF
         if any([param == 0x8, param == 0x9, param == 0xA, param == 0xB, param == 0xE]):
@@ -86,19 +93,19 @@ class StandardMidiFile():
             value, offset = self._unpac(smf, offset, '>''B')
             return([param, channel, value], offset)
 
-    def _dequeue_as_meta_event(self, smf:Path, event_type:bytes, offset:int) -> tuple:
+    def _dequeue_as_meta_event(self, smf:bytes, event_type:int, offset:int) -> tuple:
         meta_type, length, offset = self._unpac(smf, offset, '>''BB')
         return(
             [event_type, meta_type, smf[offset: offset + length]],
             offset + length)
 
-    def _dequeue_as_sysex_event(self, smf:Path, event_type:bytes, offset:int) -> tuple:
+    def _dequeue_as_sysex_event(self, smf:bytes, event_type:int, offset:int) -> tuple:
         length, offset = self._unpac(smf, offset, '>''B')
         return(
             [event_type, smf[offset: offset + length]],
             offset + length)
 
-    def _dequeue_event(self, smf:Path, offset:int) -> tuple:
+    def _dequeue_event(self, smf:bytes, offset:int) -> tuple:
         event_type, offset = self._unpac(smf, offset, BYTE)
         if self._is_status_byte(event_type):
             self._last_event_type = event_type
@@ -114,15 +121,15 @@ class StandardMidiFile():
         else:
             return(self._dequeue_as_midi_event(smf, event_type, offset))
 
-    def _header_chunk(self, smf:Path) -> tuple:
+    def _header_chunk(self, smf:bytes) -> tuple:
         ''' <Header Chunk>, <Track Chunk>+ <- <Standard MIDI File> '''
         ckID, ckSize, format, ntrks, division, offset = self._unpac(smf, 0, HEADER_CHUNK)
         return([ckID.decode(), ckSize, format, ntrks, division], offset)
 
-    def _is_status_byte(self, value: bytes) -> bool:
+    def _is_status_byte(self, value: int) -> bool:
         return(True if value & 0x80 else False)
     
-    def _delta_time(self, smf:Path, offset:int) -> tuple:
+    def _delta_time(self, smf:bytes, offset:int) -> tuple:
         ''' <delta-time>, <event>+ <- <MTrk event> '''
         while True:
             delta_time = 0
@@ -133,7 +140,7 @@ class StandardMidiFile():
                 delta_time = (temp & 0x7f) + (delta_time << 7)
             return(delta_time, offset)
 
-    def _unpac(self, smf:Path, offset:int, format:str) -> tuple:
+    def _unpac(self, smf:bytes, offset:int, format:str) -> tuple:
         return(
             *struct.unpack_from(format, smf, offset),
             offset + struct.calcsize(format))

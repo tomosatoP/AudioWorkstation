@@ -2,8 +2,11 @@ audio/old/
 audio/ref/
 pongame/
 */__pycache__/
+*/build/
 
 *.mid
 *.MID
 *.sf2
 *.sf3
+*.c
+*.so

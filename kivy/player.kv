@@ -8,6 +8,8 @@
     on_press: self.state = 'down' if self.state == 'down' else 'down'       
 
 <PlayerView>:
+    play_button: play_togglebotton
+    pause_button: pause_togglebutton
     playlist: boxlayout_play_list
     rules: gridlayout_rules
 
@@ -22,6 +24,7 @@
                 font_size: 40
                 text: '伴奏'
             ToggleButton:
+                id: play_togglebotton
                 border: (0, 0 , 0 ,0)
                 size_hint_x: 0.1
                 font_size: 40
@@ -31,6 +34,7 @@
                     root.sound_on() if self.state == 'down' \
                     else root.sound_off()
             ToggleButton:
+                id: pause_togglebutton
                 size_hint_x: 0.1
                 font_size: 40
                 state: 'normal'
