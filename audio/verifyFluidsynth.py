@@ -12,7 +12,7 @@ def verify_synthesizer():
     print(f'gain: {fs.gain():.1f}')
 
     print('soundfont preset')
-    for i in fs.sfonts_preset(is_percussion=True):
+    for i in fs.gm_sound_set(is_percussion=True):
         for j in i:
             print(j)
     print('channel preset')
@@ -22,7 +22,7 @@ def verify_synthesizer():
     fs.sustain_on(0)
     fs.modulation_wheel(0, 100)
     fs.volume(0, 100)
-    for i in fs.sfonts_preset():
+    for i in fs.gm_sound_set():
         for j in i:
             fs.program_select(0, j['sfont_id'], j['bank'], j['num'])
             print(j['name'])
@@ -68,6 +68,8 @@ def verify_midi_driver():
     return(True)
 
 # test class SequencerFS
+from functools import partial
+
 SequencerEventCallbackData._fields_ = [
     ('quit', c_bool), ('rhythm', c_char_p), ('beat', c_char_p)]
 
@@ -123,36 +125,43 @@ def verify_sequencer():
     sleep(1)
     return(True)
 
-# test midi player
+# test class MidiPlayerFS
+from concurrent import futures
+from functools import partial
+
+def future_callback(func:callable, future:futures.Future) -> bool:
+    func()
+    return(future.done())
+
 def verify_midi_player():
     kwargs = {
         'settings': 'audio/settings.json',
-        'soundfont': 'sf2/FluidR3_GM.sf2',
-        'handler': fluid_midi_dump_prerouter}
+        'soundfont': 'sf2/FluidR3_GM.sf2'}
 
     mpfs = MidiPlayerFS(**kwargs)
-
     mpfs.change_rule('audio/rule.mute_chan_0.json')
-    print(f'gain: {mpfs.gain(1.0):.1f}')
-
-    mpfs.play(midifile='mid/111867.MID', wait=False)
-    sleep(8)
-    mpfs.pause()
-    sleep(1)
-    mpfs.restart()
-    sleep(8)
-    mpfs.stop()
-
     print(f'gain: {mpfs.gain(0.2):.1f}')
-    mpfs.cueing('mid/gikiteikoku.mid', 7)
-    mpfs.cueing('mid/l3008_05.mid', 7)
 
-    print(f'gain: {mpfs.gain(1.0):.1f}')
-    mpfs.cueing('mid/111867.MID', 7)
+    with futures.ThreadPoolExecutor(max_workers=1) as e:
+        filename = 'mid/l3007_02.mid'
+        tick:int=0
+        for _ in range(3):
+            f = e.submit(mpfs.start, filename, tick)
+            f.add_done_callback(partial(future_callback, mpfs.close))
+            sleep(3)
+            tick = mpfs.stop() + 5000
+            sleep(0.1)
+
+        filename = 'mid/l3007_03.mid'
+        f = e.submit(mpfs.start, filename, 20000)
+        f.add_done_callback(partial(future_callback, mpfs.close))
+        sleep(3)
+        mpfs.stop()
+
 
 if __name__ == '__main__':
     print(f'master volume: {master_volume()}')
-    verify_synthesizer()
-    verify_sequencer()
-    verify_midi_driver()
-    verify_midi_player()
+    #verify_synthesizer()
+    #verify_sequencer()
+    #verify_midi_driver()
+    #verify_midi_player()

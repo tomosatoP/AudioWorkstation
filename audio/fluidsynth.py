@@ -11,7 +11,7 @@ from ctypes.util import find_library
 from enum import (Enum, auto)
 from json import *
 from time import sleep
-from math import (pow, log10)
+
 
 FLUID_FAILED = -1
 FLUID_OK = 0
@@ -408,6 +408,14 @@ delete_fluid_synth = \
 # FluidSynth API prototype: Synthesizer - Effect - Reverb
 
 # FluidSynth API prototype: Synthesizer - MIDI Channel Messages
+fluid_synth_all_notes_off = \
+    CFUNCTYPE(c_int, c_void_p, c_int) \
+        (('fluid_synth_all_notes_off', _libfs),
+        ((1, 'synth'), (1, 'chan')))
+fluid_synth_all_sounds_off = \
+    CFUNCTYPE(c_int, c_void_p, c_int) \
+        (('fluid_synth_all_sounds_off', _libfs),
+        ((1, 'synth'), (1, 'chan')))
 fluid_synth_cc = \
     CFUNCTYPE(c_int, c_void_p, c_int, c_int, c_int) \
         (('fluid_synth_cc', _libfs),
@@ -448,6 +456,10 @@ fluid_synth_noteoff = \
     CFUNCTYPE(c_int, c_void_p, c_int, c_int) \
         (('fluid_synth_noteoff', _libfs),
         ((1, 'synth'), (1, 'chan'), (1, 'key')))
+fluid_synth_system_reset = \
+    CFUNCTYPE(c_int, c_void_p) \
+        (('fluid_synth_system_reset', _libfs),
+        ((1, 'synth'),))
 
 # FluidSynth API prototype: Synthesizer - MIDI Channel Setup
 # FluidSynth API prototype: Synthesizer - MIDI Tuning
@@ -514,18 +526,20 @@ class SynthesizerFS:
         self.synthesizer = new_fluid_synth(self.settings)
 
         if 'soundfont' in kwargs:
-            self.soundfont_ids += \
-                [fluid_synth_sfload(
-                    self.synthesizer, kwargs['soundfont'].encode(), True)]
+            self.soundfont_ids += [fluid_synth_sfload(
+                self.synthesizer,
+                kwargs['soundfont'].encode(),
+                True)]
         else:
             fn_soundfont = c_char_p()
             if fluid_settings_getstr_default(
                     self.settings,
                     b'synth.default-soundfont',
                     byref(fn_soundfont)) is FLUID_OK:
-                self.soundfont_ids += \
-                    [fluid_synth_sfload(
-                        self.synthesizer, fn_soundfont, True)]
+                self.soundfont_ids += [fluid_synth_sfload(
+                    self.synthesizer,
+                    fn_soundfont,
+                    True)]
 
         self._gm_system_on()
 
@@ -547,7 +561,9 @@ class SynthesizerFS:
         fluid_audio_driver_register(byref(p_array))
 
     def _assign_audio_driver(self):
-        self.audio_driver = new_fluid_audio_driver(self.settings, self.synthesizer)
+        self.audio_driver = new_fluid_audio_driver(
+            self.settings,
+            self.synthesizer)
 
     def _delete_auido_driver(self):
         delete_fluid_audio_driver(self.audio_driver)
@@ -567,21 +583,35 @@ class SynthesizerFS:
             dryrun=False)
         return(result)
 
+    def _all_notes_off(self, chan:int=-1) -> int:
+        return(fluid_synth_all_notes_off(
+            synth=self.synthesizer,
+            chan=chan))
+
+    def _all_sounds_off(self, chan:int=-1) -> int:
+        return(fluid_synth_all_sounds_off(
+            synth=self.synthesizer,
+            chan=chan))
+
+    def _panic(self) -> int:
+        return(fluid_synth_system_reset(
+            synth=self.synthesizer))
+
     def gain(self, value:float=None) -> float:
         if value != None:
             fluid_synth_set_gain(self.synthesizer, value)
         return(fluid_synth_get_gain(self.synthesizer))
 
-    def sfonts_preset(self, is_percussion:bool = False) -> list:
+    def gm_sound_set(self, is_percussion:bool = False) -> list:
         result = list()
         ''' GM system level 1'''
         bank = 0 if not(is_percussion) else 128
         for n in range(fluid_synth_sfcount(self.synthesizer)):
             sfont = fluid_synth_get_sfont(self.synthesizer, n)
-            result += [self._sfont_preset(sfont, bank)]
+            result += [self._sfont_sound_set(sfont, bank)]
         return(result)
 
-    def _sfont_preset(self, sfont: c_void_p, bank:int) -> list:
+    def _sfont_sound_set(self, sfont: c_void_p, bank:int) -> list:
         result = list()
         for n in range(128):
             preset = fluid_sfont_get_preset(sfont, bank, n)
@@ -613,41 +643,83 @@ class SynthesizerFS:
         return(result)
 
     def pitch_bend(self, chan:int, val:int) -> int:
-        return(fluid_synth_pitch_bend(self.synthesizer, chan, val))
+        return(fluid_synth_pitch_bend(
+            self.synthesizer,
+            chan,
+            val))
 
     def pitch_wheel_sens(self, chan:int, val:int) ->int:
-        return(fluid_synth_pitch_wheel_sens(self.synthesizer,chan, val))
+        return(fluid_synth_pitch_wheel_sens(
+            self.synthesizer,
+            chan,
+            val))
 
     def program_select(self, chan:int, sfont_id:int, bank:int, preset:int) -> int:
-        return(fluid_synth_program_select(self.synthesizer, chan, sfont_id, bank, preset))
+        return(fluid_synth_program_select(
+            self.synthesizer,
+            chan,
+            sfont_id,
+            bank,
+            preset))
 
     def note_on(self, channel: int, keyNumber: int, velocity: int) -> int:
-        return(fluid_synth_noteon(self.synthesizer, channel, keyNumber, velocity))
+        return(fluid_synth_noteon(
+            self.synthesizer,
+            channel,
+            keyNumber,
+            velocity))
 
     def note_off(self, channel: int, keyNumber: int) -> int:
-        return(fluid_synth_noteoff(self.synthesizer, channel, keyNumber))
+        return(fluid_synth_noteoff(
+            self.synthesizer,
+            channel,
+            keyNumber))
 
     def modulation_wheel(self, chan:int, val:int) -> int:
         ''' The sound amplifies like vibrato. '''
-        return(fluid_synth_cc(self.synthesizer, chan, int(0x01), val))
+        return(fluid_synth_cc(
+            self.synthesizer,
+            chan,
+            int(0x01),
+            val))
 
     def volume(self, chan:int, val:int) -> int:
         ''' Set the maximum allowable value of velocity. '''
-        return(fluid_synth_cc(self.synthesizer, chan, int(0x07), val))
+        return(fluid_synth_cc(
+            self.synthesizer,
+            chan,
+            int(0x07),
+            val))
 
     def sustain_on(self, chan: int) -> int:
         ''' The sound echoes for a long time. '''
-        return(fluid_synth_cc(self.synthesizer, chan, int(0x40), int(0b00100000)))
+        return(fluid_synth_cc(
+            self.synthesizer,
+            chan,
+            int(0x40),
+            int(0b00100000)))
 
     def sustain_off(self, chan: int) -> int:
-        return(fluid_synth_cc(self.synthesizer, chan, int(0x40), int(0b00000000)))
+        return(fluid_synth_cc(
+            self.synthesizer,
+            chan,
+            int(0x40),
+            int(0b00000000)))
     
     def pan(self, chan:int, val:int) -> int:
-        return(fluid_synth_cc(self.synthesizer, chan, int(0x0A), val))
+        return(fluid_synth_cc(
+            self.synthesizer,
+            chan,
+            int(0x0A),
+            val))
 
     def expression(self, chan:int, val:int) -> int:
         ''' Temporary velocity can be set above volume '''
-        return(fluid_synth_cc(self.synthesizer, chan, int(0x0B), val))
+        return(fluid_synth_cc(
+            self.synthesizer,
+            chan,
+            int(0x0B),
+            val))
 
 
 class SequencerFS(SynthesizerFS):
@@ -661,10 +733,12 @@ class SequencerFS(SynthesizerFS):
     def __init__(self, **kwargs) -> None:
         super().__init__(**kwargs)
         self.sequencer = new_fluid_sequencer2(False)
-        self.client_ids += \
-            [fluid_sequencer_register_fluidsynth(self.sequencer, self.synthesizer)]
+        self.client_ids += [fluid_sequencer_register_fluidsynth(
+            self.sequencer,
+            self.synthesizer)]
         fluid_sequencer_set_time_scale(
-            self.sequencer, c_double(self.quaternote / (60 / self.bps)))
+            self.sequencer,
+            c_double(self.quaternote / (60 / self.bps)))
         self._assign_audio_driver()
     
     def __del__(self) -> None:
@@ -676,9 +750,10 @@ class SequencerFS(SynthesizerFS):
     
     def register_client(
             self, name: c_char_p, callback: c_void_p, data: c_void_p = None) -> c_short:
-        self.client_ids += \
-            [fluid_sequencer_register_client(
-                self.sequencer, name.encode(), callback, data)]
+        self.client_ids += [fluid_sequencer_register_client(
+            self.sequencer,
+            name.encode(),
+            callback, data)]
         self.client_callbacks += [callback]
         return(self.client_ids[len(self.client_ids) - 1])
 
@@ -689,7 +764,8 @@ class SequencerFS(SynthesizerFS):
         ''' Set the time scale of a sequencer. "time_scale" in ticks per second '''
         self.bps = bps
         fluid_sequencer_set_time_scale(
-            self.sequencer, c_double(self.quaternote / (60 / self.bps)))
+            self.sequencer,
+            c_double(self.quaternote / (60 / self.bps)))
     
     def synthesizer_client_id(self) -> int:
         return(self.client_ids[0])
@@ -730,7 +806,11 @@ class SequencerFS(SynthesizerFS):
         return(event)
 
     def _send_event_at(self, event: c_void_p, ticks: c_uint, absolute: bool) -> None:
-        result = fluid_sequencer_send_at(self.sequencer, event, ticks, absolute)
+        result = fluid_sequencer_send_at(
+            self.sequencer,
+            event,
+            ticks,
+            absolute)
         delete_fluid_event(event)
 
 class MidiRouterFS(SynthesizerFS):
@@ -741,10 +821,13 @@ class MidiRouterFS(SynthesizerFS):
     def __init__(self, **kwargs) -> None:
         super().__init__(**kwargs)
         handler = fluid_synth_handle_midi_event
-        self.midi_router = \
-            new_fluid_midi_router(self.settings, handler, self.synthesizer)
-        self.cmd_handler = \
-            new_fluid_cmd_handler(self.synthesizer, self.midi_router)
+        self.midi_router = new_fluid_midi_router(
+            self.settings,
+            handler,
+            self.synthesizer)
+        self.cmd_handler = new_fluid_cmd_handler(
+            self.synthesizer,
+            self.midi_router)
 
     def __del__(self) -> None:
         delete_fluid_cmd_handler(self.cmd_handler)
@@ -764,12 +847,20 @@ class MidiRouterFS(SynthesizerFS):
         for rd in rules_json.values():
             rule = new_fluid_midi_router_rule()
             if rd['chan'] is not None:
-                fluid_midi_router_rule_set_chan(rule, *rd['chan'].values())
+                fluid_midi_router_rule_set_chan(
+                    rule,
+                    *rd['chan'].values())
             if rd['param1'] is not None:
-                fluid_midi_router_rule_set_param1(rule, *rd['param1'].values())
+                fluid_midi_router_rule_set_param1(
+                    rule,
+                    *rd['param1'].values())
             if rd['param2'] is not None:
-                fluid_midi_router_rule_set_param2(rule, *rd['param2'].values())
-            fluid_midi_router_add_rule(self.midi_router, rule, rd['type'])
+                fluid_midi_router_rule_set_param2(
+                    rule,
+                    *rd['param2'].values())
+            fluid_midi_router_add_rule(
+                self.midi_router,
+                rule, rd['type'])
         return(FLUID_OK)
 
 class MidiDriverFS(MidiRouterFS):
@@ -783,8 +874,10 @@ class MidiDriverFS(MidiRouterFS):
             callback = kwargs['handler']
         else:
             callback = fluid_midi_router_handle_midi_event
-        self.midi_driver = \
-            new_fluid_midi_driver(self.settings, callback, self.midi_router)
+        self.midi_driver = new_fluid_midi_driver(
+            self.settings,
+            callback,
+            self.midi_router)
         self._assign_audio_driver()
 
     def __del__(self) -> None:
@@ -794,60 +887,65 @@ class MidiDriverFS(MidiRouterFS):
 
 class MidiPlayerFS(MidiRouterFS):
     ''' Parse standard MIDI files and emit MIDI events. '''
+    _wait_second:int=0.1
+    _total_ticks:int=0
     player = c_void_p()
-    pause_tick = int()
 
     def __init__(self, **kwargs) -> None:
         super().__init__(**kwargs)
-
         self.player = new_fluid_player(self.synthesizer)
         
         if 'handler' in kwargs:
             callback = kwargs['handler']
         else:
             callback = fluid_midi_router_handle_midi_event
-        fluid_player_set_playback_callback(self.player, callback, self.midi_router)
+        fluid_player_set_playback_callback(
+            self.player,
+            callback,
+            self.midi_router)
         self._assign_audio_driver()
     
     def __del__(self) -> None:
         self._delete_auido_driver()
         delete_fluid_player(self.player)
         super().__del__()
-    
-    def play(self, midifile:str, wait:bool=True) -> None:
-        status = fluid_player_get_status(self.player)
-        if FLUID_PLAYER_STATUS(status) is FLUID_PLAYER_STATUS.STOPPING:
-            fluid_player_add(self.player, midifile.encode())
-            fluid_player_play(self.player)
-            if wait:
-                fluid_player_join(self.player)
-    
-    def restart(self) -> None:
-        status = fluid_player_get_status(self.player)
-        if FLUID_PLAYER_STATUS(status) is FLUID_PLAYER_STATUS.STOPPING:
-            fluid_player_seek(self.player, self.pause_tick)
-            fluid_player_play(self.player)
 
-    def stop(self) -> None:
+    def start(self, midifile:str=None, start_tick:int=0) -> None:
         status = fluid_player_get_status(self.player)
-        if any([
-                FLUID_PLAYER_STATUS(status) is FLUID_PLAYER_STATUS.PLAYING,
-                FLUID_PLAYER_STATUS(status) is FLUID_PLAYER_STATUS.STOPPING
-            ]):
-            fluid_player_stop(self.player)
-            fluid_player_seek(self.player, fluid_player_get_total_ticks(self.player))
+        if FLUID_PLAYER_STATUS(status) is FLUID_PLAYER_STATUS.STOPPING:
+            if midifile:
+                fluid_player_add(
+                    self.player,
+                    midifile.encode())
+            fluid_player_play(self.player)
+            sleep(self._wait_second)
+            ''' This function only becomes active a little after PLAYING. '''
+            self._total_ticks = fluid_player_get_total_ticks(self.player)
+            self._seek(start_tick)
+            ''' Continues until the STOP function is called. '''
             fluid_player_join(self.player)
-    
-    def pause(self) -> None:
+
+    def close(self) -> None:
+        fluid_player_stop(self.player)
+        self._seek(self._total_ticks)
+        ''' Wait to clear Ringbuffer after EOT '''
+        sleep(self._wait_second)
+        self._all_sounds_off()
+        sleep(self._wait_second)
+
+    def stop(self) -> int:
         status = fluid_player_get_status(self.player)
         if FLUID_PLAYER_STATUS(status) is FLUID_PLAYER_STATUS.PLAYING:
-            self.pause_tick = fluid_player_get_current_tick(self.player)
             fluid_player_stop(self.player)
+            return(fluid_player_get_current_tick(self.player))
+        return(FLUID_FAILED)
 
-    def cueing(self, midifile:str, duration:float) -> None:
-        self.play(midifile=midifile, wait=False)
-        sleep(duration)
-        self.stop()
+    def _seek(self, tick:int) -> int:
+        if tick <= self._total_ticks:
+            fluid_player_seek(self.player, tick)
+            return(fluid_player_get_current_tick(self.player))
+        return(FLUID_FAILED)
+
 
 if __name__ == '__main__':
     print('fluidsynth')
