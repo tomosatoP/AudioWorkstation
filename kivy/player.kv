@@ -4,14 +4,19 @@
     group: 'MidiTitleButtons'
     font_size: 25
     size_hint_y: None
+    text_size: self.size
+    valign: 'center'
+    halign: 'center'
+    shorten: True
+    shorten_from: 'center'
     height: 40
     on_press: self.state = 'down' if self.state == 'down' else 'down'       
 
 <PlayerView>:
     play_button: play_togglebotton
     pause_button: pause_togglebutton
-    playlist: boxlayout_play_list
-    rules: gridlayout_rules
+    midifiles: boxlayout_play_list
+    channels: gridlayout_rules
 
     BoxLayout:
         size: root.size
@@ -30,9 +35,7 @@
                 font_size: 40
                 state: 'normal'
                 text: '▶'
-                on_press: 
-                    root.sound_on() if self.state == 'down' \
-                    else root.sound_off()
+                on_press: root.sound(self.state)
             ToggleButton:
                 id: pause_togglebutton
                 size_hint_x: 0.1
@@ -40,12 +43,16 @@
                 state: 'normal'
                 disabled: True
                 text: '||'
-                on_press:
-                    root.pause() if self.state == 'down' \
-                    else root.restart()
-            Slider:
+                on_press: root.pause(self.state)
+            BoxLayout:
+                orientation: 'horizontal'
                 size_hint_x: 0.6
-                disabled: True
+                Slider:
+                    size_hint_x: 0.8
+                    disabled: True
+                Label:
+                    size_hint_x: 0.2
+                    text: '123456'
         BoxLayout:
             orientation: 'horizontal'
             ScrollView:

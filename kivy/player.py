@@ -5,6 +5,7 @@ import sys
 sys.path.append('../AudioWorkstation')
 
 from kivy.app import App
+from kivy.clock import Clock
 from kivy.uix.widget import Widget
 from kivy.uix.togglebutton import ToggleButton
 from kivy.properties import (
@@ -18,6 +19,7 @@ LabelBase.register(DEFAULT_FONT, 'ipaexg.ttf')
 
 from midifile import *
 from concurrent import futures
+from functools import partial
 
 
 class MidiTitleButton(ToggleButton):
@@ -28,94 +30,82 @@ class MidiTitleButton(ToggleButton):
 
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
-            print(f'{self.text}, {self.index}, {self.filename}')
+            print(f'{self.index}, {self.total_tick}, {self.text}, {self.filename}')
             app = App.get_running_app()
-            app.root.set_presets_for_rule_list(self.index)
+            app.root.set_presets_for_channels(self.index)
         return super().on_touch_down(touch)
 
 class PlayerView(Widget):
     play_button = ObjectProperty(None)
     pause_button = ObjectProperty(None)
-    playlist = ObjectProperty(None)
-    rules = ObjectProperty(None)
-    sfont_presets_name = list()
-    sfont_presets_pname = list()
+    midifiles = ObjectProperty(None)
+    channels = ObjectProperty(None)
+    sound_set = list()
+    percussion_sound_set = list()
     midi_player = MidiPlayer()
     executor = futures.ThreadPoolExecutor()
-    
-    def open_list_and_rules(self) -> None:
+
+    def __init__(self, **kwargs):
+        super(PlayerView, self).__init__(**kwargs)
+
+        self.sound_set, self.percussion_sound_set = gm_sound_set_names()
+        self.add_channelbuttons()
+
         extension = ['.mid','.MID']
         list_midifile = [i for i in Path().glob('mid/*.*') if i.suffix in extension]
         for i in list_midifile:
-            self._add_play_list(i)
+            Clock.schedule_once(partial(self.clock_callback, i))
 
-        self.sfont_presets_name = sfont_presets_name()
-        self.sfont_presets_pname = sfont_presets_name(is_percussion=True)
-        self._add_rule_list()
-        self.select_midi_for_play_list(0)
-        self.set_presets_for_rule_list(0)
+        #self.set_presets_for_channels(0)
 
-    def sound_on(self) -> None:
-        print(self._mute_rules())
-        filename, total_tick = self._selected_midifile_info()
-        print(total_tick)
-        future = self.executor.submit(
-            self.midi_player.start, filename)
-        future.add_done_callback(self.eof_callback)
-        self._disable_buttons(True)
+    def clock_callback(self, midifile:Path, dt:int) -> int:
+        return(self.add_midititlebutton(midifile))
 
-    def pause(self) -> None:
-        self.play_button.disabled = True
-        self.midi_player.pause()
-
-    def restart(self) -> None:
-        self.play_button.disabled = False
-        self.midi_player.restart()
-
-    def eof_callback(self, future) -> None:
+    def future_callback(self, future:futures.Future) -> None:
+        self.midi_player.close()
         if self.pause_button.state == 'normal':
-            self.sound_off()
+            self.play_button.state = 'normal'
 
-    def sound_off(self) -> None:
-        self.midi_player.stop()
-        self._disable_buttons(False)
-        print('sound off')
 
-    def select_midi_for_play_list(self, num:int) -> None:
-        length = len(self.playlist.children)
-        self.playlist.children[(length - 1) - num].state = 'down'
+    def sound(self, state:str) -> None:
+        if state == 'down':
+            print(self.mute_channels())
+            filename, total_tick = self.selected_midifile_info()
+            print(f'{filename}, {total_tick}')
+            future = self.executor.submit(self.midi_player.start, filename)
+            future.add_done_callback(self.future_callback)
+            self.disable_buttons(True)
+        elif state == 'normal':
+            self.midi_player.close()
+            self.disable_buttons(False)
+            print('sound off')
 
-    def set_presets_for_rule_list(self, num:int) -> None:
-        total = len(self.playlist.children)
-        for i in range(16):
-            preset_num = \
-                self.playlist.children[(total - 1) - num].channels_preset[i]
-            
-            if all([i == 9, isinstance(preset_num, int)]):
-                text = self.sfont_presets_pname[preset_num]
-            elif i == 9:
-                text = self.sfont_presets_pname[0]
-            else:
-                text = self.sfont_presets_name[preset_num] \
-                    if isinstance(preset_num, int) else '-'
+    def pause(self, state:str) -> None:
+        if state == 'normal':
+            self.sound(state='down')
+            self.play_button.disabled = False
+        elif state == 'down':
+            self.midi_player.pause()
+            self.play_button.disabled = True
 
-            self.rules.children[15 - i].text = text
-            self.rules.children[15 - i].state = 'down' if text != '-' else 'normal'
-
-    def _disable_buttons(self, disable:bool) -> None:
+    def disable_buttons(self, disable:bool) -> None:
         self.pause_button.disabled = not disable
-        self.playlist.disabled = disable
-        self.rules.disabled = disable
+        self.midifiles.disabled = disable
+        self.channels.disabled = disable
 
-    def _selected_midifile_info(self) -> tuple:
-        for i in self.playlist.children:
+    def selected_midifile_info(self) -> tuple:
+        for i in self.midifiles.children:
             if i.state == 'down':
                 return(i.filename, i.total_tick)
 
-    def _add_play_list(self, midifile:Path) -> int:
+    def select_midifile_for_midifiles(self, num:int) -> None:
+        length = len(self.midifiles.children)
+        self.midifiles.children[(length - 1) - num].state = 'down'
+
+    def add_midititlebutton(self, midifile:Path) -> int:
         smf = StandardMidiFile(midifile)
-        index = len(self.playlist.children)
-        self.playlist.add_widget(
+        index = len(self.midifiles.children)
+        self.midifiles.add_widget(
             MidiTitleButton(
                 text=smf.title(),
                 index=index,
@@ -124,24 +114,38 @@ class PlayerView(Widget):
                 channels_preset=smf.channels_preset()))
         return(index)
 
-    def _mute_rules(self) -> str:
-        mute_ruless = dict()
-        for i in range(len(self.rules.children)):
-            mute_ruless[str(i)] = \
-                False if self.rules.children[15 - i].state == 'down' else True
-        return(mute_rules(**mute_ruless))
+    def mute_channels(self) -> str:
+        channels = dict()
+        chan_num:int=0
+        for chan in self.channels.children[::-1]:
+            channels[str(chan_num)] = False if chan.state == 'down' else True
+            chan_num += 1
+        return(mute_rules(**channels))
 
-    def _add_rule_list(self) -> int:
-        for i in range(16):
-            self.rules.add_widget(ToggleButton(text=f'channel {i}'))
-        return(i + 1)
+    def set_presets_for_channels(self, num:int) -> None:
+        midifile_button = self.midifiles.children[-(num + 1)]
+        for chan in range(len(self.channels.children)):
+            preset_num = midifile_button.channels_preset[chan]
+            channel = self.channels.children[-(chan + 1)]
+            
+            if isinstance(preset_num, int):
+                channel.text = self.percussion_sound_set[preset_num] \
+                    if chan == 9 else self.sound_set[preset_num]
+            else:
+                channel.text = self.percussion_sound_set[0] \
+                    if chan == 9 else '-'
+
+            channel.state = 'down' if channel.text != '-' else 'normal'
+
+    def add_channelbuttons(self, num:int=16) -> int:
+        for i in range(num):
+            self.channels.add_widget(widget=ToggleButton(text=f'楽器 {i:02}'))
+        return(len(self.channels.children))
 
 class Player(App):
-
     def build(self):
-        p = PlayerView()
-        p.open_list_and_rules()
-        return(p)
+        pv = PlayerView()
+        return(pv)
 
 if __name__ == '__main__':
     Player().run()

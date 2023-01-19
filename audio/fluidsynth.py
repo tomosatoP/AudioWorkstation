@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 '''
 Piano playing practice with MIDI keyboard.
-Use this module from Kivy as a separate thread(threading.Thread).
+Use this module from Kivy as a separate thread(concurrent.futures.ThreadPoolExecutor).
 https://www.fluidsynth.org/api/
 '''
 

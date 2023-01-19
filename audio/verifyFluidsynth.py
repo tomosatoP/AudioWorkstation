@@ -158,10 +158,14 @@ def verify_midi_player():
         sleep(3)
         mpfs.stop()
 
+    mpfs.note_on(9, 34, 80)
+    sleep(1)
+    return(True)
+
 
 if __name__ == '__main__':
     print(f'master volume: {master_volume()}')
-    #verify_synthesizer()
-    #verify_sequencer()
-    #verify_midi_driver()
-    #verify_midi_player()
+    verify_synthesizer()
+    verify_sequencer()
+    verify_midi_driver()
+    verify_midi_player()

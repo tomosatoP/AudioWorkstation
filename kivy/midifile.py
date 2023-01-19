@@ -5,6 +5,7 @@ from items.standardmidifile import *
 from audio.fluidsynth import *
 
 class MidiPlayer():
+    pause_tick:int=0
 
     def __init__(self) -> None:
         kwargs = {
@@ -13,29 +14,32 @@ class MidiPlayer():
         self._player = MidiPlayerFS(**kwargs)
 
     def start(self, filename:str) -> str:
+        self._player.gain(0.5)
         self._player.change_rule('kivy/rule.mute_chan.json')
-        self._player.play(midifile=filename, wait=True)
+        self._player.start(midifile=filename, start_tick=self.pause_tick)
         return(f'{filename}')
 
-    def stop(self) -> None:
-        self._player.stop()
+    def close(self) -> None:
+        self.pause_tick = 0
+        self._player.close()
 
     def pause(self) -> None:
-        self._player.pause()
+        self.pause_tick = self._player.stop()
+        self._player.close()
 
-    def restart(self) -> None:
-        self._player.restart()
-
-def sfont_presets_name(is_percussion:bool = False) -> list:
+def gm_sound_set_names() -> tuple:
     kwargs = {
         'settings': 'audio/settings.json',
         'soundfont': 'sf2/FluidR3_GM.sf2'}
     synthesizer = SynthesizerFS(**kwargs)
 
     names = list()
-    for i in synthesizer.sfonts_preset(is_percussion)[0]:
+    pnames = list()
+    for i in synthesizer.gm_sound_set(is_percussion=False)[0]:
         names += [i['name']]
-    return(names)
+    for i in synthesizer.gm_sound_set(is_percussion=True)[0]:
+        pnames += [i['name']]
+    return(names, pnames)
 
 def mute_rules(**kwargs) -> str:
     '''
