@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+"""Connect to jack server and set MASTER volume"""
 
 import subprocess
+from typing import Optional
 
 # Master Volume (PulseAudio)
-amixer_master = ['amixer', 'sset', 'Master', '50%,50%', '-M', 'unmute']
+_amixer_master = ['amixer', 'sset', 'Master', '50%,50%', '-M', 'unmute']
 
 # If using S (USB-Audio - Sharkoon Gmaing DAC Pro S/ latency 4ms)
-using_S = [
+_using_S = [
     ['jack_control', 'stop'],
     ['jack_control', 'exit'],
     ['jack_control', 'ds', 'alsa'],
@@ -23,7 +25,7 @@ using_S = [
     ['amixer', '-c', 'S', 'sset', 'PCM', '100%', '-M', 'unmute']]
 
 # If using Headphones (bcm2835 Headphones/ latency 21.3ms)
-using_Headphones = [
+_using_Headphones = [
     ['jack_control', 'stop'],
     ['jack_control', 'exit'],
     ['jack_control', 'ds', 'alsa'],
@@ -38,25 +40,24 @@ using_Headphones = [
     ['jack_control', 'start'],
     ['amixer', '-c', 'Headphones', 'sset', 'Headphone', '100%', '-M', 'unmute']]
 
-def master_volume(percentage:str=None) -> str:
-    '''
-    usage:
-     master_volume()
-     master_volume('100%,100%')
-     master_volume('10%+,10%+')
-     master_volume('10%-,10%-')
+def volume(percentage:Optional[str]=None) -> str:
+    '''Usage
+    - volume()
+    - volume('100%,100%')
+    - volume('10%+,10%+')
+    - volume('10%-,10%-')
     '''
 
     if percentage == None:
         ''' jackd server and playback volume settings '''
-        result = filter(lambda i: subprocess.run(i).returncode != 0, using_S)
+        result = filter(lambda i: subprocess.run(i).returncode != 0, _using_S)
         print('start jack server') if len(list(result)) == 0 \
             else print('Error: Failed to open jack server')
     else:
         ''' master playback volume settings '''
-        amixer_master[3] = percentage
+        _amixer_master[3] = percentage
 
-    result = subprocess.run(amixer_master, capture_output=True, text=True)
+    result = subprocess.run(_amixer_master, capture_output=True, text=True)
     dict_master = dict()
     for line_buffer in result.stdout.splitlines():
         listb = line_buffer.strip().split(':')

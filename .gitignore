@@ -8,5 +8,6 @@ pongame/
 *.MID
 *.sf2
 *.sf3
+*.log
 *.c
 *.so

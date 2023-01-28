@@ -1,79 +1,95 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from fluidsynth import *
-from amixer import *
+from concurrent import futures
+from functools import partial
+import fluidsynth as FS
+import amixer as MASTER
+import ctypes as C
 from time import sleep
+from typing import Callable
 
-# test class SynthesizerFS
-def verify_synthesizer():
+# test class FS.SynthesizerFS
+
+
+def verify_synthesizer() -> bool:
     kwargs = {'settings': 'audio/settings.json'}
-    fs = SynthesizerFS(**kwargs)
+    fs = FS.Synthesizer(**kwargs)
     print(f'gain: {fs.gain():.1f}')
 
-    print('soundfont preset')
-    for i in fs.gm_sound_set(is_percussion=True):
-        for j in i:
-            print(j)
+    print('GM percussion sound set')
+    for sound_set in fs.gm_sound_set(is_percussion=True):
+        for preset in sound_set:
+            print(preset)
     print('channel preset')
-    for i in fs.channels_preset():
-        print(i)
+    for sound_set in fs.channels_preset():
+        print(sound_set)
 
+    print('sound - GM sound set')
     fs.sustain_on(0)
     fs.modulation_wheel(0, 100)
     fs.volume(0, 100)
-    for i in fs.gm_sound_set():
-        for j in i:
-            fs.program_select(0, j['sfont_id'], j['bank'], j['num'])
-            print(j['name'])
-            fs.note_on(0, 64, 127)
-            fs.note_on(0, 66, 127)
-            fs.note_on(0, 68, 127)
-            sleep(0.5)
-            fs.note_off(0, 64)
-            fs.note_off(0, 66)
-            fs.note_off(0, 68)
+    for sound_set in fs.gm_sound_set():
+        for preset in sound_set:
+            if isinstance(preset['name'], str) and \
+                    isinstance(preset['num'], int) and \
+                    isinstance(preset['bank'], int) and \
+                    isinstance(preset['sfont_id'], int):
+                fs.program_select(
+                    0, preset['sfont_id'], preset['bank'], preset['num'])
+                print(preset['name'])
+                fs.note_on(0, 60, 127)  # chord C
+                fs.note_on(0, 62, 127)
+                fs.note_on(0, 64, 127)
+                sleep(0.5)
+                fs.note_off(0, 60)
+                fs.note_off(0, 62)
+                fs.note_off(0, 64)
 
     fs.note_on(9, 34, 80)
     sleep(0.5)
     fs.note_off(9, 34)
-    return(True)
+    return (True)
+
 
 # test custum MIDI Router handler
-MidiEventHandlerData._fields_ = [('router', c_void_p)]
+FS.MidiEventUserData._fields_ = [('router', C.c_void_p)]
 
-@HANDLE_MIDI_EVENT_FUNC_T
+
+@FS.HANDLE_MIDI_EVENT_FUNC_T
 def midi_event_handler(p_data, event):
     pass
 
+
 # test class MidiDriverFS
-def verify_midi_driver():
+def verify_midi_driver() -> bool:
     kwargs = {
         'settings': 'audio/settings.json',
         'soundfont': 'sf2/FluidR3_GM.sf2',
-        'handler': fluid_midi_dump_prerouter}
-    
-    mdfs = MidiDriverFS(**kwargs)
+        'handler': FS.fluid_midi_dump_prerouter}
+
+    mdfs = FS.MidiDriver(**kwargs)
     print(f'gain: {mdfs.gain():.1f}')
 
     print('default rule')
     sleep(5)
-    
+
     mdfs.change_rule('audio/rule.mute_chan_0.json')
     print('mute channel 0')
     sleep(5)
-    
+
     mdfs.note_on(9, 34, 80)
     sleep(1)
-    return(True)
+    return (True)
+
 
 # test class SequencerFS
-from functools import partial
 
-SequencerEventCallbackData._fields_ = [
-    ('quit', c_bool), ('rhythm', c_char_p), ('beat', c_char_p)]
+FS.EventUserData._fields_ = [
+    ('quit', C.c_bool), ('rhythm', C.c_char_p), ('beat', C.c_char_p)]
 
-def metronome_pattern(data: SequencerEventCallbackData) -> None:
+
+def metronome_pattern(data: FS.EventUserData) -> bool:
     time_marker = sfs.tick()
 
     key = [75, 76]
@@ -84,37 +100,40 @@ def metronome_pattern(data: SequencerEventCallbackData) -> None:
     for i in range(len(rhythm)):
         for j in range(rhythm[i]):
             k = 0 if all([i == 0, j == 0]) else 1
-            l = 0 if all([i == 0, j == 0]) else 1 if j == 0 else 2
-            sfs.note_at(time_marker, 9, key[k], vel[l], int(beat / 2), 
-                destination = sfs.client_ids[0])
+            m = 0 if all([i == 0, j == 0]) else 1 if j == 0 else 2
+            sfs.note_at(time_marker, 9, key[k], vel[m], int(beat / 2),
+                        destination=sfs.client_ids[0])
             time_marker += beat
-    sfs.timer_at(ticks = time_marker, destination = sfs.client_ids[1])
+    sfs.timer_at(ticks=time_marker, destination=sfs.client_ids[1])
+    return (True)
 
-@FLUID_EVENT_CALLBACK_T
+
+@FS.FLUID_EVENT_CALLBACK_T
 def client_callback(time, event, sequencer, p_data):
     if not p_data.contents.quit:
         metronome_pattern(p_data.contents)
 
-def verify_sequencer():
+
+def verify_sequencer() -> bool:
     global sfs
     kwargs = {
         'settings': 'audio/settings.json',
         'soundfont': 'sf2/FluidR3_GM.sf2'}
-    
-    sfs = SequencerFS(**kwargs)
+
+    sfs = FS.Sequencer(**kwargs)
     print(f'gain: {sfs.gain():.1f}')
-    
-    data = SequencerEventCallbackData()
-    sfs.register_client('metronome', client_callback, pointer(data))
-    
+
+    data = FS.EventUserData()
+    sfs.register_client('metronome', client_callback, data)
+
     sfs.set_bps(120)
     data.quit = False
     data.rhythm = b'2+2'
     data.beat = b'4'
     metronome_pattern(data)
-    sleep(4)
+    sleep(8)
 
-    sfs.set_bps(60)
+    sfs.set_bps(200)
     metronome_pattern(data)
     sleep(4)
 
@@ -123,32 +142,32 @@ def verify_sequencer():
 
     sfs.note_on(9, 34, 80)
     sleep(1)
-    return(True)
+    return (True)
+
 
 # test class MidiPlayerFS
-from concurrent import futures
-from functools import partial
 
-def future_callback(func:callable, future:futures.Future) -> bool:
+def future_callback(func: Callable[..., None], future: futures.Future) -> bool:
     func()
-    return(future.done())
+    return (future.done())
 
-def verify_midi_player():
+
+def verify_midi_player() -> bool:
     kwargs = {
         'settings': 'audio/settings.json',
         'soundfont': 'sf2/FluidR3_GM.sf2'}
 
-    mpfs = MidiPlayerFS(**kwargs)
+    mpfs = FS.MidiPlayer(**kwargs)
     mpfs.change_rule('audio/rule.mute_chan_0.json')
     print(f'gain: {mpfs.gain(0.2):.1f}')
 
     with futures.ThreadPoolExecutor(max_workers=1) as e:
         filename = 'mid/l3007_02.mid'
-        tick:int=0
+        tick: int = 0
         for _ in range(3):
             f = e.submit(mpfs.start, filename, tick)
             f.add_done_callback(partial(future_callback, mpfs.close))
-            sleep(3)
+            sleep(2)
             tick = mpfs.stop() + 5000
             sleep(0.1)
 
@@ -160,11 +179,11 @@ def verify_midi_player():
 
     mpfs.note_on(9, 34, 80)
     sleep(1)
-    return(True)
+    return (True)
 
 
 if __name__ == '__main__':
-    print(f'master volume: {master_volume()}')
+    MASTER.volume()
     verify_synthesizer()
     verify_sequencer()
     verify_midi_driver()

@@ -32,7 +32,7 @@ class MidiTitleButton(ToggleButton):
         if self.collide_point(*touch.pos):
             print(f'{self.index}, {self.total_tick}, {self.text}, {self.filename}')
             app = App.get_running_app()
-            app.root.set_presets_for_channels(self.index)
+            app.root.set_presets_for_each_channel(self.index)
         return super().on_touch_down(touch)
 
 class PlayerView(Widget):
@@ -69,10 +69,10 @@ class PlayerView(Widget):
 
     def sound(self, state:str) -> None:
         if state == 'down':
-            print(self.mute_channels())
-            filename, total_tick = self.selected_midifile_info()
-            print(f'{filename}, {total_tick}')
-            future = self.executor.submit(self.midi_player.start, filename)
+            self.mute_channels()
+            mtb = self.selected_midititlebutton()
+            print(f'{mtb.filename}, {mtb.total_tick}')
+            future = self.executor.submit(self.midi_player.start, mtb.filename)
             future.add_done_callback(self.future_callback)
             self.disable_buttons(True)
         elif state == 'normal':
@@ -93,14 +93,13 @@ class PlayerView(Widget):
         self.midifiles.disabled = disable
         self.channels.disabled = disable
 
-    def selected_midifile_info(self) -> tuple:
-        for i in self.midifiles.children:
-            if i.state == 'down':
-                return(i.filename, i.total_tick)
+    def selected_midititlebutton(self) -> MidiTitleButton:
+        for midititlebutton in self.midifiles.children:
+            if midititlebutton.state == 'down':
+                return(midititlebutton)
 
-    def select_midifile_for_midifiles(self, num:int) -> None:
-        length = len(self.midifiles.children)
-        self.midifiles.children[(length - 1) - num].state = 'down'
+    #def select_midititlebutton(self, num:int) -> None:
+    #    self.midifiles.children[-(num + 1)].state = 'down'
 
     def add_midititlebutton(self, midifile:Path) -> int:
         smf = StandardMidiFile(midifile)
@@ -122,18 +121,22 @@ class PlayerView(Widget):
             chan_num += 1
         return(mute_rules(**channels))
 
-    def set_presets_for_channels(self, num:int) -> None:
-        midifile_button = self.midifiles.children[-(num + 1)]
+    def set_presets_for_each_channel(self, midititlebutton_num:int) -> None:
+        midititlebutton = self.midifiles.children[-(midititlebutton_num + 1)]
         for chan in range(len(self.channels.children)):
-            preset_num = midifile_button.channels_preset[chan]
+            preset_num = midititlebutton.channels_preset[chan]
             channel = self.channels.children[-(chan + 1)]
             
             if isinstance(preset_num, int):
-                channel.text = self.percussion_sound_set[preset_num] \
-                    if chan == 9 else self.sound_set[preset_num]
+                if chan == 9:
+                    channel.text = self.percussion_sound_set[preset_num]
+                else:
+                    channel.text = self.sound_set[preset_num]
             else:
-                channel.text = self.percussion_sound_set[0] \
-                    if chan == 9 else '-'
+                if chan == 9:
+                    channel.text = self.percussion_sound_set[0]
+                else:
+                    channel.text = '-'
 
             channel.state = 'down' if channel.text != '-' else 'normal'
 

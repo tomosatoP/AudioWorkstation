@@ -3,7 +3,7 @@
 
 from audio.fluidsynth import *
 
-SequencerEventCallbackData._fields_ = \
+EventUserData._fields_ = \
     [('quit', c_bool), ('rhythm', c_char_p), ('beat', c_char_p)]
 
 @FLUID_EVENT_CALLBACK_T
@@ -11,7 +11,7 @@ def client_callback(time, event, sequencer, p_data):
     if not p_data.contents.quit:
         pattern(p_data.contents)
 
-def pattern(data: SequencerEventCallbackData) -> None:
+def pattern(data: EventUserData) -> None:
     time_marker = sfs.tick()
 
     key = [75, 76]
@@ -35,7 +35,7 @@ class PatternSeqFS():
         'soundfont': 'sf2/FluidR3_GM.sf2'}
 
     sfs = SequencerFS(**kwargs)
-    data = SequencerEventCallbackData()
+    data = EventUserData()
     sfs.register_client('metronome', client_callback, pointer(data))
 
     def start(self, bps: float, beat: list) -> None:

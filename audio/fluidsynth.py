@@ -1,163 +1,276 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-'''
-Piano playing practice with MIDI keyboard.
-Use this module from Kivy as a separate thread(concurrent.futures.ThreadPoolExecutor).
+"""Piano playing practice with MIDI keyboard.
+
+Use this module from Kivy as a separate thread.
+Module 'concurrent.futures.ThreadPoolExecutor' is recommended.
 https://www.fluidsynth.org/api/
-'''
+"""
 
-from ctypes import *
-from ctypes.util import find_library
+from typing import (Union, Callable, Any, cast)
 from enum import (Enum, auto)
-from json import *
+from json import load
 from time import sleep
-
+from ctypes.util import find_library
+import ctypes as CFS
+import logging as LFS
 
 FLUID_FAILED = -1
 FLUID_OK = 0
 
-_libfs = CDLL(find_library('fluidsynth'), use_errno=True)
+# Handle exception
 
-# Structure of data for Sequencer event callback function 
-class SequencerEventCallbackData(Structure):
-    pass
-# Structure of data for MIDI event handler 
-class MidiEventHandlerData(Structure):
+
+class FSError(Exception):
+    '''Exceptions sent out from errcheck func.'''
     pass
 
-# fluid_event_callback_t
-# Event callback function prototype for destination clients.
-FLUID_EVENT_CALLBACK_T = \
-    CFUNCTYPE(None, c_uint, c_void_p, c_void_p, POINTER(SequencerEventCallbackData))
-# handle_midi_event_func_t
-# Generic callback function prototype for MIDI event handler.
-HANDLE_MIDI_EVENT_FUNC_T = \
-    CFUNCTYPE(c_int, POINTER(MidiEventHandlerData), c_void_p)
-# fluid_settings_foreach_option_t
-# Callback function type used with fluid_settings_foreach_option()
-FLUID_SETTINGS_FOREACH_OPTION_T = \
-    CFUNCTYPE(None, c_void_p, c_char_p, c_char_p)
-# fluid_settings_foreach_t
-# Callback function type used with fluid_settings_foreach()
-FLUID_SETTINGS_FOREACH_T = \
-    CFUNCTYPE(None, c_void_p, c_char_p, c_int)
+
+def errcheck(result: Any, cfunc: Callable, args: tuple) -> Any:
+    if result == FLUID_FAILED:
+        raise FSError((cfunc, args))
+    return (result)
 
 
-# FluidSynth API prototype: Audio output
+'''libfluidsynth'''
+_libfs = CFS.CDLL(name=find_library(name='fluidsynth'), use_errno=True)
 
-# FluidSynth API prototype: Audio output - Audio driver
-new_fluid_audio_driver = \
-    CFUNCTYPE(c_void_p, c_void_p, c_void_p) \
-        (('new_fluid_audio_driver', _libfs),
-        ((1, 'settings'), (1, 'synth')))
-delete_fluid_audio_driver = \
-    CFUNCTYPE(None, c_void_p) \
-        (('delete_fluid_audio_driver', _libfs),
-        ((1, 'driver'),))
-fluid_audio_driver_register = \
-    CFUNCTYPE(c_int, c_void_p) \
-        (('fluid_audio_driver_register', _libfs), 
-        ((1, 'adrivers'),))
 
-# FluidSynth API prototype: Audio output - File Renderer
+def prototype(restype: Any, name: str,  *params: tuple) -> Any:
+    '''Returns a foreign function exported by a shared library.
 
-# FluidSynth API prototype: Command Interface
+    [args]
+     - restype: foreign function restype
+     - name: foreign function name
+     - param: (type, flag, name[, default])
 
-# FluidSynth API prototype: Command Interface - Command Handler
-new_fluid_cmd_handler = \
-    CFUNCTYPE(c_void_p, c_void_p, c_void_p) \
-        (('new_fluid_cmd_handler', _libfs),
-        ((1, 'synth'), (1, 'router'))) 
-delete_fluid_cmd_handler = \
-    CFUNCTYPE(None, c_void_p) \
-        (('delete_fluid_cmd_handler', _libfs),
-        ((1, 'handler'),))
+    [return]
+     - foreign function object
+    '''
+    if hasattr(_libfs, name):
+        argtypes: list = list([])
+        paramflags: list = list([])
+        for param in params:
+            argtypes.append(param[0])
+            paramflags.append(param[1:])
+        func_spec = (name, _libfs)
+        return (CFS.CFUNCTYPE(restype, *argtypes, use_errno=True)
+                (func_spec, tuple(paramflags)))
+    else:
+        return (None)
 
-# FluidSynth API prototype: Command Interface -Command Server
 
-# FluidSynth API prototype: Command Interface -Command Shell
+# Audio output
+# Audio output - Audio driver
+# [API prototype]
+new_fluid_audio_driver = prototype(
+    CFS.c_void_p, 'new_fluid_audio_driver',
+    (CFS.c_void_p, 1, 'settings'),
+    (CFS.c_void_p, 1, 'synth'))
+delete_fluid_audio_driver = prototype(
+    None, 'delete_fluid_audio_driver',
+    (CFS.c_void_p, 1, 'driver'))
+fluid_audio_driver_register = prototype(
+    CFS.c_int, 'fluid_audio_driver_register',
+    (CFS.POINTER(CFS.c_char_p), 1, 'adrivers'))
 
-# FluidSynth API prototype: Logging
+# Audio output - File Renderer
 
-# FluidSynth API prototype: MIDI Input
-fluid_synth_handle_midi_event = \
-    CFUNCTYPE(c_int, c_void_p, c_void_p)\
-        (('fluid_synth_handle_midi_event', _libfs),
-        ((1, 'data'), (1, 'event')))
+# Command Interface
+# Command Interface - Command Handler
+# [API prototype]
+new_fluid_cmd_handler = prototype(
+    CFS.c_void_p, 'new_fluid_cmd_handler',
+    (CFS.c_void_p, 1, 'synth'),
+    (CFS.c_void_p, 1, 'router'))
+delete_fluid_cmd_handler = prototype(
+    None, 'delete_fluid_cmd_handler',
+    (CFS.c_void_p, 1, 'handler'))
 
-# FluidSynth API prototype: MIDI Input - MIDI Driver
-new_fluid_midi_driver = \
-    CFUNCTYPE(c_void_p, c_void_p, c_void_p, c_void_p) \
-        (('new_fluid_midi_driver', _libfs),
-        ((1, 'settings'), (1, 'handler'), (1, 'event_handler_data')))
-delete_fluid_midi_driver = \
-    CFUNCTYPE(None, c_void_p) \
-        (('delete_fluid_midi_driver', _libfs),
-        ((1, 'driver'),))
+# Command Interface -Command Server
+# Command Interface -Command Shell
 
-# FluidSynth API prototype: MIDI Input - MIDI Event
+# Logging
+# [ENUM]
 
-# FluidSynth API prototype: MIDI Input - MIDI File Player
-class FLUID_PLAYER_SET_TEMPO_TYEP(Enum):
+
+class FLUID_LOG_LEVEL(int, Enum):
+    FLUID_PANIC = 0
+    FLUID_ERR = auto()
+    FLUID_WARN = auto()
+    FLUID_INFO = auto()
+    FLUID_DBG = auto()
+    LAST_LOG_LEVEL = auto()
+# [user defined data type]
+
+
+class LogUserData(CFS.Structure):
+    '''Structure of data for Log function handler'''
+    pass
+
+
+# [Typedef]
+FLUID_LOG_FUNCTION_T = CFS.CFUNCTYPE(
+    None, CFS.c_int, CFS.c_char_p, CFS.POINTER(LogUserData))
+'''Log function handler callback type used by fluid_set_log_function()
+
+[args]
+ - c_int level
+ - c_char_p message
+ - POINTER(LogUserData) data
+
+[return]
+ - None
+'''
+# [API prototype]
+fluid_default_log_function = prototype(
+    None, 'fluid_default_log_function',
+    (CFS.c_int, 1, 'level'),
+    (CFS.c_char_p, 1, 'message'),
+    (CFS.POINTER(LogUserData), 1, 'data'))
+fluid_log = prototype(
+    CFS.c_int, 'fluid_log',
+    (CFS.c_int, 1, 'level'),
+    (CFS.c_char_p, 1, 'fmt'),
+    (CFS.c_char_p, 1, 'message'))
+fluid_set_log_function = prototype(
+    FLUID_LOG_FUNCTION_T, 'fluid_set_log_function',
+    (CFS.c_int, 1, 'level'),
+    (FLUID_LOG_FUNCTION_T, 1, 'fun'),
+    (CFS.POINTER(LogUserData), 1, 'data'))
+
+# [user function]
+
+
+@FLUID_LOG_FUNCTION_T
+def _log_func(level, message, data) -> None:
+    mes = bytes(message).decode()
+    if int(level) == FLUID_LOG_LEVEL.FLUID_PANIC:
+        LFS.critical(f'fluidsynth: {mes}')
+    elif int(level) == FLUID_LOG_LEVEL.FLUID_ERR:
+        LFS.error(f'fluidsynth: {mes}')
+    elif int(level) == FLUID_LOG_LEVEL.FLUID_WARN:
+        LFS.warn(f'fluidsynth: {mes}')
+    elif int(level) == FLUID_LOG_LEVEL.FLUID_INFO:
+        LFS.info(f'fluidsynth: {mes}')
+    elif int(level) == FLUID_LOG_LEVEL.FLUID_DBG:
+        LFS.debug(f'fluidsynth: {mes}')
+
+# MIDI Input
+# [user defined data type]
+
+
+class MidiEventUserData(CFS.Structure):
+    '''Structure of data for MIDI event handler'''
+    pass
+
+
+# [typedef] handle_midi_event_func_t
+#
+HANDLE_MIDI_EVENT_FUNC_T = CFS.CFUNCTYPE(
+    CFS.c_int, CFS.POINTER(MidiEventUserData), CFS.c_void_p)
+'''Generic callback function prototype for MIDI event handler.
+
+[args]
+- POINTER(MidiEventUserData) data
+- c_void_p event
+
+[return]
+- c_int
+'''
+# [API prototype]
+fluid_synth_handle_midi_event = prototype(
+    CFS.c_int, 'fluid_synth_handle_midi_event',
+    (CFS.c_void_p, 1, 'data'),
+    (CFS.c_void_p, 1, 'event'))
+
+# MIDI Input - MIDI Driver
+# [API prototype]
+new_fluid_midi_driver = prototype(
+    CFS.c_void_p, 'new_fluid_midi_driver',
+    (CFS.c_void_p, 1, 'settings'),
+    (CFS.c_void_p, 1, 'handler'),
+    (CFS.c_void_p, 1, 'event_handler_data'))
+delete_fluid_midi_driver = prototype(
+    None, 'delete_fluid_midi_driver',
+    (CFS.c_void_p, 1, 'driver'))
+
+# MIDI Input - MIDI Event
+# MIDI Input - MIDI File Player
+# [ENUM]
+
+
+class FLUID_PLAYER_SET_TEMPO_TYEP(int, Enum):
     INTERNAL = 0
     EXTERNAL_BPM = auto()
     EXTERNAL_MIDI = auto()
-class FLUID_PLAYER_STATUS(Enum):
+
+
+class FLUID_PLAYER_STATUS(int, Enum):
     READY = 0
     PLAYING = auto()
     STOPPING = auto()
     DONE = auto()
-new_fluid_player = \
-    CFUNCTYPE(c_void_p, c_void_p) \
-        (('new_fluid_player', _libfs),
-        ((1, 'synth'),))
-delete_fluid_player = \
-    CFUNCTYPE(None, c_void_p) \
-        (('delete_fluid_player', _libfs),
-        ((1, 'player'),))
-fluid_player_set_playback_callback = \
-    CFUNCTYPE(c_int, c_void_p, c_void_p, c_void_p) \
-        (('fluid_player_set_playback_callback', _libfs),
-        ((1, 'player'), (1, 'handler'), (1, 'handler_data')))
-fluid_player_add = \
-    CFUNCTYPE(c_int, c_void_p, c_char_p) \
-        (('fluid_player_add', _libfs),
-        ((1, 'player'), (1, 'midifile')))
-fluid_player_play = \
-    CFUNCTYPE(c_int, c_void_p) \
-        (('fluid_player_play', _libfs),
-        ((1, 'player'),))
-fluid_player_get_status = \
-    CFUNCTYPE(c_int, c_void_p) \
-        (('fluid_player_get_status', _libfs),
-        ((1, 'player'),))
-fluid_player_stop = \
-    CFUNCTYPE(c_int, c_void_p) \
-        (('fluid_player_stop', _libfs),
-        ((1, 'player'),))
-fluid_player_join = \
-    CFUNCTYPE(c_int, c_void_p) \
-        (('fluid_player_join', _libfs),
-        ((1, 'player'),))
-fluid_player_get_total_ticks = \
-    CFUNCTYPE(c_int, c_void_p) \
-        (('fluid_player_get_total_ticks', _libfs),
-        ((1, 'player'),))
-fluid_player_get_current_tick = \
-    CFUNCTYPE(c_int, c_void_p) \
-        (('fluid_player_get_current_tick', _libfs),
-        ((1, 'player'),))
-fluid_player_seek = \
-    CFUNCTYPE(c_int, c_void_p, c_int) \
-        (('fluid_player_seek', _libfs),
-        ((1, 'player'), (1, 'ticks')))
-## Disable from version 2.2.0
-fluid_player_set_midi_tempo = \
-    CFUNCTYPE(c_int, c_void_p, c_int) \
-        (('fluid_player_set_midi_tempo', _libfs),
-        ((1, 'player'), (1, 'tempo')))
 
-# FluidSynth API prototype: MIDI Input - MIDI Router
+
+# [API prototype]
+new_fluid_player = prototype(
+    CFS.c_void_p, 'new_fluid_player',
+    (CFS.c_void_p, 1, 'synth'))
+delete_fluid_player = prototype(
+    None, 'delete_fluid_player',
+    (CFS.c_void_p, 1, 'player'))
+fluid_player_set_playback_callback = prototype(
+    CFS.c_int, 'fluid_player_set_playback_callback',
+    (CFS.c_void_p, 1, 'player'),
+    (CFS.c_void_p, 1, 'handler'),
+    (CFS.c_void_p, 1, 'handler_data'))
+fluid_player_set_playback_callback.errcheck = errcheck
+fluid_player_add = prototype(
+    CFS.c_int, 'fluid_player_add',
+    (CFS.c_void_p, 1, 'player'),
+    (CFS.c_char_p, 1, 'midifile'))
+# fluid_player_add.errcheck = errcheck
+fluid_player_play = prototype(
+    CFS.c_int, 'fluid_player_play',
+    (CFS.c_void_p, 1, 'player'))
+# fluid_player_play.errcheck = errcheck
+fluid_player_get_status = prototype(
+    CFS.c_int, 'fluid_player_get_status',
+    (CFS.c_void_p, 1, 'player'))
+# fluid_player_get_status.errcheck = errcheck
+fluid_player_stop = prototype(
+    CFS.c_int, 'fluid_player_stop',
+    (CFS.c_void_p, 1, 'player'))
+# fluid_player_stop.errcheck = errcheck
+fluid_player_join = prototype(
+    CFS.c_int, 'fluid_player_join',
+    (CFS.c_void_p, 1, 'player'))
+# fluid_player_join.errcheck = errcheck
+fluid_player_get_total_ticks = prototype(
+    CFS.c_int, 'fluid_player_get_total_ticks',
+    (CFS.c_void_p, 1, 'player'))
+# fluid_player_get_total_ticks.errcheck = errcheck
+fluid_player_get_current_tick = prototype(
+    CFS.c_int, 'fluid_player_get_current_tick',
+    (CFS.c_void_p, 1, 'player'))
+# fluid_player_get_current_tick.errcheck = errcheck
+fluid_player_seek = prototype(
+    CFS.c_int, 'fluid_player_seek',
+    (CFS.c_void_p, 1, 'player'),
+    (CFS.c_int, 1, 'ticks'))
+fluid_player_seek.errcheck = errcheck
+
+# Disable from version 2.2.0
+fluid_player_set_midi_tempo = prototype(
+    CFS.c_int, 'fluid_player_set_midi_tempo',
+    (CFS.c_void_p, 1, 'player'),
+    (CFS.c_int, 1, 'tempo'))
+
+# MIDI Input - MIDI Router
+# [ENUM]
+
+
 class FLUID_MIDI_ROUTER_RULE_TYPE(int, Enum):
     NOTE = 0
     CC = auto()
@@ -166,681 +279,868 @@ class FLUID_MIDI_ROUTER_RULE_TYPE(int, Enum):
     CHANNEL_PRESSURE = auto()
     KEY_PRESSURE = auto()
     COUNT = auto()
-new_fluid_midi_router = \
-    CFUNCTYPE(c_void_p, c_void_p, c_void_p, c_void_p) \
-        (('new_fluid_midi_router', _libfs),
-        ((1, 'settingns'), (1, 'handler'), (1, 'event_handler_data')))
-delete_fluid_midi_router = \
-    CFUNCTYPE(None, c_void_p) \
-        (('delete_fluid_midi_router', _libfs),
-        ((1, 'router'),))
-fluid_midi_dump_postrouter = \
-    CFUNCTYPE(c_int, c_void_p, c_void_p) \
-        (('fluid_midi_dump_postrouter', _libfs),
-        ((1, 'data'), (1, 'event')))
-fluid_midi_dump_prerouter = \
-    CFUNCTYPE(c_int, c_void_p, c_void_p) \
-        (('fluid_midi_dump_prerouter', _libfs),
-        ((1, 'data'), (1, 'event')))
-fluid_midi_router_handle_midi_event = \
-    CFUNCTYPE(c_int, c_void_p, c_void_p) \
-        (('fluid_midi_router_handle_midi_event', _libfs),
-        ((1, 'data'), (1, 'event')))
-fluid_midi_router_clear_rules = \
-    CFUNCTYPE(c_int, c_void_p) \
-        (('fluid_midi_router_clear_rules', _libfs),
-        ((1, 'router'),))
-fluid_midi_router_set_default_rules = \
-    CFUNCTYPE(c_int, c_void_p) \
-        (('fluid_midi_router_set_default_rules', _libfs),
-        ((1, 'router'),)) 
-new_fluid_midi_router_rule = \
-    CFUNCTYPE(c_void_p) \
-        (('new_fluid_midi_router_rule', _libfs))
-delete_fluid_midi_router_rule = \
-    CFUNCTYPE(None, c_void_p) \
-        (('delete_fluid_midi_router_rule', _libfs),
-        ((1, 'rule'),))
-fluid_midi_router_rule_set_chan = \
-    CFUNCTYPE(None, c_void_p, c_int, c_int, c_float, c_int) \
-        (('fluid_midi_router_rule_set_chan', _libfs),
-        ((1, 'rule'), (1, 'min'), (1, 'max'), (1, 'mul'), (1, 'add')))
-fluid_midi_router_rule_set_param1 = \
-    CFUNCTYPE(None, c_void_p, c_int, c_int, c_float, c_int) \
-        (('fluid_midi_router_rule_set_param1', _libfs),
-        ((1, 'rule'), (1, 'min'), (1, 'max'), (1, 'mul'), (1, 'add')))
-fluid_midi_router_rule_set_param2 = \
-    CFUNCTYPE(None, c_void_p, c_int, c_int, c_float, c_int) \
-        (('fluid_midi_router_rule_set_param2', _libfs),
-        ((1, 'rule'), (1, 'min'), (1, 'max'), (1, 'mul'), (1, 'add')))
-fluid_midi_router_add_rule = \
-    CFUNCTYPE(c_int, c_void_p, c_void_p, c_int) \
-        (('fluid_midi_router_add_rule', _libfs),
-        ((1, 'router'), (1, 'rule'), (1, 'type')))
 
-# FluidSynth API prototype: MIDI Sequencer
-new_fluid_sequencer2 = \
-    CFUNCTYPE(c_void_p, c_int) \
-        (('new_fluid_sequencer2', _libfs),
-        ((1, 'use_system_timer'),))
-delete_fluid_sequencer = \
-    CFUNCTYPE(None, c_void_p) \
-        (('delete_fluid_sequencer', _libfs),
-        ((1, 'seq'),))
-fluid_sequencer_register_fluidsynth = \
-    CFUNCTYPE(c_short, c_void_p, c_void_p) \
-        (('fluid_sequencer_register_fluidsynth', _libfs),
-        ((1, 'seq'),(1, 'synth')))
-fluid_sequencer_register_client = \
-    CFUNCTYPE(c_short, c_void_p, c_char_p, c_void_p, c_void_p)\
-        (('fluid_sequencer_register_client', _libfs),
-        ((1, 'seq'),(1, 'name'),(1, 'callback'),(1, 'data')))
-fluid_sequencer_unregister_client = \
-    CFUNCTYPE(None, c_void_p, c_short) \
-        (('fluid_sequencer_unregister_client', _libfs),
-        ((1, 'seq'), (1, 'id')))
-fluid_sequencer_get_tick = \
-    CFUNCTYPE(c_uint, c_void_p) \
-        (('fluid_sequencer_get_tick', _libfs),
-        ((1, 'seq'),))
-fluid_sequencer_set_time_scale = \
-    CFUNCTYPE(None, c_void_p, c_double) \
-        (('fluid_sequencer_set_time_scale', _libfs),
-        ((1, 'seq'),(1, 'scale', c_double(1000))))
-fluid_sequencer_get_time_scale = \
-    CFUNCTYPE(c_double, c_void_p) \
-        (('fluid_sequencer_get_time_scale', _libfs),
-        ((1, 'seq'),))
-fluid_sequencer_send_at = \
-    CFUNCTYPE(c_int, c_void_p, c_void_p, c_uint, c_int) \
-        (('fluid_sequencer_send_at', _libfs),
-        ((1, 'seq'), (1, 'evt'), (1, 'time'), (1, 'absolute')))
 
-# FluidSynth API prototype: MIDI Sequencer - Sequencer Events
-new_fluid_event = \
-    CFUNCTYPE(c_void_p) \
-        (('new_fluid_event', _libfs))
-delete_fluid_event = \
-    CFUNCTYPE(None, c_void_p) \
-        (('delete_fluid_event', _libfs),
-        ((1 ,'evt'),))
-fluid_event_set_dest = \
-    CFUNCTYPE(None, c_void_p, c_short) \
-        (('fluid_event_set_dest', _libfs),
-        ((1, 'evt'), (1, 'dest')))
-fluid_event_set_source = \
-    CFUNCTYPE(None, c_void_p, c_short) \
-        (('fluid_event_set_source', _libfs),
-        ((1, 'evt'), (1, 'src')))
-fluid_event_note = \
-    CFUNCTYPE(None, c_void_p, c_int, c_short, c_short, c_uint) \
-        (('fluid_event_note', _libfs),
-        ((1, 'evt'), (1, 'channel'), (1, 'key'), (1, 'vel'), (1, 'duration')))
-fluid_event_timer = \
-    CFUNCTYPE(None, c_void_p, c_void_p) \
-        (('fluid_event_timer', _libfs),
-        ((1, 'evt'), (1, 'data')))
+# [API prototype]
+new_fluid_midi_router = prototype(
+    CFS.c_void_p, 'new_fluid_midi_router',
+    (CFS.c_void_p, 1, 'settings'),
+    (CFS.c_void_p, 1, 'handler'),
+    (CFS.c_void_p, 1, 'event_handler_data'))
+delete_fluid_midi_router = prototype(
+    None, 'delete_fluid_midi_router',
+    (CFS.c_void_p, 1, 'router'))
+fluid_midi_dump_postrouter = prototype(
+    CFS.c_int, 'fluid_midi_dump_postrouter',
+    (CFS.c_void_p, 1, 'data'),
+    (CFS.c_void_p, 1, 'event'))
+fluid_midi_dump_prerouter = prototype(
+    CFS.c_int, 'fluid_midi_dump_prerouter',
+    (CFS.c_void_p, 1, 'data'),
+    (CFS.c_void_p, 1, 'event'))
+fluid_midi_router_handle_midi_event = prototype(
+    CFS.c_int, 'fluid_midi_router_handle_midi_event',
+    (CFS.c_void_p, 1, 'data'),
+    (CFS.c_void_p, 1, 'event'))
+fluid_midi_router_clear_rules = prototype(
+    CFS.c_int, 'fluid_midi_router_clear_rules',
+    (CFS.c_void_p, 1, 'router'))
+fluid_midi_router_set_default_rules = prototype(
+    CFS.c_int, 'fluid_midi_router_set_default_rules',
+    (CFS.c_void_p, 1, 'router'))
+new_fluid_midi_router_rule = prototype(
+    CFS.c_void_p, 'new_fluid_midi_router_rule')
+delete_fluid_midi_router_rule = prototype(
+    None, 'delete_fluid_midi_router_rule',
+    (CFS.c_void_p, 1, 'rule'))
+fluid_midi_router_rule_set_chan = prototype(
+    None, 'fluid_midi_router_rule_set_chan',
+    (CFS.c_void_p, 1, 'rule'),
+    (CFS.c_int, 1, 'min'),
+    (CFS.c_int, 1, 'max'),
+    (CFS.c_float, 1, 'mul'),
+    (CFS.c_int, 1, 'add'))
+fluid_midi_router_rule_set_param1 = prototype(
+    None, 'fluid_midi_router_rule_set_param1',
+    (CFS.c_void_p, 1, 'rule'),
+    (CFS.c_int, 1, 'min'),
+    (CFS.c_int, 1, 'max'),
+    (CFS.c_float, 1, 'mul'),
+    (CFS.c_int, 1, 'add'))
+fluid_midi_router_rule_set_param2 = prototype(
+    None, 'fluid_midi_router_rule_set_param2',
+    (CFS.c_void_p, 1, 'rule'),
+    (CFS.c_int, 1, 'min'),
+    (CFS.c_int, 1, 'max'),
+    (CFS.c_float, 1, 'mul'),
+    (CFS.c_int, 1, 'add'))
+fluid_midi_router_add_rule = prototype(
+    CFS.c_int, 'fluid_midi_router_add_rule',
+    (CFS.c_void_p, 1, 'router'),
+    (CFS.c_void_p, 1, 'rule'),
+    (CFS.c_int, 1, 'type'))
 
-# FluidSynth API prototype: Miscellaneous
-fluid_version_str = \
-    CFUNCTYPE(c_char_p) \
-        (('fluid_version_str', _libfs))
+# MIDI sequencer
+# [user defined data type]
+# Structure of data for Sequencer event callback function
 
-# FluidSynth API prototype: Settings
-class FLUID_TYPE(Enum):
+
+class EventUserData(CFS.Structure):
+    pass
+
+
+# [typedef]
+FLUID_EVENT_CALLBACK_T = CFS.CFUNCTYPE(
+    None, CFS.c_uint, CFS.c_void_p, CFS.c_void_p, CFS.POINTER(EventUserData))
+'''Event callback function prototype for destination clients.
+
+[args]
+- c_uint time
+- c_void_p event
+- c_void_p seq
+- POINTER(EventUserData) data
+
+[retrun]
+- None
+'''
+# [API prototype]
+new_fluid_sequencer2 = prototype(
+    CFS.c_void_p, 'new_fluid_sequencer2',
+    (CFS.c_int, 1, 'use_system_timer'))
+delete_fluid_sequencer = prototype(
+    None, 'delete_fluid_sequencer',
+    (CFS.c_void_p, 1, 'seq'))
+fluid_sequencer_register_fluidsynth = prototype(
+    CFS.c_short, 'fluid_sequencer_register_fluidsynth',
+    (CFS.c_void_p, 1, 'seq'),
+    (CFS.c_void_p, 1, 'synth'))
+fluid_sequencer_register_client = prototype(
+    CFS.c_short, 'fluid_sequencer_register_client',
+    (CFS.c_void_p, 1, 'seq'),
+    (CFS.c_char_p, 1, 'name'),
+    (FLUID_EVENT_CALLBACK_T, 1, 'callback'),
+    (CFS.POINTER(EventUserData), 1, 'data'))
+fluid_sequencer_unregister_client = prototype(
+    None, 'fluid_sequencer_unregister_client',
+    (CFS.c_void_p, 1, 'seq'),
+    (CFS.c_short, 1, 'id'))
+fluid_sequencer_get_tick = prototype(
+    CFS.c_uint, 'fluid_sequencer_get_tick',
+    (CFS.c_void_p, 1, 'seq'))
+fluid_sequencer_set_time_scale = prototype(
+    None, 'fluid_sequencer_set_time_scale',
+    (CFS.c_void_p, 1, 'seq'),
+    (CFS.c_double, 1, 'scale', CFS.c_double(1000)))
+fluid_sequencer_get_time_scale = prototype(
+    CFS.c_double, 'fluid_sequencer_get_time_scale',
+    (CFS.c_void_p, 1, 'seq'))
+fluid_sequencer_send_at = prototype(
+    CFS.c_int, 'fluid_sequencer_send_at',
+    (CFS.c_void_p, 1, 'seq'),
+    (CFS.c_void_p, 1, 'evt'),
+    (CFS.c_uint, 1, 'time'),
+    (CFS.c_int, 1, 'absolute'))
+
+# MIDI Sequencer - Sequencer Events
+# [API prototype]
+new_fluid_event = prototype(
+    CFS.c_void_p, 'new_fluid_event')
+delete_fluid_event = prototype(
+    None, 'delete_fluid_event',
+    (CFS.c_void_p, 1, 'evt'))
+fluid_event_set_dest = prototype(
+    None, 'fluid_event_set_dest',
+    (CFS.c_void_p, 1, 'evt'),
+    (CFS.c_short, 1, 'dest'))
+fluid_event_set_source = prototype(
+    None, 'fluid_event_set_source',
+    (CFS.c_void_p, 1, 'evt'),
+    (CFS.c_short, 1, 'src'))
+fluid_event_note = prototype(
+    None, 'fluid_event_note',
+    (CFS.c_void_p, 1, 'evt'),
+    (CFS.c_int, 1, 'channel'),
+    (CFS.c_short, 1, 'key'),
+    (CFS.c_short, 1, 'vel'),
+    (CFS.c_uint, 1, 'duration'))
+fluid_event_timer = prototype(
+    None, 'fluid_event_timer',
+    (CFS.c_void_p, 1, 'evt'),
+    (CFS.c_void_p, 1, 'data'))
+
+# Miscellaneous
+# [API prototype]
+fluid_version_str = prototype(
+    CFS.c_char_p, 'fluid_version_str')
+
+# Settings
+# [ENUM]
+
+
+class FLUID_TYPE(int, Enum):
     NO = -1
     NUM = auto()
     INT = auto()
     STR = auto()
     SET = auto()
-new_fluid_settings = \
-    CFUNCTYPE(c_void_p) \
-        (('new_fluid_settings', _libfs))
-delete_fluid_settings = \
-    CFUNCTYPE(None, c_void_p) \
-        (('delete_fluid_settings', _libfs),
-        ((1, 'settings'),))
-fluid_settings_setnum = \
-    CFUNCTYPE(c_int, c_void_p, c_char_p, c_double) \
-        (('fluid_settings_setnum', _libfs),
-        ((1, 'settings'), (1, 'name'), (1, 'value')))
-fluid_settings_getnum = \
-    CFUNCTYPE(c_int, c_void_p, c_char_p, POINTER(c_double)) \
-        (('fluid_settings_getnum', _libfs),
-        ((1, 'settings'), (1, 'name'), (1, 'val')))
-fluid_settings_getnum_default = \
-    CFUNCTYPE(c_int, c_void_p, c_char_p, POINTER(c_double)) \
-        (('fluid_settings_getnum_default', _libfs),
-        ((1, 'settings'), (1, 'name'), (1, 'val')))
-fluid_settings_getnum_range = \
-    CFUNCTYPE(c_int, c_void_p, c_char_p, POINTER(c_double), POINTER(c_double)) \
-        (('fluid_settings_getnum_range', _libfs),
-        ((1, 'settigns'), (1, 'name'), (1, 'min'), (1, 'max')))
-fluid_settings_setint = \
-    CFUNCTYPE(c_int, c_void_p, c_char_p, c_int) \
-        (('fluid_settings_setint', _libfs),
-        ((1, 'settings'), (1, 'name'), (1, 'val')))
-fluid_settings_getint = \
-    CFUNCTYPE(c_int, c_void_p, c_char_p, POINTER(c_int)) \
-        (('fluid_settings_getint', _libfs),
-        ((1, 'settings'), (1, 'name'), (1, 'val')))
-fluid_settings_getint_default = \
-    CFUNCTYPE(c_int, c_void_p, c_char_p, POINTER(c_int)) \
-        (('fluid_settings_getint_default', _libfs),
-        ((1, 'settings'), (1, 'name'), (1, 'val')))
-fluid_settings_getint_range = \
-    CFUNCTYPE(c_int, c_void_p, c_char_p, POINTER(c_int), POINTER(c_int)) \
-        (('fluid_settings_getint_range', _libfs),
-        ((1, 'settigns'), (1, 'name'), (1, 'min'), (1, 'max')))
-fluid_settings_setstr = \
-    CFUNCTYPE(c_int, c_void_p, c_char_p, c_char_p) \
-        (('fluid_settings_setstr', _libfs),
-        ((1, 'settings'), (1, 'name'), (1, 'str')))
-fluid_settings_getstr_default = \
-    CFUNCTYPE(c_int, c_void_p, c_char_p, POINTER(c_char_p)) \
-        (('fluid_settings_getstr_default', _libfs),
-        ((1, 'settings'), (1, 'name'), (1, 'def')))
-fluid_settings_copystr = \
-    CFUNCTYPE(c_int, c_void_p, c_char_p, c_char_p, c_int) \
-        (('fluid_settings_copystr', _libfs),
-        ((1, 'settings'), (1, 'name'), (1, 'str'), (1, 'len')))
-fluid_settings_foreach = \
-    CFUNCTYPE(None, c_void_p, c_void_p, c_void_p) \
-        (('fluid_settings_foreach', _libfs),
-        ((1, 'settings'), (1, 'data'), (1, 'func')))
-fluid_settings_foreach_option = \
-    CFUNCTYPE(None, c_void_p, c_char_p, c_void_p, c_void_p) \
-        (('fluid_settings_foreach_option', _libfs),
-        ((1, 'settings'),(1, 'name'),(1, 'data'),(1, 'func')))
-fluid_settings_get_hints = \
-    CFUNCTYPE(c_int, c_void_p, c_char_p, POINTER(c_int)) \
-        (('fluid_settings_get_hints', _libfs),
-        ((1, 'settings'), (1, 'name'), (1, 'hints')))
 
-# FluidSynth API prototype: SoundFonts
-# FluidSynth API prototype: SoundFonts - SoundFont Generators
-# FluidSynth API prototype: SoundFonts - SoundFont Loader
-fluid_synth_get_channel_preset = \
-    CFUNCTYPE(c_void_p, c_void_p, c_int) \
-        (('fluid_synth_get_channel_preset', _libfs),
-        ((1, 'synth'),(1, 'chan')))
-fluid_sfont_get_preset = \
-    CFUNCTYPE(c_void_p, c_void_p, c_int, c_int) \
-        (('fluid_sfont_get_preset', _libfs),
-        ((1, 'sfont'), (1, 'bank'), (1, 'prenum')))
-fluid_preset_get_banknum = \
-    CFUNCTYPE(c_int, c_void_p) \
-        (('fluid_preset_get_banknum', _libfs),
-        ((1, 'preset'),))
-fluid_preset_get_name = \
-    CFUNCTYPE(c_char_p, c_void_p) \
-        (('fluid_preset_get_name', _libfs),
-        ((1, 'preset'),))
-fluid_preset_get_num = \
-    CFUNCTYPE(c_int, c_void_p) \
-        (('fluid_preset_get_num', _libfs),
-        ((1, 'preset'),))
-fluid_preset_get_sfont = \
-    CFUNCTYPE(c_void_p, c_void_p) \
-        (('fluid_preset_get_sfont', _libfs),
-        ((1, 'preset'),))
-fluid_sfont_get_id = \
-    CFUNCTYPE(c_int, c_void_p) \
-        (('fluid_sfont_get_id', _libfs),
-        ((1, 'sfont'),))
-# FluidSynth API prototype: SoundFonts - SoundFont Modulators
-# FluidSynth API prototype: SoundFonts - SoundFont Maniplation
 
-# FluidSynth API prototype: Synthesizer
-new_fluid_synth = \
-    CFUNCTYPE(c_void_p, c_void_p) \
-        (('new_fluid_synth', _libfs), 
-        ((1, 'settings'),))
-delete_fluid_synth = \
-    CFUNCTYPE(None, c_void_p) \
-        (('delete_fluid_synth', _libfs),
-        ((1, 'synth'),))
+# [typedef]
+FLUID_SETTINGS_FOREACH_OPTION_T = CFS.CFUNCTYPE(
+    None, CFS.c_void_p, CFS.c_char_p, CFS.c_char_p)
+'''Callback function type used with fluid_settings_foreach_option()
 
-# FluidSynth API prototype: Synthesizer - Audio Rendering
-# FluidSynth API prototype: Synthesizer - Effect - Chorus
-# FluidSynth API prototype: Synthesizer - Effect - IIR Filter
-# FluidSynth API prototype: Synthesizer - Effect - LADSPA
-# FluidSynth API prototype: Synthesizer - Effect - Reverb
+[args]
+- c_void_p data
+- c_char_p name
+- c_char_p option
 
-# FluidSynth API prototype: Synthesizer - MIDI Channel Messages
-fluid_synth_all_notes_off = \
-    CFUNCTYPE(c_int, c_void_p, c_int) \
-        (('fluid_synth_all_notes_off', _libfs),
-        ((1, 'synth'), (1, 'chan')))
-fluid_synth_all_sounds_off = \
-    CFUNCTYPE(c_int, c_void_p, c_int) \
-        (('fluid_synth_all_sounds_off', _libfs),
-        ((1, 'synth'), (1, 'chan')))
-fluid_synth_cc = \
-    CFUNCTYPE(c_int, c_void_p, c_int, c_int, c_int) \
-        (('fluid_synth_cc', _libfs),
-        ((1, 'synth'), (1, 'chan'), (1, 'num'), (1, 'val')))
-fluid_synth_get_cc = \
-    CFUNCTYPE(c_int, c_void_p, c_int, c_int, POINTER(c_int)) \
-        (('fluid_synth_get_cc', _libfs),
-        ((1, 'synth'), (1, 'chan'), (1, 'num'), (1, 'pval')))
-fluid_synth_pitch_bend = \
-    CFUNCTYPE(c_int, c_void_p, c_int, c_int) \
-        (('fluid_synth_pitch_bend', _libfs),
-        ((1, 'synth'), (1, 'chan'), (1, 'val')))
-fluid_synth_get_pitch_bend = \
-    CFUNCTYPE(c_int, c_void_p, c_int, POINTER(c_int)) \
-        (('fluid_synth_get_pitch_bend', _libfs),
-        ((1, 'synth'), (1, 'chan'), (1, 'ppitch_bend')))
-fluid_synth_pitch_wheel_sens = \
-    CFUNCTYPE(c_int, c_void_p, c_int, c_int) \
-        (('fluid_synth_pitch_wheel_sens', _libfs),
-        ((1, 'synth'), (1, 'chan'), (1, 'val')))
-fluid_synth_get_pitch_wheel_sens = \
-    CFUNCTYPE(c_int, c_void_p, c_int, POINTER(c_int)) \
-        (('fluid_synth_get_pitch_wheel_sens', _libfs),
-        ((1, 'synth'), (1, 'chan'), (1, 'pval')))
-fluid_synth_sysex = \
-    CFUNCTYPE(c_int, c_void_p, c_char_p, c_int, c_char_p, POINTER(c_int), POINTER(c_int), c_int) \
-        (('fluid_synth_sysex', _libfs),
-        ((1, 'synth'), (1, 'data'), (1, 'len'), (1, 'response'), (1, 'response_len'), (1, 'handled'), (1, 'dryrun')))
-fluid_synth_program_select = \
-    CFUNCTYPE(c_int, c_void_p, c_int, c_int, c_int, c_int) \
-        (('fluid_synth_program_select', _libfs),
-        ((1, 'synth'), (1, 'chan'), (1, 'sfont_id'), (1, 'bank_num'), (1, 'preset_num')))
-fluid_synth_noteon = \
-    CFUNCTYPE(c_int, c_void_p, c_int, c_int, c_int) \
-        (('fluid_synth_noteon', _libfs),
-        ((1, 'synth'), (1, 'chan'), (1, 'key'), (1, 'vel')))
-fluid_synth_noteoff = \
-    CFUNCTYPE(c_int, c_void_p, c_int, c_int) \
-        (('fluid_synth_noteoff', _libfs),
-        ((1, 'synth'), (1, 'chan'), (1, 'key')))
-fluid_synth_system_reset = \
-    CFUNCTYPE(c_int, c_void_p) \
-        (('fluid_synth_system_reset', _libfs),
-        ((1, 'synth'),))
+[return]
+- None
+'''
+FLUID_SETTINGS_FOREACH_T = CFS.CFUNCTYPE(
+    None, CFS.c_void_p, CFS.c_char_p, CFS.c_int)
+'''Callback function type used with fluid_settings_foreach()
 
-# FluidSynth API prototype: Synthesizer - MIDI Channel Setup
-# FluidSynth API prototype: Synthesizer - MIDI Tuning
+[args]
+- c_void_p data
+- c_char_p name
+- c_int type
 
-# FluidSynth API prototype: Synthesizer - SoundFont managiment
-fluid_synth_sfload = \
-    CFUNCTYPE(c_void_p, c_void_p, c_char_p, c_int) \
-        (('fluid_synth_sfload', _libfs),
-        ((1, 'synth'),(1, 'filename'),(1, 'reset_preset')))
-fluid_synth_sfcount = \
-    CFUNCTYPE(c_int, c_void_p) \
-        (('fluid_synth_sfcount', _libfs), 
-        ((1, 'synth'),))
-fluid_synth_get_sfont = \
-    CFUNCTYPE(c_void_p, c_void_p, c_uint) \
-        (('fluid_synth_get_sfont', _libfs),
-        ((1, 'synth'), (1, 'num')))
-fluid_synth_get_sfont_by_id = \
-    CFUNCTYPE(c_void_p, c_void_p, c_int) \
-        (('fluid_synth_get_sfont_by_id', _libfs),
-        ((1, 'synth'), (1, 'id')))
+[return]
+- None
+'''
+# [API prototype]
+new_fluid_settings = prototype(
+    CFS.c_void_p, 'new_fluid_settings')
+delete_fluid_settings = prototype(
+    None, 'delete_fluid_settings',
+    (CFS.c_void_p, 1, 'settings'))
+fluid_settings_setnum = prototype(
+    CFS.c_int, 'fluid_settings_setnum',
+    (CFS.c_void_p, 1, 'settings'),
+    (CFS.c_char_p, 1, 'name'),
+    (CFS.c_double, 1, 'value'))
+fluid_settings_getnum = prototype(
+    CFS.c_int, 'fluid_settings_getnum',
+    (CFS.c_void_p, 1, 'settings'),
+    (CFS.c_char_p, 1, 'name'),
+    (CFS.POINTER(CFS.c_double), 1, 'val'))
+fluid_settings_getnum_default = prototype(
+    CFS.c_int, 'fluid_settings_getnum_default',
+    (CFS.c_void_p, 1, 'settings'),
+    (CFS.c_char_p, 1, 'name'),
+    (CFS.POINTER(CFS.c_double), 1, 'val'))
+fluid_settings_getnum_range = prototype(
+    CFS.c_int, 'fluid_settings_getnum_range',
+    (CFS.c_void_p, 1, 'settings'),
+    (CFS.c_char_p, 1, 'name'),
+    (CFS.POINTER(CFS.c_double), 1, 'min'),
+    (CFS.POINTER(CFS.c_double), 1, 'max'))
+fluid_settings_setint = prototype(
+    CFS.c_int, 'fluid_settings_setint',
+    (CFS.c_void_p, 1, 'settings'),
+    (CFS.c_char_p, 1, 'name'),
+    (CFS.c_int, 1, 'val'))
+fluid_settings_getint = prototype(
+    CFS.c_int, 'fluid_settings_getint',
+    (CFS.c_void_p, 1, 'settings'),
+    (CFS.c_char_p, 1, 'name'),
+    (CFS.POINTER(CFS.c_int), 1, 'val'))
+fluid_settings_getint_default = prototype(
+    CFS.c_int, 'fluid_settings_getint_default',
+    (CFS.c_void_p, 1, 'settings'),
+    (CFS.c_char_p, 1, 'name'),
+    (CFS.POINTER(CFS.c_int), 1, 'val'))
+fluid_settings_getint_range = prototype(
+    CFS.c_int, 'fluid_settings_getint_range',
+    (CFS.c_void_p, 1, 'settigns'),
+    (CFS.c_char_p, 1, 'name'),
+    (CFS.POINTER(CFS.c_int), 1, 'min'),
+    (CFS.POINTER(CFS.c_int), 1, 'max'))
+fluid_settings_setstr = prototype(
+    CFS.c_int, 'fluid_settings_setstr',
+    (CFS.c_void_p, 1, 'settings'),
+    (CFS.c_char_p, 1, 'name'),
+    (CFS.c_char_p, 1, 'str'))
+fluid_settings_getstr_default = prototype(
+    CFS.c_int, 'fluid_settings_getstr_default',
+    (CFS.c_void_p, 1, 'settings'),
+    (CFS.c_char_p, 1, 'name'),
+    (CFS.POINTER(CFS.c_char_p), 1, 'str'))
+fluid_settings_copystr = prototype(
+    CFS.c_int, 'fluid_settings_copystr',
+    (CFS.c_void_p, 1, 'settings'),
+    (CFS.c_char_p, 1, 'name'),
+    (CFS.c_char_p, 1, 'str'),
+    (CFS.c_int, 1, 'len'))
+fluid_settings_foreach = prototype(
+    None, 'fluid_settings_foreach',
+    (CFS.c_void_p, 1, 'settings'),
+    (CFS.c_void_p, 1, 'data'),
+    (FLUID_SETTINGS_FOREACH_T, 1, 'func'))
+fluid_settings_foreach_option = prototype(
+    None, 'fluid_settings_foreach_option',
+    (CFS.c_void_p, 1, 'settings'),
+    (CFS.c_char_p, 1, 'name'),
+    (CFS.c_void_p, 1, 'data'),
+    (FLUID_SETTINGS_FOREACH_OPTION_T, 1, 'func'))
+fluid_settings_get_hints = prototype(
+    CFS.c_int, 'fluid_settings_get_hints',
+    (CFS.c_void_p, 1, 'settings'),
+    (CFS.c_char_p, 1, 'name'),
+    (CFS.POINTER(CFS.c_int), 1, 'hints'))
 
-# FluidSynth API prototype: Synthesizer - Synthesis Parameters
-fluid_synth_get_gain = \
-    CFUNCTYPE(c_float, c_void_p) \
-        (('fluid_synth_get_gain', _libfs),
-        ((1, 'synth'), ))
-fluid_synth_set_gain = \
-    CFUNCTYPE(c_void_p, c_void_p, c_float) \
-        (('fluid_synth_set_gain', _libfs),
-        ((1, 'synth'), (1, 'gain')))
+# SoundFonts
+# SoundFonts - SoundFont Generators
+# SoundFonts - SoundFont Loader
+# [API prototype]
+fluid_synth_get_channel_preset = prototype(
+    CFS.c_void_p, 'fluid_synth_get_channel_preset',
+    (CFS.c_void_p, 1, 'synth'),
+    (CFS.c_int, 1, 'chan'))
+fluid_sfont_get_preset = prototype(
+    CFS.c_void_p, 'fluid_sfont_get_preset',
+    (CFS.c_void_p, 1, 'sfont'),
+    (CFS.c_int, 1, 'bank'),
+    (CFS.c_int, 1, 'prenum'))
+fluid_preset_get_banknum = prototype(
+    CFS.c_int, 'fluid_preset_get_banknum',
+    (CFS.c_void_p, 1, 'preset'))
+fluid_preset_get_name = prototype(
+    CFS.c_char_p, 'fluid_preset_get_name',
+    (CFS.c_void_p, 1, 'preset'))
+fluid_preset_get_num = prototype(
+    CFS.c_int, 'fluid_preset_get_num',
+    (CFS.c_void_p, 1, 'preset'))
+fluid_preset_get_sfont = prototype(
+    CFS.c_void_p, 'fluid_preset_get_sfont',
+    (CFS.c_void_p, 1, 'preset'))
+fluid_sfont_get_id = prototype(
+    CFS.c_int, 'fluid_sfont_get_id',
+    (CFS.c_void_p, 1, 'sfont'))
 
-# FluidSynth API prototype: Synthesizer - Voice Control
+# SoundFonts - SoundFont Modulators
+# SoundFonts - SoundFont Maniplation
 
-class SynthesizerFS:
-    ''' Send MIDI events to the synthesizer. '''
-    settings = c_void_p()
-    audio_driver = c_void_p()
-    soundfont_ids = list()
+# Synthesizer
+# [API prototype]
+new_fluid_synth = prototype(
+    CFS.c_void_p, 'new_fluid_synth',
+    (CFS.c_void_p, 1, 'settings'))
+delete_fluid_synth = prototype(
+    None, 'delete_fluid_synth',
+    (CFS.c_void_p, 1, 'synth'))
 
-    def __init__(self, **kwargs) -> None:
-        self._set_audio_driver_options()
+# Synthesizer - Audio Rendering
+# Synthesizer - Effect - Chorus
+# Synthesizer - Effect - IIR Filter
+# Synthesizer - Effect - LADSPA
+# Synthesizer - Effect - Reverb
 
-        self.settings = new_fluid_settings()
+# Synthesizer - MIDI Channel Messages
+# [API prototype]
+fluid_synth_all_notes_off = prototype(
+    CFS.c_int, 'fluid_synth_all_notes_off',
+    (CFS.c_void_p, 1, 'synth'),
+    (CFS.c_int, 1, 'chan'))
+fluid_synth_all_sounds_off = prototype(
+    CFS.c_int, 'fluid_synth_all_sounds_off',
+    (CFS.c_void_p, 1, 'synth'),
+    (CFS.c_int, 1, 'chan'))
+fluid_synth_cc = prototype(
+    CFS.c_int, 'fluid_synth_cc',
+    (CFS.c_void_p, 1, 'synth'),
+    (CFS.c_int, 1, 'chan'),
+    (CFS.c_int, 1, 'num'),
+    (CFS.c_int, 1, 'val'))
+fluid_synth_get_cc = prototype(
+    CFS.c_int, 'fluid_synth_get_cc',
+    (CFS.c_void_p, 1, 'synth'),
+    (CFS.c_int, 1, 'chan'),
+    (CFS.c_int, 1, 'num'),
+    (CFS.POINTER(CFS.c_int), 1, 'pval'))
+fluid_synth_pitch_bend = prototype(
+    CFS.c_int, 'fluid_synth_pitch_bend',
+    (CFS.c_void_p, 1, 'synth'),
+    (CFS.c_int, 1, 'chan'),
+    (CFS.c_int, 1, 'val'))
+fluid_synth_get_pitch_bend = prototype(
+    CFS.c_int, 'fluid_synth_get_pitch_bend',
+    (CFS.c_void_p, 1, 'synth'),
+    (CFS.c_int, 1, 'chan'),
+    (CFS.POINTER(CFS.c_int), 1, 'ppitch_bend'))
+fluid_synth_pitch_wheel_sens = prototype(
+    CFS.c_int, 'fluid_synth_pitch_wheel_sens',
+    (CFS.c_void_p, 1, 'synth'),
+    (CFS.c_int, 1, 'chan'),
+    (CFS.c_int, 1, 'val'))
+fluid_synth_get_pitch_wheel_sens = prototype(
+    CFS.c_int, 'fluid_synth_get_pitch_wheel_sens',
+    (CFS.c_void_p, 1, 'synth'),
+    (CFS.c_int, 1, 'chan'),
+    (CFS.POINTER(CFS.c_int), 1, 'pval'))
+fluid_synth_sysex = prototype(
+    CFS.c_int, 'fluid_synth_sysex',
+    (CFS.c_void_p, 1, 'synth'),
+    (CFS.c_char_p, 1, 'data'),
+    (CFS.c_int, 1, 'len'),
+    (CFS.c_char_p, 1, 'response'),
+    (CFS.POINTER(CFS.c_int), 1, 'response_len'),
+    (CFS.POINTER(CFS.c_int), 1, 'handled'),
+    (CFS.c_int, 1, 'dryrun'))
+fluid_synth_program_select = prototype(
+    CFS.c_int, 'fluid_synth_program_select',
+    (CFS.c_void_p, 1, 'synth'),
+    (CFS.c_int, 1, 'chan'),
+    (CFS.c_int, 1, 'sfont_id'),
+    (CFS.c_int, 1, 'bank_num'),
+    (CFS.c_int, 1, 'preset_num'))
+fluid_synth_noteon = prototype(
+    CFS.c_int, 'fluid_synth_noteon',
+    (CFS.c_void_p, 1, 'synth'),
+    (CFS.c_int, 1, 'chan'),
+    (CFS.c_int, 1, 'key'),
+    (CFS.c_int, 1, 'vel'))
+fluid_synth_noteoff = prototype(
+    CFS.c_int, 'fluid_synth_noteoff',
+    (CFS.c_void_p, 1, 'synth'),
+    (CFS.c_int, 1, 'chan'),
+    (CFS.c_int, 1, 'key'))
+fluid_synth_system_reset = prototype(
+    CFS.c_int, 'fluid_synth_system_reset',
+    (CFS.c_void_p, 1, 'synth'))
 
+# Synthesizer - MIDI Channel Setup
+# Synthesizer - MIDI Tuning
+
+# Synthesizer - SoundFont managiment
+# [API prototype]
+fluid_synth_sfload = prototype(
+    CFS.c_void_p, 'fluid_synth_sfload',
+    (CFS.c_void_p, 1, 'synth'),
+    (CFS.c_char_p, 1, 'filename'),
+    (CFS.c_int, 1, 'reset_preset'))
+fluid_synth_sfcount = prototype(
+    CFS.c_int, 'fluid_synth_sfcount',
+    (CFS.c_void_p, 1, 'synth'))
+fluid_synth_get_sfont = prototype(
+    CFS.c_void_p, 'fluid_synth_get_sfont',
+    (CFS.c_void_p, 1, 'synth'),
+    (CFS.c_uint, 1, 'num'))
+fluid_synth_get_sfont_by_id = prototype(
+    CFS.c_void_p, 'fluid_synth_get_sfont_by_id',
+    (CFS.c_void_p, 1, 'synth'),
+    (CFS.c_int, 1, 'id'))
+
+# Synthesizer - Synthesis Parameters
+# [API prototype]
+fluid_synth_get_gain = prototype(
+    CFS.c_float, 'fluid_synth_get_gain',
+    (CFS.c_void_p, 1, 'synth'))
+fluid_synth_set_gain = prototype(
+    None, 'fluid_synth_set_gain',
+    (CFS.c_void_p, 1, 'synth'),
+    (CFS.c_float, 1, 'gain'))
+
+# Synthesizer - Voice Control
+
+# [alias]
+PRESET = dict[str, Union[int, str, None]]
+
+
+class Synthesizer:
+    """SoundFont synthesizer.
+
+    [args]
+        kwargs = {
+            'settings':'audio/settings.json',
+            'soundfont':'sf2/FluidR3_GM.sf2'}
+    """
+    synthesizer: int = 0
+    settings: int = 0
+    audio_driver: int = 0
+    soundfont_ids: list[int] = list()
+
+    def __init__(self, **kwargs: dict[str, str]) -> None:
+        LFS.basicConfig(
+            filename='fluidsynth.log',
+            level=LFS.DEBUG,
+            format='%(asctime)s %(levelname)s %(message)s',
+            datefmt='%Y-%m-%dT%H:%M:%S')
+        for i in range(FLUID_LOG_LEVEL.LAST_LOG_LEVEL):
+            fluid_set_log_function(level=i, fun=_log_func, data=None)
+
+        self.settings = int(new_fluid_settings())
         if 'settings' in kwargs:
-            with open(kwargs['settings'], 'r') as fp:
-                settings_json = load(fp)
+            self._customaize_settings(
+                json_filename=str(kwargs['settings']))
 
-            for name, sd in settings_json.items():
-                if sd['value'] is not None:
-                    if FLUID_TYPE(sd['type']) == FLUID_TYPE.NUM:
-                        fluid_settings_setnum(
-                            self.settings, name.encode(), c_double(sd['value']))
-                    elif FLUID_TYPE(sd['type']) == FLUID_TYPE.INT:
-                        fluid_settings_setint(
-                            self.settings, name.encode(), sd['value'])
-                    elif FLUID_TYPE(sd['type']) == FLUID_TYPE.STR:
-                        fluid_settings_setstr(
-                            self.settings, name.encode(), sd['value'].encode())
-                    else:
-                        pass
-
-        self.synthesizer = new_fluid_synth(self.settings)
+        self.synthesizer = int(new_fluid_synth(
+            settings=CFS.c_void_p(self.settings)))
 
         if 'soundfont' in kwargs:
-            self.soundfont_ids += [fluid_synth_sfload(
-                self.synthesizer,
-                kwargs['soundfont'].encode(),
-                True)]
+            self.soundfont_ids += [int(fluid_synth_sfload(
+                synth=CFS.c_void_p(self.synthesizer),
+                filename=str(kwargs['soundfont']).encode(),
+                reset_preset=CFS.c_int(True)))]
         else:
-            fn_soundfont = c_char_p()
-            if fluid_settings_getstr_default(
-                    self.settings,
-                    b'synth.default-soundfont',
-                    byref(fn_soundfont)) is FLUID_OK:
-                self.soundfont_ids += [fluid_synth_sfload(
-                    self.synthesizer,
-                    fn_soundfont,
-                    True)]
+            fn_soundfont = CFS.c_char_p()
+            if int(fluid_settings_getstr_default(
+                    settings=CFS.c_void_p(self.settings),
+                    name=b'synth.default-soundfont',
+                    str=CFS.byref(fn_soundfont))) is FLUID_OK:
+                self.soundfont_ids += [int(fluid_synth_sfload(
+                    synth=CFS.c_void_p(self.synthesizer),
+                    filename=fn_soundfont,
+                    reset_preset=CFS.c_int(True)))]
 
-        self._gm_system_on()
+        if self._gm_system_on() == FLUID_OK:
+            print('gm system on')
 
-        if type(self) == SynthesizerFS:
+        if type(self) == Synthesizer:
             self._assign_audio_driver()
-        print(self.vesion())
+        print(f'libfluidsynth version: {self.version()}')
 
     def __del__(self) -> None:
-        if type(self) == SynthesizerFS:
+        if type(self) == Synthesizer:
             self._delete_auido_driver()
-        delete_fluid_synth(self.synthesizer)
-        delete_fluid_settings(self.settings)
+        delete_fluid_synth(synth=CFS.c_void_p(self.synthesizer))
+        delete_fluid_settings(settings=CFS.c_void_p(self.settings))
         print('good-bye')
 
-    def _set_audio_driver_options(self):
-        ''' Register to avoid warnings by sdl2 audio driver. '''
-        audio_drivers = (b'jack', b'alsa', b'pulseaudio', None)
-        p_array = (c_char_p * len(audio_drivers))(*audio_drivers)
-        fluid_audio_driver_register(byref(p_array))
+    def _customaize_settings(self, json_filename: str) -> None:
+        with open(file=json_filename, mode='r') as fp:
+            settings_json = load(fp)
+        for name, dicts in settings_json.items():
+            if isinstance(dicts['value'], (float, int, str)):
+                if FLUID_TYPE(dicts['type']) == FLUID_TYPE.NUM:
+                    fluid_settings_setnum(
+                        settings=CFS.c_void_p(self.settings),
+                        name=str(name).encode(),
+                        value=CFS.c_double(dicts['value']))
+                elif FLUID_TYPE(dicts['type']) == FLUID_TYPE.INT:
+                    fluid_settings_setint(
+                        settings=CFS.c_void_p(self.settings),
+                        name=str(name).encode(),
+                        val=CFS.c_int(dicts['value']))
+                elif FLUID_TYPE(dicts['type']) == FLUID_TYPE.STR:
+                    fluid_settings_setstr(
+                        settings=CFS.c_void_p(self.settings),
+                        name=str(name).encode(),
+                        str=str(dicts['value']).encode())
 
-    def _assign_audio_driver(self):
-        self.audio_driver = new_fluid_audio_driver(
-            self.settings,
-            self.synthesizer)
+    def _assign_audio_driver(self) -> int:
+        self.audio_driver = int(new_fluid_audio_driver(
+            settings=CFS.c_void_p(self.settings),
+            synth=CFS.c_void_p(self.synthesizer)))
+        return (self.audio_driver)
 
-    def _delete_auido_driver(self):
-        delete_fluid_audio_driver(self.audio_driver)
-    
-    def vesion(self) -> str:
-        return(fluid_version_str().decode())
-    
+    def _delete_auido_driver(self) -> None:
+        delete_fluid_audio_driver(driver=CFS.c_void_p(self.audio_driver))
+
+    def version(self) -> str:
+        return (bytes(fluid_version_str()).decode())
+
     def _gm_system_on(self) -> int:
-        print('gm system on')
         result = fluid_synth_sysex(
-            synth=self.synthesizer,
-            data=(c_char*3)(0x7E, 0x09, 0x01),
-            len=3,
-            response=None,
-            response_len=None,
-            handled=None,
-            dryrun=False)
-        return(result)
+            synth=CFS.c_void_p(self.synthesizer),
+            data=(CFS.c_char*3)(0x7E, 0x09, 0x01),
+            len=CFS.c_int(3),
+            response=None, response_len=None, handled=None,
+            dryrun=CFS.c_int(False))
+        return (int(result))
 
-    def _all_notes_off(self, chan:int=-1) -> int:
-        return(fluid_synth_all_notes_off(
-            synth=self.synthesizer,
-            chan=chan))
+    def _all_notes_off(self, chan: int = -1) -> int:
+        return (fluid_synth_all_notes_off(
+            synth=CFS.c_void_p(self.synthesizer),
+            chan=CFS.c_int(chan)))
 
-    def _all_sounds_off(self, chan:int=-1) -> int:
-        return(fluid_synth_all_sounds_off(
-            synth=self.synthesizer,
-            chan=chan))
+    def _all_sounds_off(self, chan: int = -1) -> int:
+        return (fluid_synth_all_sounds_off(
+            synth=CFS.c_void_p(self.synthesizer),
+            chan=CFS.c_int(chan)))
 
     def _panic(self) -> int:
-        return(fluid_synth_system_reset(
-            synth=self.synthesizer))
+        return (fluid_synth_system_reset(synth=CFS.c_void_p(self.synthesizer)))
 
-    def gain(self, value:float=None) -> float:
-        if value != None:
-            fluid_synth_set_gain(self.synthesizer, value)
-        return(fluid_synth_get_gain(self.synthesizer))
+    def gain(self, value: Union[float, None] = None) -> float:
+        """Get and set gain.
 
-    def gm_sound_set(self, is_percussion:bool = False) -> list:
-        result = list()
-        ''' GM system level 1'''
-        bank = 0 if not(is_percussion) else 128
-        for n in range(fluid_synth_sfcount(self.synthesizer)):
-            sfont = fluid_synth_get_sfont(self.synthesizer, n)
-            result += [self._sfont_sound_set(sfont, bank)]
-        return(result)
+        defalt:0.2, Min:0.0, Max:10.0
+        """
+        if value is not None:
+            fluid_synth_set_gain(
+                synth=CFS.c_void_p(self.synthesizer),
+                gain=CFS.c_float(value))
+        return (float(fluid_synth_get_gain(
+            synth=CFS.c_void_p(self.synthesizer))))
 
-    def _sfont_sound_set(self, sfont: c_void_p, bank:int) -> list:
-        result = list()
+    def gm_sound_set(self, is_percussion: bool = False) -> list[list[PRESET]]:
+        '''Get list of Sound Set (GM system level 1) from soundfont.
+
+        [args]
+        is_percussion:bool
+        - False: Sound Set
+        - True: Percussion Sound Set
+
+        [return]
+        List of PRESETs of alias type 'dict[str, Union[str, int, None]]'.
+        - 'name': str | None
+        - 'num': int | None
+        - 'bank': int | None
+        - 'sfont_id': int | None
+        '''
+        sound_set: list[list[PRESET]] = list()
+        bank = 0 if not (is_percussion) else 128
+        for num in range(int(fluid_synth_sfcount(
+                synth=CFS.c_void_p(self.synthesizer)))):
+            sfont = int(fluid_synth_get_sfont(
+                synth=CFS.c_void_p(self.synthesizer),
+                num=CFS.c_uint(num)))
+            sound_set += [self._sfont_sound_set(sfont, bank)]
+        return (sound_set)
+
+    def _sfont_sound_set(self, sfont: int, bank: int) -> list[PRESET]:
+        result: list[PRESET] = list()
         for n in range(128):
-            preset = fluid_sfont_get_preset(sfont, bank, n)
+            preset = fluid_sfont_get_preset(
+                sfont=CFS.c_void_p(sfont),
+                bank=CFS.c_int(bank),
+                prenum=CFS.c_int(n))
             result += [self._preset(preset)]
-        return(result)
+        return (result)
 
-    def channels_preset(self) -> list:
-        result = list()
+    def channels_preset(self) -> list[PRESET]:
+        """Get a list of presets per channel
+
+        [return]
+        preset:dict
+        - 'name': str | None
+        - 'num': int | None
+        - 'bank': int | None
+        - 'sfont_id': int | None
+        """
+        result: list[PRESET] = list()
         for chan in range(15):
             result += [self._channel_preset(chan)]
-        return(result)
+        return (result)
 
-    def _channel_preset(self, chan: int) -> dict:
-        preset = fluid_synth_get_channel_preset(self.synthesizer, chan)
-        return(self._preset(preset))
-    
-    def _preset(self, preset:int) -> dict:
-        result = dict()
+    def _channel_preset(self, chan: int) -> PRESET:
+        preset = int(fluid_synth_get_channel_preset(
+            synth=CFS.c_void_p(self.synthesizer),
+            chan=CFS.c_int(chan)))
+        return (self._preset(preset))
+
+    def _preset(self, preset: int) -> PRESET:
+        result: dict[str, Union[str, int, None]] = dict()
         if preset:
-            result['name'] = fluid_preset_get_name(preset).decode()
-            result['num'] = fluid_preset_get_num(preset)
-            result['bank'] = fluid_preset_get_banknum(preset)
-            result['sfont_id'] = fluid_sfont_get_id(fluid_preset_get_sfont(preset))
+            result['name'] = bytes(fluid_preset_get_name(
+                preset=CFS.c_void_p(preset))).decode()
+            result['num'] = fluid_preset_get_num(
+                preset=CFS.c_void_p(preset))
+            result['bank'] = fluid_preset_get_banknum(
+                preset=CFS.c_void_p(preset))
+            result['sfont_id'] = fluid_sfont_get_id(
+                sfont=fluid_preset_get_sfont(
+                    preset=CFS.c_void_p(preset)))
         else:
             result['name'] = None
             result['num'] = None
             result['bank'] = None
             result['sfont_id'] = None
-        return(result)
+        return (result)
 
-    def pitch_bend(self, chan:int, val:int) -> int:
-        return(fluid_synth_pitch_bend(
-            self.synthesizer,
-            chan,
-            val))
+    def pitch_bend(self, chan: int, val: int) -> int:
+        return (fluid_synth_pitch_bend(
+            synth=CFS.c_void_p(self.synthesizer),
+            chan=CFS.c_int(chan),
+            val=CFS.c_int(val)))
 
-    def pitch_wheel_sens(self, chan:int, val:int) ->int:
-        return(fluid_synth_pitch_wheel_sens(
-            self.synthesizer,
-            chan,
-            val))
+    def pitch_wheel_sens(self, chan: int, val: int) -> int:
+        return (fluid_synth_pitch_wheel_sens(
+            synth=CFS.c_void_p(self.synthesizer),
+            chan=CFS.c_int(chan),
+            val=CFS.c_int(val)))
 
-    def program_select(self, chan:int, sfont_id:int, bank:int, preset:int) -> int:
-        return(fluid_synth_program_select(
-            self.synthesizer,
-            chan,
-            sfont_id,
-            bank,
-            preset))
+    def program_select(
+            self, chan: int, sfont_id: int, bank: int, preset: int) -> int:
+        return (fluid_synth_program_select(
+            synth=CFS.c_void_p(self.synthesizer),
+            chan=CFS.c_int(chan),
+            sfont_id=CFS.c_int(sfont_id),
+            bank_num=CFS.c_int(bank),
+            preset_num=CFS.c_int(preset)))
 
     def note_on(self, channel: int, keyNumber: int, velocity: int) -> int:
-        return(fluid_synth_noteon(
-            self.synthesizer,
-            channel,
-            keyNumber,
-            velocity))
+        return (fluid_synth_noteon(
+            synth=CFS.c_void_p(self.synthesizer),
+            chan=CFS.c_int(channel),
+            key=CFS.c_int(keyNumber),
+            vel=CFS.c_int(velocity)))
 
     def note_off(self, channel: int, keyNumber: int) -> int:
-        return(fluid_synth_noteoff(
-            self.synthesizer,
-            channel,
-            keyNumber))
+        return (fluid_synth_noteoff(
+            synth=CFS.c_void_p(self.synthesizer),
+            chan=CFS.c_int(channel),
+            key=CFS.c_int(keyNumber)))
 
-    def modulation_wheel(self, chan:int, val:int) -> int:
+    def modulation_wheel(self, chan: int, val: int) -> int:
         ''' The sound amplifies like vibrato. '''
-        return(fluid_synth_cc(
-            self.synthesizer,
-            chan,
-            int(0x01),
-            val))
+        return (fluid_synth_cc(
+            synth=CFS.c_void_p(self.synthesizer),
+            chan=CFS.c_int(chan),
+            num=CFS.c_int(0x01),
+            val=CFS.c_int(val)))
 
-    def volume(self, chan:int, val:int) -> int:
+    def volume(self, chan: int, val: int) -> int:
         ''' Set the maximum allowable value of velocity. '''
-        return(fluid_synth_cc(
-            self.synthesizer,
-            chan,
-            int(0x07),
-            val))
+        return (fluid_synth_cc(
+            synth=CFS.c_void_p(self.synthesizer),
+            chan=CFS.c_int(chan),
+            num=CFS.c_int(0x07),
+            val=CFS.c_int(val)))
 
     def sustain_on(self, chan: int) -> int:
         ''' The sound echoes for a long time. '''
-        return(fluid_synth_cc(
-            self.synthesizer,
-            chan,
-            int(0x40),
-            int(0b00100000)))
+        return (fluid_synth_cc(
+            synth=CFS.c_void_p(self.synthesizer),
+            chan=CFS.c_int(chan),
+            num=CFS.c_int(0x40),
+            val=CFS.c_int(0b00100000)))
 
     def sustain_off(self, chan: int) -> int:
-        return(fluid_synth_cc(
-            self.synthesizer,
-            chan,
-            int(0x40),
-            int(0b00000000)))
-    
-    def pan(self, chan:int, val:int) -> int:
-        return(fluid_synth_cc(
-            self.synthesizer,
-            chan,
-            int(0x0A),
-            val))
+        return (fluid_synth_cc(
+            synth=CFS.c_void_p(self.synthesizer),
+            chan=CFS.c_int(chan),
+            num=CFS.c_int(0x40),
+            val=CFS.c_int(0b00000000)))
 
-    def expression(self, chan:int, val:int) -> int:
-        ''' Temporary velocity can be set above volume '''
-        return(fluid_synth_cc(
-            self.synthesizer,
-            chan,
-            int(0x0B),
-            val))
+    def pan(self, chan: int, val: int) -> int:
+        return (fluid_synth_cc(
+            synth=CFS.c_void_p(self.synthesizer),
+            chan=CFS.c_int(chan),
+            num=CFS.c_int(0x0A),
+            val=CFS.c_int(val)))
+
+    def expression(self, chan: int, val: int) -> int:
+        '''Temporary velocity can be set above volume.'''
+        return (fluid_synth_cc(
+            synth=CFS.c_void_p(self.synthesizer),
+            chan=CFS.c_int(chan),
+            num=CFS.c_int(0x0B),
+            val=CFS.c_int(val)))
 
 
-class SequencerFS(SynthesizerFS):
-    ''' Send MIDI events scheduled by the sequencer to the synthesizer. '''
-    quaternote = 240
-    bps = 120
-    sequencer = c_void_p()
-    client_callbacks = list()
-    client_ids = list()
+class Sequencer(Synthesizer):
+    '''Send MIDI events scheduled by the sequencer to the synthesizer.
 
-    def __init__(self, **kwargs) -> None:
+    [args]
+        kwargs = {
+            'settings':'audio/settings.json',
+            'soundfont':'sf2/FluidR3_GM.sf2'}
+    '''
+    quaternote: int = 240
+    bps: float = 120.0
+    sequencer: int
+    client_callbacks: list[int] = list()
+    client_ids: list[int] = list()
+
+    def __init__(self, **kwargs: dict[str, str]) -> None:
         super().__init__(**kwargs)
-        self.sequencer = new_fluid_sequencer2(False)
-        self.client_ids += [fluid_sequencer_register_fluidsynth(
-            self.sequencer,
-            self.synthesizer)]
+        self.sequencer = int(new_fluid_sequencer2(
+            use_system_timer=CFS.c_int(False)))
+        self.client_ids += [int(fluid_sequencer_register_fluidsynth(
+            seq=CFS.c_void_p(self.sequencer),
+            synth=CFS.c_void_p(self.synthesizer)))]
         fluid_sequencer_set_time_scale(
-            self.sequencer,
-            c_double(self.quaternote / (60 / self.bps)))
+            seq=CFS.c_void_p(self.sequencer),
+            scale=CFS.c_double(self.quaternote / (60 / self.bps)))
         self._assign_audio_driver()
-    
+
     def __del__(self) -> None:
         self._delete_auido_driver()
-        for i in reversed(self.client_ids):
-            fluid_sequencer_unregister_client(self.sequencer, i)
-        delete_fluid_sequencer(self.sequencer)
+        for client_id in self.client_ids[::-1]:
+            fluid_sequencer_unregister_client(
+                seq=CFS.c_void_p(self.sequencer),
+                id=CFS.c_short(client_id))
+        delete_fluid_sequencer(seq=CFS.c_void_p(self.sequencer))
         super().__del__()
-    
-    def register_client(
-            self, name: c_char_p, callback: c_void_p, data: c_void_p = None) -> c_short:
-        self.client_ids += [fluid_sequencer_register_client(
-            self.sequencer,
-            name.encode(),
-            callback, data)]
-        self.client_callbacks += [callback]
-        return(self.client_ids[len(self.client_ids) - 1])
+
+    def register_client(self,
+                        name: str,
+                        callback: Union[Callable[..., None], None] = None,
+                        data: Union[EventUserData, None] = None) -> int:
+        self.client_ids += [int(fluid_sequencer_register_client(
+            seq=CFS.c_void_p(self.sequencer),
+            name=name.encode(),
+            callback=FLUID_EVENT_CALLBACK_T(callback) if callback else None,
+            data=CFS.byref(data) if data else None))]
+        self.client_callbacks += [cast(int, callback)]
+        return (self.client_ids[len(self.client_ids) - 1])
 
     def time_scale(self) -> float:
-        return(fluid_sequencer_get_time_scale(self.sequencer))
+        return (float(fluid_sequencer_get_time_scale(
+            seq=CFS.c_void_p(self.sequencer))))
 
     def set_bps(self, bps: float) -> None:
-        ''' Set the time scale of a sequencer. "time_scale" in ticks per second '''
+        '''Set the time scale of a sequencer.
+        "time_scale" in ticks per second
+        '''
         self.bps = bps
         fluid_sequencer_set_time_scale(
-            self.sequencer,
-            c_double(self.quaternote / (60 / self.bps)))
-    
+            seq=CFS.c_void_p(self.sequencer),
+            scale=CFS.c_double(self.quaternote / (60 / self.bps)))
+
     def synthesizer_client_id(self) -> int:
-        return(self.client_ids[0])
+        return (self.client_ids[0])
 
     def tick(self) -> int:
-        ''' Get the current tick of the sequencer scaled by the time scale currently set '''
-        return(fluid_sequencer_get_tick(self.sequencer))
-        
-    def note_at(
-            self,
-            ticks: c_uint,
-            channel: c_uint,
-            key_number: c_short,
-            velocity: c_short,
-            duration: c_uint,
-            source: c_short = -1,
-            destination: c_short = -1,
-            absolute: bool = True) -> None:
-        event = self._assign_event(source, destination)
-        fluid_event_note(event, channel, key_number, velocity, duration)
-        self._send_event_at(event, ticks, absolute)
+        '''Get the current tick of the sequencer scaled
+        by the time scale currently set
+        '''
+        return (int(fluid_sequencer_get_tick(
+            seq=CFS.c_void_p(self.sequencer))))
 
-    def timer_at(
-            self,
-            ticks: c_uint,
-            data: POINTER(SequencerEventCallbackData) = None,
-            source: c_short = -1,
-            destination: c_short = -1,
-            absolute: bool = True) -> None:
-        event = self._assign_event(source, destination)
-        fluid_event_timer(event, data)
-        self._send_event_at(event, ticks, absolute)
+    def note_at(self,
+                ticks: int,
+                channel: int, key_number: int, velocity: int,
+                duration: int,
+                source: int = -1, destination: int = -1,
+                absolute: bool = True) -> None:
+        event = self._assign_event(source=source,
+                                   destination=destination)
+        fluid_event_note(evt=CFS.c_void_p(event),
+                         channel=CFS.c_int(channel),
+                         key=CFS.c_short(key_number),
+                         vel=CFS.c_short(velocity),
+                         duration=CFS.c_uint(duration))
+        self._send_event_at(event=event, ticks=ticks, absolute=absolute)
 
-    def _assign_event(self, source: c_short, destination: c_short) -> c_void_p:
+    def timer_at(self,
+                 ticks: int,
+                 data: Union[EventUserData, None] = None,
+                 source: int = -1, destination: int = -1,
+                 absolute: bool = True) -> None:
+        event = self._assign_event(source=source,
+                                   destination=destination)
+        fluid_event_timer(evt=CFS.c_void_p(event),
+                          data=CFS.pointer(data) if data else None)
+        self._send_event_at(event=event, ticks=ticks, absolute=absolute)
+
+    def _assign_event(self, source: int, destination: int) -> int:
         event = new_fluid_event()
-        fluid_event_set_source(event, source)
-        fluid_event_set_dest(event, destination)
-        return(event)
+        fluid_event_set_source(evt=event,
+                               src=CFS.c_short(source))
+        fluid_event_set_dest(evt=event,
+                             dest=CFS.c_short(destination))
+        return (int(event))
 
-    def _send_event_at(self, event: c_void_p, ticks: c_uint, absolute: bool) -> None:
+    def _send_event_at(self, event: int, ticks: int, absolute: bool) -> int:
         result = fluid_sequencer_send_at(
-            self.sequencer,
-            event,
-            ticks,
-            absolute)
-        delete_fluid_event(event)
+            seq=CFS.c_void_p(self.sequencer),
+            evt=CFS.c_void_p(event),
+            time=CFS.c_uint(ticks),
+            absolute=CFS.c_int(absolute))
+        delete_fluid_event(evt=CFS.c_void_p(event))
+        return (int(result))
 
-class MidiRouterFS(SynthesizerFS):
-    ''' Rule based transformation and filtering of MIDI events. '''
-    midi_router = c_void_p()
-    cmd_handler = c_void_p()
 
-    def __init__(self, **kwargs) -> None:
+class MidiRouter(Synthesizer):
+    '''Rule based transformation and filtering of MIDI events.
+
+    [args]
+        kwargs = {
+            'settings':'audio/settings.json',
+            'soundfont':'sf2/FluidR3_GM.sf2'}
+    '''
+    midi_router: int
+    cmd_handler: int
+
+    def __init__(self, **kwargs: dict[str, str]) -> None:
         super().__init__(**kwargs)
         handler = fluid_synth_handle_midi_event
-        self.midi_router = new_fluid_midi_router(
-            self.settings,
-            handler,
-            self.synthesizer)
-        self.cmd_handler = new_fluid_cmd_handler(
-            self.synthesizer,
-            self.midi_router)
+        self.midi_router = int(new_fluid_midi_router(
+            settings=CFS.c_void_p(self.settings),
+            handler=handler,
+            event_handler_data=CFS.c_void_p(self.synthesizer)))
+        self.cmd_handler = int(new_fluid_cmd_handler(
+            synth=CFS.c_void_p(self.synthesizer),
+            router=CFS.c_void_p(self.midi_router)))
 
     def __del__(self) -> None:
-        delete_fluid_cmd_handler(self.cmd_handler)
-        delete_fluid_midi_router(self.midi_router)
+        delete_fluid_cmd_handler(handler=CFS.c_void_p(self.cmd_handler))
+        delete_fluid_midi_router(router=CFS.c_void_p(self.midi_router))
         super().__del__()
 
     def apply_default_rules(self) -> None:
-        fluid_midi_router_clear_rules(self.midi_router)
-        fluid_midi_router_set_default_rules(self.midi_router)
+        fluid_midi_router_clear_rules(router=CFS.c_void_p(self.midi_router))
+        fluid_midi_router_set_default_rules(
+            router=CFS.c_void_p(self.midi_router))
 
-    def change_rule(self, rule_file:str) -> int:
-        fluid_midi_router_clear_rules(self.midi_router)
-        
+    def change_rule(self, rule_file: str) -> int:
+        fluid_midi_router_clear_rules(router=CFS.c_void_p(self.midi_router))
+
         with open(rule_file, 'r') as fp:
             rules_json = load(fp)
 
@@ -861,90 +1161,118 @@ class MidiRouterFS(SynthesizerFS):
             fluid_midi_router_add_rule(
                 self.midi_router,
                 rule, rd['type'])
-        return(FLUID_OK)
+        return (FLUID_OK)
 
-class MidiDriverFS(MidiRouterFS):
-    ''' Sends MIDI events received at the MIDI input to the synthesizer. '''
-    midi_driver = c_void_p()
 
-    def __init__(self, **kwargs) -> None:
+class MidiDriver(MidiRouter):
+    '''Sends MIDI events received at the MIDI input to the synthesizer.
+
+    [args]
+        kwargs = {
+            'settings':'audio/settings.json',
+            'soundfont':'sf2/FluidR3_GM.sf2'
+            'handler': fluid_midi_dump_prerouter}
+    '''
+    midi_driver: int
+
+    def __init__(self, **kwargs: dict[str, str]) -> None:
         super().__init__(**kwargs)
 
         if 'handler' in kwargs:
             callback = kwargs['handler']
         else:
             callback = fluid_midi_router_handle_midi_event
-        self.midi_driver = new_fluid_midi_driver(
-            self.settings,
-            callback,
-            self.midi_router)
+        self.midi_driver = int(new_fluid_midi_driver(
+            settings=CFS.c_void_p(self.settings),
+            handler=callback,
+            event_handler_data=CFS.c_void_p(self.midi_router)))
         self._assign_audio_driver()
 
     def __del__(self) -> None:
         self._delete_auido_driver()
-        delete_fluid_midi_driver(self.midi_driver)
+        delete_fluid_midi_driver(driver=CFS.c_void_p(self.midi_driver))
         super().__del__()
 
-class MidiPlayerFS(MidiRouterFS):
+
+class MidiPlayer(MidiRouter):
     ''' Parse standard MIDI files and emit MIDI events. '''
-    _wait_second:int=0.1
-    _total_ticks:int=0
-    player = c_void_p()
+    _wait_second: Union[int, float] = 0.1
+    _total_ticks: int = 0
+    player: int
 
     def __init__(self, **kwargs) -> None:
         super().__init__(**kwargs)
-        self.player = new_fluid_player(self.synthesizer)
-        
+        self.player = int(new_fluid_player(
+            synth=CFS.c_void_p(self.synthesizer)))
+
         if 'handler' in kwargs:
             callback = kwargs['handler']
         else:
             callback = fluid_midi_router_handle_midi_event
         fluid_player_set_playback_callback(
-            self.player,
-            callback,
-            self.midi_router)
+            player=CFS.c_void_p(self.player),
+            handler=callback,
+            handler_data=CFS.c_void_p(self.midi_router))
         self._assign_audio_driver()
-    
+
     def __del__(self) -> None:
         self._delete_auido_driver()
-        delete_fluid_player(self.player)
+        delete_fluid_player(player=CFS.c_void_p(self.player))
         super().__del__()
 
-    def start(self, midifile:str=None, start_tick:int=0) -> None:
-        status = fluid_player_get_status(self.player)
-        if FLUID_PLAYER_STATUS(status) is FLUID_PLAYER_STATUS.STOPPING:
+    def start(self, midifile: Union[str, None] = None,
+              start_tick: int = 0) -> None:
+        if int(fluid_player_get_status(self.player)) \
+                == FLUID_PLAYER_STATUS.STOPPING:
             if midifile:
                 fluid_player_add(
-                    self.player,
-                    midifile.encode())
-            fluid_player_play(self.player)
-            sleep(self._wait_second)
-            ''' This function only becomes active a little after PLAYING. '''
-            self._total_ticks = fluid_player_get_total_ticks(self.player)
+                    player=CFS.c_void_p(self.player),
+                    midifile=midifile.encode())
+            fluid_player_play(player=CFS.c_void_p(self.player))
+            self._total_ticks = self._get_total_ticks()
             self._seek(start_tick)
-            ''' Continues until the STOP function is called. '''
-            fluid_player_join(self.player)
+            '''Continues until the 'fluid_player_stop' function is called.'''
+            fluid_player_join(player=CFS.c_void_p(self.player))
 
     def close(self) -> None:
-        fluid_player_stop(self.player)
+        fluid_player_stop(player=CFS.c_void_p(self.player))
         self._seek(self._total_ticks)
-        ''' Wait to clear Ringbuffer after EOT '''
-        sleep(self._wait_second)
         self._all_sounds_off()
+        '''Wait to clear Ringbuffer after EOT.'''
         sleep(self._wait_second)
 
     def stop(self) -> int:
-        status = fluid_player_get_status(self.player)
-        if FLUID_PLAYER_STATUS(status) is FLUID_PLAYER_STATUS.PLAYING:
-            fluid_player_stop(self.player)
-            return(fluid_player_get_current_tick(self.player))
-        return(FLUID_FAILED)
+        if int(fluid_player_get_status(player=CFS.c_void_p(self.player))) \
+                == FLUID_PLAYER_STATUS.PLAYING:
+            fluid_player_stop(player=CFS.c_void_p(self.player))
+            return (fluid_player_get_current_tick(
+                player=CFS.c_void_p(self.player)))
+        return (FLUID_FAILED)
 
-    def _seek(self, tick:int) -> int:
-        if tick <= self._total_ticks:
-            fluid_player_seek(self.player, tick)
-            return(fluid_player_get_current_tick(self.player))
-        return(FLUID_FAILED)
+    def _get_total_ticks(self) -> int:
+        if fluid_player_get_status(player=CFS.c_void_p(self.player)) \
+                == FLUID_PLAYER_STATUS.PLAYING:
+            sleep(self._wait_second)
+            fluid_player_get_total_ticks(player=CFS.c_void_p(self.player))
+            '''This function only becomes active a little after PLAYING.'''
+            return (fluid_player_get_total_ticks(
+                player=CFS.c_void_p(self.player)))
+        return (FLUID_FAILED)
+
+    def _seek(self, tick: int) -> int:
+        try:
+            if tick <= self._total_ticks:
+                fluid_player_seek(player=CFS.c_void_p(self.player),
+                                  ticks=CFS.c_int(tick))
+                sleep(self._wait_second)
+                return (fluid_player_get_current_tick(
+                    player=CFS.c_void_p(self.player)))
+        except FSError as message:
+            fluid_player_stop(player=CFS.c_void_p(self.player))
+            fluid_log(level=CFS.c_int(FLUID_LOG_LEVEL.FLUID_WARN),
+                      fmt=b'%s',
+                      message=b'player seek ' + str(message).encode())
+        return (FLUID_FAILED)
 
 
 if __name__ == '__main__':

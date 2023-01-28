@@ -2,10 +2,11 @@
 # -*- coding: utf-8 -*-
 
 from fluidsynth import *
+from json import dump
 
 # test foreach settings
 @FLUID_SETTINGS_FOREACH_T
-def settings_types(data: c_void_p, name: c_char_p, type: c_int):
+def settings_types(data:c_void_p, name:c_char_p, type:c_int):
     settings_names[name.decode()] = {
         "type": type,
         "options": None,
@@ -14,7 +15,7 @@ def settings_types(data: c_void_p, name: c_char_p, type: c_int):
         "value": None}
  
 @FLUID_SETTINGS_FOREACH_OPTION_T
-def settings_option(data: c_void_p, name: c_char_p, option: c_char_p):
+def settings_option(data:c_void_p, name:c_char_p, option:c_char_p):
     global option_list
     option_list += [option.decode()]
 
