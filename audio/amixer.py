@@ -22,7 +22,8 @@ _using_S = [
     ['jack_control', 'dps', 'period', '128'],
     ['jack_control', 'dps', 'outchannels', '2'],
     ['jack_control', 'start'],
-    ['amixer', '-c', 'S', 'sset', 'PCM', '100%', '-M', 'unmute']]
+    ['amixer', '-c', 'S', 'sset', 'PCM', '100%', '-M', 'unmute']
+]
 
 # If using Headphones (bcm2835 Headphones/ latency 21.3ms)
 _using_Headphones = [
@@ -38,9 +39,11 @@ _using_Headphones = [
     ['jack_control', 'dps', 'period', '1024'],
     ['jack_control', 'dps', 'outchannels', '2'],
     ['jack_control', 'start'],
-    ['amixer', '-c', 'Headphones', 'sset', 'Headphone', '100%', '-M', 'unmute']]
+    ['amixer', '-c', 'Headphones', 'sset', 'Headphone', '100%', '-M', 'unmute']
+]
 
-def volume(percentage:Optional[str]=None) -> str:
+
+def volume(percentage: Optional[str] = None) -> str:
     '''Usage
     - volume()
     - volume('100%,100%')
@@ -48,7 +51,7 @@ def volume(percentage:Optional[str]=None) -> str:
     - volume('10%-,10%-')
     '''
 
-    if percentage == None:
+    if percentage is None:
         ''' jackd server and playback volume settings '''
         result = filter(lambda i: subprocess.run(i).returncode != 0, _using_S)
         print('start jack server') if len(list(result)) == 0 \
@@ -67,7 +70,8 @@ def volume(percentage:Optional[str]=None) -> str:
     l_vol = dict_master['Front Left'].split()[2].strip('[]')
     r_vol = dict_master['Front Right'].split()[2].strip('[]')
 
-    return(f'{l_vol},{r_vol}')
+    return (f'{l_vol},{r_vol}')
+
 
 if __name__ == '__main__':
     print('amixer')

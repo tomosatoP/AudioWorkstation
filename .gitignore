@@ -3,6 +3,7 @@ audio/ref/
 pongame/
 */__pycache__/
 */build/
+.vscode/
 
 *.mid
 *.MID

@@ -41,7 +41,7 @@ def verify_synthesizer() -> bool:
                 fs.note_on(0, 60, 127)  # chord C
                 fs.note_on(0, 62, 127)
                 fs.note_on(0, 64, 127)
-                sleep(0.5)
+                sleep(0.3)
                 fs.note_off(0, 60)
                 fs.note_off(0, 62)
                 fs.note_off(0, 64)
@@ -53,12 +53,16 @@ def verify_synthesizer() -> bool:
 
 
 # test custum MIDI Router handler
-FS.MidiEventUserData._fields_ = [('router', C.c_void_p)]
-
-
 @FS.HANDLE_MIDI_EVENT_FUNC_T
-def midi_event_handler(p_data, event):
-    pass
+def midi_event_handler(data, event) -> int:
+    try:
+        FS.fluid_midi_dump_prerouter(data, event)
+        return (FS.FLUID_OK)
+    except FS.FSError as mes:
+        FS.fluid_log(level=FS.FLUID_LOG_LEVEL.FLUID_WARN,
+                     fmt=b'%s',
+                     message=b'midi event ' + str(mes).encode())
+    return (FS.FLUID_FAILED)
 
 
 # test class MidiDriverFS
@@ -66,7 +70,7 @@ def verify_midi_driver() -> bool:
     kwargs = {
         'settings': 'audio/settings.json',
         'soundfont': 'sf2/FluidR3_GM.sf2',
-        'handler': FS.fluid_midi_dump_prerouter}
+        'handler': midi_event_handler}
 
     mdfs = FS.MidiDriver(**kwargs)
     print(f'gain: {mdfs.gain():.1f}')
@@ -86,7 +90,9 @@ def verify_midi_driver() -> bool:
 # test class SequencerFS
 
 FS.EventUserData._fields_ = [
-    ('quit', C.c_bool), ('rhythm', C.c_char_p), ('beat', C.c_char_p)]
+    ('quit', C.c_bool),
+    ('rhythm', C.c_char_p),
+    ('beat', C.c_char_p)]
 
 
 def metronome_pattern(data: FS.EventUserData) -> bool:
@@ -104,6 +110,7 @@ def metronome_pattern(data: FS.EventUserData) -> bool:
             sfs.note_at(time_marker, 9, key[k], vel[m], int(beat / 2),
                         destination=sfs.client_ids[0])
             time_marker += beat
+
     sfs.timer_at(ticks=time_marker, destination=sfs.client_ids[1])
     return (True)
 
@@ -179,6 +186,7 @@ def verify_midi_player() -> bool:
 
     mpfs.note_on(9, 34, 80)
     sleep(1)
+    mpfs.note_off(9, 34)
     return (True)
 
 

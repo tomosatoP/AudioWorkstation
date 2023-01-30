@@ -17,7 +17,7 @@
             "sdl2"
         ],
         "range": null,
-        "default": "",
+        "default": null,
         "value": null
     },
     "audio.file.endian": {
@@ -116,7 +116,7 @@
         "type": 2,
         "options": null,
         "range": null,
-        "default": "",
+        "default": null,
         "value": null
     },
     "audio.oss.device": {
@@ -246,7 +246,7 @@
             "oss"
         ],
         "range": null,
-        "default": "",
+        "default": null,
         "value": null
     },
     "midi.jack.id": {
@@ -260,7 +260,7 @@
         "type": 2,
         "options": null,
         "range": null,
-        "default": "",
+        "default": null,
         "value": null
     },
     "midi.oss.device": {
@@ -274,7 +274,7 @@
         "type": 2,
         "options": null,
         "range": null,
-        "default": "",
+        "default": null,
         "value": null
     },
     "midi.realtime-prio": {
@@ -321,7 +321,7 @@
         "type": 2,
         "options": null,
         "range": null,
-        "default": "",
+        "default": null,
         "value": null
     },
     "synth.audio-channels": {
@@ -537,7 +537,7 @@
         "type": 2,
         "options": null,
         "range": null,
-        "default": "",
+        "default": null,
         "value": null
     },
     "synth.overflow.percussion": {
