@@ -101,11 +101,11 @@ delete_fluid_cmd_handler = prototype(
 
 
 class FLUID_LOG_LEVEL(IntEnum):
-    FLUID_PANIC = 0
-    FLUID_ERR = auto()
-    FLUID_WARN = auto()
-    FLUID_INFO = auto()
-    FLUID_DBG = auto()
+    PANIC = 0
+    ERR = auto()
+    WARN = auto()
+    INFO = auto()
+    DBG = auto()
     LAST_LOG_LEVEL = auto()
 # [user defined data type]
 
@@ -134,7 +134,6 @@ fluid_default_log_function = prototype(
     (CFS.c_int, 1, 'level'),
     (CFS.c_char_p, 1, 'message'),
     (CFS.POINTER(LogUserData), 1, 'data'))
-fluid_default_log_function.errcheck = errcheck
 
 fluid_log = prototype(
     CFS.c_int, 'fluid_log',
@@ -155,15 +154,15 @@ fluid_set_log_function.errcheck = errcheck
 @FLUID_LOG_FUNCTION_T
 def _log_func(level, message, data) -> None:
     mes = bytes(message).decode()
-    if int(level) == FLUID_LOG_LEVEL.FLUID_PANIC:
+    if int(level) == FLUID_LOG_LEVEL.PANIC:
         LFS.critical(f'{mes}')
-    elif int(level) == FLUID_LOG_LEVEL.FLUID_ERR:
+    elif int(level) == FLUID_LOG_LEVEL.ERR:
         LFS.error(f'{mes}')
-    elif int(level) == FLUID_LOG_LEVEL.FLUID_WARN:
+    elif int(level) == FLUID_LOG_LEVEL.WARN:
         LFS.warn(f'{mes}')
-    elif int(level) == FLUID_LOG_LEVEL.FLUID_INFO:
+    elif int(level) == FLUID_LOG_LEVEL.INFO:
         LFS.info(f'{mes}')
-    elif int(level) == FLUID_LOG_LEVEL.FLUID_DBG:
+    elif int(level) == FLUID_LOG_LEVEL.DBG:
         LFS.debug(f'{mes}')
 
 
@@ -378,10 +377,10 @@ fluid_midi_router_add_rule.errcheck = errcheck
 
 # MIDI sequencer
 # [user defined data type]
-# Structure of data for Sequencer event callback function
 
 
 class EventUserData(CFS.Structure):
+    '''Structure of data for Sequencer event callback function'''
     pass
 
 
@@ -510,6 +509,7 @@ class FLUID_HINT(IntFlag):
     ON_OFF = RANGE | TOGGLED
 
 
+FLUID_HINT_OPTIONLIST = 0x02
 # [typedef]
 FLUID_SETTINGS_FOREACH_OPTION_T = CFS.CFUNCTYPE(
     None, CFS.c_void_p, CFS.c_char_p, CFS.c_char_p)
@@ -555,22 +555,22 @@ fluid_settings_getnum = prototype(
     CFS.c_int, 'fluid_settings_getnum',
     (CFS.c_void_p, 1, 'settings'),
     (CFS.c_char_p, 1, 'name'),
-    (CFS.POINTER(CFS.c_double), 1, 'val'))
+    (CFS.POINTER(CFS.c_double), 3, 'val'))
 fluid_settings_getnum.errcheck = errcheck
 
 fluid_settings_getnum_default = prototype(
     CFS.c_int, 'fluid_settings_getnum_default',
     (CFS.c_void_p, 1, 'settings'),
     (CFS.c_char_p, 1, 'name'),
-    (CFS.POINTER(CFS.c_double), 1, 'val'))
+    (CFS.POINTER(CFS.c_double), 3, 'val'))
 fluid_settings_getnum_default.errcheck = errcheck
 
 fluid_settings_getnum_range = prototype(
     CFS.c_int, 'fluid_settings_getnum_range',
     (CFS.c_void_p, 1, 'settings'),
     (CFS.c_char_p, 1, 'name'),
-    (CFS.POINTER(CFS.c_double), 1, 'min'),
-    (CFS.POINTER(CFS.c_double), 1, 'max'))
+    (CFS.POINTER(CFS.c_double), 3, 'min'),
+    (CFS.POINTER(CFS.c_double), 3, 'max'))
 fluid_settings_getnum_range.errcheck = errcheck
 
 fluid_settings_setint = prototype(
@@ -584,22 +584,22 @@ fluid_settings_getint = prototype(
     CFS.c_int, 'fluid_settings_getint',
     (CFS.c_void_p, 1, 'settings'),
     (CFS.c_char_p, 1, 'name'),
-    (CFS.POINTER(CFS.c_int), 1, 'val'))
+    (CFS.POINTER(CFS.c_int), 3, 'val'))
 fluid_settings_getint.errcheck = errcheck
 
 fluid_settings_getint_default = prototype(
     CFS.c_int, 'fluid_settings_getint_default',
     (CFS.c_void_p, 1, 'settings'),
     (CFS.c_char_p, 1, 'name'),
-    (CFS.POINTER(CFS.c_int), 1, 'val'))
+    (CFS.POINTER(CFS.c_int), 3, 'val'))
 fluid_settings_getint_default.errcheck = errcheck
 
 fluid_settings_getint_range = prototype(
     CFS.c_int, 'fluid_settings_getint_range',
-    (CFS.c_void_p, 1, 'settigns'),
+    (CFS.c_void_p, 1, 'settings'),
     (CFS.c_char_p, 1, 'name'),
-    (CFS.POINTER(CFS.c_int), 1, 'min'),
-    (CFS.POINTER(CFS.c_int), 1, 'max'))
+    (CFS.POINTER(CFS.c_int), 3, 'min'),
+    (CFS.POINTER(CFS.c_int), 3, 'max'))
 fluid_settings_getint_range.errcheck = errcheck
 
 fluid_settings_setstr = prototype(
@@ -641,7 +641,7 @@ fluid_settings_get_hints = prototype(
     CFS.c_int, 'fluid_settings_get_hints',
     (CFS.c_void_p, 1, 'settings'),
     (CFS.c_char_p, 1, 'name'),
-    (CFS.POINTER(CFS.c_int), 1, 'hints'))
+    (CFS.POINTER(CFS.c_int), 3, 'hints'))
 fluid_settings_get_hints.errcheck = errcheck
 
 
@@ -734,7 +734,7 @@ fluid_synth_get_cc = prototype(
     (CFS.c_void_p, 1, 'synth'),
     (CFS.c_int, 1, 'chan'),
     (CFS.c_int, 1, 'num'),
-    (CFS.POINTER(CFS.c_int), 1, 'pval'))
+    (CFS.POINTER(CFS.c_int), 3, 'pval'))
 fluid_synth_get_cc.errcheck = errcheck
 
 fluid_synth_pitch_bend = prototype(
@@ -748,7 +748,7 @@ fluid_synth_get_pitch_bend = prototype(
     CFS.c_int, 'fluid_synth_get_pitch_bend',
     (CFS.c_void_p, 1, 'synth'),
     (CFS.c_int, 1, 'chan'),
-    (CFS.POINTER(CFS.c_int), 1, 'ppitch_bend'))
+    (CFS.POINTER(CFS.c_int), 3, 'ppitch_bend'))
 fluid_synth_get_pitch_bend.errcheck = errcheck
 
 fluid_synth_pitch_wheel_sens = prototype(
@@ -762,7 +762,7 @@ fluid_synth_get_pitch_wheel_sens = prototype(
     CFS.c_int, 'fluid_synth_get_pitch_wheel_sens',
     (CFS.c_void_p, 1, 'synth'),
     (CFS.c_int, 1, 'chan'),
-    (CFS.POINTER(CFS.c_int), 1, 'pval'))
+    (CFS.POINTER(CFS.c_int), 3, 'pval'))
 fluid_synth_get_pitch_wheel_sens.errcheck = errcheck
 
 fluid_synth_sysex = prototype(
@@ -848,7 +848,7 @@ fluid_synth_set_gain = prototype(
 
 # Synthesizer - Voice Control
 
-# [alias]
+# [typing alias]
 PRESET = dict[str, Union[int, str, None]]
 
 
@@ -858,52 +858,63 @@ class Synthesizer:
     [args]
         kwargs = {
             'settings':'audio/settings.json',
-            'soundfont':'sf2/FluidR3_GM.sf2'}
+            'soundfont':['sf2/FluidR3_GM.sf2', 'sf2/SGM-V2.01.sf2']}
     """
     synthesizer: int = 0
     settings: int = 0
-    audio_driver: int = 0
-    soundfont_ids: list[int] = list()
+    soundfont_ids: dict[str, int] = dict()
 
-    def __init__(self, **kwargs: dict[str, str]) -> None:
-        LFS.basicConfig(
-            filename='fluidsynth.log',
-            level=LFS.DEBUG,
-            format='%(asctime)s %(levelname)s %(message)s',
-            datefmt='%Y-%m-%dT%H:%M:%S')
-        for i in range(FLUID_LOG_LEVEL.LAST_LOG_LEVEL):
-            fluid_set_log_function(level=i, fun=_log_func, data=None)
+    def __init__(self, **kwargs: dict[str, Any]) -> None:
+        try:
+            LFS.basicConfig(filename='fluidsynth.log',
+                            level=LFS.DEBUG,
+                            format='%(asctime)s %(levelname)s %(message)s',
+                            datefmt='%Y-%m-%dT%H:%M:%S')
+            for i in range(FLUID_LOG_LEVEL.LAST_LOG_LEVEL):
+                fluid_set_log_function(level=i,
+                                       fun=_log_func,
+                                       data=None)
 
-        self.settings = int(new_fluid_settings())
-        if 'settings' in kwargs:
-            self._customaize_settings(
-                json_filename=str(kwargs['settings']))
+            self.settings = int(new_fluid_settings())
+            if 'settings' in kwargs:
+                self._customaize_settings(
+                    json_filename=str(kwargs['settings']))
 
-        self.synthesizer = int(new_fluid_synth(
-            settings=CFS.c_void_p(self.settings)))
+            self.synthesizer = int(new_fluid_synth(
+                settings=CFS.c_void_p(self.settings)))
 
-        if 'soundfont' in kwargs:
-            self.soundfont_ids += [int(fluid_synth_sfload(
-                synth=CFS.c_void_p(self.synthesizer),
-                filename=str(kwargs['soundfont']).encode(),
-                reset_preset=CFS.c_int(True)))]
-        else:
-            fn_soundfont = CFS.c_char_p()
-            if int(fluid_settings_getstr_default(
+            if 'soundfont' in kwargs:
+                for name in kwargs['soundfont']:
+                    self.soundfont_ids[name] \
+                        = int(fluid_synth_sfload(
+                            synth=CFS.c_void_p(self.synthesizer),
+                            filename=name.encode(),
+                            reset_preset=CFS.c_int(True)))
+            else:
+                name = CFS.c_char_p()
+                fluid_settings_getstr_default(
                     settings=CFS.c_void_p(self.settings),
                     name=b'synth.default-soundfont',
-                    str=CFS.byref(fn_soundfont))) is FLUID_OK:
-                self.soundfont_ids += [int(fluid_synth_sfload(
-                    synth=CFS.c_void_p(self.synthesizer),
-                    filename=fn_soundfont,
-                    reset_preset=CFS.c_int(True)))]
+                    str=CFS.byref(name))
+                name = name.value if isinstance(name.value, bytes) else name
+                self.soundfont_ids[bytes(name).decode()] \
+                    = int(fluid_synth_sfload(
+                        synth=CFS.c_void_p(self.synthesizer),
+                        filename=name,
+                        reset_preset=CFS.c_int(True)))
 
-        if self._gm_system_on() == FLUID_OK:
+            self._gm_system_on()
             print('gm system on')
 
-        if type(self) == Synthesizer:
-            self._assign_audio_driver()
-        print(f'libfluidsynth version: {self.version()}')
+            if type(self) == Synthesizer:
+                self._assign_audio_driver()
+        except FSError as mes:
+            fluid_log(level=FLUID_LOG_LEVEL.ERR,
+                      fmt=b'%s',
+                      message=b'missing initilize' + str(mes).encode())
+            self.__del__()
+        else:
+            print(f'libfluidsynth version: {self.version()}')
 
     def __del__(self) -> None:
         if type(self) == Synthesizer:
@@ -940,19 +951,21 @@ class Synthesizer:
         return (self.audio_driver)
 
     def _delete_auido_driver(self) -> None:
-        delete_fluid_audio_driver(driver=CFS.c_void_p(self.audio_driver))
+        if hasattr(self, 'audio_driver'):
+            delete_fluid_audio_driver(driver=CFS.c_void_p(self.audio_driver))
 
     def version(self) -> str:
         return (bytes(fluid_version_str()).decode())
 
     def _gm_system_on(self) -> int:
-        result = fluid_synth_sysex(
+        return (int(fluid_synth_sysex(
             synth=CFS.c_void_p(self.synthesizer),
             data=(CFS.c_char*3)(0x7E, 0x09, 0x01),
             len=CFS.c_int(3),
-            response=None, response_len=None, handled=None,
-            dryrun=CFS.c_int(False))
-        return (int(result))
+            response=None,
+            response_len=None,
+            handled=None,
+            dryrun=CFS.c_int(False))))
 
     def _all_notes_off(self, chan: int = -1) -> int:
         return (fluid_synth_all_notes_off(
@@ -1089,56 +1102,50 @@ class Synthesizer:
                                 key=CFS.c_int(keyNumber))
             return (FLUID_OK)
         except FSError as msg:
-            fluid_log(level=CFS.c_int(FLUID_LOG_LEVEL.FLUID_WARN),
+            fluid_log(level=CFS.c_int(FLUID_LOG_LEVEL.WARN),
                       fmt=b'%s',
                       message=b'synth noteoff ' + str(msg).encode())
         return (FLUID_FAILED)
 
     def modulation_wheel(self, chan: int, val: int) -> int:
         ''' The sound amplifies like vibrato. '''
-        return (fluid_synth_cc(
-            synth=CFS.c_void_p(self.synthesizer),
-            chan=CFS.c_int(chan),
-            num=CFS.c_int(0x01),
-            val=CFS.c_int(val)))
+        return (fluid_synth_cc(synth=CFS.c_void_p(self.synthesizer),
+                               chan=CFS.c_int(chan),
+                               num=CFS.c_int(0x01),
+                               val=CFS.c_int(val)))
 
     def volume(self, chan: int, val: int) -> int:
         ''' Set the maximum allowable value of velocity. '''
-        return (fluid_synth_cc(
-            synth=CFS.c_void_p(self.synthesizer),
-            chan=CFS.c_int(chan),
-            num=CFS.c_int(0x07),
-            val=CFS.c_int(val)))
+        return (fluid_synth_cc(synth=CFS.c_void_p(self.synthesizer),
+                               chan=CFS.c_int(chan),
+                               num=CFS.c_int(0x07),
+                               val=CFS.c_int(val)))
 
     def sustain_on(self, chan: int) -> int:
         ''' The sound echoes for a long time. '''
-        return (fluid_synth_cc(
-            synth=CFS.c_void_p(self.synthesizer),
-            chan=CFS.c_int(chan),
-            num=CFS.c_int(0x40),
-            val=CFS.c_int(0b00100000)))
+        return (fluid_synth_cc(synth=CFS.c_void_p(self.synthesizer),
+                               chan=CFS.c_int(chan),
+                               num=CFS.c_int(0x40),
+                               val=CFS.c_int(0b00100000)))
 
     def sustain_off(self, chan: int) -> int:
-        return (fluid_synth_cc(
-            synth=CFS.c_void_p(self.synthesizer),
-            chan=CFS.c_int(chan),
-            num=CFS.c_int(0x40),
-            val=CFS.c_int(0b00000000)))
+        return (fluid_synth_cc(synth=CFS.c_void_p(self.synthesizer),
+                               chan=CFS.c_int(chan),
+                               num=CFS.c_int(0x40),
+                               val=CFS.c_int(0b00000000)))
 
     def pan(self, chan: int, val: int) -> int:
-        return (fluid_synth_cc(
-            synth=CFS.c_void_p(self.synthesizer),
-            chan=CFS.c_int(chan),
-            num=CFS.c_int(0x0A),
-            val=CFS.c_int(val)))
+        return (fluid_synth_cc(synth=CFS.c_void_p(self.synthesizer),
+                               chan=CFS.c_int(chan),
+                               num=CFS.c_int(0x0A),
+                               val=CFS.c_int(val)))
 
     def expression(self, chan: int, val: int) -> int:
         '''Temporary velocity can be set above volume.'''
-        return (fluid_synth_cc(
-            synth=CFS.c_void_p(self.synthesizer),
-            chan=CFS.c_int(chan),
-            num=CFS.c_int(0x0B),
-            val=CFS.c_int(val)))
+        return (fluid_synth_cc(synth=CFS.c_void_p(self.synthesizer),
+                               chan=CFS.c_int(chan),
+                               num=CFS.c_int(0x0B),
+                               val=CFS.c_int(val)))
 
 
 class Sequencer(Synthesizer):
@@ -1147,7 +1154,7 @@ class Sequencer(Synthesizer):
     [args]
         kwargs = {
             'settings':'audio/settings.json',
-            'soundfont':'sf2/FluidR3_GM.sf2'}
+            'soundfont':['sf2/FluidR3_GM.sf2', 'sf2/SGM-V2.01.sf2']}
     '''
     quaternote: int = 240
     bps: float = 120.0
@@ -1261,7 +1268,7 @@ class MidiRouter(Synthesizer):
     [args]
         kwargs = {
             'settings':'audio/settings.json',
-            'soundfont':'sf2/FluidR3_GM.sf2'}
+            'soundfont':['sf2/FluidR3_GM.sf2', 'sf2/SGM-V2.01.sf2']}
     '''
     midi_router: int
     cmd_handler: int
@@ -1319,7 +1326,7 @@ class MidiDriver(MidiRouter):
     [args]
         kwargs = {
             'settings':'audio/settings.json',
-            'soundfont':'sf2/FluidR3_GM.sf2'
+            'soundfont':['sf2/FluidR3_GM.sf2', 'sf2/SGM-V2.01.sf2'],
             'handler': fluid_midi_dump_prerouter}
     '''
     midi_driver: int
@@ -1345,10 +1352,18 @@ class MidiDriver(MidiRouter):
 
 
 class MidiPlayer(MidiRouter):
-    ''' Parse standard MIDI files and emit MIDI events. '''
+    ''' Parse standard MIDI files and emit MIDI events.
+
+    [args]
+        kwargs = {
+            'settings':'audio/settings.json',
+            'soundfont':['sf2/FluidR3_GM.sf2', 'sf2/SGM-V2.01.sf2'],
+            'handler': fluid_midi_dump_prerouter}
+    '''
+    player: int
+
     _wait_second: Union[int, float] = 0.1
     _total_ticks: int = 0
-    player: int
 
     def __init__(self, **kwargs) -> None:
         super().__init__(**kwargs)
@@ -1419,11 +1434,11 @@ class MidiPlayer(MidiRouter):
                     player=CFS.c_void_p(self.player)))
         except FSError as msg:
             fluid_player_stop(player=CFS.c_void_p(self.player))
-            fluid_log(level=CFS.c_int(FLUID_LOG_LEVEL.FLUID_WARN),
+            fluid_log(level=CFS.c_int(FLUID_LOG_LEVEL.WARN),
                       fmt=b'%s',
                       message=b'player seek ' + str(msg).encode())
         return (FLUID_FAILED)
 
 
 if __name__ == '__main__':
-    print('fluidsynth')
+    print(__file__)

@@ -3,11 +3,12 @@
 
 from concurrent import futures
 from functools import partial
-import fluidsynth as FS
-import amixer as MASTER
 import ctypes as C
 from time import sleep
 from typing import Callable
+
+import fluidsynth as FS
+import amixer as MASTER
 
 # test class FS.SynthesizerFS
 
@@ -48,7 +49,6 @@ def verify_synthesizer() -> bool:
 
     fs.note_on(9, 34, 80)
     sleep(0.5)
-    fs.note_off(9, 34)
     return (True)
 
 
@@ -57,19 +57,19 @@ def verify_synthesizer() -> bool:
 def midi_event_handler(data, event) -> int:
     try:
         FS.fluid_midi_dump_prerouter(data, event)
-        return (FS.FLUID_OK)
     except FS.FSError as mes:
-        FS.fluid_log(level=FS.FLUID_LOG_LEVEL.FLUID_WARN,
+        FS.fluid_log(level=FS.FLUID_LOG_LEVEL.WARN,
                      fmt=b'%s',
                      message=b'midi event ' + str(mes).encode())
-    return (FS.FLUID_FAILED)
+        return (FS.FLUID_FAILED)
+    return (FS.FLUID_OK)
 
 
 # test class MidiDriverFS
 def verify_midi_driver() -> bool:
     kwargs = {
         'settings': 'audio/settings.json',
-        'soundfont': 'sf2/FluidR3_GM.sf2',
+        'soundfont': ['sf2/FluidR3_GM.sf2', 'sf2/SGM-V2.01.sf2'],
         'handler': midi_event_handler}
 
     mdfs = FS.MidiDriver(**kwargs)
@@ -83,7 +83,7 @@ def verify_midi_driver() -> bool:
     sleep(5)
 
     mdfs.note_on(9, 34, 80)
-    sleep(1)
+    sleep(0.5)
     return (True)
 
 
@@ -125,7 +125,7 @@ def verify_sequencer() -> bool:
     global sfs
     kwargs = {
         'settings': 'audio/settings.json',
-        'soundfont': 'sf2/FluidR3_GM.sf2'}
+        'soundfont': ['sf2/FluidR3_GM.sf2']}
 
     sfs = FS.Sequencer(**kwargs)
     print(f'gain: {sfs.gain():.1f}')
@@ -148,7 +148,7 @@ def verify_sequencer() -> bool:
     sleep(4)
 
     sfs.note_on(9, 34, 80)
-    sleep(1)
+    sleep(0.5)
     return (True)
 
 
@@ -162,11 +162,11 @@ def future_callback(func: Callable[..., None], future: futures.Future) -> bool:
 def verify_midi_player() -> bool:
     kwargs = {
         'settings': 'audio/settings.json',
-        'soundfont': 'sf2/FluidR3_GM.sf2'}
+        'soundfont': ['sf2/FluidR3_GM.sf2', 'sf2/SGM-V2.01.sf2']}
 
     mpfs = FS.MidiPlayer(**kwargs)
     mpfs.change_rule('audio/rule.mute_chan_0.json')
-    print(f'gain: {mpfs.gain(0.2):.1f}')
+    print(f'gain: {mpfs.gain(0.3):.1f}')
 
     with futures.ThreadPoolExecutor(max_workers=1) as e:
         filename = 'mid/l3007_02.mid'
@@ -181,12 +181,15 @@ def verify_midi_player() -> bool:
         filename = 'mid/l3007_03.mid'
         f = e.submit(mpfs.start, filename, 20000)
         f.add_done_callback(partial(future_callback, mpfs.close))
-        sleep(3)
+        sleep(10)
         mpfs.stop()
 
+    print('channel preset')
+    for sound_set in mpfs.channels_preset():
+        print(sound_set)
+
     mpfs.note_on(9, 34, 80)
-    sleep(1)
-    mpfs.note_off(9, 34)
+    sleep(0.5)
     return (True)
 
 
