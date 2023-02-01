@@ -1,9 +1,6 @@
-audio/old/
-audio/ref/
-pongame/
-*/__pycache__/
-*/build/
-.vscode/
+__pycache__
+build
+.vscode
 
 *.mid
 *.MID
