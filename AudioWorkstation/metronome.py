@@ -10,8 +10,6 @@ from kivy.properties import (BoundedNumericProperty, ObjectProperty)
 from kivy.uix.behaviors import ToggleButtonBehavior
 from kivy.uix.widget import Widget
 from kivy.app import App
-import sys
-sys.path.append('../AudioWorkstation')
 
 
 # To use japanese font in Kivy

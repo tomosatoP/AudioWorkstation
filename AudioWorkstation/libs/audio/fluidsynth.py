@@ -810,12 +810,24 @@ fluid_synth_system_reset.errcheck = errcheck
 
 # Synthesizer - SoundFont managiment
 # [API prototype]
+fluid_synth_add_sfont = prototype(
+    CFS.c_int, 'fluid_synth_add_sfont',
+    (CFS.c_void_p, 1, 'synth'),
+    (CFS.c_void_p, 1, 'sfont'))
+fluid_synth_add_sfont.errcheck = errcheck
+
 fluid_synth_sfload = prototype(
     CFS.c_void_p, 'fluid_synth_sfload',
     (CFS.c_void_p, 1, 'synth'),
     (CFS.c_char_p, 1, 'filename'),
     (CFS.c_int, 1, 'reset_preset'))
 fluid_synth_sfload.errcheck = errcheck
+
+fluid_synth_sfreload = prototype(
+    CFS.c_int, 'fluid_synth_sfreload',
+    (CFS.c_void_p, 1, 'synth'),
+    (CFS.c_int, 1, 'id'))
+fluid_synth_sfreload.errcheck = errcheck
 
 fluid_synth_sfcount = prototype(
     CFS.c_int, 'fluid_synth_sfcount',
@@ -860,46 +872,37 @@ class Synthesizer:
             'settings':'audio/settings.json',
             'soundfont':['sf2/FluidR3_GM.sf2', 'sf2/SGM-V2.01.sf2']}
     """
-    synthesizer: int = 0
-    settings: int = 0
-    soundfont_ids: dict[str, int] = dict()
 
     def __init__(self, **kwargs: dict[str, Any]) -> None:
         try:
-            LFS.basicConfig(filename='fluidsynth.log',
-                            level=LFS.DEBUG,
-                            format='%(asctime)s %(levelname)s %(message)s',
-                            datefmt='%Y-%m-%dT%H:%M:%S')
-            for i in range(FLUID_LOG_LEVEL.LAST_LOG_LEVEL):
-                fluid_set_log_function(level=i,
-                                       fun=_log_func,
-                                       data=None)
+            self._logs(logfilename='logs/fluidsynth.log')
 
-            self.settings = int(new_fluid_settings())
+            self._settings: int = int(new_fluid_settings())
             if 'settings' in kwargs:
                 self._customaize_settings(
                     json_filename=str(kwargs['settings']))
 
-            self.synthesizer = int(new_fluid_synth(
-                settings=CFS.c_void_p(self.settings)))
+            self._synth: int = int(new_fluid_synth(
+                settings=CFS.c_void_p(self._settings)))
 
+            self._soundfonts: dict[str, int] = dict()
             if 'soundfont' in kwargs:
                 for name in kwargs['soundfont']:
-                    self.soundfont_ids[name] \
-                        = int(fluid_synth_sfload(
-                            synth=CFS.c_void_p(self.synthesizer),
-                            filename=name.encode(),
-                            reset_preset=CFS.c_int(True)))
+                    self._soundfonts[name] = int(fluid_synth_sfload(
+                        synth=CFS.c_void_p(self._synth),
+                        filename=name.encode(),
+                        reset_preset=CFS.c_int(True)))
+
             else:
                 name = CFS.c_char_p()
                 fluid_settings_getstr_default(
-                    settings=CFS.c_void_p(self.settings),
+                    settings=CFS.c_void_p(self._settings),
                     name=b'synth.default-soundfont',
                     str=CFS.byref(name))
                 name = name.value if isinstance(name.value, bytes) else name
-                self.soundfont_ids[bytes(name).decode()] \
+                self._soundfonts[bytes(name).decode()] \
                     = int(fluid_synth_sfload(
-                        synth=CFS.c_void_p(self.synthesizer),
+                        synth=CFS.c_void_p(self._synth),
                         filename=name,
                         reset_preset=CFS.c_int(True)))
 
@@ -908,10 +911,10 @@ class Synthesizer:
 
             if type(self) == Synthesizer:
                 self._assign_audio_driver()
-        except FSError as mes:
+        except FSError as msg:
             fluid_log(level=FLUID_LOG_LEVEL.ERR,
                       fmt=b'%s',
-                      message=b'missing initilize' + str(mes).encode())
+                      message=b'Synthesizer failed. ' + str(msg).encode())
             self.__del__()
         else:
             print(f'libfluidsynth version: {self.version()}')
@@ -919,9 +922,19 @@ class Synthesizer:
     def __del__(self) -> None:
         if type(self) == Synthesizer:
             self._delete_auido_driver()
-        delete_fluid_synth(synth=CFS.c_void_p(self.synthesizer))
-        delete_fluid_settings(settings=CFS.c_void_p(self.settings))
+        delete_fluid_synth(synth=CFS.c_void_p(self._synth))
+        delete_fluid_settings(settings=CFS.c_void_p(self._settings))
         print('good-bye')
+
+    def _logs(self, logfilename: str) -> None:
+        LFS.basicConfig(filename=logfilename,
+                        level=LFS.DEBUG,
+                        format='%(asctime)s %(levelname)s %(message)s',
+                        datefmt='%Y-%m-%dT%H:%M:%S')
+        for i in range(FLUID_LOG_LEVEL.LAST_LOG_LEVEL):
+            fluid_set_log_function(level=i,
+                                   fun=_log_func,
+                                   data=None)
 
     def _customaize_settings(self, json_filename: str) -> None:
         with open(file=json_filename, mode='r') as fp:
@@ -930,24 +943,24 @@ class Synthesizer:
             if isinstance(dicts['value'], (float, int, str)):
                 if FLUID_TYPE(dicts['type']) == FLUID_TYPE.NUM:
                     fluid_settings_setnum(
-                        settings=CFS.c_void_p(self.settings),
+                        settings=CFS.c_void_p(self._settings),
                         name=str(name).encode(),
                         value=CFS.c_double(dicts['value']))
                 elif FLUID_TYPE(dicts['type']) == FLUID_TYPE.INT:
                     fluid_settings_setint(
-                        settings=CFS.c_void_p(self.settings),
+                        settings=CFS.c_void_p(self._settings),
                         name=str(name).encode(),
                         val=CFS.c_int(dicts['value']))
                 elif FLUID_TYPE(dicts['type']) == FLUID_TYPE.STR:
                     fluid_settings_setstr(
-                        settings=CFS.c_void_p(self.settings),
+                        settings=CFS.c_void_p(self._settings),
                         name=str(name).encode(),
                         str=str(dicts['value']).encode())
 
     def _assign_audio_driver(self) -> int:
         self.audio_driver = int(new_fluid_audio_driver(
-            settings=CFS.c_void_p(self.settings),
-            synth=CFS.c_void_p(self.synthesizer)))
+            settings=CFS.c_void_p(self._settings),
+            synth=CFS.c_void_p(self._synth)))
         return (self.audio_driver)
 
     def _delete_auido_driver(self) -> None:
@@ -959,7 +972,7 @@ class Synthesizer:
 
     def _gm_system_on(self) -> int:
         return (int(fluid_synth_sysex(
-            synth=CFS.c_void_p(self.synthesizer),
+            synth=CFS.c_void_p(self._synth),
             data=(CFS.c_char*3)(0x7E, 0x09, 0x01),
             len=CFS.c_int(3),
             response=None,
@@ -969,28 +982,33 @@ class Synthesizer:
 
     def _all_notes_off(self, chan: int = -1) -> int:
         return (fluid_synth_all_notes_off(
-            synth=CFS.c_void_p(self.synthesizer),
+            synth=CFS.c_void_p(self._synth),
             chan=CFS.c_int(chan)))
 
     def _all_sounds_off(self, chan: int = -1) -> int:
         return (fluid_synth_all_sounds_off(
-            synth=CFS.c_void_p(self.synthesizer),
+            synth=CFS.c_void_p(self._synth),
             chan=CFS.c_int(chan)))
 
     def _panic(self) -> int:
-        return (fluid_synth_system_reset(synth=CFS.c_void_p(self.synthesizer)))
+        return (fluid_synth_system_reset(synth=CFS.c_void_p(self._synth)))
 
-    def gain(self, value: Union[float, None] = None) -> float:
-        """Get and set gain.
-
-        defalt:0.2, Min:0.0, Max:10.0
-        """
-        if value is not None:
-            fluid_synth_set_gain(
-                synth=CFS.c_void_p(self.synthesizer),
-                gain=CFS.c_float(value))
+    @property
+    def gain(self) -> float:
+        """defalt:0.2, Min:0.0, Max:10.0"""
         return (float(fluid_synth_get_gain(
-            synth=CFS.c_void_p(self.synthesizer))))
+            synth=CFS.c_void_p(self._synth))))
+
+    @gain.setter
+    def gain(self, value: float) -> float:
+        fluid_synth_set_gain(synth=CFS.c_void_p(self._synth),
+                             gain=CFS.c_float(value))
+        return (float(fluid_synth_get_gain(
+            synth=CFS.c_void_p(self._synth))))
+
+    @property
+    def soundfonts(self) -> list:
+        return (list(self._soundfonts.keys()))
 
     def gm_sound_set(self, is_percussion: bool = False) -> list[list[PRESET]]:
         '''Get list of Sound Set (GM system level 1) from soundfont.
@@ -1010,9 +1028,9 @@ class Synthesizer:
         sound_set: list[list[PRESET]] = list()
         bank = 0 if not (is_percussion) else 128
         for num in range(int(fluid_synth_sfcount(
-                synth=CFS.c_void_p(self.synthesizer)))):
+                synth=CFS.c_void_p(self._synth)))):
             sfont = int(fluid_synth_get_sfont(
-                synth=CFS.c_void_p(self.synthesizer),
+                synth=CFS.c_void_p(self._synth),
                 num=CFS.c_uint(num)))
             sound_set += [self._sfont_sound_set(sfont, bank)]
         return (sound_set)
@@ -1044,7 +1062,7 @@ class Synthesizer:
 
     def _channel_preset(self, chan: int) -> PRESET:
         preset = int(fluid_synth_get_channel_preset(
-            synth=CFS.c_void_p(self.synthesizer),
+            synth=CFS.c_void_p(self._synth),
             chan=CFS.c_int(chan)))
         return (self._preset(preset))
 
@@ -1069,35 +1087,34 @@ class Synthesizer:
 
     def pitch_bend(self, chan: int, val: int) -> int:
         return (fluid_synth_pitch_bend(
-            synth=CFS.c_void_p(self.synthesizer),
+            synth=CFS.c_void_p(self._synth),
             chan=CFS.c_int(chan),
             val=CFS.c_int(val)))
 
     def pitch_wheel_sens(self, chan: int, val: int) -> int:
         return (fluid_synth_pitch_wheel_sens(
-            synth=CFS.c_void_p(self.synthesizer),
+            synth=CFS.c_void_p(self._synth),
             chan=CFS.c_int(chan),
             val=CFS.c_int(val)))
 
     def program_select(
             self, chan: int, sfont_id: int, bank: int, preset: int) -> int:
         return (fluid_synth_program_select(
-            synth=CFS.c_void_p(self.synthesizer),
+            synth=CFS.c_void_p(self._synth),
             chan=CFS.c_int(chan),
             sfont_id=CFS.c_int(sfont_id),
             bank_num=CFS.c_int(bank),
             preset_num=CFS.c_int(preset)))
 
     def note_on(self, channel: int, keyNumber: int, velocity: int) -> int:
-        return (fluid_synth_noteon(
-            synth=CFS.c_void_p(self.synthesizer),
-            chan=CFS.c_int(channel),
-            key=CFS.c_int(keyNumber),
-            vel=CFS.c_int(velocity)))
+        return (fluid_synth_noteon(synth=CFS.c_void_p(self._synth),
+                                   chan=CFS.c_int(channel),
+                                   key=CFS.c_int(keyNumber),
+                                   vel=CFS.c_int(velocity)))
 
     def note_off(self, channel: int, keyNumber: int) -> int:
         try:
-            fluid_synth_noteoff(synth=CFS.c_void_p(self.synthesizer),
+            fluid_synth_noteoff(synth=CFS.c_void_p(self._synth),
                                 chan=CFS.c_int(channel),
                                 key=CFS.c_int(keyNumber))
             return (FLUID_OK)
@@ -1109,40 +1126,40 @@ class Synthesizer:
 
     def modulation_wheel(self, chan: int, val: int) -> int:
         ''' The sound amplifies like vibrato. '''
-        return (fluid_synth_cc(synth=CFS.c_void_p(self.synthesizer),
+        return (fluid_synth_cc(synth=CFS.c_void_p(self._synth),
                                chan=CFS.c_int(chan),
                                num=CFS.c_int(0x01),
                                val=CFS.c_int(val)))
 
     def volume(self, chan: int, val: int) -> int:
         ''' Set the maximum allowable value of velocity. '''
-        return (fluid_synth_cc(synth=CFS.c_void_p(self.synthesizer),
+        return (fluid_synth_cc(synth=CFS.c_void_p(self._synth),
                                chan=CFS.c_int(chan),
                                num=CFS.c_int(0x07),
                                val=CFS.c_int(val)))
 
     def sustain_on(self, chan: int) -> int:
         ''' The sound echoes for a long time. '''
-        return (fluid_synth_cc(synth=CFS.c_void_p(self.synthesizer),
+        return (fluid_synth_cc(synth=CFS.c_void_p(self._synth),
                                chan=CFS.c_int(chan),
                                num=CFS.c_int(0x40),
                                val=CFS.c_int(0b00100000)))
 
     def sustain_off(self, chan: int) -> int:
-        return (fluid_synth_cc(synth=CFS.c_void_p(self.synthesizer),
+        return (fluid_synth_cc(synth=CFS.c_void_p(self._synth),
                                chan=CFS.c_int(chan),
                                num=CFS.c_int(0x40),
                                val=CFS.c_int(0b00000000)))
 
     def pan(self, chan: int, val: int) -> int:
-        return (fluid_synth_cc(synth=CFS.c_void_p(self.synthesizer),
+        return (fluid_synth_cc(synth=CFS.c_void_p(self._synth),
                                chan=CFS.c_int(chan),
                                num=CFS.c_int(0x0A),
                                val=CFS.c_int(val)))
 
     def expression(self, chan: int, val: int) -> int:
         '''Temporary velocity can be set above volume.'''
-        return (fluid_synth_cc(synth=CFS.c_void_p(self.synthesizer),
+        return (fluid_synth_cc(synth=CFS.c_void_p(self._synth),
                                chan=CFS.c_int(chan),
                                num=CFS.c_int(0x0B),
                                val=CFS.c_int(val)))
@@ -1156,67 +1173,91 @@ class Sequencer(Synthesizer):
             'settings':'audio/settings.json',
             'soundfont':['sf2/FluidR3_GM.sf2', 'sf2/SGM-V2.01.sf2']}
     '''
-    quaternote: int = 240
-    bps: float = 120.0
-    sequencer: int
-    client_callbacks: list[int] = list()
-    client_ids: list[int] = list()
+    _callbacks: list[int] = list()
+    _clients: list[int] = list()
 
     def __init__(self, **kwargs: dict[str, str]) -> None:
         super().__init__(**kwargs)
-        self.sequencer = int(new_fluid_sequencer2(
-            use_system_timer=CFS.c_int(False)))
-        self.client_ids += [int(fluid_sequencer_register_fluidsynth(
-            seq=CFS.c_void_p(self.sequencer),
-            synth=CFS.c_void_p(self.synthesizer)))]
-        fluid_sequencer_set_time_scale(
-            seq=CFS.c_void_p(self.sequencer),
-            scale=CFS.c_double(self.quaternote / (60 / self.bps)))
-        self._assign_audio_driver()
+        try:
+            self._sequencer: int
+            self._bps: float = 120.0
+            self._quaternote: int = 240
+
+            self._sequencer = int(new_fluid_sequencer2(
+                use_system_timer=CFS.c_int(False)))
+            self._clients += [int(fluid_sequencer_register_fluidsynth(
+                seq=CFS.c_void_p(self._sequencer),
+                synth=CFS.c_void_p(self._synth)))]
+
+            self._set_time_scale()
+            self._assign_audio_driver()
+        except FSError as msg:
+            fluid_log(level=FLUID_LOG_LEVEL.ERR,
+                      fmt=b'%s',
+                      message=b'Sequencer failed. ' + str(msg).encode())
+            self.__del__()
 
     def __del__(self) -> None:
         self._delete_auido_driver()
-        for client_id in self.client_ids[::-1]:
+        for client_id in self._clients[::-1]:
             fluid_sequencer_unregister_client(
-                seq=CFS.c_void_p(self.sequencer),
+                seq=CFS.c_void_p(self._sequencer),
                 id=CFS.c_short(client_id))
-        delete_fluid_sequencer(seq=CFS.c_void_p(self.sequencer))
+        delete_fluid_sequencer(seq=CFS.c_void_p(self._sequencer))
         super().__del__()
+
+    def synthesizer_client_id(self) -> int:
+        return (self._clients[0])
 
     def register_client(self,
                         name: str,
                         callback: Union[Callable[..., None], None] = None,
                         data: Union[EventUserData, None] = None) -> int:
-        self.client_ids += [int(fluid_sequencer_register_client(
-            seq=CFS.c_void_p(self.sequencer),
+        '''Register a sequencer client.
+
+        [args]
+         - name: Name of sequencer client
+         - callback: Sequencer client callback or NULL for a source client.
+         - data: User data to pass to the callback
+
+        [return]
+         - Unique sequencer ID or FLUID_FAILED on error
+        '''
+        self._clients += [int(fluid_sequencer_register_client(
+            seq=CFS.c_void_p(self._sequencer),
             name=name.encode(),
             callback=FLUID_EVENT_CALLBACK_T(callback) if callback else None,
             data=CFS.byref(data) if data else None))]
-        self.client_callbacks += [cast(int, callback)]
-        return (self.client_ids[len(self.client_ids) - 1])
+        self._callbacks += [cast(int, callback)]
+        return (self._clients[len(self._clients) - 1])
 
+    @property
     def time_scale(self) -> float:
+        '''Ticks per second'''
         return (float(fluid_sequencer_get_time_scale(
-            seq=CFS.c_void_p(self.sequencer))))
+            seq=CFS.c_void_p(self._sequencer))))
 
-    def set_bps(self, bps: float) -> None:
-        '''Set the time scale of a sequencer.
-        "time_scale" in ticks per second
-        '''
-        self.bps = bps
-        fluid_sequencer_set_time_scale(
-            seq=CFS.c_void_p(self.sequencer),
-            scale=CFS.c_double(self.quaternote / (60 / self.bps)))
+    @property
+    def bps(self) -> float:
+        '''Number of quarternotes per second'''
+        return (self._bps)
 
-    def synthesizer_client_id(self) -> int:
-        return (self.client_ids[0])
+    @bps.setter
+    def bps(self, value: float) -> None:
+        self._bps = value
+        self._set_time_scale()
 
+    @property
     def tick(self) -> int:
-        '''Get the current tick of the sequencer scaled
-        by the time scale currently set
-        '''
+        '''current tick of the sequencer scaled
+        by the time scale currently set'''
         return (int(fluid_sequencer_get_tick(
-            seq=CFS.c_void_p(self.sequencer))))
+            seq=CFS.c_void_p(self._sequencer))))
+
+    def _set_time_scale(self):
+        fluid_sequencer_set_time_scale(
+            seq=CFS.c_void_p(self._sequencer),
+            scale=CFS.c_double(self._quaternote / (60 / self._bps)))
 
     def note_at(self,
                 ticks: int,
@@ -1254,7 +1295,7 @@ class Sequencer(Synthesizer):
 
     def _send_event_at(self, event: int, ticks: int, absolute: bool) -> int:
         result = fluid_sequencer_send_at(
-            seq=CFS.c_void_p(self.sequencer),
+            seq=CFS.c_void_p(self._sequencer),
             evt=CFS.c_void_p(event),
             time=CFS.c_uint(ticks),
             absolute=CFS.c_int(absolute))
@@ -1277,11 +1318,11 @@ class MidiRouter(Synthesizer):
         super().__init__(**kwargs)
         handler = fluid_synth_handle_midi_event
         self.midi_router = int(new_fluid_midi_router(
-            settings=CFS.c_void_p(self.settings),
+            settings=CFS.c_void_p(self._settings),
             handler=handler,
-            event_handler_data=CFS.c_void_p(self.synthesizer)))
+            event_handler_data=CFS.c_void_p(self._synth)))
         self.cmd_handler = int(new_fluid_cmd_handler(
-            synth=CFS.c_void_p(self.synthesizer),
+            synth=CFS.c_void_p(self._synth),
             router=CFS.c_void_p(self.midi_router)))
 
     def __del__(self) -> None:
@@ -1340,7 +1381,7 @@ class MidiDriver(MidiRouter):
             callback = fluid_midi_router_handle_midi_event
 
         self.midi_driver = int(new_fluid_midi_driver(
-            settings=CFS.c_void_p(self.settings),
+            settings=CFS.c_void_p(self._settings),
             handler=callback,
             event_handler_data=CFS.c_void_p(self.midi_router)))
         self._assign_audio_driver()
@@ -1368,7 +1409,7 @@ class MidiPlayer(MidiRouter):
     def __init__(self, **kwargs) -> None:
         super().__init__(**kwargs)
         self.player = int(new_fluid_player(
-            synth=CFS.c_void_p(self.synthesizer)))
+            synth=CFS.c_void_p(self._synth)))
 
         if 'handler' in kwargs:
             callback = kwargs['handler']

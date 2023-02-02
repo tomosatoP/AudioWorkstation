@@ -9,5 +9,7 @@ To speed up smf(standard midi file) analysis, cython was used.
 from distutils.core import setup, Extension
 from Cython.Build import cythonize
 
-ext = Extension("standardmidifile", sources=["standardmidifile.py"])
-setup(name="standardmidifile", ext_modules=cythonize([ext]))
+ext = Extension("standardmidifile",
+                sources=["standardmidifile.py"])
+setup(name="standardmidifile",
+      ext_modules=cythonize([ext]))

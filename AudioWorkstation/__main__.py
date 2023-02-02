@@ -2,5 +2,5 @@
 # -*- coding: utf-8 -*-
 
 if __name__ == '__main__':
-    from AudioWorkstation.metronome import Metronome
+    from metronome import Metronome
     Metronome().run()

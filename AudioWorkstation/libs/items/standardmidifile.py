@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-'''
-Purpose
-    Analyze MIDI files according to SMF (Standard MIDI File) format
-reference
-    MIDI1.0規格書(日本語版98.1) ISBN4-8456-0348-9 C3055  http://www.amei.or.jp/
-        2. MIDI 1.0
-        4. スタンダードMIDIファイル1.0
+'''Analyze MIDI files according to SMF (Standard MIDI File) format
+
+[reference]
+MIDI1.0規格書(日本語版98.1) ISBN4-8456-0348-9 C3055  http://www.amei.or.jp/
+ - 2. MIDI 1.0
+ - 4. スタンダードMIDIファイル1.0
 '''
 import cython as CY
 import struct
