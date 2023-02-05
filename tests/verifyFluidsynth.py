@@ -6,13 +6,14 @@ from functools import partial
 import ctypes as C
 from time import sleep
 from typing import Callable
+from pathlib import Path
 
 import context as CT
 
 from AudioWorkstation.libs.audio import amixer as MASTER
 from AudioWorkstation.libs.audio import fluidsynth as FS
 
-# test class FS.SynthesizerFS
+'''test class FS.SynthesizerFS'''
 
 
 def verify_synthesizer() -> bool:
@@ -55,7 +56,9 @@ def verify_synthesizer() -> bool:
     return (True)
 
 
-# test custum MIDI Router handler
+'''test custum MIDI Router handler'''
+
+
 @FS.HANDLE_MIDI_EVENT_FUNC_T
 def midi_event_handler(data, event) -> int:
     try:
@@ -68,21 +71,24 @@ def midi_event_handler(data, event) -> int:
     return (FS.FLUID_OK)
 
 
-# test class MidiDriverFS
+'''test class MidiDriverFS'''
+
+
 def verify_midi_driver() -> bool:
     kwargs = {
         'settings': 'config/settings.json',
         'soundfont': ['sf2/FluidR3_GM.sf2',
-                      'sf2/SGM-V2.01.sf2'],
-        'handler': midi_event_handler}
+                      'sf2/SGM-V2.01.sf2']}
+    # 'handler': midi_event_handler}
 
     mdfs = FS.MidiDriver(**kwargs)
     print(f'gain: {mdfs.gain:.1f}')
 
+    mdfs.apply_rules()
     print('default rule')
     sleep(5)
 
-    mdfs.change_rule('config/rule.mute_chan_0.json')
+    mdfs.apply_rules('config/rule.mute_chan_0.json')
     print('mute channel 0')
     sleep(5)
 
@@ -92,12 +98,11 @@ def verify_midi_driver() -> bool:
     return (True)
 
 
-# test class SequencerFS
+'''test class SequencerFS'''
 
-FS.EventUserData._fields_ = [
-    ('quit', C.c_bool),
-    ('rhythm', C.c_char_p),
-    ('beat', C.c_char_p)]
+FS.EventUserData._fields_ = [('quit', C.c_bool),
+                             ('rhythm', C.c_char_p),
+                             ('beat', C.c_char_p)]
 
 
 def metronome_pattern(data: FS.EventUserData) -> bool:
@@ -113,10 +118,10 @@ def metronome_pattern(data: FS.EventUserData) -> bool:
             k = 0 if all([i == 0, j == 0]) else 1
             m = 0 if all([i == 0, j == 0]) else 1 if j == 0 else 2
             sfs.note_at(time_marker, 9, key[k], vel[m], int(beat / 2),
-                        destination=sfs._clients[0])
+                        destination=sfs.clients[0])
             time_marker += beat
 
-    sfs.timer_at(ticks=time_marker, destination=sfs._clients[1])
+    sfs.timer_at(ticks=time_marker, destination=sfs.clients[1])
     return (True)
 
 
@@ -137,6 +142,9 @@ def verify_sequencer() -> bool:
 
     data = FS.EventUserData()
     sfs.register_client('metronome', client_callback, data)
+
+    for i in sfs.clients:
+        print(sfs.client_name(id=i))
 
     sfs.bps = 120
     data.quit = False
@@ -173,25 +181,26 @@ def verify_midi_player() -> bool:
                       'sf2/YDP-GrandPiano-20160804.sf2']}
 
     mpfs = FS.MidiPlayer(**kwargs)
-    mpfs.change_rule('config/rule.mute_chan_0.json')
+    mpfs.apply_rules('config/rule.mute_chan_0.json')
     mpfs.gain = 0.3
     print(f'gain: {mpfs.gain:.1f}')
 
+    extension: list[str] = ['.mid', '.MID']
+    files: list = [i for i in Path().glob('mid/*.*') if i.suffix in extension]
+
     with futures.ThreadPoolExecutor(max_workers=1) as e:
-        filename = 'mid/l3007_02.mid'
-        tick: int = 0
-        for _ in range(3):
-            f = e.submit(mpfs.start, filename, tick)
+        tick: int = 10000
+        for fo in files:
+            print(fo.name)
+            f = e.submit(mpfs.start, 'mid/' + fo.name, tick)
             f.add_done_callback(partial(future_callback, mpfs.close))
             sleep(2)
-            tick = mpfs.stop() + 5000
+            tick = mpfs.stop()
             sleep(0.1)
 
-        filename = 'mid/l3007_03.mid'
-        f = e.submit(mpfs.start, filename, 20000)
+        filename = 'mid/SenBonZakura.mid'
+        f = e.submit(mpfs.start, filename, 140000)
         f.add_done_callback(partial(future_callback, mpfs.close))
-        sleep(10)
-        mpfs.stop()
 
     print('channel preset')
     for sound_set in mpfs.channels_preset():

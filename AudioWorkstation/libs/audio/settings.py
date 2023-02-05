@@ -11,12 +11,12 @@ After editing, the settings can be changed by loading the 'json file'.
 '''
 
 # test foreach settings
-parts_settings: dict[str, dict[str, Any]] = dict()
+all_settings: dict[str, dict[str, Any]] = dict()
 
 
 @FS.FLUID_SETTINGS_FOREACH_T
 def settings_types(data, name, type):
-    parts_settings[bytes(name).decode()] = {
+    all_settings[bytes(name).decode()] = {
         "type": type,
         "options": None,
         "range": None,
@@ -31,7 +31,7 @@ def settings_option(data, name, option):
 
 
 def verify_settings() -> bool:
-    global parts_settings, option_list
+    global all_settings, option_list
     hints_id = C.c_int()
 
     settings = FS.new_fluid_settings()
@@ -39,7 +39,7 @@ def verify_settings() -> bool:
                               data=None,
                               func=settings_types)
 
-    for name, part in parts_settings.items():
+    for name, part in all_settings.items():
         type = part['type']
         if type == FS.FLUID_TYPE.NUM:
             buffer = C.c_double()
@@ -106,8 +106,8 @@ def verify_settings() -> bool:
         else:
             pass
 
-    with open('audio/settings.default.json', 'w') as fw:
-        dump(parts_settings, fw, indent=4)
+    with open('config/settings.default.json', 'w') as fw:
+        dump(all_settings, fw, indent=4)
     return (True)
 
 

@@ -1,87 +1,77 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from libs.audio import fluidsynth as FS
-import ctypes as C
+from AudioWorkstation.libs.audio import fluidsynth as FS
+from time import sleep
 
-FS.EventUserData._fields_ = \
-    [('quit', C.c_bool),
-     ('rhythm', C.c_char_p),
-     ('beat', C.c_char_p)]
 
-'''
+sfs: FS.Sequencer
+pquit: bool
+rhythm: list[int]
+notevalue: int
+pdata: FS.EventUserData
+
+
 @FS.FLUID_EVENT_CALLBACK_T
-def client_callback(time, event, sequencer, p_data):
-    if not p_data.contents.quit:
-        pattern(p_data.contents)
+def pcallback(time, event, sequencer, data):
+    # global sfs, pquit, rhythm, notevalue, pdata
+    pattern()
 
-def pattern(data: FS.EventUserData) -> None:
-    global sfs
-    time_marker = sfs.tick()
+
+def pattern():
+    # global sfs, pquit, rhythm, notevalue, pdata
+
+    time_marker = sfs.tick
+    print(time_marker)
 
     key = [75, 76]
     vel = [127, 95, 64]
-    rhythm = list(map(int, data.rhythm.decode().split('+')))
-    beat = int(sfs.quaternote * 4 / int(data.beat.decode()))
+    dur = int(sfs._quaternote * 4 / int(notevalue))
 
     for i in range(len(rhythm)):
         for j in range(rhythm[i]):
             k = 0 if all([i == 0, j == 0]) else 1
             m = 0 if all([i == 0, j == 0]) else 1 if j == 0 else 2
-            sfs.note_at(time_marker, 9, key[k], vel[m], int(beat / 2),
-                        destination=sfs.client_ids[0])
-            time_marker += beat
-    sfs.timer_at(ticks=time_marker, destination=sfs.client_ids[1])
-'''
+            sfs.note_at(time_marker, 9, key[k], vel[m], int(dur / 2),
+                        destination=sfs.clients[0])
+            time_marker += dur
+    sfs.timer_at(time_marker, destination=sfs.clients[1])
+    print(time_marker)
 
 
 class Pattern():
 
     def __init__(self) -> None:
+        global sfs, pquit, rhythm, notevalue, pdata
         kwargs = {'settings': 'config/settings.json',
                   'soundfont': ['sf2/FluidR3_GM.sf2']}
 
-        self.sfs = FS.Sequencer(**kwargs)
-        self.data = FS.EventUserData()
+        sfs = FS.Sequencer(**kwargs)
+        pdata = FS.EventUserData()
 
-        self.sfs.register_client('metronome', self.callback, None)
+        sfs.register_client('metronome', pcallback, pdata)
+        print(sfs.clients)
 
     def start(self, bps: float, beat: list) -> None:
+        global sfs, pquit, rhythm, notevalue, pdata
         print(f'sound on [tempo: {bps}, beat: {beat}]')
-        self.sfs._bps(bps)
-        self.data.quit = False
-        self.data.rhythm = beat[0].encode()
-        self.data.beat = beat[1].encode()
-        self.rhythm = beat[0].encode()
-        self.beat = beat[1].encode()
-        self.pattern()
+        sfs.bps = bps
+
+        pquit = False
+        rhythm = list(map(int, str(beat[0]).split('+')))
+        notevalue = int(beat[1])
+        pattern()
+
+        sleep(30)
 
     def stop(self):
+        global sfs, pquit, rhythm, notevalue, pdata
         print('sound off')
-        self.data.quit = True
-
-    @FS.FLUID_EVENT_CALLBACK_T
-    def callback(self, time, event, sequencer, data):
-        self.pattern()
-
-    def pattern(self):
-        time_marker = self.sfs.tick()
-
-        key = [75, 76]
-        vel = [127, 95, 64]
-        rhythm = list(map(int, self.rhythm.decode().split('+')))
-        beat = int(self.sfs._quaternote * 4 / int(self.beat.decode()))
-
-        for i in range(len(rhythm)):
-            for j in range(rhythm[i]):
-                k = 0 if all([i == 0, j == 0]) else 1
-                m = 0 if all([i == 0, j == 0]) else 1 if j == 0 else 2
-                self.sfs.note_at(time_marker, 9, key[k], vel[m], int(beat / 2),
-                                 destination=self.sfs._clients[0])
-                time_marker += beat
-        self.sfs.timer_at(ticks=time_marker,
-                          destination=self.sfs._clients[1])
+        pquit = True
 
 
 if __name__ == '__main__':
+    cpt = Pattern()
+    cpt.start(120, [4, 4])
+    sleep(20)
     print('pattern')

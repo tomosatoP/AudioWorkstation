@@ -427,6 +427,12 @@ fluid_sequencer_unregister_client = prototype(
     (CFS.c_void_p, 1, 'seq'),
     (CFS.c_short, 1, 'id'))
 
+fluid_sequencer_get_client_name = prototype(
+    CFS.c_char_p, 'fluid_sequencer_get_client_name',
+    (CFS.c_void_p, 1, 'seq'),
+    (CFS.c_void_p, 1, 'id'))
+fluid_sequencer_get_client_name.errcheck = errcheck
+
 fluid_sequencer_get_tick = prototype(
     CFS.c_uint, 'fluid_sequencer_get_tick',
     (CFS.c_void_p, 1, 'seq'))
@@ -875,7 +881,8 @@ class Synthesizer:
 
     def __init__(self, **kwargs: dict[str, Any]) -> None:
         try:
-            self._logs(logfilename='logs/fluidsynth.log')
+            self._logs(
+                logfilename='logs/fluidsynth.log')
 
             self._settings: int = int(new_fluid_settings())
             if 'settings' in kwargs:
@@ -912,7 +919,7 @@ class Synthesizer:
             if type(self) == Synthesizer:
                 self._assign_audio_driver()
         except FSError as msg:
-            fluid_log(level=FLUID_LOG_LEVEL.ERR,
+            fluid_log(level=CFS.c_int(FLUID_LOG_LEVEL.ERR),
                       fmt=b'%s',
                       message=b'Synthesizer failed. ' + str(msg).encode())
             self.__del__()
@@ -1173,8 +1180,7 @@ class Sequencer(Synthesizer):
             'settings':'audio/settings.json',
             'soundfont':['sf2/FluidR3_GM.sf2', 'sf2/SGM-V2.01.sf2']}
     '''
-    _callbacks: list[int] = list()
-    _clients: list[int] = list()
+    clients: list[int] = list()
 
     def __init__(self, **kwargs: dict[str, str]) -> None:
         super().__init__(**kwargs)
@@ -1182,32 +1188,37 @@ class Sequencer(Synthesizer):
             self._sequencer: int
             self._bps: float = 120.0
             self._quaternote: int = 240
+            self._callbacks: list[int] = list()
 
             self._sequencer = int(new_fluid_sequencer2(
                 use_system_timer=CFS.c_int(False)))
-            self._clients += [int(fluid_sequencer_register_fluidsynth(
-                seq=CFS.c_void_p(self._sequencer),
-                synth=CFS.c_void_p(self._synth)))]
+            self.clients += [
+                int(fluid_sequencer_register_fluidsynth(
+                    seq=CFS.c_void_p(self._sequencer),
+                    synth=CFS.c_void_p(self._synth)))]
 
             self._set_time_scale()
             self._assign_audio_driver()
         except FSError as msg:
-            fluid_log(level=FLUID_LOG_LEVEL.ERR,
+            fluid_log(level=CFS.c_int(FLUID_LOG_LEVEL.ERR),
                       fmt=b'%s',
                       message=b'Sequencer failed. ' + str(msg).encode())
             self.__del__()
 
     def __del__(self) -> None:
         self._delete_auido_driver()
-        for client_id in self._clients[::-1]:
+        for client_id in self.clients[::-1]:
             fluid_sequencer_unregister_client(
                 seq=CFS.c_void_p(self._sequencer),
                 id=CFS.c_short(client_id))
         delete_fluid_sequencer(seq=CFS.c_void_p(self._sequencer))
         super().__del__()
 
-    def synthesizer_client_id(self) -> int:
-        return (self._clients[0])
+    def client_name(self, id: int) -> str:
+        return (
+            fluid_sequencer_get_client_name(seq=CFS.c_void_p(self._sequencer),
+                                            id=CFS.c_void_p(id)
+                                            ).decode())
 
     def register_client(self,
                         name: str,
@@ -1223,13 +1234,13 @@ class Sequencer(Synthesizer):
         [return]
          - Unique sequencer ID or FLUID_FAILED on error
         '''
-        self._clients += [int(fluid_sequencer_register_client(
+        self.clients += [int(fluid_sequencer_register_client(
             seq=CFS.c_void_p(self._sequencer),
             name=name.encode(),
             callback=FLUID_EVENT_CALLBACK_T(callback) if callback else None,
             data=CFS.byref(data) if data else None))]
         self._callbacks += [cast(int, callback)]
-        return (self._clients[len(self._clients) - 1])
+        return (self.clients[len(self.clients) - 1])
 
     @property
     def time_scale(self) -> float:
@@ -1265,6 +1276,7 @@ class Sequencer(Synthesizer):
                 duration: int,
                 source: int = -1, destination: int = -1,
                 absolute: bool = True) -> None:
+
         event = self._assign_event(source=source,
                                    destination=destination)
         fluid_event_note(evt=CFS.c_void_p(event),
@@ -1279,6 +1291,7 @@ class Sequencer(Synthesizer):
                  data: Union[EventUserData, None] = None,
                  source: int = -1, destination: int = -1,
                  absolute: bool = True) -> None:
+
         event = self._assign_event(source=source,
                                    destination=destination)
         fluid_event_timer(evt=CFS.c_void_p(event),
@@ -1311,53 +1324,80 @@ class MidiRouter(Synthesizer):
             'settings':'audio/settings.json',
             'soundfont':['sf2/FluidR3_GM.sf2', 'sf2/SGM-V2.01.sf2']}
     '''
-    midi_router: int
-    cmd_handler: int
 
     def __init__(self, **kwargs: dict[str, str]) -> None:
         super().__init__(**kwargs)
-        handler = fluid_synth_handle_midi_event
-        self.midi_router = int(new_fluid_midi_router(
-            settings=CFS.c_void_p(self._settings),
-            handler=handler,
-            event_handler_data=CFS.c_void_p(self._synth)))
-        self.cmd_handler = int(new_fluid_cmd_handler(
-            synth=CFS.c_void_p(self._synth),
-            router=CFS.c_void_p(self.midi_router)))
+        try:
+            handler = fluid_synth_handle_midi_event
+            # handler = self.print_chan
+            self.midi_router: int = int(new_fluid_midi_router(
+                settings=CFS.c_void_p(self._settings),
+                handler=handler,
+                event_handler_data=CFS.c_void_p(self._synth)))
+
+            self.cmd_handler: int = int(new_fluid_cmd_handler(
+                synth=CFS.c_void_p(self._synth),
+                router=CFS.c_void_p(self.midi_router)))
+        except FSError as msg:
+            fluid_log(level=CFS.c_int(FLUID_LOG_LEVEL.ERR),
+                      fmt=b'%s',
+                      message=b'Midi Router ' + str(msg).encode())
+            self.__del__()
 
     def __del__(self) -> None:
         delete_fluid_cmd_handler(handler=CFS.c_void_p(self.cmd_handler))
         delete_fluid_midi_router(router=CFS.c_void_p(self.midi_router))
         super().__del__()
 
-    def apply_default_rules(self) -> None:
-        fluid_midi_router_clear_rules(router=CFS.c_void_p(self.midi_router))
-        fluid_midi_router_set_default_rules(
-            router=CFS.c_void_p(self.midi_router))
+    def apply_rules(self, rule_file: Union[str, None] = None) -> bool:
+        '''Apply rules for MIDI events.
 
-    def change_rule(self, rule_file: str) -> int:
-        fluid_midi_router_clear_rules(router=CFS.c_void_p(self.midi_router))
+        [args]
+         - rule_file: Rule file to be applied  in json file,
+         or default rules if none
 
-        with open(rule_file, 'r') as fp:
-            rules_json = load(fp)
+        [return]
+         - bool
+        '''
+        try:
+            fluid_midi_router_clear_rules(
+                router=CFS.c_void_p(self.midi_router))
 
-        for rd in rules_json.values():
-            rule = new_fluid_midi_router_rule()
-            if rd['chan'] is not None:
-                fluid_midi_router_rule_set_chan(
-                    rule,
-                    *rd['chan'].values())
-            if rd['param1'] is not None:
-                fluid_midi_router_rule_set_param1(
-                    rule,
-                    *rd['param1'].values())
-            if rd['param2'] is not None:
-                fluid_midi_router_rule_set_param2(
-                    rule,
-                    *rd['param2'].values())
-            fluid_midi_router_add_rule(
-                self.midi_router,
-                rule, rd['type'])
+            if rule_file is None:
+                fluid_midi_router_set_default_rules(
+                    router=CFS.c_void_p(self.midi_router))
+            else:
+                with open(rule_file, 'r') as fp:
+                    rules_json = load(fp)
+
+                for rd in rules_json.values():
+                    rule = new_fluid_midi_router_rule()
+                    if rd['chan'] is not None:
+                        fluid_midi_router_rule_set_chan(
+                            rule,
+                            *rd['chan'].values())
+                    if rd['param1'] is not None:
+                        fluid_midi_router_rule_set_param1(
+                            rule,
+                            *rd['param1'].values())
+                    if rd['param2'] is not None:
+                        fluid_midi_router_rule_set_param2(
+                            rule,
+                            *rd['param2'].values())
+                    fluid_midi_router_add_rule(
+                        self.midi_router,
+                        rule, rd['type'])
+        except FSError as msg:
+            fluid_log(level=CFS.c_int(FLUID_LOG_LEVEL.ERR),
+                      fmt=b'%s',
+                      message=b'Midi Router Rule ' + str(msg).encode())
+            return (False)
+        else:
+            return (True)
+
+    @HANDLE_MIDI_EVENT_FUNC_T
+    def print_chan(data, event):
+        fluid_synth_handle_midi_event(data, event)
         return (FLUID_OK)
 
 
@@ -1370,21 +1410,25 @@ class MidiDriver(MidiRouter):
             'soundfont':['sf2/FluidR3_GM.sf2', 'sf2/SGM-V2.01.sf2'],
             'handler': fluid_midi_dump_prerouter}
     '''
-    midi_driver: int
 
     def __init__(self, **kwargs: dict[str, str]) -> None:
         super().__init__(**kwargs)
+        try:
+            if 'handler' in kwargs:
+                callback = kwargs['handler']
+            else:
+                callback = fluid_midi_router_handle_midi_event
 
-        if 'handler' in kwargs:
-            callback = kwargs['handler']
-        else:
-            callback = fluid_midi_router_handle_midi_event
-
-        self.midi_driver = int(new_fluid_midi_driver(
-            settings=CFS.c_void_p(self._settings),
-            handler=callback,
-            event_handler_data=CFS.c_void_p(self.midi_router)))
-        self._assign_audio_driver()
+            self.midi_driver: int = int(new_fluid_midi_driver(
+                settings=CFS.c_void_p(self._settings),
+                handler=callback,
+                event_handler_data=CFS.c_void_p(self.midi_router)))
+            self._assign_audio_driver()
+        except FSError as msg:
+            fluid_log(level=CFS.c_int(FLUID_LOG_LEVEL.ERR),
+                      fmt=b'%s',
+                      message=b'Midi Driver ' + str(msg).encode())
+            self.__del__()
 
     def __del__(self) -> None:
         self._delete_auido_driver()
@@ -1401,25 +1445,31 @@ class MidiPlayer(MidiRouter):
             'soundfont':['sf2/FluidR3_GM.sf2', 'sf2/SGM-V2.01.sf2'],
             'handler': fluid_midi_dump_prerouter}
     '''
-    player: int
 
     _wait_second: Union[int, float] = 0.1
     _total_ticks: int = 0
 
     def __init__(self, **kwargs) -> None:
         super().__init__(**kwargs)
-        self.player = int(new_fluid_player(
-            synth=CFS.c_void_p(self._synth)))
+        try:
+            self.player: int = int(new_fluid_player(
+                synth=CFS.c_void_p(self._synth)))
 
-        if 'handler' in kwargs:
-            callback = kwargs['handler']
-        else:
-            callback = fluid_midi_router_handle_midi_event
-        fluid_player_set_playback_callback(
-            player=CFS.c_void_p(self.player),
-            handler=callback,
-            handler_data=CFS.c_void_p(self.midi_router))
-        self._assign_audio_driver()
+            if 'handler' in kwargs:
+                callback = kwargs['handler']
+            else:
+                callback = fluid_midi_router_handle_midi_event
+
+            fluid_player_set_playback_callback(
+                player=CFS.c_void_p(self.player),
+                handler=callback,
+                handler_data=CFS.c_void_p(self.midi_router))
+            self._assign_audio_driver()
+        except FSError as msg:
+            fluid_log(level=CFS.c_int(FLUID_LOG_LEVEL.ERR),
+                      fmt=b'%s',
+                      messaga=b'Midi Player ' + str(msg).encode())
+            self.__del__()
 
     def __del__(self) -> None:
         self._delete_auido_driver()
@@ -1477,7 +1527,7 @@ class MidiPlayer(MidiRouter):
             fluid_player_stop(player=CFS.c_void_p(self.player))
             fluid_log(level=CFS.c_int(FLUID_LOG_LEVEL.WARN),
                       fmt=b'%s',
-                      message=b'player seek ' + str(msg).encode())
+                      message=b'Player seek ' + str(msg).encode())
         return (FLUID_FAILED)
 
 

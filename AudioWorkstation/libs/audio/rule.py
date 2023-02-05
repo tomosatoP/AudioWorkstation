@@ -104,7 +104,7 @@ def verify_rule() -> bool:
         'type': FS.FLUID_MIDI_ROUTER_RULE_TYPE.KEY_PRESSURE,
         'chan': None, 'param1': None, 'param2': None}
 
-    with open('audio/rule.mute_chan_0.json', 'w') as fw:
+    with open('config/rule.mute_chan_0.json', 'w') as fw:
         dump(rules, fw, indent=4)
 
     return (True)
