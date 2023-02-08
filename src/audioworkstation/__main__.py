@@ -3,6 +3,6 @@
 
 
 if __name__ == '__main__':
-    from AudioWorkstation import introduction
+    from src.audioworkstation import introduction
     from .metronome import Metronome
     Metronome().run()

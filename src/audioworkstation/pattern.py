@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from AudioWorkstation.libs.audio import fluidsynth as FS
+from src.audioworkstation.libs.audio import fluidsynth as FS
 from time import sleep
 
 

@@ -8,10 +8,10 @@ from time import sleep
 from typing import Callable
 from pathlib import Path
 
-import context as CT
+# import context as CT
 
-from AudioWorkstation.libs.audio import amixer as MASTER
-from AudioWorkstation.libs.audio import fluidsynth as FS
+from src.audioworkstation.libs.audio import amixer as MASTER
+from src.audioworkstation.libs.audio import fluidsynth as FS
 
 '''test class FS.SynthesizerFS'''
 
@@ -214,8 +214,6 @@ def verify_midi_player() -> bool:
 
 
 if __name__ == '__main__':
-    CT.check()
-    MASTER.volume()
     verify_synthesizer()
     verify_sequencer()
     verify_midi_driver()

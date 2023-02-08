@@ -3,7 +3,7 @@
 
 from functools import partial
 from concurrent import futures
-from AudioWorkstation.midifile import *
+from audioworkstation.midifile import *
 from kivy.resources import resource_add_path
 from kivy.core.text import LabelBase, DEFAULT_FONT
 from kivy.properties import (

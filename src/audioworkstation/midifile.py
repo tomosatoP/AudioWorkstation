@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from items.standardmidifile import *
-from audio.fluidsynth import *
+from src.audioworkstation.libs.audio import fluidsynth
+from src.audioworkstation.libs.items import standardmidifile
 
 
 class MidiPlayer():
@@ -12,10 +12,10 @@ class MidiPlayer():
         kwargs = {
             'settings': 'audio/settings.json',
             'soundfont': 'sf2/FluidR3_GM.sf2'}
-        self._player = MidiPlayerFS(**kwargs)
+        self._player = MidiPlayer(**kwargs)
 
     def start(self, filename: str) -> str:
-        self._player.gain(0.5)
+        self._player.gain = 0.5
         self._player.change_rule('kivy/rule.mute_chan.json')
         self._player.start(midifile=filename, start_tick=self.pause_tick)
         return (f'{filename}')
@@ -33,7 +33,7 @@ def gm_sound_set_names() -> tuple:
     kwargs = {
         'settings': 'audio/settings.json',
         'soundfont': 'sf2/FluidR3_GM.sf2'}
-    synthesizer = SynthesizerFS(**kwargs)
+    synthesizer = Synthesizer(**kwargs)
 
     names = list()
     pnames = list()
