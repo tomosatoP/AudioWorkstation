@@ -10,8 +10,12 @@ from src.audioworkstation.libs.audio import amixer as Master
 
 class TestMaster(unittest.TestCase):
 
+    def test_start(self):
+        self.assertTrue(Master.start())
+
     def test_volume(self) -> None:
-        print(Master.volume())
+        arg = '50%,50%'
+        self.assertEqual(Master.volume(arg), arg)
 
 
 if __name__ == '__main__':

@@ -3,6 +3,7 @@
 
 from src.audioworkstation.libs.audio import fluidsynth
 from src.audioworkstation.libs.items import standardmidifile
+from json import dump
 
 
 class MidiPlayer():

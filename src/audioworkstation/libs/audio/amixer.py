@@ -43,21 +43,24 @@ _using_Headphones = [
 ]
 
 
+def start() -> bool:
+    '''start jackd server'''
+    result = filter(lambda i: subprocess.run(i).returncode != 0, _using_S)
+
+    return (True if len(list(result)) == 0 else False)
+
+
 def volume(percentage: Optional[str] = None) -> str:
-    '''Usage
-    - volume()
-    - volume('100%,100%')
-    - volume('10%+,10%+')
-    - volume('10%-,10%-')
+    '''Master playback volume settings
+
+    [args]
+    - None: returns the current volume setting as a percentage
+    - If both left and right are set to 100%, '100%,100%'
+    - If both left and right are 10% larger, '10%+,10%+'
+    - If both left and right are 10% smaller, '10%-,10%-'
     '''
 
-    if percentage is None:
-        ''' jackd server and playback volume settings '''
-        result = filter(lambda i: subprocess.run(i).returncode != 0, _using_S)
-        print('start jack server') if len(list(result)) == 0 \
-            else print('Error: Failed to open jack server')
-    else:
-        ''' master playback volume settings '''
+    if percentage is not None:
         _amixer_master[3] = percentage
 
     result = subprocess.run(_amixer_master, capture_output=True, text=True)

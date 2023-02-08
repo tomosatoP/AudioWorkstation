@@ -3,6 +3,10 @@
 
 
 if __name__ == '__main__':
-    from src.audioworkstation import introduction
-    from .metronome import Metronome
-    Metronome().run()
+    from . import introduction as Intro
+    # from . metronome import Metronome
+    from . player import Player
+
+    Intro.start()
+    # Metronome().run()
+    Player().run()

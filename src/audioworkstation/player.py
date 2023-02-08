@@ -3,7 +3,8 @@
 
 from functools import partial
 from concurrent import futures
-from audioworkstation.midifile import *
+from pathlib import Path
+
 from kivy.resources import resource_add_path
 from kivy.core.text import LabelBase, DEFAULT_FONT
 from kivy.properties import (
@@ -12,8 +13,9 @@ from kivy.uix.togglebutton import ToggleButton
 from kivy.uix.widget import Widget
 from kivy.clock import Clock
 from kivy.app import App
-import sys
-sys.path.append('../AudioWorkstation')
+
+from src.audioworkstation.libs.audio import fluidsynth as FS
+from src.audioworkstation import midifile as MF
 
 
 # To use japanese font in Kivy
@@ -42,13 +44,13 @@ class PlayerView(Widget):
     channels = ObjectProperty(None)
     sound_set = list()
     percussion_sound_set = list()
-    midi_player = MidiPlayer()
+    midi_player = FS.MidiPlayer()
     executor = futures.ThreadPoolExecutor()
 
     def __init__(self, **kwargs):
         super(PlayerView, self).__init__(**kwargs)
 
-        self.sound_set, self.percussion_sound_set = gm_sound_set_names()
+        self.sound_set, self.percussion_sound_set = MF.gm_sound_set_names()
         self.add_channelbuttons()
 
         extension = ['.mid', '.MID']
@@ -85,7 +87,7 @@ class PlayerView(Widget):
             self.sound(state='down')
             self.play_button.disabled = False
         elif state == 'down':
-            self.midi_player.pause()
+            self.midi_player.stop()
             self.play_button.disabled = True
 
     def disable_buttons(self, disable: bool) -> None:

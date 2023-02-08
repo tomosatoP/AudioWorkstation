@@ -46,10 +46,9 @@ gui = ["kivy~=2.0.0"]
 
 [tool.setuptools]
 package-dir = {"" = "src"}
-py-modules = ["audioworkstation"]
 
 [tool.setuptools.dynamic]
-version = {attr = "src.audioworkstation.version"}
+version = {attr = "audioworkstation.version.version"}
 
 [tool.setuptools_scm]
 local_scheme = "no-local-version"

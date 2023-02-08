@@ -11,16 +11,15 @@ from pathlib import Path
 
 class TestSMF(unittest.TestCase):
 
+    def setUp(self) -> None:
+        midifilename = 'mid/R01698G2.mid'
+        # title='usseiwa'
+        fo = Path(midifilename)
+        self.midifile = SMF.StandardMidiFile(fo)
+        return super().setUp()
+
     def test_title(self) -> None:
-        extension = ['.mid', '.MID']
-        list_midifile = [
-            i for i in Path().glob('mid/*.*') if i.suffix in extension]
-
-        for i in list_midifile:
-            midifile = SMF.StandardMidiFile(i)
-            print(f'{i}, {midifile.title()}, {midifile.channels_preset()}')
-
-        self.assertEqual(2, 2)
+        self.assertEqual(self.midifile.title(), 'usseiwa')
 
 
 if __name__ == '__main__':
