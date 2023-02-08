@@ -28,7 +28,7 @@ keywords = [
   "midi",
 ]
 license = {file = "LICENSE"}
-name = "audioworkstation"
+name = "AudioWorkstation"
 readme = "README.md"
 requires-python = "~=3.9"
 
@@ -46,6 +46,7 @@ gui = ["kivy~=2.0.0"]
 
 [tool.setuptools]
 package-dir = {"" = "src"}
+py-modules = ["audioworkstation"]
 
 [tool.setuptools.dynamic]
 version = {attr = "src.audioworkstation.version"}
