@@ -14,5 +14,5 @@ def start():
 
     # Using Official RPi touch display
     Config.set('input', 'mouse', 'mouse')
-    Config.set('input', 'mtdev_%(name)s', 'probesysfs,provider=mtdev')
+    # Config.set('input', 'mtdev_%(name)s', 'probesysfs,provider=mtdev')
     Config.set('input', 'hid_%(name)s', 'probesysfs,provider=hidinput')

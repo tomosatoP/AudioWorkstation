@@ -159,7 +159,7 @@ def _log_func(level, message, data) -> None:
     elif int(level) == FLUID_LOG_LEVEL.ERR:
         LFS.error(f'{mes}')
     elif int(level) == FLUID_LOG_LEVEL.WARN:
-        LFS.warn(f'{mes}')
+        LFS.warning(f'{mes}')
     elif int(level) == FLUID_LOG_LEVEL.INFO:
         LFS.info(f'{mes}')
     elif int(level) == FLUID_LOG_LEVEL.DBG:

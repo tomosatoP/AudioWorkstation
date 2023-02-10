@@ -64,7 +64,7 @@ def future_callback(func: Callable[..., None], future: futures.Future) -> bool:
     return (future.done())
 
 
-class TestSMF(unittest.TestCase):
+class TestFluidsynth(unittest.TestCase):
 
     def setUp(self) -> None:
         MASTER.start()

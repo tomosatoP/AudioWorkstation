@@ -7,6 +7,7 @@ from pathlib import Path
 
 from kivy.resources import resource_add_path
 from kivy.core.text import LabelBase, DEFAULT_FONT
+from kivy.logger import Logger
 from kivy.properties import (
     ListProperty, NumericProperty, StringProperty, ObjectProperty)
 from kivy.uix.togglebutton import ToggleButton
@@ -14,7 +15,6 @@ from kivy.uix.widget import Widget
 from kivy.clock import Clock
 from kivy.app import App
 
-from src.audioworkstation.libs.audio import fluidsynth as FS
 from src.audioworkstation import midifile as MF
 
 
@@ -31,7 +31,11 @@ class MidiTitleButton(ToggleButton):
 
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
-            print(f'{self.index}, {self.total_tick}, {self.text}, {self.filename}')
+            log = f'index: {self.index}' + ', '
+            log += f'ticks: {self.total_tick}' + ', '
+            log += f'title: {self.text}' + ', '
+            log += f'filename: {self.filename}'
+            Logger.info('select: ' + log)
             app = App.get_running_app()
             app.root.set_presets_for_each_channel(self.index)
         return super().on_touch_down(touch)
@@ -44,7 +48,7 @@ class PlayerView(Widget):
     channels = ObjectProperty(None)
     sound_set = list()
     percussion_sound_set = list()
-    midi_player = FS.MidiPlayer()
+    midi_player = MF.MidiPlayer()
     executor = futures.ThreadPoolExecutor()
 
     def __init__(self, **kwargs):
@@ -68,26 +72,28 @@ class PlayerView(Widget):
         self.midi_player.close()
         if self.pause_button.state == 'normal':
             self.play_button.state = 'normal'
+        Logger.info('player: End of playback')
 
     def sound(self, state: str) -> None:
         if state == 'down':
             self.mute_channels()
             mtb = self.selected_midititlebutton()
-            print(f'{mtb.filename}, {mtb.total_tick}')
             future = self.executor.submit(self.midi_player.start, mtb.filename)
             future.add_done_callback(self.future_callback)
             self.disable_buttons(True)
+            Logger.info(
+                f'player: Playback start {mtb.filename}, {mtb.total_tick}')
         elif state == 'normal':
             self.midi_player.close()
             self.disable_buttons(False)
-            print('sound off')
+            Logger.info('player: Stop playback')
 
     def pause(self, state: str) -> None:
         if state == 'normal':
             self.sound(state='down')
             self.play_button.disabled = False
         elif state == 'down':
-            self.midi_player.stop()
+            self.midi_player.pause()
             self.play_button.disabled = True
 
     def disable_buttons(self, disable: bool) -> None:
@@ -104,15 +110,15 @@ class PlayerView(Widget):
     #    self.midifiles.children[-(num + 1)].state = 'down'
 
     def add_midititlebutton(self, midifile: Path) -> int:
-        smf = StandardMidiFile(midifile)
+        smf: dict = MF.info_midifile(midifile)
         index = len(self.midifiles.children)
         self.midifiles.add_widget(
             MidiTitleButton(
-                text=smf.title(),
+                text=smf['title'],
                 index=index,
-                total_tick=smf.total_tick(),
+                total_tick=smf['total_tick'],
                 filename='mid/' + midifile.name,
-                channels_preset=smf.channels_preset()))
+                channels_preset=smf['channels_preset']))
         return (index)
 
     def mute_channels(self) -> str:
@@ -121,7 +127,7 @@ class PlayerView(Widget):
         for chan in self.channels.children[::-1]:
             channels[str(chan_num)] = False if chan.state == 'down' else True
             chan_num += 1
-        return (mute_rules(**channels))
+        return (MF.mute_rules(**channels))
 
     def set_presets_for_each_channel(self, midititlebutton_num: int) -> None:
         midititlebutton = self.midifiles.children[-(midititlebutton_num + 1)]
