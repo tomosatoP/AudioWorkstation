@@ -3,6 +3,7 @@
 
 from functools import partial
 from concurrent import futures
+from typing import Optional
 from pathlib import Path
 
 from kivy.resources import resource_add_path
@@ -29,15 +30,21 @@ class MidiTitleButton(ToggleButton):
     filename = StringProperty()
     channels_preset = ListProperty()
 
+    def __init__(self, **kwargs):
+        super(MidiTitleButton, self).__init__(**kwargs)
+        self.register_event_type('on_select')
+
+    def on_select(self):
+        pass
+
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
             log = f'index: {self.index}' + ', '
             log += f'ticks: {self.total_tick}' + ', '
             log += f'title: {self.text}' + ', '
             log += f'filename: {self.filename}'
-            Logger.info('select: ' + log)
-            app = App.get_running_app()
-            app.root.set_presets_for_each_channel(self.index)
+            Logger.debug('select: ' + log)
+            self.dispatch('on_select')
         return super().on_touch_down(touch)
 
 
@@ -63,8 +70,6 @@ class PlayerView(Widget):
         for i in list_midifile:
             Clock.schedule_once(partial(self.clock_callback, i))
 
-        # self.set_presets_for_channels(0)
-
     def clock_callback(self, midifile: Path, dt: int) -> int:
         return (self.add_midititlebutton(midifile))
 
@@ -78,11 +83,13 @@ class PlayerView(Widget):
         if state == 'down':
             self.mute_channels()
             mtb = self.selected_midititlebutton()
-            future = self.executor.submit(self.midi_player.start, mtb.filename)
-            future.add_done_callback(self.future_callback)
-            self.disable_buttons(True)
-            Logger.info(
-                f'player: Playback start {mtb.filename}, {mtb.total_tick}')
+            if mtb is not None:
+                future = self.executor.submit(
+                    self.midi_player.start, mtb.filename)
+                future.add_done_callback(self.future_callback)
+                self.disable_buttons(True)
+                Logger.info(
+                    f'player: Playback start {mtb.filename}, {mtb.total_tick}')
         elif state == 'normal':
             self.midi_player.close()
             self.disable_buttons(False)
@@ -101,24 +108,22 @@ class PlayerView(Widget):
         self.midifiles.disabled = disable
         self.channels.disabled = disable
 
-    def selected_midititlebutton(self) -> MidiTitleButton:
+    def selected_midititlebutton(self) -> Optional[MidiTitleButton]:
         for midititlebutton in self.midifiles.children:
             if midititlebutton.state == 'down':
                 return (midititlebutton)
 
-    # def select_midititlebutton(self, num:int) -> None:
-    #    self.midifiles.children[-(num + 1)].state = 'down'
-
     def add_midititlebutton(self, midifile: Path) -> int:
         smf: dict = MF.info_midifile(midifile)
         index = len(self.midifiles.children)
-        self.midifiles.add_widget(
-            MidiTitleButton(
-                text=smf['title'],
-                index=index,
-                total_tick=smf['total_tick'],
-                filename='mid/' + midifile.name,
-                channels_preset=smf['channels_preset']))
+        midititlebutton = MidiTitleButton(
+            text=smf['title'],
+            index=index,
+            total_tick=smf['total_tick'],
+            filename='mid/' + midifile.name,
+            channels_preset=smf['channels_preset'])
+        midititlebutton.bind(on_select=self.set_presets_for_each_channel)
+        self.midifiles.add_widget(midititlebutton)
         return (index)
 
     def mute_channels(self) -> str:
@@ -129,10 +134,9 @@ class PlayerView(Widget):
             chan_num += 1
         return (MF.mute_rules(**channels))
 
-    def set_presets_for_each_channel(self, midititlebutton_num: int) -> None:
-        midititlebutton = self.midifiles.children[-(midititlebutton_num + 1)]
+    def set_presets_for_each_channel(self, mtb: MidiTitleButton) -> None:
         for chan in range(len(self.channels.children)):
-            preset_num = midititlebutton.channels_preset[chan]
+            preset_num = mtb.channels_preset[chan]
             channel = self.channels.children[-(chan + 1)]
 
             if isinstance(preset_num, int):
