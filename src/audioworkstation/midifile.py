@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from src.audioworkstation.libs.audio import fluidsynth as FS
-from src.audioworkstation.libs.items import standardmidifile as SMF
 from pathlib import Path
 from json import dump
+
+from . libs import fluidsynth as FS
+from . libs import standardmidifile as SMF
 
 
 class MidiPlayer():
@@ -126,4 +127,4 @@ def mute_rules(**kwargs) -> str:
 
 
 if __name__ == '__main__':
-    print('midi file')
+    print(__file__)

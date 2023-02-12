@@ -1,12 +1,23 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-'''Analyze MIDI files according to SMF (Standard MIDI File) format
+'''Analyze MIDI files according to  SMF (Standard MIDI File) format.
 
-[reference]
-MIDI1.0規格書(日本語版98.1) ISBN4-8456-0348-9 C3055  http://www.amei.or.jp/
- - 2. MIDI 1.0
- - 4. スタンダードMIDIファイル1.0
+class StandardMidiFile
+* param
+        * pathlib.Path midifile:
+* method
+        * str title():
+        * int total_tick():
+        * list[str] instruments():
+        * list[str] lyrics():
+        * list[int] channels_preset():
+
+reference
+    MIDI1.0規格書(日本語版98.1) ISBN4-8456-0348-9 C3055  http://www.amei.or.jp/
+
+        2. MIDI 1.0
+        4. スタンダードMIDIファイル1.0
 '''
 import struct
 from typing import Union
@@ -19,6 +30,10 @@ BYTE = '>' 'B'
 
 
 class StandardMidiFile():
+    '''StandardMidiFile.
+
+    :param pathlib.Path midifile:
+    '''
 
     def __init__(self, midifile: Path) -> None:
         self._header: list = list()
@@ -53,6 +68,10 @@ class StandardMidiFile():
             self._tracks += [list_event]
 
     def channels_preset(self) -> list:
+        '''Get a list of preset numbers for each of the 16 channels.
+
+        :return list[int]:
+        '''
         channels: list = [[]]*16
         for track in self._tracks:
             for event in track:
@@ -61,30 +80,44 @@ class StandardMidiFile():
         return (channels)
 
     def title(self) -> str:
+        '''Get Title.
+
+        :return str:
+        '''
         for event in self._tracks[0]:
             if all([event[1] == 0xFF, event[2] == 0x03]):
                 return (event[3].decode('sjis'))
         return ('-')
 
     def instruments(self) -> list:
+        '''Get a list of instrument names for each of the 16 channels.
+
+        :return list[str]:
+        '''
         names: list = list()
         for track in self._tracks:
             for event in track:
-                if all([event[1] == 0xFF,
-                        event[2] == 0x04]):
+                if all([event[1] == 0xFF, event[2] == 0x04]):
                     names += [event[3].decode('sjis')]
         return (names)
 
     def lyrics(self) -> list:
+        '''Get lyrics list.
+
+        :return list[str]:
+        '''
         texts: list = list()
         for track in self._tracks:
             for event in track:
-                if all([event[1] == 0xFF,
-                        event[2] == 0x05]):
+                if all([event[1] == 0xFF, event[2] == 0x05]):
                     texts += [event[3].decode('sjis')]
         return (texts)
 
     def total_tick(self) -> int:
+        '''Count ticks.
+
+        :return int:
+        '''
         result: int = 0
         for track in self._tracks:
             temp = track[len(track)-1][0]
@@ -92,6 +125,12 @@ class StandardMidiFile():
         return (result)
 
     def _dequeue_as_midi_event(self, event_type: int, offset: int) -> tuple:
+        '''
+
+        :param int event_type:
+        :param int offset:
+        :return tuple:
+        '''
         param = event_type >> 4
         channel = event_type & 0xF
         midi_event: list = list()
@@ -104,16 +143,33 @@ class StandardMidiFile():
         return (midi_event, offset)
 
     def _dequeue_as_meta_event(self, event_type: int, offset: int) -> tuple:
+        '''
+
+        :param int event_type:
+        :param int offset:
+        :return tuple:
+        '''
         meta_type, length, offset = self._unpack(offset, '>' 'BB')
         return ([event_type, meta_type, self._smf[offset: offset + length]],
                 offset + length)
 
     def _dequeue_as_sysex_event(self, event_type: int, offset: int) -> tuple:
+        '''
+
+        :param int event_type:
+        :param int offset:
+        :return tuple:
+        '''
         length, offset = self._unpack(offset, BYTE)
         return ([event_type, self._smf[offset: offset + length]],
                 offset + length)
 
     def _dequeue_event(self, offset: int) -> tuple:
+        '''
+
+        :param int offset:
+        :return tuple:
+        '''
         event_type: int
         event_type, offset = self._unpack(offset, BYTE)
         if self._is_status_byte(event_type):
@@ -131,22 +187,27 @@ class StandardMidiFile():
             return (self._dequeue_as_midi_event(event_type, offset))
 
     def _header_chunk(self) -> tuple:
-        ''' <Header Chunk>, <Track Chunk>+ <- <Standard MIDI File> '''
+        '''<Header Chunk>, <Track Chunk>+ <- <Standard MIDI File>
+
+        :return tuple: chunk type, length, format, ntrks, division
+        '''
         ckID, ckSize, format, ntrks, division, offset \
             = self._unpack(0, HEADER_CHUNK)
         return ([ckID.decode(), ckSize, format, ntrks, division], offset)
 
     def _is_status_byte(self, value: int) -> bool:
+        '''Find out if it's a status byte.
+
+        :param int value:
+        :return bool: True is status byte, False is data byte.
+        '''
         return (True if value & 0x80 else False)
 
     def _delta_time(self, offset: int) -> tuple:
         '''<delta-time>, <event>+ <- <MTrk event>
 
-        [args]
-         - offset: unpack start position
-
-        [return]
-         - tuple[int, int]: delta-time and new unpack start position
+        :param int offset: unpack start position
+        :return tuple[int, int]: delta-time and new unpack start position
         '''
         delta_time: int = 0
         temp: int
@@ -159,14 +220,11 @@ class StandardMidiFile():
             return (delta_time, offset)
 
     def _unpack(self, offset: int, format: Union[str, bytes]) -> tuple:
-        '''Wrap function unpack_from() of 'module struct' module'
+        '''Wrap function unpack_from() of 'module struct' module.
 
-        [args]
-         - offset: unpack start position
-         - format: Format strings describe the unpack data layout
-
-        [return]
-         - tuple: unpack data and new unpack start position
+        :param int offset: unpack start position
+        :param str format: Format strings describe the unpack data layout
+        :return tuple: unpack data and new unpack start position
         '''
         return (*struct.unpack_from(format, self._smf, offset),
                 offset + struct.calcsize(format))

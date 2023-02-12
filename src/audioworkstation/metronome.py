@@ -10,7 +10,7 @@ from kivy.properties import (BoundedNumericProperty, ObjectProperty)
 from kivy.core.text import LabelBase, DEFAULT_FONT
 from kivy.resources import resource_add_path
 
-from src.audioworkstation import pattern as PT
+from . import pattern as PT
 
 # To use japanese font in Kivy
 resource_add_path('/usr/share/fonts/opentype/ipaexfont-gothic')

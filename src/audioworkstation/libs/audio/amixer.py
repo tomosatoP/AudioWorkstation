@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Connect to jack server and set MASTER volume"""
+"""Connect to jack server and set MASTER volume
+
+:method bool start():
+:method str volume(Optional[str] percentage):
+"""
 
 import subprocess
 from typing import Optional

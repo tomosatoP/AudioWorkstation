@@ -15,8 +15,10 @@ from kivy.uix.togglebutton import ToggleButton
 from kivy.uix.widget import Widget
 from kivy.clock import Clock
 from kivy.app import App
+from kivy.event import EventDispatcher
 
-from src.audioworkstation import midifile as MF
+
+from . import midifile as MF
 
 
 # To use japanese font in Kivy
@@ -24,7 +26,7 @@ resource_add_path('/usr/share/fonts/opentype/ipaexfont-gothic')
 LabelBase.register(DEFAULT_FONT, 'ipaexg.ttf')
 
 
-class MidiTitleButton(ToggleButton):
+class MidiTitleButton(ToggleButton, EventDispatcher):
     index = NumericProperty()
     total_tick = NumericProperty()
     filename = StringProperty()
