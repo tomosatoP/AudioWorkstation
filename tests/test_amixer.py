@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-
 import unittest
 
 # test amixer
-from src.audioworkstation.libs.audio import amixer as Master
+from src.audioworkstation import amixer as Master
 
 
 class TestMaster(unittest.TestCase):

@@ -11,8 +11,8 @@ from typing import Callable
 from pathlib import Path
 
 
-from src.audioworkstation.libs.audio import amixer as MASTER
-from src.audioworkstation.libs.audio import fluidsynth as FS
+from src.audioworkstation import amixer as MASTER
+from src.audioworkstation import fluidsynth as FS
 
 
 @FS.HANDLE_MIDI_EVENT_FUNC_T
@@ -191,7 +191,7 @@ class TestFluidsynth(unittest.TestCase):
                 print(fo.name)
                 f = e.submit(mpfs.start, 'mid/' + fo.name, tick)
                 f.add_done_callback(partial(future_callback, mpfs.close))
-                sleep(2)
+                sleep(3)
                 tick = mpfs.stop()
                 sleep(0.1)
 

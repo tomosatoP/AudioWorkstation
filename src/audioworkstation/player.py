@@ -53,6 +53,7 @@ class MidiTitleButton(ToggleButton, EventDispatcher):
 class PlayerView(Widget):
     play_button = ObjectProperty(None)
     pause_button = ObjectProperty(None)
+    ticks_slider = ObjectProperty(None)
     midifiles = ObjectProperty(None)
     channels = ObjectProperty(None)
     sound_set = list()
@@ -67,10 +68,10 @@ class PlayerView(Widget):
         self.add_channelbuttons()
 
         extension = ['.mid', '.MID']
-        list_midifile = [i for i in Path().glob(
+        mids = [i for i in Path().glob(
             'mid/*.*') if i.suffix in extension]
-        for i in list_midifile:
-            Clock.schedule_once(partial(self.clock_callback, i))
+        for mid in mids:
+            Clock.schedule_once(partial(self.clock_callback, mid))
 
     def clock_callback(self, midifile: Path, dt: int) -> int:
         return (self.add_midititlebutton(midifile))
@@ -83,9 +84,11 @@ class PlayerView(Widget):
 
     def sound(self, state: str) -> None:
         if state == 'down':
-            self.mute_channels()
-            mtb = self.selected_midititlebutton()
+            self.play_button.text = '■'
+            self.mute()
+            mtb = self.selected()
             if mtb is not None:
+                self.midi_player.pause_tick = self.ticks_slider.value
                 future = self.executor.submit(
                     self.midi_player.start, mtb.filename)
                 future.add_done_callback(self.future_callback)
@@ -95,6 +98,7 @@ class PlayerView(Widget):
         elif state == 'normal':
             self.midi_player.close()
             self.disable_buttons(False)
+            self.play_button.text = '▶'
             Logger.info('player: Stop playback')
 
     def pause(self, state: str) -> None:
@@ -105,12 +109,21 @@ class PlayerView(Widget):
             self.midi_player.pause()
             self.play_button.disabled = True
 
+    def select(self, mtb: MidiTitleButton):
+        self.set_slider(mtb)
+        self.set_channels(mtb)
+
+    def set_slider(self, mtb: MidiTitleButton):
+        self.ticks_slider.min = 0
+        self.ticks_slider.max = mtb.total_tick
+        self.ticks_slider.value = 10000
+
     def disable_buttons(self, disable: bool) -> None:
         self.pause_button.disabled = not disable
         self.midifiles.disabled = disable
         self.channels.disabled = disable
 
-    def selected_midititlebutton(self) -> Optional[MidiTitleButton]:
+    def selected(self) -> Optional[MidiTitleButton]:
         for midititlebutton in self.midifiles.children:
             if midititlebutton.state == 'down':
                 return (midititlebutton)
@@ -124,11 +137,11 @@ class PlayerView(Widget):
             total_tick=smf['total_tick'],
             filename='mid/' + midifile.name,
             channels_preset=smf['channels_preset'])
-        midititlebutton.bind(on_select=self.set_presets_for_each_channel)
+        midititlebutton.bind(on_select=self.select)
         self.midifiles.add_widget(midititlebutton)
         return (index)
 
-    def mute_channels(self) -> str:
+    def mute(self) -> str:
         channels = dict()
         chan_num: int = 0
         for chan in self.channels.children[::-1]:
@@ -136,7 +149,7 @@ class PlayerView(Widget):
             chan_num += 1
         return (MF.mute_rules(**channels))
 
-    def set_presets_for_each_channel(self, mtb: MidiTitleButton) -> None:
+    def set_channels(self, mtb: MidiTitleButton) -> None:
         for chan in range(len(self.channels.children)):
             preset_num = mtb.channels_preset[chan]
             channel = self.channels.children[-(chan + 1)]

@@ -3,10 +3,10 @@
 
 
 import unittest
+from pathlib import Path
 
 # test class standardmidifile
-from src.audioworkstation.libs.items import standardmidifile as SMF
-from pathlib import Path
+from src.audioworkstation import standardmidifile as SMF
 
 
 class TestSMF(unittest.TestCase):

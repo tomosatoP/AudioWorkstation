@@ -15,6 +15,7 @@
 <PlayerView>:
     play_button: play_togglebotton
     pause_button: pause_togglebutton
+    ticks_slider: ticks
     midifiles: boxlayout_play_list
     channels: gridlayout_rules
 
@@ -25,7 +26,7 @@
             orientation: 'horizontal'
             size_hint_y: 0.2
             Label:
-                size_hint_x: 0.2
+                size_hint_x: 0.15
                 font_size: 40
                 text: '伴奏'
             ToggleButton:
@@ -46,16 +47,23 @@
                 on_press: root.pause(self.state)
             BoxLayout:
                 orientation: 'horizontal'
-                size_hint_x: 0.6
+                size_hint_x: 0.65
                 Slider:
+                    id: ticks
                     size_hint_x: 0.8
-                    disabled: True
+                    disabled: False
+                    min: 0
+                    max: 0
+                    step: 1
+                    value: 0
                 Label:
+                    halign: 'right'
                     size_hint_x: 0.2
-                    text: '123456'
+                    text: str(int(ticks.value)) + '\n' + 'Max: ' + str(int(ticks.max))
         BoxLayout:
             orientation: 'horizontal'
             ScrollView:
+                size_hint_x: 0.55
                 do_scroll_x: False
                 do_scroll_y: True
                 bar_width: 30
@@ -66,5 +74,6 @@
                     size_hint_y: None
             GridLayout:
                 id: gridlayout_rules
+                size_hint_x: 0.45
                 cols: 2
                 rows: 8
