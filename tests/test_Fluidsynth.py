@@ -191,7 +191,7 @@ class TestFluidsynth(unittest.TestCase):
                 print(fo.name)
                 f = e.submit(mpfs.start, 'mid/' + fo.name, tick)
                 f.add_done_callback(partial(future_callback, mpfs.close))
-                sleep(3)
+                sleep(2.5)
                 tick = mpfs.stop()
                 sleep(0.1)
 

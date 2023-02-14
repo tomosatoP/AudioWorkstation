@@ -5,6 +5,7 @@ from functools import partial
 from concurrent import futures
 from typing import Optional
 from pathlib import Path
+from enum import IntEnum, auto
 
 from kivy.resources import resource_add_path
 from kivy.core.text import LabelBase, DEFAULT_FONT
@@ -24,6 +25,12 @@ from . import midifile as MF
 # To use japanese font in Kivy
 resource_add_path('/usr/share/fonts/opentype/ipaexfont-gothic')
 LabelBase.register(DEFAULT_FONT, 'ipaexg.ttf')
+
+
+class PLAYER_STATUS(IntEnum):
+    STANDBY = auto()
+    PLAYBACK = auto()
+    PAUSE = auto()
 
 
 class MidiTitleButton(ToggleButton, EventDispatcher):
@@ -76,6 +83,10 @@ class PlayerView(Widget):
     def clock_callback(self, midifile: Path, dt: int) -> int:
         return (self.add_midititlebutton(midifile))
 
+    def clock_callback_tick(self, dt: int):
+        self.ticks_slider.value = self.midi_player.tick
+        print(self.midi_player.tick)
+
     def future_callback(self, future: futures.Future) -> None:
         self.midi_player.close()
         if self.pause_button.state == 'normal':
@@ -92,22 +103,25 @@ class PlayerView(Widget):
                 future = self.executor.submit(
                     self.midi_player.start, mtb.filename)
                 future.add_done_callback(self.future_callback)
-                self.disable_buttons(True)
+                self.status(PLAYER_STATUS.PLAYBACK)
+                self.event = Clock.schedule_interval(
+                    self.clock_callback_tick, 0.5)
                 Logger.info(
                     f'player: Playback start {mtb.filename}, {mtb.total_tick}')
         elif state == 'normal':
+            self.event.cancel()
             self.midi_player.close()
-            self.disable_buttons(False)
+            self.status(PLAYER_STATUS.STANDBY)
             self.play_button.text = '▶'
             Logger.info('player: Stop playback')
 
     def pause(self, state: str) -> None:
         if state == 'normal':
             self.sound(state='down')
-            self.play_button.disabled = False
+            self.status(PLAYER_STATUS.PLAYBACK)
         elif state == 'down':
             self.midi_player.pause()
-            self.play_button.disabled = True
+            self.status(PLAYER_STATUS.PAUSE)
 
     def select(self, mtb: MidiTitleButton):
         self.set_slider(mtb)
@@ -118,10 +132,25 @@ class PlayerView(Widget):
         self.ticks_slider.max = mtb.total_tick
         self.ticks_slider.value = 10000
 
-    def disable_buttons(self, disable: bool) -> None:
-        self.pause_button.disabled = not disable
-        self.midifiles.disabled = disable
-        self.channels.disabled = disable
+    def status(self, value: PLAYER_STATUS) -> None:
+        if value == PLAYER_STATUS.STANDBY:
+            self.play_button.disabled = False
+            self.pause_button.disabled = True
+            self.ticks_slider.disabled = False
+            self.midifiles.disabled = False
+            self.channels.disabled = False
+        elif value == PLAYER_STATUS.PLAYBACK:
+            self.play_button.disabled = False
+            self.pause_button.disabled = False
+            self.ticks_slider.disabled = True
+            self.midifiles.disabled = True
+            self.channels.disabled = True
+        elif value == PLAYER_STATUS.PAUSE:
+            self.play_button.disabled = True
+            self.pause_button.disabled = False
+            self.ticks_slider.disabled = False
+            self.midifiles.disabled = True
+            self.channels.disabled = True
 
     def selected(self) -> Optional[MidiTitleButton]:
         for midititlebutton in self.midifiles.children:

@@ -24,7 +24,7 @@ class MidiPlayer():
     def start(self, filename: str) -> str:
         self._player.gain = 0.5
         self._player.apply_rules('config/rule.mute_chan.json')
-        self._player.start(midifile=filename, start_tick=self.pause_tick)
+        self._player.start(filename, self.pause_tick)
         return (f'{filename}')
 
     def close(self) -> None:
@@ -33,7 +33,11 @@ class MidiPlayer():
 
     def pause(self) -> None:
         self.pause_tick = self._player.stop()
-        self._player.close()
+        print(self.pause_tick)
+
+    @property
+    def tick(self) -> int:
+        return (self._player.tick)
 
 
 def info_midifile(midifile: Path) -> dict:

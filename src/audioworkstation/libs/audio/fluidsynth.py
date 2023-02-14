@@ -14,6 +14,7 @@ from time import sleep
 from ctypes.util import find_library
 import ctypes as CFS
 import logging as LFS
+from pathlib import Path
 
 FLUID_FAILED = -1
 FLUID_OK = 0
@@ -238,6 +239,13 @@ fluid_player_add = prototype(
     (CFS.c_void_p, 1, 'player'),
     (CFS.c_char_p, 1, 'midifile'))
 fluid_player_add.errcheck = errcheck
+
+fluid_player_add_mem = prototype(
+    CFS.c_int, 'fluid_player_add_mem',
+    (CFS.c_void_p, 1, 'player'),
+    (CFS.POINTER(CFS.c_char), 1,  'buffer'),
+    (CFS.c_size_t, 1, 'len'))
+fluid_player_add_mem.errcheck = errcheck
 
 fluid_player_play = prototype(
     CFS.c_int, 'fluid_player_play',
@@ -491,6 +499,20 @@ fluid_event_timer = prototype(
 
 # Miscellaneous
 # [API prototype]
+fluid_free = prototype(
+    None, 'fluid_free',
+    (CFS.POINTER(CFS.c_int), 1, 'ptr'))
+
+fluid_is_midifile = prototype(
+    CFS.c_int, 'fluid_is_midifile',
+    (CFS.c_char_p, 1, 'filename'))
+fluid_is_midifile.errcheck = errcheck
+
+fluid_is_soundfont = prototype(
+    CFS.c_int, 'fluid_is_soundfont',
+    (CFS.c_char_p, 1, 'filename'))
+fluid_is_soundfont.errcheck = errcheck
+
 fluid_version_str = prototype(
     CFS.c_char_p, 'fluid_version_str')
 fluid_version_str.errcheck = errcheck
@@ -1444,7 +1466,7 @@ class MidiPlayer(MidiRouter):
             'handler': fluid_midi_dump_prerouter}
     '''
 
-    _wait_second: Union[int, float] = 0.1
+    _wait_second: Union[int, float] = 0.15
     _total_ticks: int = 0
 
     def __init__(self, **kwargs) -> None:
@@ -1472,12 +1494,18 @@ class MidiPlayer(MidiRouter):
         delete_fluid_player(player=CFS.c_void_p(self.player))
         super().__del__()
 
-    def start(self, midifile: Union[str, None] = None,
-              start_tick: int = 0) -> None:
-        if self._isstatus(FLUID_PLAYER_STATUS.STOPPING):
-            if midifile:
-                fluid_player_add(player=CFS.c_void_p(self.player),
-                                 midifile=midifile.encode())
+    def start(self, midifile: str, start_tick: int) -> None:
+        '''Start playback.
+
+        :param midifile: MIDI filename, or resume if None
+        :param start_tick: tick at the position where you want to start
+        '''
+        if fluid_is_midifile(midifile.encode()) \
+                and self._isstatus(FLUID_PLAYER_STATUS.STOPPING):
+            ptr: bytes = Path(midifile).read_bytes()
+            fluid_player_add_mem(player=CFS.c_void_p(self.player),
+                                 buffer=ptr,
+                                 len=CFS.c_size_t(len(ptr)))
             fluid_player_play(player=CFS.c_void_p(self.player))
             self._total_ticks = self._get_total_ticks()
             self._seek(start_tick)
@@ -1485,6 +1513,7 @@ class MidiPlayer(MidiRouter):
             fluid_player_join(player=CFS.c_void_p(self.player))
 
     def close(self) -> None:
+        '''End playback.'''
         fluid_player_stop(player=CFS.c_void_p(self.player))
         self._seek(self._total_ticks)
         self._all_sounds_off()
@@ -1492,8 +1521,20 @@ class MidiPlayer(MidiRouter):
         sleep(self._wait_second)
 
     def stop(self) -> int:
+        '''Interrupts playback.
+
+        [return] tick at time of interruption, otherwise FLUID_FAILED
+        '''
         if self._isstatus(FLUID_PLAYER_STATUS.PLAYING):
             fluid_player_stop(player=CFS.c_void_p(self.player))
+            return (fluid_player_get_current_tick(
+                player=CFS.c_void_p(self.player)))
+        return (FLUID_FAILED)
+
+    @property
+    def tick(self) -> int:
+        '''Get the number of tempo ticks passed.'''
+        if self._isstatus(FLUID_PLAYER_STATUS.PLAYING):
             return (fluid_player_get_current_tick(
                 player=CFS.c_void_p(self.player)))
         return (FLUID_FAILED)
