@@ -1,6 +1,6 @@
 [build-system]
 build-backend = "setuptools.build_meta"
-requires = ["setuptools", "setuptools_scm", "cython", "wheel"]
+requires = ["setuptools", "setuptools_scm", "Cython", "wheel"]
 
 [project]
 authors = [
@@ -16,14 +16,14 @@ classifiers = [
   "Topic :: Multimedia :: Sound/Audio :: MIDI",
 ]
 dependencies = [
-  "cython~=0.29",
+  "Cython~=0.29",
 ]
 description = "Using a USB-MIDI Keyboard to Create an Electronic Piano"
 dynamic = ["version"]
 keywords = [
   "Raspberry Pi",
   "piano",
-  "kivy",
+  "Kivy",
   "fluidsynth",
   "midi",
 ]
@@ -38,11 +38,11 @@ Homepage = "https://github.com/tomosatoP/AudioWorkstation"
 [project.optional-dependencies]
 dev = [
   "flake8",
-  "autopep8",
+  "black",
   "mypy",
   "isort",
 ]
-gui = ["kivy~=2.0.0"]
+gui = ["Kivy~=2.0.0"]
 
 [tool.setuptools]
 package-dir = {"" = "src"}
@@ -57,9 +57,10 @@ write_to = "src/audioworkstation/version.py"
 
 [tool.mypy]
 
-[tool.autopep8]
+[tool.black]
 
 [tool.isort]
 
 [tools.flake8]
-max-line-length = 79
+extend-ignore = ["E203", "W503", "W504"]
+max-line-length = 88

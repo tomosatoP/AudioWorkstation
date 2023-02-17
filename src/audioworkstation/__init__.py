@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+from . import libs
 
-from . libs import *
+__all__ = ["libs"]

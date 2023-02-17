@@ -6,13 +6,12 @@ import unittest
 from pathlib import Path
 
 # test class standardmidifile
-from src.audioworkstation import standardmidifile as SMF
+from src.audioworkstation.libs.sublibs import standardmidifile as SMF
 
 
 class TestSMF(unittest.TestCase):
-
     def setUp(self) -> None:
-        midifilename = 'mid/R01698G2.mid'
+        midifilename = "mid/R01698G2.mid"
         # title='usseiwa'
         fo = Path(midifilename)
         self.midifile = SMF.StandardMidiFile(fo)
@@ -22,7 +21,7 @@ class TestSMF(unittest.TestCase):
         self.assertEqual(self.midifile.channels_preset()[0], 22)
 
     def test_title(self) -> None:
-        self.assertEqual(self.midifile.title(), 'usseiwa')
+        self.assertEqual(self.midifile.title(), "usseiwa")
 
     def test_instruments(self) -> None:
         self.assertEqual(self.midifile.instruments(), [])
@@ -34,5 +33,5 @@ class TestSMF(unittest.TestCase):
         self.assertEqual(self.midifile.total_tick(), 295600)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
