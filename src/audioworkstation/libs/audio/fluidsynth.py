@@ -1023,27 +1023,27 @@ class Synthesizer:
 
             self._soundfonts: dict[str, int] = dict()
             if "soundfont" in kwargs:
-                for name in kwargs["soundfont"]:
-                    self._soundfonts[name] = int(
+                for s_name in kwargs["soundfont"]:
+                    self._soundfonts[s_name] = int(
                         fluid_synth_sfload(
                             synth=CFS.c_void_p(self._synth),
-                            filename=name.encode(),
+                            filename=s_name.encode(),
                             reset_preset=CFS.c_int(True),
                         )
                     )
 
             else:
-                name = CFS.c_char_p()
+                c_name = CFS.c_char_p()
                 fluid_settings_getstr_default(
                     settings=CFS.c_void_p(self._settings),
                     name=b"synth.default-soundfont",
-                    str=CFS.byref(name),
+                    str=CFS.byref(c_name),
                 )
-                name = name.value if isinstance(name.value, bytes) else name
-                self._soundfonts[bytes(name).decode()] = int(
+                # name = name.value if isinstance(name.value, bytes) else name
+                self._soundfonts[bytes(c_name).decode()] = int(
                     fluid_synth_sfload(
                         synth=CFS.c_void_p(self._synth),
-                        filename=name,
+                        filename=c_name,
                         reset_preset=CFS.c_int(True),
                     )
                 )
@@ -1095,25 +1095,33 @@ class Synthesizer:
         with open(file=json_filename, mode="r") as fp:
             settings_json = load(fp)
         for name, dicts in settings_json.items():
-            if isinstance(dicts["value"], (float, int, str)):
-                if FLUID_TYPE(dicts["type"]) == FLUID_TYPE.NUM:
-                    fluid_settings_setnum(
-                        settings=CFS.c_void_p(self._settings),
-                        name=str(name).encode(),
-                        value=CFS.c_double(dicts["value"]),
-                    )
-                elif FLUID_TYPE(dicts["type"]) == FLUID_TYPE.INT:
-                    fluid_settings_setint(
-                        settings=CFS.c_void_p(self._settings),
-                        name=str(name).encode(),
-                        val=CFS.c_int(dicts["value"]),
-                    )
-                elif FLUID_TYPE(dicts["type"]) == FLUID_TYPE.STR:
-                    fluid_settings_setstr(
-                        settings=CFS.c_void_p(self._settings),
-                        name=str(name).encode(),
-                        str=str(dicts["value"]).encode(),
-                    )
+            if (
+                isinstance(dicts["value"], float)
+                and FLUID_TYPE(dicts["type"]) == FLUID_TYPE.NUM
+            ):
+                fluid_settings_setnum(
+                    settings=CFS.c_void_p(self._settings),
+                    name=str(name).encode(),
+                    value=CFS.c_double(dicts["value"]),
+                )
+            elif (
+                isinstance(dicts["value"], int)
+                and FLUID_TYPE(dicts["type"]) == FLUID_TYPE.INT
+            ):
+                fluid_settings_setint(
+                    settings=CFS.c_void_p(self._settings),
+                    name=str(name).encode(),
+                    val=CFS.c_int(dicts["value"]),
+                )
+            elif (
+                isinstance(dicts["value"], str)
+                and FLUID_TYPE(dicts["type"]) == FLUID_TYPE.STR
+            ):
+                fluid_settings_setstr(
+                    settings=CFS.c_void_p(self._settings),
+                    name=str(name).encode(),
+                    str=str(dicts["value"]).encode(),
+                )
 
     def _assign_audio_driver(self) -> int:
         self.audio_driver = int(
@@ -1134,7 +1142,9 @@ class Synthesizer:
         return int(
             fluid_synth_sysex(
                 synth=CFS.c_void_p(self._synth),
-                data=(CFS.c_char * 3)(0x7E, 0x09, 0x01),
+                data=(CFS.c_char * 3)(
+                    CFS.c_char(0x7E), CFS.c_char(0x09), CFS.c_char(0x01)
+                ),
                 len=CFS.c_int(3),
                 response=None,
                 response_len=None,

@@ -91,9 +91,15 @@ class PlayerView(Widget):
         print(self.midi_player.tick)
 
     def future_callback(self, future: futures.Future) -> None:
+        """Calleback when playback is complete.
+
+        :param futures.Future future: _description_
+        """
+        self.event.cancel()
         self.midi_player.close()
-        if self.pause_button.state == "normal":
-            self.play_button.state = "normal"
+        self.status(PLAYER_STATUS.STANDBY)
+        self.play_button.text = "▶"
+        self.play_button.state = "normal"
         Logger.info("player: End of playback")
 
     def sound(self, state: str) -> None:
@@ -126,6 +132,7 @@ class PlayerView(Widget):
     def select(self, mtb: MidiTitleButton):
         self.set_slider(mtb)
         self.set_channels(mtb)
+        self.status(PLAYER_STATUS.STANDBY)
 
     def set_slider(self, mtb: MidiTitleButton):
         self.ticks_slider.min = 0
@@ -156,6 +163,7 @@ class PlayerView(Widget):
         for midititlebutton in self.midifiles.children:
             if midititlebutton.state == "down":
                 return midititlebutton
+        return None
 
     def add_midititlebutton(self, midifile: Path) -> int:
         smf: dict = MF.info_midifile(midifile)

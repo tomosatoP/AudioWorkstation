@@ -73,7 +73,10 @@ def info_midifile(midifile: Path) -> dict:
 
 
 def gm_sound_set_names() -> tuple:
-    kwargs = {"settings": "config/settings.json", "soundfont": ["sf2/FluidR3_GM.sf2"]}
+    kwargs: dict = {
+        "settings": "config/settings.json",
+        "soundfont": ["sf2/FluidR3_GM.sf2"],
+    }
     synthesizer = FS.Synthesizer(**kwargs)
 
     names = list()
@@ -91,9 +94,10 @@ def mute_rules(**kwargs) -> str:
         True: mute
         False: unmute
     """
-    rules = dict()
+    rules: dict = dict()
     filename = "config/rule.mute_chan.json"
 
+    # Note
     for chan in list(kwargs):
         if kwargs[chan]:
             # NOTE: mute channel
