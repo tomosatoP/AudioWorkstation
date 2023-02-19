@@ -7,15 +7,34 @@ Module 'concurrent.futures.ThreadPoolExecutor' is recommended.
 https://www.fluidsynth.org/api/
 """
 
-from typing import Union, Callable, Any, cast
+from typing import Union, Callable, Any
 from enum import IntEnum, IntFlag, auto
 from json import load
 from time import sleep
 from ctypes.util import find_library
-import ctypes as CFS
 import logging as LFS
+import ctypes as CFS
 from pathlib import Path
 
+# Logger
+logger = LFS.getLogger(__name__)
+formatter = LFS.Formatter("%(asctime)s %(levelname)s %(message)s")
+logger.setLevel(LFS.DEBUG)
+fh = LFS.FileHandler("logs/fluidsynth.log")
+fh.setFormatter(formatter)
+logger.addHandler(fh)
+ch = LFS.StreamHandler()
+ch.setFormatter(formatter)
+logger.addHandler(ch)
+"""LFS.basicConfig(
+    filename=logfilename,
+    level=LFS.DEBUG,
+    format="%(asctime)s %(levelname)s %(message)s",
+    datefmt="%Y-%m-%dT%H:%M:%S",
+)
+"""
+
+# fluidsynth
 FLUID_FAILED = -1
 FLUID_OK = 0
 
@@ -172,15 +191,15 @@ fluid_set_log_function.errcheck = errcheck
 def _log_func(level, message, data) -> None:
     mes = bytes(message).decode()
     if int(level) == FLUID_LOG_LEVEL.PANIC:
-        LFS.critical(f"{mes}")
+        logger.critical(f"{mes}")
     elif int(level) == FLUID_LOG_LEVEL.ERR:
-        LFS.error(f"{mes}")
+        logger.error(f"{mes}")
     elif int(level) == FLUID_LOG_LEVEL.WARN:
-        LFS.warning(f"{mes}")
+        logger.warning(f"{mes}")
     elif int(level) == FLUID_LOG_LEVEL.INFO:
-        LFS.info(f"{mes}")
+        logger.info(f"{mes}")
     elif int(level) == FLUID_LOG_LEVEL.DBG:
-        LFS.debug(f"{mes}")
+        logger.debug(f"{mes}")
 
 
 # MIDI Input
@@ -1011,7 +1030,8 @@ class Synthesizer:
 
     def __init__(self, **kwargs: dict[str, Any]) -> None:
         try:
-            self._setup_logging_method(logfilename="logs/fluidsynth.log")
+            for i in range(FLUID_LOG_LEVEL.LAST_LOG_LEVEL):
+                fluid_set_log_function(level=i, fun=_log_func, data=None)
 
             self._settings: int = int(new_fluid_settings())
             if "settings" in kwargs:
@@ -1039,7 +1059,6 @@ class Synthesizer:
                     name=b"synth.default-soundfont",
                     str=CFS.byref(c_name),
                 )
-                # name = name.value if isinstance(name.value, bytes) else name
                 self._soundfonts[bytes(c_name).decode()] = int(
                     fluid_synth_sfload(
                         synth=CFS.c_void_p(self._synth),
@@ -1065,16 +1084,6 @@ class Synthesizer:
         delete_fluid_synth(synth=CFS.c_void_p(self._synth))
         delete_fluid_settings(settings=CFS.c_void_p(self._settings))
         self._log_info("good-bye")
-
-    def _setup_logging_method(self, logfilename: str) -> None:
-        LFS.basicConfig(
-            filename=logfilename,
-            level=LFS.DEBUG,
-            format="%(asctime)s %(levelname)s %(message)s",
-            datefmt="%Y-%m-%dT%H:%M:%S",
-        )
-        for i in range(FLUID_LOG_LEVEL.LAST_LOG_LEVEL):
-            fluid_set_log_function(level=i, fun=_log_func, data=None)
 
     def _log_info(self, message: str) -> None:
         fluid_log(
@@ -1359,13 +1368,13 @@ class Sequencer(Synthesizer):
 
     clients: list[int] = list()
 
-    def __init__(self, **kwargs: dict[str, str]) -> None:
+    def __init__(self, **kwargs: dict[str, Any]) -> None:
         super().__init__(**kwargs)
         try:
             self._sequencer: int
             self._bps: float = 120.0
             self._quaternote: int = 240
-            self._callbacks: list[int] = list()
+            self._callbacks: list[Callable] = list()
 
             self._sequencer = int(
                 new_fluid_sequencer2(use_system_timer=CFS.c_int(False))
@@ -1415,17 +1424,20 @@ class Sequencer(Synthesizer):
         [return]
          - Unique sequencer ID or FLUID_FAILED on error
         """
+        if callback:
+            callback = FLUID_EVENT_CALLBACK_T(callback)
+            self._callbacks += [callback]
+
         self.clients += [
             int(
                 fluid_sequencer_register_client(
                     seq=CFS.c_void_p(self._sequencer),
                     name=name.encode(),
-                    callback=FLUID_EVENT_CALLBACK_T(callback) if callback else None,
+                    callback=callback if callback else None,
                     data=CFS.byref(data) if data else None,
                 )
             )
         ]
-        self._callbacks += [cast(int, callback)]
         return self.clients[len(self.clients) - 1]
 
     @property
@@ -1518,7 +1530,7 @@ class MidiRouter(Synthesizer):
             'soundfont':['sf2/FluidR3_GM.sf2', 'sf2/SGM-V2.01.sf2']}
     """
 
-    def __init__(self, **kwargs: dict[str, str]) -> None:
+    def __init__(self, **kwargs: dict[str, Any]) -> None:
         super().__init__(**kwargs)
         try:
             handler = fluid_synth_handle_midi_event
@@ -1593,7 +1605,7 @@ class MidiDriver(MidiRouter):
             'handler': fluid_midi_dump_prerouter}
     """
 
-    def __init__(self, **kwargs: dict[str, str]) -> None:
+    def __init__(self, **kwargs: dict[str, Any]) -> None:
         super().__init__(**kwargs)
         try:
             if "handler" in kwargs:
@@ -1632,7 +1644,7 @@ class MidiPlayer(MidiRouter):
     _wait_second: Union[int, float] = 0.15
     _total_ticks: int = 0
 
-    def __init__(self, **kwargs) -> None:
+    def __init__(self, **kwargs: dict[str, Any]) -> None:
         super().__init__(**kwargs)
         try:
             self.player: int = int(new_fluid_player(synth=CFS.c_void_p(self._synth)))

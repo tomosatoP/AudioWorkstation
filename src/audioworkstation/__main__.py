@@ -25,8 +25,14 @@ if __name__ == "__main__":
     amixer.start()
     amixer.volume("50%,50%")
 
-    # from . metronome import Metronome
-    from .player import Player
+    test = "metronome"
 
-    # Metronome().run()
-    Player().run()
+    if test == "metronome":
+        from .metronome import Metronome
+
+        Metronome().run()
+
+    elif test == "player":
+        from .player import Player
+
+        Player().run()

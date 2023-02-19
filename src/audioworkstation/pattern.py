@@ -1,28 +1,23 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from src.audioworkstation.libs.audio import fluidsynth as FS
-from time import sleep
-
+from .libs.audio import fluidsynth as FS
+from .parts import _dB2gain, _gain2dB
 
 sfs: FS.Sequencer
-pquit: bool
+schedule_stop: bool = False
 rhythm: list[int]
 notevalue: int
-pdata: FS.EventUserData
 
 
 @FS.FLUID_EVENT_CALLBACK_T
-def pcallback(time, event, sequencer, data):
-    # global sfs, pquit, rhythm, notevalue, pdata
-    pattern()
+def _pcallback(time, event, sequencer, data):
+    if not schedule_stop:
+        _pattern()
 
 
-def pattern():
-    # global sfs, pquit, rhythm, notevalue, pdata
-
+def _pattern():
     time_marker = sfs.tick
-    print(time_marker)
 
     key = [75, 76]
     vel = [127, 95, 64]
@@ -32,46 +27,51 @@ def pattern():
         for j in range(rhythm[i]):
             k = 0 if all([i == 0, j == 0]) else 1
             m = 0 if all([i == 0, j == 0]) else 1 if j == 0 else 2
-            sfs.note_at(time_marker, 9, key[k], vel[m], int(dur / 2),
-                        destination=sfs.clients[0])
+            sfs.note_at(
+                time_marker,
+                9,
+                key[k],
+                vel[m],
+                int(dur / 2),
+                destination=sfs.clients[0],
+            )
             time_marker += dur
     sfs.timer_at(time_marker, destination=sfs.clients[1])
-    print(time_marker)
 
 
-class Pattern():
-
+class Pattern:
     def __init__(self) -> None:
-        global sfs, pquit, rhythm, notevalue, pdata
-        kwargs = {'settings': 'config/settings.json',
-                  'soundfont': ['sf2/FluidR3_GM.sf2']}
+        global sfs, schedule_stop, rhythm, notevalue
+        kwargs: dict = {
+            "settings": "config/settings.json",
+            "soundfont": ["sf2/FluidR3_GM.sf2"],
+        }
 
         sfs = FS.Sequencer(**kwargs)
-        pdata = FS.EventUserData()
+        sfs.register_client("metronome", _pcallback)
 
-        sfs.register_client('metronome', pcallback, pdata)
-        print(sfs.clients)
+    @property
+    def gain(self) -> int:
+        return _gain2dB(sfs.gain)
+
+    @gain.setter
+    def gain(self, value: int) -> None:
+        sfs.gain = _dB2gain(value)
 
     def start(self, bps: float, beat: list) -> None:
-        global sfs, pquit, rhythm, notevalue, pdata
-        print(f'sound on [tempo: {bps}, beat: {beat}]')
+        global sfs, schedule_stop, rhythm, notevalue
         sfs.bps = bps
 
-        pquit = False
-        rhythm = list(map(int, str(beat[0]).split('+')))
+        schedule_stop = False
+        rhythm = list(map(int, str(beat[0]).split("+")))
         notevalue = int(beat[1])
-        pattern()
-
-        sleep(30)
+        _pattern()
 
     def stop(self):
-        global sfs, pquit, rhythm, notevalue, pdata
-        print('sound off')
-        pquit = True
+        global schedule_stop
+        print("sound off")
+        schedule_stop = True
 
 
-if __name__ == '__main__':
-    cpt = Pattern()
-    cpt.start(120, [4, 4])
-    sleep(20)
-    print('pattern')
+if __name__ == "__main__":
+    print(__file__)
