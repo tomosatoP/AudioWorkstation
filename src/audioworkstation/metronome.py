@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+from concurrent import futures
+
+
 from kivy.app import App
 from kivy.uix.widget import Widget
 from kivy.uix.behaviors import ToggleButtonBehavior
@@ -19,6 +22,7 @@ LabelBase.register(DEFAULT_FONT, "ipaexg.ttf")
 
 class MetronomeView(Widget):
     pSFS = PT.Pattern()
+    executor = futures.ThreadPoolExecutor()
 
     bps_layout = ObjectProperty(None)
     bps = BoundedNumericProperty(
@@ -36,7 +40,7 @@ class MetronomeView(Widget):
     def sound_on(self) -> None:
         print(self.pSFS.gain)
         self.disable_buttons(disable=True)
-        self.pSFS.start(self.bps, self.beat().splitlines())
+        self.executor.submit(self.pSFS.start, self.bps, self.beat().splitlines())
 
     def sound_off(self) -> None:
         self.disable_buttons(disable=False)
