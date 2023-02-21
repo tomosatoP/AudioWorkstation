@@ -17,22 +17,15 @@ import ctypes as CFS
 from pathlib import Path
 
 # Logger
-logger = LFS.getLogger(__name__)
+_logger = LFS.getLogger(__name__)
 formatter = LFS.Formatter("%(asctime)s %(levelname)s %(message)s")
-logger.setLevel(LFS.DEBUG)
+_logger.setLevel(LFS.DEBUG)
 fh = LFS.FileHandler("logs/fluidsynth.log")
 fh.setFormatter(formatter)
-logger.addHandler(fh)
+_logger.addHandler(fh)
 ch = LFS.StreamHandler()
 ch.setFormatter(formatter)
-logger.addHandler(ch)
-"""LFS.basicConfig(
-    filename=logfilename,
-    level=LFS.DEBUG,
-    format="%(asctime)s %(levelname)s %(message)s",
-    datefmt="%Y-%m-%dT%H:%M:%S",
-)
-"""
+_logger.addHandler(ch)
 
 # fluidsynth
 FLUID_FAILED = -1
@@ -191,15 +184,15 @@ fluid_set_log_function.errcheck = errcheck
 def _log_func(level, message, data) -> None:
     mes = bytes(message).decode()
     if int(level) == FLUID_LOG_LEVEL.PANIC:
-        logger.critical(f"{mes}")
+        _logger.critical(f"{mes}")
     elif int(level) == FLUID_LOG_LEVEL.ERR:
-        logger.error(f"{mes}")
+        _logger.error(f"{mes}")
     elif int(level) == FLUID_LOG_LEVEL.WARN:
-        logger.warning(f"{mes}")
+        _logger.warning(f"{mes}")
     elif int(level) == FLUID_LOG_LEVEL.INFO:
-        logger.info(f"{mes}")
+        _logger.info(f"{mes}")
     elif int(level) == FLUID_LOG_LEVEL.DBG:
-        logger.debug(f"{mes}")
+        _logger.debug(f"{mes}")
 
 
 # MIDI Input
@@ -1068,37 +1061,30 @@ class Synthesizer:
                 )
 
             self._gm_system_on()
-            self._log_info("gm system on")
+            self._log(level=FLUID_LOG_LEVEL.INFO, message="gm system on")
 
             if type(self) == Synthesizer:
                 self._assign_audio_driver()
         except FSError as msg:
-            self._log_error(f"Synthesizer failed. {str(msg)}")
+            self._log(
+                level=FLUID_LOG_LEVEL.ERR, message=f"Synthesizer failed. {str(msg)}"
+            )
             self.__del__()
         else:
-            self._log_info(f"libfluidsynth version: {self.version()}")
+            self._log(
+                level=FLUID_LOG_LEVEL.INFO,
+                message=f"libfluidsynth version: {self.version()}",
+            )
 
     def __del__(self) -> None:
         if type(self) == Synthesizer:
             self._delete_auido_driver()
         delete_fluid_synth(synth=CFS.c_void_p(self._synth))
         delete_fluid_settings(settings=CFS.c_void_p(self._settings))
-        self._log_info("good-bye")
+        self._log(level=FLUID_LOG_LEVEL.INFO, message="good-bye")
 
-    def _log_info(self, message: str) -> None:
-        fluid_log(
-            level=CFS.c_int(FLUID_LOG_LEVEL.INFO), fmt=b"%s", message=message.encode()
-        )
-
-    def _log_debug(self, message: str) -> None:
-        fluid_log(
-            level=CFS.c_int(FLUID_LOG_LEVEL.DBG), fmt=b"%s", message=message.encode()
-        )
-
-    def _log_error(self, message: str) -> None:
-        fluid_log(
-            level=CFS.c_int(FLUID_LOG_LEVEL.ERR), fmt=b"%s", message=message.encode()
-        )
+    def _log(self, level: FLUID_LOG_LEVEL, message: str) -> None:
+        fluid_log(level=CFS.c_int(level), fmt=b"%s", message=message.encode())
 
     def _customaize_settings(self, json_filename: str) -> None:
         with open(file=json_filename, mode="r") as fp:
@@ -1301,7 +1287,7 @@ class Synthesizer:
             )
             return FLUID_OK
         except FSError as msg:
-            self._log_error(f"synth noteoff. {str(msg)}")
+            self._log(level=FLUID_LOG_LEVEL.ERR, message=f"synth noteoff. {str(msg)}")
         return FLUID_FAILED
 
     def modulation_wheel(self, chan: int, val: int) -> int:
@@ -1391,7 +1377,9 @@ class Sequencer(Synthesizer):
             self._set_time_scale()
             self._assign_audio_driver()
         except FSError as msg:
-            self._log_error(f"Sequencer failed. {str(msg)}")
+            self._log(
+                level=FLUID_LOG_LEVEL.ERR, message=f"Sequencer failed. {str(msg)}"
+            )
             self.__del__()
 
     def __del__(self) -> None:
@@ -1550,7 +1538,7 @@ class MidiRouter(Synthesizer):
                 )
             )
         except FSError as msg:
-            self._log_error(f"Midi Router.  {str(msg)}")
+            self._log(level=FLUID_LOG_LEVEL.ERR, message=f"Midi Router.  {str(msg)}")
             self.__del__()
 
     def __del__(self) -> None:
@@ -1589,7 +1577,7 @@ class MidiRouter(Synthesizer):
                         fluid_midi_router_rule_set_param2(rule, *rd["param2"].values())
                     fluid_midi_router_add_rule(self.midi_router, rule, rd["type"])
         except FSError as msg:
-            self._log_error(f"Midi Router Rule {str(msg)}")
+            self._log(level=FLUID_LOG_LEVEL.ERR, message=f"Midi Router Rule {str(msg)}")
             return False
         else:
             return True
@@ -1622,7 +1610,7 @@ class MidiDriver(MidiRouter):
             )
             self._assign_audio_driver()
         except FSError as msg:
-            self._log_error(f"Midi Driver. {str(msg)}")
+            self._log(level=FLUID_LOG_LEVEL.ERR, message=f"Midi Driver. {str(msg)}")
             self.__del__()
 
     def __del__(self) -> None:
@@ -1661,7 +1649,7 @@ class MidiPlayer(MidiRouter):
             )
             self._assign_audio_driver()
         except FSError as msg:
-            self._log_error(f"Midi Player. {str(msg)}")
+            self._log(level=FLUID_LOG_LEVEL.ERR, message=f"Midi Player. {str(msg)}")
             self.__del__()
 
     def __del__(self) -> None:
@@ -1734,7 +1722,7 @@ class MidiPlayer(MidiRouter):
                 return fluid_player_get_current_tick(player=CFS.c_void_p(self.player))
         except FSError as msg:
             fluid_player_stop(player=CFS.c_void_p(self.player))
-            self._log_error(f"Player seek. {str(msg)}")
+            self._log(level=FLUID_LOG_LEVEL.ERR, message=f"Player seek. {str(msg)}")
         return FLUID_FAILED
 
 

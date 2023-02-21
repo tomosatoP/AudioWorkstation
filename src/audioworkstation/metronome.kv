@@ -17,9 +17,16 @@
     BoxLayout:
         size: root.size
         orientation: 'vertical'
-        Label:
-            font_size: 40
-            text: 'メトロノーム'
+        BoxLayout:
+            Label:
+                size_hint_x: 0.9
+                font_size: 40
+                text: 'メトロノーム'
+            Button:
+                size_hint_x: 0.1
+                font_size: 40
+                text: "X"
+                on_press: app.stop()
         BoxLayout:
             orientation: 'vertical'
             BoxLayout:
@@ -48,12 +55,10 @@
                     orientation: 'horizontal'
                     size_hint_x: 0.3
                     ToggleButton:
-                        border: (0, 0 , 0 ,0)
                         font_size: 40
                         text: '▶'
                         on_press: 
-                            root.sound_on() if self.state == 'down' \
-                            else root.sound_off()
+                            root.sound_on() if self.state == 'down' else root.sound_off()
         BoxLayout:
             orientation: 'horizontal'
             Label:

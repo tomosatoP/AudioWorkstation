@@ -12,7 +12,10 @@ if __name__ == "__main__":
 
     Config.set("kivy", "log_dir", log_dir)
     Config.set("kivy", "log_level", "debug")
+    Config.set("graphics", "borderless", 1)
     Config.set("graphics", "fullscreen", 0)
+    Config.set("graphics", "width", 800)
+    Config.set("graphics", "height", 480)
 
     # Kivy: Using Official RPi touch display
     Config.set("input", "mouse", "mouse")
@@ -25,7 +28,7 @@ if __name__ == "__main__":
     amixer.start()
     amixer.volume("50%,50%")
 
-    test = "metronome"
+    test = "player"
 
     if test == "metronome":
         from .metronome import Metronome
@@ -36,3 +39,8 @@ if __name__ == "__main__":
         from .player import Player
 
         Player().run()
+
+    elif test == "gridlayout":
+        from .gridlayout_main import Gridlayout_mainApp
+
+        Gridlayout_mainApp().run()

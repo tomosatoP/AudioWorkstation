@@ -38,15 +38,15 @@ class MetronomeView(Widget):
         )[0].text
 
     def sound_on(self) -> None:
-        print(self.pSFS.gain)
-        self.disable_buttons(disable=True)
+        self._status(disable=True)
+        print(f"BPS:{self.bps}, RHYTHM:{self.beat().splitlines()}")
         self.executor.submit(self.pSFS.start, self.bps, self.beat().splitlines())
 
     def sound_off(self) -> None:
-        self.disable_buttons(disable=False)
+        self._status(disable=False)
         self.pSFS.stop()
 
-    def disable_buttons(self, disable: bool) -> None:
+    def _status(self, disable: bool) -> None:
         self.bps_layout.disabled = disable
         for button in ToggleButtonBehavior.get_widgets("BeatSelectButtons"):
             button.disabled = disable
@@ -54,7 +54,13 @@ class MetronomeView(Widget):
 
 class Metronome(App):
     def build(self):
-        return MetronomeView()
+        mv = MetronomeView()
+        return mv
+
+    def on_stop(self):
+
+        print("on stop")
+        return super().on_stop()
 
 
 if __name__ == "__main__":
