@@ -1,0 +1,48 @@
+#:kivy 2.0.0
+
+<MainbarView>:
+    BoxLayout:
+        orientation: 'vertical'
+        size: root.size
+        BoxLayout:
+            orientation: "horizontal"
+            size_hint_y: 0.15
+            Spinner:
+                id: selected_mode
+                size_hint_x: 0.25
+                font_size: 30
+                text: "metronome"
+                values: "metronome", "player"
+            BoxLayout:
+                orientation: "horizontal"
+                size_hint_x: 0.7
+                Label:
+                    size_hint_x: 0.2
+                    font_size:30
+                    text: "Volume"
+                Spinner:
+                    id: selected_playback
+                    size_hint_x: 0.35
+                    font_size: 30
+                    text: "main"
+                    values: "main", "keyboard", "metronome", "player"
+                Slider:
+                    id: slider_volume
+                    size_hint_x: 0.35
+                    min: 0
+                    max: 100
+                    step: 1
+                    value: 50
+                Label:
+                    size_hint_x: 0.1
+                    font_size: 20
+                    text: str(slider_volume.value)
+            Button:
+                size_hint_x: 0.05
+                font_size:30
+                text: "X"
+                on_press: app.stop()
+
+        Label:
+            font_size:30
+            text: f"{selected_mode.text} - {selected_playback.text}"

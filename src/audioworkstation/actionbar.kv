@@ -1,0 +1,38 @@
+#:kivy 2.0.0
+
+<ActionBar_main>:
+    BoxLayout:
+        orientation: "vertical"
+        size: root.size
+        ActionBar:
+            ActionView:
+                ActionPrevious:
+                    title: "AudioWorkstation"
+                    with_previous: False
+                ActionOverflow:
+                ActionGroup:
+                    id: volume
+                    mode: "spinner"
+                    text: "Volume"
+                    ActionButton:
+                        text: "main"
+                    ActionButton:
+                        text: "keyboard"
+                    ActionButton:
+                        text: "player"
+                    ActionButton:
+                        text: "metronome"
+                ActionButton:
+                    text: "bar"
+                ActionGroup:
+                    id: type
+                    mode: "spinner"
+                    text: "type"
+                    ActionButton:
+                        text: "player"
+                    ActionButton:
+                        text: "metronome"
+                ActionButton:
+                    text: "X"
+        Label:
+            text: f"{volume.text} - {type.text}"
