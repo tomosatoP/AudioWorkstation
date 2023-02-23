@@ -3,19 +3,24 @@
 
 from concurrent import futures
 
-from kivy.uix.screenmanager import Screen
+
+from kivy.app import App
+from kivy.uix.widget import Widget
 from kivy.uix.behaviors import ToggleButtonBehavior
 from kivy.properties import BoundedNumericProperty, ObjectProperty
-from kivy.lang import Builder
+from kivy.core.text import LabelBase, DEFAULT_FONT
+from kivy.resources import resource_add_path
 
 from . import pattern as PT
 
-Builder.load_file("metronome.kv")
+# To use japanese font in Kivy
+resource_add_path("/usr/share/fonts/opentype/ipaexfont-gothic")
+LabelBase.register(DEFAULT_FONT, "ipaexg.ttf")
 
 # To play the metronome pattern in a separate thread.
 
 
-class MetronomeView(Screen):
+class MetronomeView(Widget):
     pSFS = PT.Pattern()
     executor = futures.ThreadPoolExecutor()
 
@@ -47,5 +52,16 @@ class MetronomeView(Screen):
             button.disabled = disable
 
 
+class Metronome(App):
+    def build(self):
+        mv = MetronomeView()
+        return mv
+
+    def on_stop(self):
+
+        print("on stop")
+        return super().on_stop()
+
+
 if __name__ == "__main__":
-    print(__file__)
+    Metronome().run()

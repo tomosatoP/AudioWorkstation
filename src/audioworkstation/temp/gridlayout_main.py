@@ -3,7 +3,7 @@ import kivy  # noqa: F401
 from kivy.app import App
 from kivy.uix.gridlayout import GridLayout
 
-from . import gridlayouts  # noqa: F401
+from .temp import gridlayouts  # noqa: F401
 
 
 class main_kv(GridLayout):

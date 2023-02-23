@@ -7,6 +7,8 @@ from typing import Optional
 from pathlib import Path
 from enum import IntEnum, auto
 
+from kivy.resources import resource_add_path
+from kivy.core.text import LabelBase, DEFAULT_FONT
 from kivy.logger import Logger
 from kivy.properties import (
     ListProperty,
@@ -15,14 +17,18 @@ from kivy.properties import (
     ObjectProperty,
 )
 from kivy.uix.togglebutton import ToggleButton
-from kivy.uix.screenmanager import Screen
+from kivy.uix.widget import Widget
 from kivy.clock import Clock
+from kivy.app import App
 from kivy.event import EventDispatcher
-from kivy.lang import Builder
+
 
 from . import midifile as MF
 
-Builder.load_file("player.kv")
+
+# To use japanese font in Kivy
+resource_add_path("/usr/share/fonts/opentype/ipaexfont-gothic")
+LabelBase.register(DEFAULT_FONT, "ipaexg.ttf")
 
 
 class PLAYER_STATUS(IntEnum):
@@ -55,7 +61,7 @@ class MidiTitleButton(ToggleButton, EventDispatcher):
         return super().on_touch_down(touch)
 
 
-class PlayerView(Screen):
+class PlayerView(Widget):
     play_button = ObjectProperty(None)
     pause_button = ObjectProperty(None)
     ticks_slider = ObjectProperty(None)
@@ -205,5 +211,11 @@ class PlayerView(Screen):
         return len(self.channels.children)
 
 
+class Player(App):
+    def build(self):
+        pv = PlayerView()
+        return pv
+
+
 if __name__ == "__main__":
-    print(__file__)
+    Player().run()

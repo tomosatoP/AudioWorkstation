@@ -21,35 +21,20 @@ Config.set("input", "hid_%(name)s", "probesysfs,provider=hidinput")
 
 
 if __name__ == "__main__":
+    # To use japanese font in Kivy
+    from kivy.core.text import LabelBase, DEFAULT_FONT
+    from kivy.resources import resource_add_path
 
     from .libs.audio import amixer
+
+    # To use japanese font in Kivy
+    resource_add_path("/usr/share/fonts/opentype/ipaexfont-gothic")
+    LabelBase.register(DEFAULT_FONT, "ipaexg.ttf")
 
     # Jackd2 and amixer
     amixer.start()
     amixer.volume("50%,50%")
 
-    test = "menubar"
+    from .menubar import MenubarApp
 
-    if test == "metronome":
-        from .metronome import Metronome
-
-        Metronome().run()
-
-    elif test == "player":
-        from .player import Player
-
-        Player().run()
-
-    elif test == "gridlayout":
-        from .gridlayout_main import Gridlayout_mainApp
-
-        Gridlayout_mainApp().run()
-
-    elif test == "actionbar":
-        from .actionbar import ActionbarApp
-
-        ActionbarApp().run()
-    elif test == "menubar":
-        from .menubar import MenubarApp
-
-        MenubarApp().run()
+    MenubarApp().run()

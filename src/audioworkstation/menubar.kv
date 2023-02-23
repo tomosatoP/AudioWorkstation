@@ -1,48 +1,49 @@
 #:kivy 2.0.0
+#:set default_font_size sp(30)
 
 <MainbarView>:
+    sm: sm
+    mode: selected_mode
+    playback: selected_playback
+    volume: slider_volume
+
     BoxLayout:
         orientation: 'vertical'
         size: root.size
         BoxLayout:
             orientation: "horizontal"
-            size_hint_y: 0.15
+            size_hint_y: 0.2
             Spinner:
                 id: selected_mode
                 size_hint_x: 0.25
-                font_size: 30
-                text: "metronome"
-                values: "metronome", "player"
+                font_size: default_font_size
             BoxLayout:
                 orientation: "horizontal"
                 size_hint_x: 0.7
                 Label:
-                    size_hint_x: 0.2
-                    font_size:30
-                    text: "Volume"
+                    size_hint_x: 0.15
+                    font_size: default_font_size * 0.8
+                    text: "音量"
                 Spinner:
                     id: selected_playback
                     size_hint_x: 0.35
-                    font_size: 30
-                    text: "main"
-                    values: "main", "keyboard", "metronome", "player"
+                    font_size: default_font_size
                 Slider:
                     id: slider_volume
-                    size_hint_x: 0.35
+                    size_hint_x: 0.4
                     min: 0
                     max: 100
                     step: 1
                     value: 50
                 Label:
                     size_hint_x: 0.1
-                    font_size: 20
-                    text: str(slider_volume.value)
+                    font_size: default_font_size * 0.6
+                    text: f"{str(int(slider_volume.value))}%"
             Button:
-                size_hint_x: 0.05
-                font_size:30
+                size_hint_x: 0.1
+                font_size: default_font_size * 2
                 text: "X"
                 on_press: app.stop()
-
-        Label:
-            font_size:30
-            text: f"{selected_mode.text} - {selected_playback.text}"
+        ScreenManager:
+            id: sm
+            size_hint_y: 0.8
