@@ -4,8 +4,8 @@
 from pathlib import Path
 from json import dump
 
-from .libs.audio import fluidsynth as FS
-from .libs.sublibs import standardmidifile as SMF
+from ..libs.audio import fluidsynth as FS
+from ..libs.sublibs import standardmidifile as SMF
 
 
 class MidiPlayer:

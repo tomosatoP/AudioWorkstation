@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from concurrent import futures
+from pathlib import Path
 
 from kivy.uix.screenmanager import Screen
 from kivy.uix.behaviors import ToggleButtonBehavior
@@ -10,7 +11,7 @@ from kivy.lang import Builder
 
 from . import pattern as PT
 
-Builder.load_file("metronome.kv")
+Builder.load_file(str(Path(__file__).with_name("metronome.kv")))
 
 # To play the metronome pattern in a separate thread.
 

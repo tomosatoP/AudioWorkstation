@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from .libs.audio import fluidsynth as FS
-from .parts import _dB2gain, _gain2dB
+from ..libs.audio import fluidsynth as FS
+from ..parts import _dB2gain, _gain2dB
 
 sfs: FS.Sequencer
 schedule_stop: bool = False

@@ -22,7 +22,7 @@ from kivy.lang import Builder
 
 from . import midifile as MF
 
-Builder.load_file("player.kv")
+Builder.load_file(str(Path(__file__).with_name("player.kv")))
 
 
 class PLAYER_STATUS(IntEnum):

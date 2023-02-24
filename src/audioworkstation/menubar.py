@@ -1,11 +1,16 @@
-import kivy  # noqa: F401
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
+from functools import partial
+
+import kivy  # noqa: F401
 from kivy.app import App
 from kivy.properties import ObjectProperty
+from kivy.clock import Clock
 from kivy.uix.widget import Widget
 
-from . import metronome
-from . import player
+from .metronome import metronome
+from .player import player
 
 
 class MainbarView(Widget):
@@ -16,8 +21,9 @@ class MainbarView(Widget):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+
         self.sm.add_widget(metronome.MetronomeView(name="m"))
-        self.sm.add_widget(player.PlayerView(name="p"))
+        Clock.schedule_once(partial(self.sm.add_widget, player.PlayerView(name="p")))
 
         self.set_mode(self.mode, "metronome")
         self.mode.bind(text=self.set_mode)
