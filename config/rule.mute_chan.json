@@ -87,7 +87,7 @@
         "param1": null,
         "param2": null
     },
-    "NOTE: mute chan 8": {
+    "NOTE: unmute chan 8": {
         "type": 0,
         "chan": {
             "min": 8,
@@ -96,12 +96,7 @@
             "add": 0
         },
         "param1": null,
-        "param2": {
-            "min": 0,
-            "max": 127,
-            "mul": 0.0,
-            "add": 0
-        }
+        "param2": null
     },
     "NOTE: unmute chan 9": {
         "type": 0,
@@ -125,7 +120,7 @@
         "param1": null,
         "param2": null
     },
-    "NOTE: mute chan 11": {
+    "NOTE: unmute chan 11": {
         "type": 0,
         "chan": {
             "min": 11,
@@ -134,14 +129,9 @@
             "add": 0
         },
         "param1": null,
-        "param2": {
-            "min": 0,
-            "max": 127,
-            "mul": 0.0,
-            "add": 0
-        }
+        "param2": null
     },
-    "NOTE: mute chan 12": {
+    "NOTE: unmute chan 12": {
         "type": 0,
         "chan": {
             "min": 12,
@@ -150,14 +140,9 @@
             "add": 0
         },
         "param1": null,
-        "param2": {
-            "min": 0,
-            "max": 127,
-            "mul": 0.0,
-            "add": 0
-        }
+        "param2": null
     },
-    "NOTE: mute chan 13": {
+    "NOTE: unmute chan 13": {
         "type": 0,
         "chan": {
             "min": 13,
@@ -166,14 +151,9 @@
             "add": 0
         },
         "param1": null,
-        "param2": {
-            "min": 0,
-            "max": 127,
-            "mul": 0.0,
-            "add": 0
-        }
+        "param2": null
     },
-    "NOTE: mute chan 14": {
+    "NOTE: unmute chan 14": {
         "type": 0,
         "chan": {
             "min": 14,
@@ -182,14 +162,9 @@
             "add": 0
         },
         "param1": null,
-        "param2": {
-            "min": 0,
-            "max": 127,
-            "mul": 0.0,
-            "add": 0
-        }
+        "param2": null
     },
-    "NOTE: mute chan 15": {
+    "NOTE: unmute chan 15": {
         "type": 0,
         "chan": {
             "min": 15,
@@ -198,12 +173,7 @@
             "add": 0
         },
         "param1": null,
-        "param2": {
-            "min": 0,
-            "max": 127,
-            "mul": 0.0,
-            "add": 0
-        }
+        "param2": null
     },
     "CC": {
         "type": 1,

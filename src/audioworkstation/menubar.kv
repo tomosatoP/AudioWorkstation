@@ -1,49 +1,68 @@
 #:kivy 2.0.0
 #:set default_font_size sp(30)
 
-<MainbarView>:
-    sm: sm
-    mode: selected_mode
-    playback: selected_playback
-    volume: slider_volume
+<OptionList@SpinnerOption>:
+    background_color: 0.6, 0.6, 0.6, 1
+    font_size: default_font_size
+    height: default_font_size * 2
+
+<VolumeLayout@BoxLayout>
+    orientation: "horizontal"
+    Label:
+        id: volume_name
+        size_hint_x: 0.3
+        font_size: default_font_size * 0.6
+        text: "main"
+    Slider:
+        id: volume_slider
+        size_hint_x: 0.6
+        value_track: True
+        value_track_color: 0, 1, 0, 1
+        min: 0
+        max: 100
+        step: 1
+    Label:
+        size_hint_x: 0.1
+        halign: "right"
+        font_size: default_font_size * 0.6
+        text: f"{str(int(volume_slider.value))}%"
+           
+<MainmenubarView>:
+    panel: panel_screenmanager
+    mode: mode_spinner
+    vol1: main_volumelayout
+    vol2: mode_volumelayout
 
     BoxLayout:
-        orientation: 'vertical'
+        orientation: "vertical"
         size: root.size
         BoxLayout:
+            canvas.before:
+                Color: 
+                    rgba: 0.2, 0.2, 0.2, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
             orientation: "horizontal"
             size_hint_y: 0.2
             Spinner:
-                id: selected_mode
+                id: mode_spinner
                 size_hint_x: 0.25
                 font_size: default_font_size
+                option_cls: "OptionList"
             BoxLayout:
-                orientation: "horizontal"
-                size_hint_x: 0.7
-                Label:
-                    size_hint_x: 0.15
-                    font_size: default_font_size * 0.8
-                    text: "音量"
-                Spinner:
-                    id: selected_playback
-                    size_hint_x: 0.35
-                    font_size: default_font_size
-                Slider:
-                    id: slider_volume
-                    size_hint_x: 0.4
-                    min: 0
-                    max: 100
-                    step: 1
-                    value: 50
-                Label:
-                    size_hint_x: 0.1
-                    font_size: default_font_size * 0.6
-                    text: f"{str(int(slider_volume.value))}%"
+                orientation: "vertical"
+                size_hint_x: 0.65
+                VolumeLayout:
+                    id: main_volumelayout
+                VolumeLayout:
+                    id: mode_volumelayout
             Button:
+                background_color: 0, 0, 0, 0
                 size_hint_x: 0.1
                 font_size: default_font_size * 2
-                text: "X"
+                text: "✕"
                 on_press: app.stop()
         ScreenManager:
-            id: sm
+            id: panel_screenmanager
             size_hint_y: 0.8

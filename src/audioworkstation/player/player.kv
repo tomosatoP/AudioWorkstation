@@ -27,7 +27,6 @@
             size_hint_y: 0.2
             ToggleButton:
                 id: play_togglebotton
-                border: (0, 0 , 0 ,0)
                 disabled: True
                 size_hint_x: 0.15
                 font_size: default_font_size
@@ -49,6 +48,8 @@
                     id: ticks
                     size_hint_x: 0.8
                     disabled: False
+                    value_track: True
+                    value_track_color: 1, 0, 0, 1
                     min: 0
                     max: 0
                     step: 1
