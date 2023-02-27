@@ -131,7 +131,7 @@
         "param1": null,
         "param2": null
     },
-    "NOTE: mute chan 12": {
+    "NOTE: unmute chan 12": {
         "type": 0,
         "chan": {
             "min": 12,
@@ -140,12 +140,7 @@
             "add": 0
         },
         "param1": null,
-        "param2": {
-            "min": 0,
-            "max": 127,
-            "mul": 0.0,
-            "add": 0
-        }
+        "param2": null
     },
     "NOTE: mute chan 13": {
         "type": 0,

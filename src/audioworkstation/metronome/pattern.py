@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from ..libs.audio import fluidsynth as FS
-from ..parts import _dB2gain, _gain2dB
+from ..libs.sublibs.parts import dB2gain, gain2dB
 
 sfs: FS.Sequencer
 schedule_stop: bool = False
@@ -52,11 +52,11 @@ class Pattern:
 
     @property
     def gain(self) -> int:
-        return _gain2dB(sfs.gain)
+        return gain2dB(sfs.gain)
 
     @gain.setter
     def gain(self, value: int) -> None:
-        sfs.gain = _dB2gain(value)
+        sfs.gain = dB2gain(value)
 
     def start(self, bps: float, beat: list) -> None:
         global sfs, schedule_stop, rhythm, notevalue

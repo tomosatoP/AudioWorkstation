@@ -6,13 +6,13 @@ from math import pow, log10
 _min_gain = 10**-4
 
 
-def _gain2dB(value: float) -> int:
+def gain2dB(value: float) -> int:
     if value < _min_gain:
         value = _min_gain
     return int(20 * log10(value / _min_gain))
 
 
-def _dB2gain(value: int) -> float:
+def dB2gain(value: int) -> float:
     return _min_gain * pow(10.0, float(value) / 20.0)
 
 

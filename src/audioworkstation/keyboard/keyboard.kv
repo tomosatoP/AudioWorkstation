@@ -1,0 +1,31 @@
+#:kivy 2.0.0
+#:set default_font_size sp(30)
+
+<GMSoundSetGroupButton>:
+    group: "GMSoundSetGroup"
+    font_size: default_font_size * 0.5
+    halign: "center"
+    allow_no_selection: False
+
+<GMSoundSetButton>:
+    group: "GMSoundSet"
+    font_size: default_font_size * 0.8
+    halign: "center"
+    allow_no_selection: False
+
+<KeyboardView>:
+    gmssg: gmsoundsetgroup_layout
+    gmss: gmsoundset_layout
+
+    BoxLayout:
+        orientation: "horizontal"
+        GridLayout:
+            id: gmsoundsetgroup_layout
+            size_hint_x: 0.6
+            cols: 2
+            rows: 8
+        BoxLayout:
+            id: gmsoundset_layout
+            size_hint_x: 0.4
+            rows: 8
+            orientation: "vertical"

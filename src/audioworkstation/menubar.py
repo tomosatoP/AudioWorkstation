@@ -11,36 +11,47 @@ from kivy.uix.widget import Widget
 
 from .metronome import metronome
 from .player import player
+from .keyboard import keyboard
 from .libs.audio import amixer
 
 
-class MainmenubarView(Widget):
+class MenubarView(Widget):
     panel = ObjectProperty()
     mode = ObjectProperty()
     vol1 = ObjectProperty()
     vol2 = ObjectProperty()
 
     def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+        super(MenubarView, self).__init__(**kwargs)
 
-        self.panel.add_widget(metronome.MetronomeView(name="m"))
-        Clock.schedule_once(partial(self.panel.add_widget, player.PlayerView(name="p")))
+        self.panel.add_widget(keyboard.KeyboardView(name="keyboard"))
+        Clock.schedule_once(
+            partial(self.panel.add_widget, metronome.MetronomeView(name="metronome"))
+        )
+        Clock.schedule_once(
+            partial(self.panel.add_widget, player.PlayerView(name="player"))
+        )
 
-        self.set_mode(self.mode, "メトローム")
+        self.set_mode(self.mode, "キーボード")
         self.mode.bind(text=self.set_mode)
 
     def set_mode(self, widget, text) -> None:
-        self.mode.values = "メトローム", "伴奏"
-        self.vol1.children[2].text = "マスター音量"
-        self.vol1.children[1].value = self.master_volume()
-        if text == "メトローム":
-            self.panel.current = "m"
+        self.mode.values = "キーボード", "メトローム", "伴奏"
+        self.vol1.label.text = "マスター音量"
+        self.vol1.slider.value = self.master_volume()
+        if text == "キーボード":
+            self.panel.current = "keyboard"
+            self.mode.text = "キーボード"
+            self.vol2.label.text = "キーボード音量"
+            self.vol2.slider.value = self.panel.current_screen.sound_volume
+        elif text == "メトローム":
+            self.panel.current = "metronome"
             self.mode.text = "メトローム"
-            self.vol2.children[2].text = "メトローム音量"
+            self.vol2.label.text = "メトローム音量"
         elif text == "伴奏":
-            self.panel.current = "p"
+            self.panel.current = "player"
             self.mode.text = "伴奏"
-            self.vol2.children[2].text = "伴奏音量"
+            self.vol2.label.text = "伴奏音量"
 
     def master_volume(self, value=None) -> int:
         if value is None:
@@ -53,7 +64,7 @@ class MainmenubarView(Widget):
 class MenubarApp(App):
     def build(self):
         self.title = "AudioWorkstation"
-        return MainmenubarView()
+        return MenubarView()
 
 
 if __name__ == "__main__":

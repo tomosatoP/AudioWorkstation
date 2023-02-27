@@ -961,7 +961,7 @@ fluid_synth_add_sfont = prototype(
 fluid_synth_add_sfont.errcheck = errcheck
 
 fluid_synth_sfload = prototype(
-    CFS.c_void_p,
+    CFS.c_int,
     "fluid_synth_sfload",
     (CFS.c_void_p, 1, "synth"),
     (CFS.c_char_p, 1, "filename"),

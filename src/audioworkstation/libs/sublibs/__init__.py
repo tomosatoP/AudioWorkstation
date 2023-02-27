@@ -1,3 +1,1 @@
-from . import standardmidifile
-
-__all__ = ["standardmidifile"]
+__all__ = ["standardmidifile", "parts"]
