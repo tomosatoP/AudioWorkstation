@@ -21,6 +21,7 @@ class MetronomeView(Screen):
     executor = futures.ThreadPoolExecutor()
 
     bps_layout = ObjectProperty(None)
+    beat_layout = ObjectProperty(None)
     bps = BoundedNumericProperty(
         120, min=60, max=240, errorhandler=lambda x: 240 if x > 240 else 60
     )
@@ -33,19 +34,21 @@ class MetronomeView(Screen):
             )
         )[0].text
 
-    def sound_on(self) -> None:
-        self._status(disable=True)
-        print(f"BPS:{self.bps}, RHYTHM:{self.beat().splitlines()}")
-        self.executor.submit(self.pSFS.start, self.bps, self.beat().splitlines())
+    def sound(self, on: str) -> None:
+        if on == "down":
+            self.status(disable=True)
+            print(f"BPS:{self.bps}, RHYTHM:{self.beat().splitlines()}")
+            self.executor.submit(self.pSFS.start, self.bps, self.beat().splitlines())
+        else:
+            self.status(disable=False)
+            self.pSFS.stop()
 
-    def sound_off(self) -> None:
-        self._status(disable=False)
-        self.pSFS.stop()
-
-    def _status(self, disable: bool) -> None:
+    def status(self, disable: bool) -> None:
         self.bps_layout.disabled = disable
-        for button in ToggleButtonBehavior.get_widgets("BeatSelectButtons"):
-            button.disabled = disable
+        self.beat_layout.disabled = disable
+
+    def sound_volume(self, value) -> None:
+        self.pSFS.volume = value
 
 
 if __name__ == "__main__":

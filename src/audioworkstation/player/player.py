@@ -123,6 +123,9 @@ class PlayerView(Screen):
             self.midi_player.pause()
             self.status(PLAYER_STATUS.PAUSE)
 
+    def sound_volume(self, value) -> None:
+        pass
+
     def select(self, mtb: MidiTitleButton):
         self.set_slider(mtb)
         self.set_channels(mtb)

@@ -1466,7 +1466,6 @@ class Sequencer(Synthesizer):
         destination: int = -1,
         absolute: bool = True,
     ) -> None:
-
         event = self._assign_event(source=source, destination=destination)
         fluid_event_note(
             evt=CFS.c_void_p(event),
@@ -1485,7 +1484,6 @@ class Sequencer(Synthesizer):
         destination: int = -1,
         absolute: bool = True,
     ) -> None:
-
         event = self._assign_event(source=source, destination=destination)
         fluid_event_timer(
             evt=CFS.c_void_p(event), data=CFS.pointer(data) if data else None

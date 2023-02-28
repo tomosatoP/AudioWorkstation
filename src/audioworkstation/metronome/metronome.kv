@@ -5,17 +5,17 @@
     group: 'BeatSelectButtons'
     font_size: default_font_size
     halign: 'center'
-    on_press: self.state = 'down' if self.state == 'down' else 'down'
+    allow_no_selection: False
 
 <BpsChangeButton@Button>:
-    size_hint_x: 0.4
     font_size: default_font_size
-    on_press: app.root.bps += int(self.text)
+    on_press: parent.bps += int(self.text)
 
 <MetronomeView>:
     bps_layout: bps_boxlayout
-    size: root.size
+    beat_layout: beat_boxlayout
 
+    size: root.size
     BoxLayout:
         orientation: 'vertical'
         BoxLayout:
@@ -23,66 +23,76 @@
             size_hint_y: None
             height: default_font_size * 1.5
             ToggleButton:
-                size_hint_x: 0.3
+                size_hint_x: 0.2
                 font_size: default_font_size
                 text: '▶'
-                on_press: root.sound_on() if self.state == 'down' else root.sound_off()
-            Label:
-                font_size: default_font_size
-                size_hint_x: 0.2
-                text: 'BPS'
+                on_press: root.sound(self.state)
             BoxLayout:
                 id: bps_boxlayout
-                orientation: 'horizontal'
-                size_hint_x: 0.7
-                BpsChangeButton:
-                    text: '-10'
-                BpsChangeButton:
-                    text: '-1'
+                orientation: "horizontal"
+                size_hint_x: 0.8
                 Label:
-                    size_hint_x: 0.8
+                    size_hint_x: 0.2
                     font_size: default_font_size
-                    text: str(root.bps)
-                BpsChangeButton:
-                    text: '+1'
-                BpsChangeButton:
-                    text: '+10'
+                    text: 'BPS'
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint_x: 0.6
+                    BpsChangeButton:
+                        size_hint_x: 0.1
+                        text: '-10'
+                    BpsChangeButton:
+                        size_hint_x: 0.1
+                        text: '-1'
+                    Label:
+                        size_hint_x: 0.2
+                        font_size: default_font_size
+                        text: str(root.bps)
+                    BpsChangeButton:
+                        size_hint_x: 0.1
+                        text: '+1'
+                    BpsChangeButton:
+                        size_hint_x: 0.1
+                        text: '+10'
         BoxLayout:
-            orientation: 'horizontal'
-            Label:
-                font_size: default_font_size
-                size_hint_x: 0.2
-                text: '単純 \n 拍子'
+            id: beat_boxlayout
+            orientation: "vertical"
             BoxLayout:
                 orientation: 'horizontal'
-                BeatSelectButton:
-                    text: '2\n2'
-                BeatSelectButton:
-                    text: '3\n2'
-                BeatSelectButton:
-                    text: '2\n4'
-                BeatSelectButton:
-                    text: '3\n4'
-                BeatSelectButton:
-                    text: '4\n4'
-                    state: 'down'
-                BeatSelectButton:
-                    text: '3\n8'
-        BoxLayout:
-            orientation: 'horizontal'
-            Label:
-                font_size: default_font_size
-                size_hint_x: 0.2
-                text: '複合 \n 拍子'
+                Label:
+                    size_hint_x: 0.2
+                    font_size: default_font_size
+                    text: '単純 \n 拍子'
+                BoxLayout:
+                    orientation: 'horizontal'
+                    BeatSelectButton:
+                        text: '2\n2'
+                    BeatSelectButton:
+                        text: '3\n2'
+                    BeatSelectButton:
+                        text: '2\n4'
+                    BeatSelectButton:
+                        text: '3\n4'
+                    BeatSelectButton:
+                        text: '4\n4'
+                        state: 'down'
+                    BeatSelectButton:
+                        text: '3\n8'
             BoxLayout:
                 orientation: 'horizontal'
-                BeatSelectButton:
-                    text: '2+2\n4'
-                BeatSelectButton:
-                    text: '3+3\n4'
-                BeatSelectButton:
-                    text: '2+2+2\n4'
-                BeatSelectButton:
-                    text: '3+3\n8'
-                BeatSelectButton:
-                    text: '2+2+2\n8'
+                Label:
+                    size_hint_x: 0.2
+                    font_size: default_font_size
+                    text: '複合 \n 拍子'
+                BoxLayout:
+                    orientation: 'horizontal'
+                    BeatSelectButton:
+                        text: '2+2\n4'
+                    BeatSelectButton:
+                        text: '3+3\n4'
+                    BeatSelectButton:
+                        text: '2+2+2\n4'
+                    BeatSelectButton:
+                        text: '3+3\n8'
+                    BeatSelectButton:
+                        text: '2+2+2\n8'

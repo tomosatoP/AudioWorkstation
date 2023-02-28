@@ -94,11 +94,6 @@ class KeyboardView(Screen):
         button.bind(on_select=self.select_gmssg)
         self.gmssg.add_widget(button)
 
-    @property
-    def sound_volume(self) -> int:
-        return self.msm.volume
-
-    @sound_volume.setter
     def sound_volume(self, value: int) -> None:
         self.msm.volume = value
 

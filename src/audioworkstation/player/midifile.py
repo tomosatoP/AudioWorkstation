@@ -6,6 +6,7 @@ from json import dump
 
 from ..libs.audio import fluidsynth as FS
 from ..libs.sublibs import standardmidifile as SMF
+from ..libs.sublibs.parts import dB2gain, gain2dB
 
 
 class MidiPlayer:
@@ -17,7 +18,7 @@ class MidiPlayer:
     pause_tick: int = 0
 
     def __init__(self) -> None:
-        kwargs = {
+        kwargs: dict = {
             "settings": "config/settings.json",
             "soundfont": [
                 "sf2/FluidR3_GM.sf2",
@@ -26,7 +27,7 @@ class MidiPlayer:
             ],
         }
 
-        self._player = FS.MidiPlayer(**kwargs)
+        self.fsmp = FS.MidiPlayer(**kwargs)
 
     def start(self, filename: str) -> str:
         """start _summary_
@@ -34,19 +35,18 @@ class MidiPlayer:
         :param str filename: _description_
         :return str: _description_
         """
-        self._player.gain = 0.5
-        self._player.apply_rules("config/rule.mute_chan.json")
-        self._player.start(filename, self.pause_tick)
+        self.fsmp.apply_rules("config/rule.mute_chan.json")
+        self.fsmp.start(filename, self.pause_tick)
         return f"{filename}"
 
     def close(self) -> None:
         """close _summary_"""
         self.pause_tick = 0
-        self._player.close()
+        self.fsmp.close()
 
     def pause(self) -> None:
         """pause _summary_"""
-        self.pause_tick = self._player.stop()
+        self.pause_tick = self.fsmp.stop()
         print(self.pause_tick)
 
     @property
@@ -55,7 +55,15 @@ class MidiPlayer:
 
         :return int: _description_
         """
-        return self._player.tick
+        return self.fsmp.tick
+
+    @property
+    def volume(self) -> int:
+        return gain2dB(self.fsmp.gain)
+
+    @volume.setter
+    def volume(self, value) -> None:
+        self.fsmp.gain = dB2gain(value)
 
 
 def info_midifile(midifile: Path) -> dict:

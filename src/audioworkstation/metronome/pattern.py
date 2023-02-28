@@ -11,12 +11,12 @@ notevalue: int
 
 
 @FS.FLUID_EVENT_CALLBACK_T
-def _pcallback(time, event, sequencer, data):
+def pcallback(time, event, sequencer, data):
     if not schedule_stop:
-        _pattern()
+        pattern()
 
 
-def _pattern():
+def pattern():
     time_marker = sfs.tick
 
     key = [75, 76]
@@ -48,14 +48,14 @@ class Pattern:
         }
 
         sfs = FS.Sequencer(**kwargs)
-        sfs.register_client("metronome", _pcallback)
+        sfs.register_client("metronome", pcallback)
 
     @property
-    def gain(self) -> int:
+    def volume(self) -> int:
         return gain2dB(sfs.gain)
 
-    @gain.setter
-    def gain(self, value: int) -> None:
+    @volume.setter
+    def volume(self, value: int) -> None:
         sfs.gain = dB2gain(value)
 
     def start(self, bps: float, beat: list) -> None:
@@ -65,11 +65,10 @@ class Pattern:
         schedule_stop = False
         rhythm = list(map(int, str(beat[0]).split("+")))
         notevalue = int(beat[1])
-        _pattern()
+        pattern()
 
     def stop(self):
         global schedule_stop
-        print("sound off")
         schedule_stop = True
 
 
