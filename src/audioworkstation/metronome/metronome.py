@@ -4,6 +4,7 @@
 from concurrent import futures
 from pathlib import Path
 
+from kivy.logger import Logger  # noqa: F401
 from kivy.uix.screenmanager import Screen
 from kivy.uix.behaviors import ToggleButtonBehavior
 from kivy.properties import BoundedNumericProperty, ObjectProperty
@@ -12,8 +13,6 @@ from kivy.lang import Builder
 from . import pattern as PT
 
 Builder.load_file(str(Path(__file__).with_name("metronome.kv")))
-
-# To play the metronome pattern in a separate thread.
 
 
 class MetronomeView(Screen):
@@ -26,6 +25,16 @@ class MetronomeView(Screen):
         120, min=60, max=240, errorhandler=lambda x: 240 if x > 240 else 60
     )
 
+    def sound(self, on: str) -> None:
+        if on == "down":
+            self.status(disable=True)
+            Logger.info(f"metronome: BPS - {self.bps}")
+            Logger.info(f"metronome: RHYTHM - {self.beat().splitlines()}")
+            self.executor.submit(self.pSFS.start, self.bps, self.beat().splitlines())
+        else:
+            self.status(disable=False)
+            self.pSFS.stop()
+
     def beat(self) -> str:
         return list(
             filter(
@@ -34,20 +43,19 @@ class MetronomeView(Screen):
             )
         )[0].text
 
-    def sound(self, on: str) -> None:
-        if on == "down":
-            self.status(disable=True)
-            print(f"BPS:{self.bps}, RHYTHM:{self.beat().splitlines()}")
-            self.executor.submit(self.pSFS.start, self.bps, self.beat().splitlines())
-        else:
-            self.status(disable=False)
-            self.pSFS.stop()
-
     def status(self, disable: bool) -> None:
         self.bps_layout.disabled = disable
         self.beat_layout.disabled = disable
 
-    def sound_volume(self, value) -> None:
+    def sound_stop(self) -> None:
+        self.sound("normal")
+
+    @property
+    def sound_volume(self) -> int:
+        return self.pSFS.volume
+
+    @sound_volume.setter
+    def sound_volume(self, value: int) -> None:
         self.pSFS.volume = value
 
 

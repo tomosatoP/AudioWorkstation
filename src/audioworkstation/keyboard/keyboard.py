@@ -4,7 +4,7 @@
 from pathlib import Path
 from json import load
 
-import kivy  # noqa: F401
+from kivy.logger import Logger  # noqa: F401
 from kivy.uix.screenmanager import Screen
 from kivy.clock import Clock
 from kivy.event import EventDispatcher
@@ -24,31 +24,9 @@ Builder.load_file(str(Path(__file__).with_name("keyboard.kv")))
 class GMSoundSetButton(ToggleButton, EventDispatcher):
     preset_num = NumericProperty()
 
-    def __init__(self, **kwargs):
-        super(GMSoundSetButton, self).__init__(**kwargs)
-        self.register_event_type("on_select")
-
-    def on_select(self):
-        pass
-
-    def on_state(self, widget, value):
-        if value == "down":
-            self.dispatch("on_select")
-
 
 class GMSoundSetGroupButton(ToggleButton, EventDispatcher):
     presets = DictProperty()
-
-    def __init__(self, **kwargs):
-        super(GMSoundSetGroupButton, self).__init__(**kwargs)
-        self.register_event_type("on_select")
-
-    def on_select(self):
-        pass
-
-    def on_state(self, widget, value):
-        if value == "down":
-            self.dispatch("on_select")
 
 
 class KeyboardView(Screen):
@@ -76,7 +54,9 @@ class KeyboardView(Screen):
 
     def select_gmssg(self, gmssg_button: GMSoundSetGroupButton):
         presets_num: list = list(
-            range(gmssg_button.presets["End"], gmssg_button.presets["Start"] - 1, -1)
+            reversed(
+                range(gmssg_button.presets["Start"], gmssg_button.presets["End"] + 1)
+            )
         )
 
         for i in range(8):
@@ -86,14 +66,22 @@ class KeyboardView(Screen):
     def add_gmss_buttons(self):
         for i in range(8):
             button = GMSoundSetButton(text=f"楽器 {i}", preset_num=0)
-            button.bind(on_select=self.select_gmss)
+            button.bind(on_press=self.select_gmss)
             self.gmss.add_widget(button)
 
     def add_gmssg_button(self, name: str, presets: dict) -> None:
         button = GMSoundSetGroupButton(text=name, presets=presets)
-        button.bind(on_select=self.select_gmssg)
+        button.bind(on_press=self.select_gmssg)
         self.gmssg.add_widget(button)
 
+    def sound_stop(self):
+        pass
+
+    @property
+    def sound_volume(self) -> int:
+        return self.msm.volume
+
+    @sound_volume.setter
     def sound_volume(self, value: int) -> None:
         self.msm.volume = value
 

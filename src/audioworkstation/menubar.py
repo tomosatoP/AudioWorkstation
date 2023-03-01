@@ -3,7 +3,6 @@
 
 from functools import partial
 
-import kivy  # noqa: F401
 from kivy.app import App
 from kivy.properties import ObjectProperty
 from kivy.uix.widget import Widget
@@ -34,6 +33,8 @@ class MenubarView(Widget):
         self.mode.bind(text=self.set_mode)
 
     def set_mode(self, widget, text) -> None:
+        self.panel.current_screen.sound_stop()
+
         if text == "キーボード":
             self.panel.current = "keyboard"
             self.vol2.label.text = "キーボード音量"
@@ -44,11 +45,13 @@ class MenubarView(Widget):
             self.panel.current = "player"
             self.vol2.label.text = "伴奏音量"
 
+        self.vol2.slider.value = self.panel.current_screen.sound_volume
+
     def master_volume(self, widget, value):
         amixer.volume(f"{value}%,{value}%")
 
     def mode_volume(self, widget, value):
-        self.panel.current_screen.sound_volume(value)
+        self.panel.current_screen.sound_volume = value
 
 
 class MenubarApp(App):

@@ -50,7 +50,7 @@ class MidiTitleButton(ToggleButton, EventDispatcher):
             log += f"ticks: {self.total_tick}" + ", "
             log += f"title: {self.text}" + ", "
             log += f"filename: {self.filename}"
-            Logger.debug("select: " + log)
+            Logger.debug("player: " + log)
             self.dispatch("on_select")
         return super().on_touch_down(touch)
 
@@ -75,21 +75,21 @@ class PlayerView(Screen):
         extension = [".mid", ".MID"]
         mids = [i for i in Path().glob("mid/*.*") if i.suffix in extension]
         for mid in mids:
-            Clock.schedule_once(partial(self.clock_callback, mid))
+            Clock.schedule_once(partial(self.add_midititlebutton, mid))
 
-    def clock_callback(self, midifile: Path, dt: int) -> int:
-        return self.add_midititlebutton(midifile)
+    def get_ticks(self, dt: int) -> None:
+        """Request number of ticks passed at intervals.
 
-    def clock_callback_tick(self, dt: int):
+        :param int dt: interval time
+        """
         self.ticks_slider.value = self.midi_player.tick
-        print(self.midi_player.tick)
 
     def future_callback(self, future: futures.Future) -> None:
-        """Calleback when playback is complete.
+        """Process after playback is finished.
 
-        :param futures.Future future: _description_
+        :param futures.Future future: playback process
         """
-        self.event.cancel()
+        self.ev_ticks.cancel()
         self.midi_player.close()
         self.status(PLAYER_STATUS.STANDBY)
         self.play_button.text = "▶"
@@ -97,22 +97,19 @@ class PlayerView(Screen):
         Logger.info("player: End of playback")
 
     def sound(self, state: str) -> None:
-        if state == "down":
-            self.play_button.text = "■"
-            self.mute()
-            mtb = self.selected()
-            if mtb is not None:
-                self.midi_player.pause_tick = self.ticks_slider.value
-                future = self.executor.submit(self.midi_player.start, mtb.filename)
-                future.add_done_callback(self.future_callback)
-                self.status(PLAYER_STATUS.PLAYBACK)
-                self.event = Clock.schedule_interval(self.clock_callback_tick, 0.5)
-                Logger.info(f"player: Playback start {mtb.filename}, {mtb.total_tick}")
-        elif state == "normal":
-            self.event.cancel()
+        mtb = self.selected()
+        if mtb is not None and state == "down":
+            self.mute_channels()
+            self.midi_player.pause_tick = self.ticks_slider.value
+            future = self.executor.submit(self.midi_player.start, mtb.filename)
+            future.add_done_callback(self.future_callback)
+            self.status(PLAYER_STATUS.PLAYBACK)
+            self.ev_ticks = Clock.schedule_interval(self.get_ticks, 0.5)
+            Logger.info(f"player: Playback start {mtb.filename}, {mtb.total_tick}")
+        elif mtb is not None and state == "normal":
+            self.ev_ticks.cancel()
             self.midi_player.close()
             self.status(PLAYER_STATUS.STANDBY)
-            self.play_button.text = "▶"
             Logger.info("player: Stop playback")
 
     def pause(self, state: str) -> None:
@@ -123,8 +120,16 @@ class PlayerView(Screen):
             self.midi_player.pause()
             self.status(PLAYER_STATUS.PAUSE)
 
-    def sound_volume(self, value) -> None:
-        pass
+    def sound_stop(self) -> None:
+        self.sound("normal")
+
+    @property
+    def sound_volume(self) -> int:
+        return self.midi_player.volume
+
+    @sound_volume.setter
+    def sound_volume(self, value: int) -> None:
+        self.midi_player.volume = value
 
     def select(self, mtb: MidiTitleButton):
         self.set_slider(mtb)
@@ -138,12 +143,14 @@ class PlayerView(Screen):
 
     def status(self, value: PLAYER_STATUS) -> None:
         if value == PLAYER_STATUS.STANDBY:
+            self.play_button.text = "▶"
             self.play_button.disabled = False
             self.pause_button.disabled = True
             self.ticks_slider.disabled = False
             self.midifiles.disabled = False
             self.channels.disabled = False
         elif value == PLAYER_STATUS.PLAYBACK:
+            self.play_button.text = "■"
             self.play_button.disabled = False
             self.pause_button.disabled = False
             self.ticks_slider.disabled = True
@@ -162,7 +169,7 @@ class PlayerView(Screen):
                 return midititlebutton
         return None
 
-    def add_midititlebutton(self, midifile: Path) -> int:
+    def add_midititlebutton(self, midifile: Path, dt: int) -> int:
         smf: dict = MF.info_midifile(midifile)
         index = len(self.midifiles.children)
         midititlebutton = MidiTitleButton(
@@ -176,7 +183,7 @@ class PlayerView(Screen):
         self.midifiles.add_widget(midititlebutton)
         return index
 
-    def mute(self) -> str:
+    def mute_channels(self) -> str:
         channels = dict()
         chan_num: int = 0
         for chan in self.channels.children[::-1]:
