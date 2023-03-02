@@ -47,7 +47,6 @@ class MidiPlayer:
     def pause(self) -> None:
         """pause _summary_"""
         self.pause_tick = self.fsmp.stop()
-        print(self.pause_tick)
 
     @property
     def tick(self) -> int:
