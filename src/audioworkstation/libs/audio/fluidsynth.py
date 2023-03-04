@@ -17,15 +17,17 @@ import ctypes as CFS
 from pathlib import Path
 
 # Logger
-_logger = LFS.getLogger(__name__)
-formatter = LFS.Formatter("%(asctime)s %(levelname)s %(message)s")
-_logger.setLevel(LFS.DEBUG)
-fh = LFS.FileHandler("logs/fluidsynth.log")
-fh.setFormatter(formatter)
-_logger.addHandler(fh)
-ch = LFS.StreamHandler()
-ch.setFormatter(formatter)
-_logger.addHandler(ch)
+logger = LFS.getLogger(__name__)
+logger.setLevel(LFS.DEBUG)
+_logger_formatter = LFS.Formatter("%(asctime)s %(levelname)s %(message)s")
+# Logger FileHandler
+_logger_fh = LFS.FileHandler("logs/fluidsynth.log")
+_logger_fh.setFormatter(_logger_formatter)
+logger.addHandler(_logger_fh)
+# Logger StreamHandler
+_logger_sh = LFS.StreamHandler()
+_logger_sh.setFormatter(_logger_formatter)
+logger.addHandler(_logger_sh)
 
 # fluidsynth
 FLUID_FAILED = -1
@@ -53,13 +55,11 @@ _libfs = CFS.CDLL(name=find_library(name="fluidsynth"), use_errno=True)
 def prototype(restype: Any, name: str, *params: tuple) -> Any:
     """Returns a foreign function exported by a shared library.
 
-    [args]
-     - restype: foreign function restype
-     - name: foreign function name
-     - param: (type, flag, name[, default])
+    :param Any restype: foreign function restype
+    :param str name: foreign function name
+    :param tuple params: type, flag, name[, default]
 
-    [return]
-     - foreign function object
+    :return: foreign function object
     """
     if hasattr(_libfs, name):
         argtypes: list = list([])
@@ -143,13 +143,9 @@ FLUID_LOG_FUNCTION_T = CFS.CFUNCTYPE(
 )
 """Log function handler callback type used by fluid_set_log_function()
 
-[args]
- - c_int level
- - c_char_p message
- - POINTER(LogUserData) data
-
-[return]
- - None
+:param c_int level:
+:param c_char_p message:
+:param POINTER(LogUserData) data:
 """
 # [API prototype]
 fluid_default_log_function = prototype(
@@ -184,15 +180,15 @@ fluid_set_log_function.errcheck = errcheck
 def _log_func(level, message, data) -> None:
     mes = bytes(message).decode()
     if int(level) == FLUID_LOG_LEVEL.PANIC:
-        _logger.critical(f"{mes}")
+        logger.critical(f"{mes}")
     elif int(level) == FLUID_LOG_LEVEL.ERR:
-        _logger.error(f"{mes}")
+        logger.error(f"{mes}")
     elif int(level) == FLUID_LOG_LEVEL.WARN:
-        _logger.warning(f"{mes}")
+        logger.warning(f"{mes}")
     elif int(level) == FLUID_LOG_LEVEL.INFO:
-        _logger.info(f"{mes}")
+        logger.info(f"{mes}")
     elif int(level) == FLUID_LOG_LEVEL.DBG:
-        _logger.debug(f"{mes}")
+        logger.debug(f"{mes}")
 
 
 # MIDI Input
@@ -200,12 +196,10 @@ def _log_func(level, message, data) -> None:
 HANDLE_MIDI_EVENT_FUNC_T = CFS.CFUNCTYPE(CFS.c_int, CFS.c_void_p, CFS.c_void_p)
 """Generic callback function prototype for MIDI event handler.
 
-[args]
-- c_void_p data :
-- c_void_p event
+:param c_void_p data:
+:param c_void_p event:
 
-[return]
-- c_int
+:return c_int:
 """
 # [API prototype]
 fluid_synth_handle_midi_event = prototype(
@@ -453,14 +447,10 @@ FLUID_EVENT_CALLBACK_T = CFS.CFUNCTYPE(
 )
 """Event callback function prototype for destination clients.
 
-[args]
-- c_uint time
-- c_void_p event
-- c_void_p seq
-- POINTER(EventUserData) data
-
-[retrun]
-- None
+:param c_uint time:
+:param c_void_p event:
+:param c_void_p seq:
+:param POINTER(EventUserData) data:
 """
 # [API prototype]
 new_fluid_sequencer2 = prototype(
@@ -605,25 +595,19 @@ FLUID_SETTINGS_FOREACH_OPTION_T = CFS.CFUNCTYPE(
 )
 """Callback function type used with fluid_settings_foreach_option()
 
-[args]
-- c_void_p data
-- c_char_p name
-- c_char_p option
-
-[return]
-- None
+:param c_void_p data:
+:param c_char_p name:
+:param c_char_p option:
 """
+
 FLUID_SETTINGS_FOREACH_T = CFS.CFUNCTYPE(None, CFS.c_void_p, CFS.c_char_p, CFS.c_int)
 """Callback function type used with fluid_settings_foreach()
 
-[args]
-- c_void_p data
-- c_char_p name
-- c_int type
-
-[return]
-- None
+:param c_void_p data:
+:param c_char_p name:
+:param c_int type:
 """
+
 # [API prototype]
 new_fluid_settings = prototype(CFS.c_void_p, "new_fluid_settings")
 new_fluid_settings.errcheck = errcheck
@@ -1015,8 +999,7 @@ PRESET = dict[str, Union[int, str, None]]
 class Synthesizer:
     """SoundFont synthesizer.
 
-    [args]
-        kwargs = {
+    :param dict kwargs: kwargs = {
             'settings':'config/settings.json',
             'soundfont':['sf2/FluidR3_GM.sf2', 'sf2/SGM-V2.01.sf2']}
     """
@@ -1052,13 +1035,14 @@ class Synthesizer:
                     name=b"synth.default-soundfont",
                     str=CFS.byref(c_name),
                 )
-                self._soundfonts[bytes(c_name).decode()] = int(
-                    fluid_synth_sfload(
-                        synth=CFS.c_void_p(self._synth),
-                        filename=c_name,
-                        reset_preset=CFS.c_int(True),
+                if c_name.value is not None:
+                    self._soundfonts[c_name.value.decode()] = int(
+                        fluid_synth_sfload(
+                            synth=CFS.c_void_p(self._synth),
+                            filename=c_name.value,
+                            reset_preset=CFS.c_int(True),
+                        )
                     )
-                )
 
             self._gm_system_on()
             self._log(level=FLUID_LOG_LEVEL.INFO, message="gm system on")
@@ -1119,16 +1103,16 @@ class Synthesizer:
                 )
 
     def _assign_audio_driver(self) -> int:
-        self.audio_driver = int(
+        self._audio_driver = int(
             new_fluid_audio_driver(
                 settings=CFS.c_void_p(self._settings), synth=CFS.c_void_p(self._synth)
             )
         )
-        return self.audio_driver
+        return self._audio_driver
 
     def _delete_auido_driver(self) -> None:
-        if hasattr(self, "audio_driver"):
-            delete_fluid_audio_driver(driver=CFS.c_void_p(self.audio_driver))
+        if hasattr(self, "_audio_driver"):
+            delete_fluid_audio_driver(driver=CFS.c_void_p(self._audio_driver))
 
     def version(self) -> str:
         return bytes(fluid_version_str()).decode()
@@ -1175,31 +1159,31 @@ class Synthesizer:
     def soundfonts(self) -> list:
         return list(self._soundfonts.keys())
 
-    def gm_sound_set(self, is_percussion: bool = False) -> list[list[PRESET]]:
+    def gm_sound_set(self) -> tuple:  # list[list[PRESET]]:
         """Get list of Sound Set (GM system level 1) from soundfont.
 
-        [args]
-        is_percussion:bool
-        - False: Sound Set
-        - True: Percussion Sound Set
+        :param bool is_percussion: False: Sound Set, True: Percussion Sound Set
 
-        [return]
-        List of PRESETs of alias type 'dict[str, Union[str, int, None]]'.
-        - 'name': str | None
-        - 'num': int | None
-        - 'bank': int | None
-        - 'sfont_id': int | None
+        :return: (gm sound set, gm percussion sound set)
+         - PRESET: dict[str, Union[str, int, None]]
+           - ["name": str | None], ["num"     : int | None],
+             ["bank": int | None], ["sfont_id": int | None]
         """
-        sound_set: list[list[PRESET]] = list()
-        bank = 0 if not (is_percussion) else 128
-        for num in range(int(fluid_synth_sfcount(synth=CFS.c_void_p(self._synth)))):
+        sound_set: list[PRESET] = list()
+        percussion_sound_set: list[PRESET] = list()
+        # bank = 0:
+        # bank = 128: percussion
+        n_sfont = int(fluid_synth_sfcount(synth=CFS.c_void_p(self._synth)))
+        for num in range(n_sfont, 0, -1):
             sfont = int(
                 fluid_synth_get_sfont(
                     synth=CFS.c_void_p(self._synth), num=CFS.c_uint(num)
                 )
             )
-            sound_set += [self._sfont_sound_set(sfont, bank)]
-        return sound_set
+            sound_set += [self._sfont_sound_set(sfont, 0)]
+            percussion_sound_set += [self._sfont_sound_set(sfont, 128)]
+
+        return sound_set, percussion_sound_set
 
     def _sfont_sound_set(self, sfont: int, bank: int) -> list[PRESET]:
         result: list[PRESET] = list()
@@ -1213,12 +1197,9 @@ class Synthesizer:
     def channels_preset(self) -> list[PRESET]:
         """Get a list of presets per channel
 
-        [return]
-        preset:dict
-        - 'name': str | None
-        - 'num': int | None
-        - 'bank': int | None
-        - 'sfont_id': int | None
+        :return: list of PRESET: dict[str, Union[str, int, None]]
+           - ["name": str | None], ["num"     : int | None],
+             ["bank": int | None], ["sfont_id": int | None]
         """
         result: list[PRESET] = list()
         for chan in range(15):
@@ -1346,8 +1327,7 @@ class Synthesizer:
 class Sequencer(Synthesizer):
     """Send MIDI events scheduled by the sequencer to the synthesizer.
 
-    [args]
-        kwargs = {
+    :param dict kwargs: kwargs = {
             'settings':'config/settings.json',
             'soundfont':['sf2/FluidR3_GM.sf2', 'sf2/SGM-V2.01.sf2']}
     """
@@ -1404,13 +1384,11 @@ class Sequencer(Synthesizer):
     ) -> int:
         """Register a sequencer client.
 
-        [args]
-         - name: Name of sequencer client
-         - callback: Sequencer client callback or NULL for a source client.
-         - data: User data to pass to the callback
+        :param str name: Name of sequencer client
+        :param Callable callback: Sequencer client callback or NULL for a source client.
+        :param EventUserData data: User data to pass to the callback
 
-        [return]
-         - Unique sequencer ID or FLUID_FAILED on error
+        :return int: Unique sequencer ID or FLUID_FAILED on error
         """
         if callback:
             callback = FLUID_EVENT_CALLBACK_T(callback)
@@ -1510,8 +1488,7 @@ class Sequencer(Synthesizer):
 class MidiRouter(Synthesizer):
     """Rule based transformation and filtering of MIDI events.
 
-    [args]
-        kwargs = {
+    :param dict kwargs: kwargs = {
             'settings':'config/settings.json',
             'soundfont':['sf2/FluidR3_GM.sf2', 'sf2/SGM-V2.01.sf2']}
     """
@@ -1521,7 +1498,7 @@ class MidiRouter(Synthesizer):
         try:
             handler = fluid_synth_handle_midi_event
 
-            self.midi_router: int = int(
+            self._midi_router: int = int(
                 new_fluid_midi_router(
                     settings=CFS.c_void_p(self._settings),
                     handler=handler,
@@ -1529,10 +1506,10 @@ class MidiRouter(Synthesizer):
                 )
             )
 
-            self.cmd_handler: int = int(
+            self._cmd_handler: int = int(
                 new_fluid_cmd_handler(
                     synth=CFS.c_void_p(self._synth),
-                    router=CFS.c_void_p(self.midi_router),
+                    router=CFS.c_void_p(self._midi_router),
                 )
             )
         except FSError as msg:
@@ -1540,26 +1517,24 @@ class MidiRouter(Synthesizer):
             self.__del__()
 
     def __del__(self) -> None:
-        delete_fluid_cmd_handler(handler=CFS.c_void_p(self.cmd_handler))
-        delete_fluid_midi_router(router=CFS.c_void_p(self.midi_router))
+        delete_fluid_cmd_handler(handler=CFS.c_void_p(self._cmd_handler))
+        delete_fluid_midi_router(router=CFS.c_void_p(self._midi_router))
         super().__del__()
 
     def apply_rules(self, rule_file: Union[str, None] = None) -> bool:
         """Apply rules for MIDI events.
 
-        [args]
-         - rule_file: Rule file to be applied  in json file,
-         or default rules if none
+        :param str rule_file: Rule file to be applied  in json file,
+            or default rules if none
 
-        [return]
-         - bool
+        :return bool: True, or False
         """
         try:
-            fluid_midi_router_clear_rules(router=CFS.c_void_p(self.midi_router))
+            fluid_midi_router_clear_rules(router=CFS.c_void_p(self._midi_router))
 
             if rule_file is None:
                 fluid_midi_router_set_default_rules(
-                    router=CFS.c_void_p(self.midi_router)
+                    router=CFS.c_void_p(self._midi_router)
                 )
             else:
                 with open(rule_file, "r") as fp:
@@ -1573,7 +1548,7 @@ class MidiRouter(Synthesizer):
                         fluid_midi_router_rule_set_param1(rule, *rd["param1"].values())
                     if rd["param2"] is not None:
                         fluid_midi_router_rule_set_param2(rule, *rd["param2"].values())
-                    fluid_midi_router_add_rule(self.midi_router, rule, rd["type"])
+                    fluid_midi_router_add_rule(self._midi_router, rule, rd["type"])
         except FSError as msg:
             self._log(level=FLUID_LOG_LEVEL.ERR, message=f"Midi Router Rule {str(msg)}")
             return False
@@ -1584,8 +1559,7 @@ class MidiRouter(Synthesizer):
 class MidiDriver(MidiRouter):
     """Sends MIDI events received at the MIDI input to the synthesizer.
 
-    [args]
-        kwargs = {
+    :param dict kwargs: kwargs = {
             'settings':'config/settings.json',
             'soundfont':['sf2/FluidR3_GM.sf2', 'sf2/SGM-V2.01.sf2'],
             'handler': fluid_midi_dump_prerouter}
@@ -1599,11 +1573,11 @@ class MidiDriver(MidiRouter):
             else:
                 callback = fluid_midi_router_handle_midi_event
 
-            self.midi_driver: int = int(
+            self._midi_driver: int = int(
                 new_fluid_midi_driver(
                     settings=CFS.c_void_p(self._settings),
                     handler=callback,
-                    event_handler_data=CFS.c_void_p(self.midi_router),
+                    event_handler_data=CFS.c_void_p(self._midi_router),
                 )
             )
             self._assign_audio_driver()
@@ -1613,27 +1587,26 @@ class MidiDriver(MidiRouter):
 
     def __del__(self) -> None:
         self._delete_auido_driver()
-        delete_fluid_midi_driver(driver=CFS.c_void_p(self.midi_driver))
+        delete_fluid_midi_driver(driver=CFS.c_void_p(self._midi_driver))
         super().__del__()
 
 
 class MidiPlayer(MidiRouter):
     """Parse standard MIDI files and emit MIDI events.
 
-    [args]
-        kwargs = {
+    :param dict kwargs: kwargs = {
             'settings':'config/settings.json',
             'soundfont':['sf2/FluidR3_GM.sf2', 'sf2/SGM-V2.01.sf2'],
             'handler': fluid_midi_dump_prerouter}
     """
 
-    _wait_second: Union[int, float] = 0.15
+    _wait_second: Union[int, float] = 0.1
     _total_ticks: int = 0
 
     def __init__(self, **kwargs: dict[str, Any]) -> None:
         super().__init__(**kwargs)
         try:
-            self.player: int = int(new_fluid_player(synth=CFS.c_void_p(self._synth)))
+            self._player: int = int(new_fluid_player(synth=CFS.c_void_p(self._synth)))
 
             if "handler" in kwargs:
                 callback = kwargs["handler"]
@@ -1641,9 +1614,9 @@ class MidiPlayer(MidiRouter):
                 callback = fluid_midi_router_handle_midi_event
 
             fluid_player_set_playback_callback(
-                player=CFS.c_void_p(self.player),
+                player=CFS.c_void_p(self._player),
                 handler=callback,
-                handler_data=CFS.c_void_p(self.midi_router),
+                handler_data=CFS.c_void_p(self._midi_router),
             )
             self._assign_audio_driver()
         except FSError as msg:
@@ -1652,10 +1625,10 @@ class MidiPlayer(MidiRouter):
 
     def __del__(self) -> None:
         self._delete_auido_driver()
-        delete_fluid_player(player=CFS.c_void_p(self.player))
+        delete_fluid_player(player=CFS.c_void_p(self._player))
         super().__del__()
 
-    def start(self, midifile: str, start_tick: int) -> None:
+    def start(self, midifile: str, start_tick: int = 0) -> None:
         """Start playback.
 
         :param midifile: MIDI filename, or resume if None
@@ -1666,17 +1639,20 @@ class MidiPlayer(MidiRouter):
         ):
             ptr: bytes = Path(midifile).read_bytes()
             fluid_player_add_mem(
-                player=CFS.c_void_p(self.player), buffer=ptr, len=CFS.c_size_t(len(ptr))
+                player=CFS.c_void_p(self._player),
+                buffer=ptr,
+                len=CFS.c_size_t(len(ptr)),
             )
-            fluid_player_play(player=CFS.c_void_p(self.player))
-            self._total_ticks = self._get_total_ticks()
-            self._seek(start_tick)
+            fluid_player_play(player=CFS.c_void_p(self._player))
+            self._set_total_ticks()
+            if start_tick != 0:
+                self._seek(start_tick)
             """Continues until the 'fluid_player_stop' function is called."""
-            fluid_player_join(player=CFS.c_void_p(self.player))
+            fluid_player_join(player=CFS.c_void_p(self._player))
 
     def close(self) -> None:
         """End playback."""
-        fluid_player_stop(player=CFS.c_void_p(self.player))
+        fluid_player_stop(player=CFS.c_void_p(self._player))
         self._seek(self._total_ticks)
         self._all_sounds_off()
         """Wait to clear Ringbuffer after EOT."""
@@ -1688,38 +1664,42 @@ class MidiPlayer(MidiRouter):
         [return] tick at time of interruption, otherwise FLUID_FAILED
         """
         if self._isstatus(FLUID_PLAYER_STATUS.PLAYING):
-            fluid_player_stop(player=CFS.c_void_p(self.player))
-            return fluid_player_get_current_tick(player=CFS.c_void_p(self.player))
+            fluid_player_stop(player=CFS.c_void_p(self._player))
+            return fluid_player_get_current_tick(player=CFS.c_void_p(self._player))
         return FLUID_FAILED
 
     @property
     def tick(self) -> int:
         """Get the number of tempo ticks passed."""
-        if self._isstatus(FLUID_PLAYER_STATUS.PLAYING):
-            return fluid_player_get_current_tick(player=CFS.c_void_p(self.player))
+        """if self._isstatus(FLUID_PLAYER_STATUS.PLAYING):
+            return fluid_player_get_current_tick(player=CFS.c_void_p(self._player))
         return FLUID_FAILED
+        """
+        return fluid_player_get_current_tick(player=CFS.c_void_p(self._player))
 
     def _isstatus(self, status: FLUID_PLAYER_STATUS) -> bool:
-        return int(fluid_player_get_status(player=CFS.c_void_p(self.player))) == status
+        return int(fluid_player_get_status(player=CFS.c_void_p(self._player))) == status
 
-    def _get_total_ticks(self) -> int:
+    def _set_total_ticks(self) -> int:
         if self._isstatus(FLUID_PLAYER_STATUS.PLAYING):
             sleep(self._wait_second)
-            fluid_player_get_total_ticks(player=CFS.c_void_p(self.player))
+            self._total_ticks = fluid_player_get_total_ticks(
+                player=CFS.c_void_p(self._player)
+            )
             """This function only becomes active a little after PLAYING."""
-            return fluid_player_get_total_ticks(player=CFS.c_void_p(self.player))
+            return FLUID_OK
         return FLUID_FAILED
 
     def _seek(self, tick: int) -> int:
         try:
             if tick <= self._total_ticks:
                 fluid_player_seek(
-                    player=CFS.c_void_p(self.player), ticks=CFS.c_int(tick)
+                    player=CFS.c_void_p(self._player), ticks=CFS.c_int(tick)
                 )
                 sleep(self._wait_second)
-                return fluid_player_get_current_tick(player=CFS.c_void_p(self.player))
+                return fluid_player_get_current_tick(player=CFS.c_void_p(self._player))
         except FSError as msg:
-            fluid_player_stop(player=CFS.c_void_p(self.player))
+            fluid_player_stop(player=CFS.c_void_p(self._player))
             self._log(level=FLUID_LOG_LEVEL.ERR, message=f"Player seek. {str(msg)}")
         return FLUID_FAILED
 

@@ -84,15 +84,20 @@ def gm_sound_set_names() -> tuple:
         "settings": "config/settings.json",
         "soundfont": ["sf2/FluidR3_GM.sf2"],
     }
-    synthesizer = FS.Synthesizer(**kwargs)
 
-    names = list()
-    pnames = list()
-    for i in synthesizer.gm_sound_set(is_percussion=False)[0]:
-        names += [i["name"]]
-    for i in synthesizer.gm_sound_set(is_percussion=True)[0]:
-        pnames += [i["name"]]
-    return (names, pnames)
+    synth = FS.Synthesizer(**kwargs)
+
+    gm_sound_sets: list = list()
+    gm_percussion_sound_sets: list = list()
+    snames: list = list()
+    pnames: list = list()
+
+    gm_sound_sets, gm_percussion_sound_sets = synth.gm_sound_set()
+    for i in range(128):
+        snames += [gm_sound_sets[0][i]["name"]]
+        pnames += [gm_percussion_sound_sets[0][i]["name"]]
+
+    return (snames, pnames)
 
 
 def mute_rules(**kwargs) -> str:

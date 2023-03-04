@@ -22,7 +22,7 @@ class MidiSoundModule:
 
         self.fsmdrv = FS.MidiDriver(**kwargs)
 
-        full_gmsoundset = self.fsmdrv.gm_sound_set()
+        (full_gmsoundset, dummy) = self.fsmdrv.gm_sound_set()
         preset: dict = dict()
         for i in range(128):
             for sfont_gmsoundset in full_gmsoundset:

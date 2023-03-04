@@ -55,7 +55,6 @@ class PlayerView(Screen):
 
     sound_set: list = list()
     percussion_sound_set: list = list()
-    midi_player = MF.MidiPlayer()
     executor = futures.ThreadPoolExecutor()
 
     def __init__(self, **kwargs):
@@ -68,6 +67,8 @@ class PlayerView(Screen):
         mids = [i for i in Path().glob("mid/*.*") if i.suffix in extension]
         for mid in mids:
             Clock.schedule_once(partial(self.add_midititlebutton, mid))
+
+        self.midi_player = MF.MidiPlayer()
 
     def sound_stop(self) -> None:
         self.playback("normal")
