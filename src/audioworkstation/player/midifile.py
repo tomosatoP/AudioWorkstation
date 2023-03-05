@@ -94,8 +94,8 @@ def gm_sound_set_names() -> tuple:
 
     gm_sound_sets, gm_percussion_sound_sets = synth.gm_sound_set()
     for i in range(128):
-        snames += [gm_sound_sets[0][i]["name"]]
-        pnames += [gm_percussion_sound_sets[0][i]["name"]]
+        snames += [gm_sound_sets[i]["name"]]
+        pnames += [gm_percussion_sound_sets[i]["name"]]
 
     return (snames, pnames)
 

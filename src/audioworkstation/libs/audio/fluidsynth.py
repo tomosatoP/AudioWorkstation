@@ -1017,7 +1017,7 @@ class Synthesizer:
                 new_fluid_synth(settings=CFS.c_void_p(self._settings))
             )
 
-            self._soundfonts: dict[str, int] = dict()
+            self._soundfonts: dict[str, int] = dict()  # filename, sfont id
             if "soundfont" in kwargs:
                 for s_name in kwargs["soundfont"]:
                     self._soundfonts[s_name] = int(
@@ -1157,7 +1157,7 @@ class Synthesizer:
 
     @property
     def soundfonts(self) -> list:
-        return list(self._soundfonts.keys())
+        return list(self._soundfonts.keys())  # filename
 
     def gm_sound_set(self) -> tuple:  # list[list[PRESET]]:
         """Get list of Sound Set (GM system level 1) from soundfont.
@@ -1169,23 +1169,43 @@ class Synthesizer:
            - ["name": str | None], ["num"     : int | None],
              ["bank": int | None], ["sfont_id": int | None]
         """
-        sound_set: list[PRESET] = list()
-        percussion_sound_set: list[PRESET] = list()
-        # bank = 0:
-        # bank = 128: percussion
-        n_sfont = int(fluid_synth_sfcount(synth=CFS.c_void_p(self._synth)))
-        for num in range(n_sfont, 0, -1):
+        sound_set: list = list()
+        percussion_sound_set: list = list()  # bank = 128: percussion
+
+        for sfont_index in range(
+            int(fluid_synth_sfcount(synth=CFS.c_void_p(self._synth))) - 1, -1, -1
+        ):
             sfont = int(
                 fluid_synth_get_sfont(
-                    synth=CFS.c_void_p(self._synth), num=CFS.c_uint(num)
+                    synth=CFS.c_void_p(self._synth), num=CFS.c_uint(sfont_index)
                 )
             )
-            sound_set += [self._sfont_sound_set(sfont, 0)]
-            percussion_sound_set += [self._sfont_sound_set(sfont, 128)]
+
+            if sound_set == []:
+                sound_set = self._sfont_sound_set(sfont, 0)
+            else:
+                for preset in self._sfont_sound_set(sfont, 0):
+                    if isinstance(preset["num"], int):
+                        sound_set[preset["num"]] = preset
+
+            if percussion_sound_set == []:
+                percussion_sound_set = self._sfont_sound_set(sfont, 128)
+            else:
+                for preset in self._sfont_sound_set(sfont, 128):
+                    if isinstance(preset["num"], int):
+                        percussion_sound_set[preset["num"]] = preset
 
         return sound_set, percussion_sound_set
 
     def _sfont_sound_set(self, sfont: int, bank: int) -> list[PRESET]:
+        """_sfont_sound_set _summary_
+
+        :param int sfont: _description_
+        :param int bank: _description_
+        :return list[PRESET]: PRESET: dict[str, Union[str, int, None]]
+           - ["name": str | None], ["num"     : int | None],
+             ["bank": int | None], ["sfont_id": int | None]
+        """
         result: list[PRESET] = list()
         for n in range(128):
             preset = fluid_sfont_get_preset(
@@ -1197,7 +1217,7 @@ class Synthesizer:
     def channels_preset(self) -> list[PRESET]:
         """Get a list of presets per channel
 
-        :return: list of PRESET: dict[str, Union[str, int, None]]
+        :return list[PRESET]: PRESET: dict[str, Union[str, int, None]]
            - ["name": str | None], ["num"     : int | None],
              ["bank": int | None], ["sfont_id": int | None]
         """
@@ -1207,6 +1227,13 @@ class Synthesizer:
         return result
 
     def _channel_preset(self, chan: int) -> PRESET:
+        """_channel_preset _summary_
+
+        :param int chan: channel number
+        :return PRESET: dict[str, Union[str, int, None]]
+           - ["name": str | None], ["num"     : int | None],
+             ["bank": int | None], ["sfont_id": int | None]
+        """
         preset = int(
             fluid_synth_get_channel_preset(
                 synth=CFS.c_void_p(self._synth), chan=CFS.c_int(chan)
@@ -1215,6 +1242,13 @@ class Synthesizer:
         return self._preset(preset)
 
     def _preset(self, preset: int) -> PRESET:
+        """_preset _summary_
+
+        :param int preset: _description_
+        :return PRESET: dict[str, Union[str, int, None]]
+           - ["name": str | None], ["num"     : int | None],
+             ["bank": int | None], ["sfont_id": int | None]
+        """
         result: dict[str, Union[str, int, None]] = dict()
         if preset:
             result["name"] = bytes(
@@ -1634,9 +1668,7 @@ class MidiPlayer(MidiRouter):
         :param midifile: MIDI filename, or resume if None
         :param start_tick: tick at the position where you want to start
         """
-        if fluid_is_midifile(midifile.encode()) and self._isstatus(
-            FLUID_PLAYER_STATUS.STOPPING
-        ):
+        if fluid_is_midifile(midifile.encode()):
             ptr: bytes = Path(midifile).read_bytes()
             fluid_player_add_mem(
                 player=CFS.c_void_p(self._player),
@@ -1644,10 +1676,9 @@ class MidiPlayer(MidiRouter):
                 len=CFS.c_size_t(len(ptr)),
             )
             fluid_player_play(player=CFS.c_void_p(self._player))
+            sleep(0.5)  # Wait for completion of SMF analysis
             self._set_total_ticks()
-            if start_tick != 0:
-                self._seek(start_tick)
-            """Continues until the 'fluid_player_stop' function is called."""
+            self._seek(start_tick)
             fluid_player_join(player=CFS.c_void_p(self._player))
 
     def close(self) -> None:
@@ -1657,47 +1688,40 @@ class MidiPlayer(MidiRouter):
         self._all_sounds_off()
         """Wait to clear Ringbuffer after EOT."""
         sleep(self._wait_second)
+        self._log(
+            level=FLUID_LOG_LEVEL.INFO,
+            message=f"Player close. {self.tick}/{self._total_ticks}",
+        )
 
     def stop(self) -> int:
         """Interrupts playback.
 
-        [return] tick at time of interruption, otherwise FLUID_FAILED
+        :return int: ticks when stopped
         """
-        if self._isstatus(FLUID_PLAYER_STATUS.PLAYING):
-            fluid_player_stop(player=CFS.c_void_p(self._player))
-            return fluid_player_get_current_tick(player=CFS.c_void_p(self._player))
-        return FLUID_FAILED
+        fluid_player_stop(player=CFS.c_void_p(self._player))
+        return self.tick
 
     @property
     def tick(self) -> int:
         """Get the number of tempo ticks passed."""
-        """if self._isstatus(FLUID_PLAYER_STATUS.PLAYING):
-            return fluid_player_get_current_tick(player=CFS.c_void_p(self._player))
-        return FLUID_FAILED
-        """
         return fluid_player_get_current_tick(player=CFS.c_void_p(self._player))
 
     def _isstatus(self, status: FLUID_PLAYER_STATUS) -> bool:
         return int(fluid_player_get_status(player=CFS.c_void_p(self._player))) == status
 
-    def _set_total_ticks(self) -> int:
+    def _set_total_ticks(self) -> bool:
         if self._isstatus(FLUID_PLAYER_STATUS.PLAYING):
-            sleep(self._wait_second)
             self._total_ticks = fluid_player_get_total_ticks(
                 player=CFS.c_void_p(self._player)
             )
-            """This function only becomes active a little after PLAYING."""
-            return FLUID_OK
-        return FLUID_FAILED
+            return True
+        return False
 
     def _seek(self, tick: int) -> int:
         try:
-            if tick <= self._total_ticks:
-                fluid_player_seek(
-                    player=CFS.c_void_p(self._player), ticks=CFS.c_int(tick)
-                )
-                sleep(self._wait_second)
-                return fluid_player_get_current_tick(player=CFS.c_void_p(self._player))
+            fluid_player_seek(player=CFS.c_void_p(self._player), ticks=CFS.c_int(tick))
+            sleep(self._wait_second)
+            return self.tick
         except FSError as msg:
             fluid_player_stop(player=CFS.c_void_p(self._player))
             self._log(level=FLUID_LOG_LEVEL.ERR, message=f"Player seek. {str(msg)}")

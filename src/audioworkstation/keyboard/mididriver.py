@@ -8,7 +8,8 @@ from ..libs.sublibs.parts import gain2dB, dB2gain
 
 
 class MidiSoundModule:
-    presets: list = list()
+    gm_sound_set: list = list()
+    gm_percussion_sound_set: list = list()
 
     def __init__(self) -> None:
         kwargs: dict = {
@@ -22,14 +23,7 @@ class MidiSoundModule:
 
         self.fsmdrv = FS.MidiDriver(**kwargs)
 
-        (full_gmsoundset, dummy) = self.fsmdrv.gm_sound_set()
-        preset: dict = dict()
-        for i in range(128):
-            for sfont_gmsoundset in full_gmsoundset:
-                if sfont_gmsoundset[i]["name"] is not None:
-                    preset = sfont_gmsoundset[i]
-                    break
-            self.presets.append(preset)
+        self.gm_sound_set, self.gm_percussion_sound_set = self.fsmdrv.gm_sound_set()
 
     @property
     def volume(self) -> int:
@@ -40,14 +34,14 @@ class MidiSoundModule:
         self.fsmdrv.gain = dB2gain(value)
 
     def preset_name(self, preset_num) -> str:
-        return self.presets[preset_num]["name"]
+        return self.gm_sound_set[preset_num]["name"]
 
     def programchange(self, preset_num):
         self.fsmdrv.program_select(
             0,
-            self.presets[preset_num]["sfont_id"],
-            self.presets[preset_num]["bank"],
-            self.presets[preset_num]["num"],
+            self.gm_sound_set[preset_num]["sfont_id"],
+            self.gm_sound_set[preset_num]["bank"],
+            self.gm_sound_set[preset_num]["num"],
         )
 
     def sounding(self):

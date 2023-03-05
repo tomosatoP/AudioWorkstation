@@ -92,10 +92,9 @@ class TestFluidsynth(unittest.TestCase):
         print(f"gain: {fs1.gain:.1f}")
 
         print("GM percussion sound set")
-        gm_sound_sets, gm_percussion_sound_sets = fs1.gm_sound_set()
-        for percussion_sound_set in gm_percussion_sound_sets:
-            for preset in percussion_sound_set:
-                print(preset)
+        gm_sound_set, gm_percussion_sound_set = fs1.gm_sound_set()
+        for preset in gm_percussion_sound_set:
+            print(preset)
 
         print("channel preset")
         for preset in fs1.channels_preset():
@@ -105,25 +104,22 @@ class TestFluidsynth(unittest.TestCase):
         fs1.sustain_on(0)
         fs1.modulation_wheel(0, 100)
         fs1.volume(0, 100)
-        for gm_sound_set in gm_sound_sets:
-            for preset in gm_sound_set:
-                if (
-                    isinstance(preset["name"], str)
-                    and isinstance(preset["num"], int)
-                    and isinstance(preset["bank"], int)
-                    and isinstance(preset["sfont_id"], int)
-                ):
-                    fs1.program_select(
-                        0, preset["sfont_id"], preset["bank"], preset["num"]
-                    )
-                    print(preset["name"])
-                    fs1.note_on(0, 60, 127)  # chord C
-                    fs1.note_on(0, 62, 127)
-                    fs1.note_on(0, 64, 127)
-                    sleep(0.3)
-                    fs1.note_off(0, 60)
-                    fs1.note_off(0, 62)
-                    fs1.note_off(0, 64)
+        for preset in gm_sound_set:
+            if (
+                isinstance(preset["name"], str)
+                and isinstance(preset["num"], int)
+                and isinstance(preset["bank"], int)
+                and isinstance(preset["sfont_id"], int)
+            ):
+                fs1.program_select(0, preset["sfont_id"], preset["bank"], preset["num"])
+                print(preset["name"])
+                fs1.note_on(0, 60, 127)  # chord C
+                fs1.note_on(0, 62, 127)
+                fs1.note_on(0, 64, 127)
+                sleep(0.3)
+                fs1.note_off(0, 60)
+                fs1.note_off(0, 62)
+                fs1.note_off(0, 64)
 
         fs1.note_on(9, 34, 80)
         sleep(0.5)
@@ -208,14 +204,13 @@ class TestFluidsynth(unittest.TestCase):
         files = [i for i in Path().glob("mid/*.*") if i.suffix in extension]
 
         with futures.ThreadPoolExecutor(max_workers=1) as e:
-            tick = 5000
+            tick = 10000
             for fo in files:
                 print(fo.name)
                 f = e.submit(mpfs.start, "mid/" + fo.name, tick)
                 f.add_done_callback(partial(future_callback, mpfs.close))
                 sleep(2.5)
-                tick = mpfs.stop()
-                sleep(0.2)
+                mpfs.stop()
 
             filename = "mid/SenBonZakura.mid"
             f = e.submit(mpfs.start, filename, 140000)
