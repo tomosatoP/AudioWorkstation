@@ -7,7 +7,7 @@ Module 'concurrent.futures.ThreadPoolExecutor' is recommended.
 https://www.fluidsynth.org/api/
 """
 
-from typing import Union, Callable, Any
+from typing import Union, Callable, Optional, Any
 from enum import IntEnum, IntFlag, auto
 from json import load
 from time import sleep
@@ -1634,7 +1634,6 @@ class MidiPlayer(MidiRouter):
             'handler': fluid_midi_dump_prerouter}
     """
 
-    _wait_second: Union[int, float] = 0.1
     _total_ticks: int = 0
 
     def __init__(self, **kwargs: dict[str, Any]) -> None:
@@ -1662,32 +1661,38 @@ class MidiPlayer(MidiRouter):
         delete_fluid_player(player=CFS.c_void_p(self._player))
         super().__del__()
 
-    def start(self, midifile: str, start_tick: int = 0) -> None:
+    def start(
+        self, midifile: Optional[str] = None, start_tick: Optional[int] = None
+    ) -> None:
         """Start playback.
 
         :param midifile: MIDI filename, or resume if None
         :param start_tick: tick at the position where you want to start
         """
-        if fluid_is_midifile(midifile.encode()):
-            ptr: bytes = Path(midifile).read_bytes()
-            fluid_player_add_mem(
-                player=CFS.c_void_p(self._player),
-                buffer=ptr,
-                len=CFS.c_size_t(len(ptr)),
-            )
+
+        if midifile:
+            if fluid_is_midifile(midifile.encode()):
+
+                ptr: bytes = Path(midifile).read_bytes()
+                fluid_player_add_mem(
+                    player=CFS.c_void_p(self._player),
+                    buffer=ptr,
+                    len=CFS.c_size_t(len(ptr)),
+                )
             fluid_player_play(player=CFS.c_void_p(self._player))
-            sleep(0.5)  # Wait for completion of SMF analysis
+            # Wait for completion of SMF analysis
+            sleep(0.5)
             self._set_total_ticks()
-            self._seek(start_tick)
-            fluid_player_join(player=CFS.c_void_p(self._player))
+
+        fluid_player_play(player=CFS.c_void_p(self._player))
+        self._seek(start_tick)
 
     def close(self) -> None:
         """End playback."""
         fluid_player_stop(player=CFS.c_void_p(self._player))
         self._seek(self._total_ticks)
-        self._all_sounds_off()
         """Wait to clear Ringbuffer after EOT."""
-        sleep(self._wait_second)
+        self._all_sounds_off()
         self._log(
             level=FLUID_LOG_LEVEL.INFO,
             message=f"Player close. {self.tick}/{self._total_ticks}",
@@ -1699,6 +1704,7 @@ class MidiPlayer(MidiRouter):
         :return int: ticks when stopped
         """
         fluid_player_stop(player=CFS.c_void_p(self._player))
+        fluid_player_join(player=CFS.c_void_p(self._player))
         return self.tick
 
     @property
@@ -1717,10 +1723,14 @@ class MidiPlayer(MidiRouter):
             return True
         return False
 
-    def _seek(self, tick: int) -> int:
+    def _seek(self, tick: Optional[int]) -> int:
         try:
-            fluid_player_seek(player=CFS.c_void_p(self._player), ticks=CFS.c_int(tick))
-            sleep(self._wait_second)
+            if tick:
+                fluid_player_seek(
+                    player=CFS.c_void_p(self._player), ticks=CFS.c_int(tick)
+                )
+                print(tick)
+            fluid_player_join(player=CFS.c_void_p(self._player))
             return self.tick
         except FSError as msg:
             fluid_player_stop(player=CFS.c_void_p(self._player))

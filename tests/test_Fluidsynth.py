@@ -208,9 +208,12 @@ class TestFluidsynth(unittest.TestCase):
             for fo in files:
                 print(fo.name)
                 f = e.submit(mpfs.start, "mid/" + fo.name, tick)
+                sleep(2.5)
+                print(mpfs.stop())
+                f = e.submit(mpfs.start)
                 f.add_done_callback(partial(future_callback, mpfs.close))
                 sleep(2.5)
-                mpfs.stop()
+                print(mpfs.stop())
 
             filename = "mid/SenBonZakura.mid"
             f = e.submit(mpfs.start, filename, 140000)

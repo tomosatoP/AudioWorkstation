@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from functools import partial
 
 from kivy.app import App
+from kivy.logger import Logger
 from kivy.properties import ObjectProperty
 from kivy.uix.widget import Widget
 
@@ -22,18 +22,19 @@ class MenubarView(Widget):
     def __init__(self, **kwargs):
         super(MenubarView, self).__init__(**kwargs)
 
+        Logger.debug("Menubar: initializing...")
+
         self.panel.add_widget(keyboard.KeyboardView(name="keyboard"))
         self.panel.add_widget(metronome.MetronomeView(name="metronome"))
         self.panel.add_widget(player.PlayerView(name="player"))
 
         self.set_mode(self.mode, "キーボード")
         self.vol1.label.text = "マスター音量"
-        self.vol1.slider.bind(value=partial(self.master_volume))
-        self.vol2.slider.bind(value=partial(self.mode_volume))
+        self.vol1.slider.bind(value=self.master_volume)
+        self.vol2.slider.bind(value=self.mode_volume)
         self.mode.bind(text=self.set_mode)
 
     def set_mode(self, widget, text) -> None:
-        self.panel.current_screen.sound_stop()
 
         if text == "キーボード":
             self.panel.current = "keyboard"
@@ -45,13 +46,13 @@ class MenubarView(Widget):
             self.panel.current = "player"
             self.vol2.label.text = "伴奏音量"
 
-        self.vol2.slider.value = self.panel.current_screen.sound_volume
+        self.vol2.slider.value = self.panel.current_screen.volume
 
     def master_volume(self, widget, value):
         amixer.volume(f"{value}%,{value}%")
 
     def mode_volume(self, widget, value):
-        self.panel.current_screen.sound_volume = value
+        self.panel.current_screen.volume = value
 
 
 class MenubarApp(App):

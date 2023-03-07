@@ -8,6 +8,15 @@ from ..libs.audio import fluidsynth as FS
 from ..libs.sublibs import standardmidifile as SMF
 from ..libs.sublibs.parts import dB2gain, gain2dB
 
+kwargs_fs: dict = {
+    "settings": "config/settings.json",
+    "soundfont": [
+        "sf2/FluidR3_GM.sf2",
+        "sf2/SGM-V2.01.sf2",
+        "sf2/YDP-GrandPiano-20160804.sf2",
+    ],
+}
+
 
 class MidiPlayer:
     """MidiPlayer _summary_
@@ -18,16 +27,8 @@ class MidiPlayer:
     pause_tick: int = 0
 
     def __init__(self) -> None:
-        kwargs: dict = {
-            "settings": "config/settings.json",
-            "soundfont": [
-                "sf2/FluidR3_GM.sf2",
-                "sf2/SGM-V2.01.sf2",
-                "sf2/YDP-GrandPiano-20160804.sf2",
-            ],
-        }
 
-        self.fsmp = FS.MidiPlayer(**kwargs)
+        self.fsmp = FS.MidiPlayer(**kwargs_fs)
 
     def start(self, filename: str) -> str:
         """start _summary_
@@ -80,12 +81,8 @@ def info_midifile(midifile: Path) -> dict:
 
 
 def gm_sound_set_names() -> tuple:
-    kwargs: dict = {
-        "settings": "config/settings.json",
-        "soundfont": ["sf2/FluidR3_GM.sf2"],
-    }
 
-    synth = FS.Synthesizer(**kwargs)
+    synth = FS.Synthesizer(**kwargs_fs)
 
     gm_sound_sets: list = list()
     gm_percussion_sound_sets: list = list()

@@ -4,10 +4,10 @@
 from concurrent import futures
 from pathlib import Path
 
-from kivy.logger import Logger  # noqa: F401
+from kivy.logger import Logger
 from kivy.uix.screenmanager import Screen
-from kivy.uix.behaviors import ToggleButtonBehavior
-from kivy.properties import BoundedNumericProperty, ObjectProperty
+from kivy.factory import Factory
+from kivy.properties import BoundedNumericProperty, ListProperty, ObjectProperty
 from kivy.lang import Builder
 
 from . import pattern as PT
@@ -20,42 +20,54 @@ class MetronomeView(Screen):
     executor = futures.ThreadPoolExecutor()
 
     bps_layout = ObjectProperty(None)
-    beat_layout = ObjectProperty(None)
     bps = BoundedNumericProperty(
         120, min=60, max=240, errorhandler=lambda x: 240 if x > 240 else 60
     )
+
+    beat_layout = ObjectProperty(None)
+    beat = ListProperty()
+
+    def __init__(self, **kwargs):
+        super(MetronomeView, self).__init__(**kwargs)
+
+        Logger.debug("metronome: initializing...")
+
+        for obj in self.bps_layout.walk():
+            if isinstance(obj, Factory.BpsChangeButton):
+                obj.bind(on_press=self.update_bps)
+
+        for obj in self.beat_layout.walk():
+            if isinstance(obj, Factory.BeatSelectButton):
+                obj.bind(on_press=self.update_beat)
+                if obj.state == "down":
+                    self.beat = obj.text.splitlines()
 
     def sound(self, on: str) -> None:
         if on == "down":
             self.status(disable=True)
             Logger.info(f"metronome: BPS - {self.bps}")
-            Logger.info(f"metronome: RHYTHM - {self.beat().splitlines()}")
-            self.executor.submit(self.pSFS.start, self.bps, self.beat().splitlines())
+            Logger.info(f"metronome: RHYTHM - {self.beat}")
+            self.executor.submit(self.pSFS.start, self.bps, self.beat)
         else:
             self.status(disable=False)
             self.pSFS.stop()
 
-    def beat(self) -> str:
-        return list(
-            filter(
-                lambda x: x.state == "down",
-                ToggleButtonBehavior.get_widgets("BeatSelectButtons"),
-            )
-        )[0].text
+    def update_bps(self, obj):
+        self.bps += int(obj.text)
+
+    def update_beat(self, obj):
+        self.beat = obj.text.splitlines()
 
     def status(self, disable: bool) -> None:
         self.bps_layout.disabled = disable
         self.beat_layout.disabled = disable
 
-    def sound_stop(self) -> None:
-        self.sound("normal")
-
     @property
-    def sound_volume(self) -> int:
+    def volume(self) -> int:
         return self.pSFS.volume
 
-    @sound_volume.setter
-    def sound_volume(self, value: int) -> None:
+    @volume.setter
+    def volume(self, value: int) -> None:
         self.pSFS.volume = value
 
 

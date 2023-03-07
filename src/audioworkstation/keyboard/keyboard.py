@@ -36,6 +36,8 @@ class KeyboardView(Screen):
     def __init__(self, **kwargs):
         super(KeyboardView, self).__init__(**kwargs)
 
+        Logger.debug("keyboard: initializing...")
+
         self.msm = MD.MidiSoundModule()
         self.msm.programchange(0)
         Clock.schedule_once(lambda dt: self.msm.sounding())
@@ -49,6 +51,7 @@ class KeyboardView(Screen):
         self.add_gmss_buttons()
 
     def select_gmss(self, gmss_button: GMSoundSetButton):
+        Logger.debug(f"keyboard: program change {gmss_button.preset_num}")
         self.msm.programchange(gmss_button.preset_num)
         Clock.schedule_once(lambda dt: self.msm.sounding())
 
@@ -74,15 +77,12 @@ class KeyboardView(Screen):
         button.bind(on_press=self.select_gmssg)
         self.gmssg.add_widget(button)
 
-    def sound_stop(self):
-        pass
-
     @property
-    def sound_volume(self) -> int:
+    def volume(self) -> int:
         return self.msm.volume
 
-    @sound_volume.setter
-    def sound_volume(self, value: int) -> None:
+    @volume.setter
+    def volume(self, value: int) -> None:
         self.msm.volume = value
 
 
