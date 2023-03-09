@@ -314,6 +314,14 @@ fluid_player_seek = prototype(
 )
 fluid_player_seek.errcheck = errcheck
 
+fluid_player_set_loop = prototype(
+    CFS.c_int,
+    "fluid_player_set_loop",
+    (CFS.c_void_p, 1, "player"),
+    (CFS.c_int, 1, "loop"),
+)
+fluid_player_set_loop.errcheck = errcheck
+
 # Disable from version 2.2.0
 fluid_player_set_midi_tempo = prototype(
     CFS.c_int,
@@ -1634,8 +1642,6 @@ class MidiPlayer(MidiRouter):
             'handler': fluid_midi_dump_prerouter}
     """
 
-    _total_ticks: int = 0
-
     def __init__(self, **kwargs: dict[str, Any]) -> None:
         super().__init__(**kwargs)
         try:
@@ -1670,32 +1676,46 @@ class MidiPlayer(MidiRouter):
         :param start_tick: tick at the position where you want to start
         """
 
-        if midifile:
+        if midifile is not None:
             if fluid_is_midifile(midifile.encode()):
 
+                fluid_player_set_loop(CFS.c_void_p(self._player), loop=CFS.c_int(1))
+                print(f"player start: {midifile}")
                 ptr: bytes = Path(midifile).read_bytes()
                 fluid_player_add_mem(
                     player=CFS.c_void_p(self._player),
                     buffer=ptr,
                     len=CFS.c_size_t(len(ptr)),
                 )
+                # fluid_player_set_loop(CFS.c_void_p(self._player), loop=CFS.c_int(1))
+
             fluid_player_play(player=CFS.c_void_p(self._player))
             # Wait for completion of SMF analysis
             sleep(0.5)
-            self._set_total_ticks()
+
+        fluid_player_set_loop(CFS.c_void_p(self._player), loop=CFS.c_int(0))
 
         fluid_player_play(player=CFS.c_void_p(self._player))
-        self._seek(start_tick)
+        if start_tick is not None:
+            fluid_player_seek(
+                player=CFS.c_void_p(self._player), ticks=CFS.c_int(start_tick)
+            )
+        fluid_player_join(player=CFS.c_void_p(self._player))
 
     def close(self) -> None:
         """End playback."""
+        total_ticks: CFS.c_int = fluid_player_get_total_ticks(
+            player=CFS.c_void_p(self._player)
+        )
+        # fluid_player_set_loop(CFS.c_void_p(self._player), loop=CFS.c_int(0))
         fluid_player_stop(player=CFS.c_void_p(self._player))
-        self._seek(self._total_ticks)
+        fluid_player_seek(player=CFS.c_void_p(self._player), ticks=total_ticks)
+        # fluid_player_join(player=CFS.c_void_p(self._player))
         """Wait to clear Ringbuffer after EOT."""
         self._all_sounds_off()
         self._log(
             level=FLUID_LOG_LEVEL.INFO,
-            message=f"Player close. {self.tick}/{self._total_ticks}",
+            message=f"Player close. {self.tick}/{int(total_ticks)}",
         )
 
     def stop(self) -> int:
@@ -1704,38 +1724,13 @@ class MidiPlayer(MidiRouter):
         :return int: ticks when stopped
         """
         fluid_player_stop(player=CFS.c_void_p(self._player))
-        fluid_player_join(player=CFS.c_void_p(self._player))
+        # fluid_player_join(player=CFS.c_void_p(self._player))
         return self.tick
 
     @property
     def tick(self) -> int:
         """Get the number of tempo ticks passed."""
         return fluid_player_get_current_tick(player=CFS.c_void_p(self._player))
-
-    def _isstatus(self, status: FLUID_PLAYER_STATUS) -> bool:
-        return int(fluid_player_get_status(player=CFS.c_void_p(self._player))) == status
-
-    def _set_total_ticks(self) -> bool:
-        if self._isstatus(FLUID_PLAYER_STATUS.PLAYING):
-            self._total_ticks = fluid_player_get_total_ticks(
-                player=CFS.c_void_p(self._player)
-            )
-            return True
-        return False
-
-    def _seek(self, tick: Optional[int]) -> int:
-        try:
-            if tick:
-                fluid_player_seek(
-                    player=CFS.c_void_p(self._player), ticks=CFS.c_int(tick)
-                )
-                print(tick)
-            fluid_player_join(player=CFS.c_void_p(self._player))
-            return self.tick
-        except FSError as msg:
-            fluid_player_stop(player=CFS.c_void_p(self._player))
-            self._log(level=FLUID_LOG_LEVEL.ERR, message=f"Player seek. {str(msg)}")
-        return FLUID_FAILED
 
 
 if __name__ == "__main__":

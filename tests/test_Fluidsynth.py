@@ -204,19 +204,22 @@ class TestFluidsynth(unittest.TestCase):
         files = [i for i in Path().glob("mid/*.*") if i.suffix in extension]
 
         with futures.ThreadPoolExecutor(max_workers=1) as e:
-            tick = 10000
-            for fo in files:
-                print(fo.name)
+            tick = 50000
+            """for fo in files:
                 f = e.submit(mpfs.start, "mid/" + fo.name, tick)
                 sleep(2.5)
-                print(mpfs.stop())
+                print(f"player stop: {fo.name}, {mpfs.stop()}")
                 f = e.submit(mpfs.start)
                 f.add_done_callback(partial(future_callback, mpfs.close))
-                sleep(2.5)
-                print(mpfs.stop())
-
+                sleep(1.0)
+                print(f"player stop: {fo.name}, {mpfs.stop()}")
+            """
             filename = "mid/SenBonZakura.mid"
-            f = e.submit(mpfs.start, filename, 140000)
+            f = e.submit(mpfs.start, filename, 170000)  # 178560
+            f.add_done_callback(partial(future_callback, mpfs.close))
+
+            filename = "mid/111867.MID"
+            f = e.submit(mpfs.start, filename, 174000)  # 179352
             f.add_done_callback(partial(future_callback, mpfs.close))
 
         print("channel preset")
