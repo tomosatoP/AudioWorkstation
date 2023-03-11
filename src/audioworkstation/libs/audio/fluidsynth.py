@@ -7,7 +7,7 @@ Module 'concurrent.futures.ThreadPoolExecutor' is recommended.
 https://www.fluidsynth.org/api/
 """
 
-from typing import Union, Callable, Optional, Any
+from typing import Union, Callable, Any
 from enum import IntEnum, IntFlag, auto
 from json import load
 from time import sleep
@@ -39,7 +39,9 @@ FLUID_OK = 0
 class FSError(Exception):
     """Exceptions sent out from errcheck func."""
 
-    pass
+    def __init__(self, *args: object) -> None:
+        super().__init__(*args)
+        logger.error(f"FSError: {args}")
 
 
 def errcheck(result: Any, cfunc: Callable, args: tuple) -> Any:
@@ -230,7 +232,7 @@ delete_fluid_midi_driver = prototype(
 # [ENUM]
 
 
-class FLUID_PLAYER_SET_TEMPO_TYEP(IntEnum):
+class FLUID_PLAYER_SET_TEMPO_TYEP(IntEnum):  # Available from version 2.2.0
     INTERNAL = 0
     EXTERNAL_BPM = auto()
     EXTERNAL_MIDI = auto()
@@ -239,7 +241,7 @@ class FLUID_PLAYER_SET_TEMPO_TYEP(IntEnum):
 class FLUID_PLAYER_STATUS(IntEnum):
     READY = 0
     PLAYING = auto()
-    STOPPING = auto()
+    # STOPPING = auto()  # Available from version 2.2.0
     DONE = auto()
 
 
@@ -322,14 +324,6 @@ fluid_player_set_loop = prototype(
 )
 fluid_player_set_loop.errcheck = errcheck
 
-# Disable from version 2.2.0
-fluid_player_set_midi_tempo = prototype(
-    CFS.c_int,
-    "fluid_player_set_midi_tempo",
-    (CFS.c_void_p, 1, "player"),
-    (CFS.c_int, 1, "tempo"),
-)
-fluid_player_set_midi_tempo.errcheck = errcheck
 
 # MIDI Input - MIDI Router
 # [ENUM]
@@ -1637,9 +1631,10 @@ class MidiPlayer(MidiRouter):
     """Parse standard MIDI files and emit MIDI events.
 
     :param dict kwargs: kwargs = {
-            'settings':'config/settings.json',
-            'soundfont':['sf2/FluidR3_GM.sf2', 'sf2/SGM-V2.01.sf2'],
-            'handler': fluid_midi_dump_prerouter}
+            "settings":"config/settings.json",
+            "soundfont":["sf2/FluidR3_GM.sf2", "sf2/SGM-V2.01.sf2"],
+            "handler": fluid_midi_dump_prerouter,
+            "standardmidifile": ["mid/SenBonZakura.mid", "mid/111867.MID"]}
     """
 
     def __init__(self, **kwargs: dict[str, Any]) -> None:
@@ -1657,6 +1652,17 @@ class MidiPlayer(MidiRouter):
                 handler=callback,
                 handler_data=CFS.c_void_p(self._midi_router),
             )
+
+            for filename in kwargs["standardmidifile"]:
+                if fluid_is_midifile(filename.encode()):
+                    print(filename)
+                    ptr: bytes = Path(filename).read_bytes()
+                    fluid_player_add_mem(
+                        player=CFS.c_void_p(self._player),
+                        buffer=ptr,
+                        len=CFS.c_size_t(len(ptr)),
+                    )
+
             self._assign_audio_driver()
         except FSError as msg:
             self._log(level=FLUID_LOG_LEVEL.ERR, message=f"Midi Player. {str(msg)}")
@@ -1667,70 +1673,38 @@ class MidiPlayer(MidiRouter):
         delete_fluid_player(player=CFS.c_void_p(self._player))
         super().__del__()
 
-    def start(
-        self, midifile: Optional[str] = None, start_tick: Optional[int] = None
-    ) -> None:
+    def playback(self, start_tick: int = 0) -> None:
         """Start playback.
 
-        :param midifile: MIDI filename, or resume if None
         :param start_tick: tick at the position where you want to start
         """
 
-        if midifile is not None:
-            if fluid_is_midifile(midifile.encode()):
-
-                fluid_player_set_loop(CFS.c_void_p(self._player), loop=CFS.c_int(1))
-                print(f"player start: {midifile}")
-                ptr: bytes = Path(midifile).read_bytes()
-                fluid_player_add_mem(
-                    player=CFS.c_void_p(self._player),
-                    buffer=ptr,
-                    len=CFS.c_size_t(len(ptr)),
-                )
-                # fluid_player_set_loop(CFS.c_void_p(self._player), loop=CFS.c_int(1))
-
-            fluid_player_play(player=CFS.c_void_p(self._player))
-            # Wait for completion of SMF analysis
-            sleep(0.5)
-
-        fluid_player_set_loop(CFS.c_void_p(self._player), loop=CFS.c_int(0))
-
         fluid_player_play(player=CFS.c_void_p(self._player))
-        if start_tick is not None:
-            fluid_player_seek(
-                player=CFS.c_void_p(self._player), ticks=CFS.c_int(start_tick)
-            )
+        sleep(0.1)  # Wait for seekable
+        fluid_player_seek(
+            player=CFS.c_void_p(self._player), ticks=CFS.c_int(start_tick)
+        )
         fluid_player_join(player=CFS.c_void_p(self._player))
 
-    def close(self) -> None:
-        """End playback."""
-        total_ticks: CFS.c_int = fluid_player_get_total_ticks(
-            player=CFS.c_void_p(self._player)
-        )
-        # fluid_player_set_loop(CFS.c_void_p(self._player), loop=CFS.c_int(0))
-        fluid_player_stop(player=CFS.c_void_p(self._player))
-        fluid_player_seek(player=CFS.c_void_p(self._player), ticks=total_ticks)
-        # fluid_player_join(player=CFS.c_void_p(self._player))
-        """Wait to clear Ringbuffer after EOT."""
-        self._all_sounds_off()
-        self._log(
-            level=FLUID_LOG_LEVEL.INFO,
-            message=f"Player close. {self.tick}/{int(total_ticks)}",
-        )
-
     def stop(self) -> int:
-        """Interrupts playback.
+        """Stop or end playback.
 
         :return int: ticks when stopped
         """
         fluid_player_stop(player=CFS.c_void_p(self._player))
-        # fluid_player_join(player=CFS.c_void_p(self._player))
+        fluid_player_join(player=CFS.c_void_p(self._player))
+        self._all_sounds_off()  # Wait to clear Ringbuffer after EOT.
         return self.tick
 
     @property
     def tick(self) -> int:
         """Get the number of tempo ticks passed."""
-        return fluid_player_get_current_tick(player=CFS.c_void_p(self._player))
+        return int(fluid_player_get_current_tick(player=CFS.c_void_p(self._player)))
+
+    @property
+    def total_ticks(self) -> int:
+        """Get total ticks."""
+        return int(fluid_player_get_total_ticks(player=CFS.c_void_p(self._player)))
 
 
 if __name__ == "__main__":

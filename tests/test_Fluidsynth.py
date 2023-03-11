@@ -71,8 +71,8 @@ def client_callback(time, event, sequencer, p_data):
         metronome_pattern(p_data.contents)
 
 
-def future_callback(func: Callable[..., None], future: futures.Future) -> bool:
-    func()
+def future_callback(func: Callable, future: futures.Future) -> bool:
+    print(f"player stop: {func()}")
     return future.done()
 
 
@@ -195,38 +195,18 @@ class TestFluidsynth(unittest.TestCase):
             ],
         }
 
-        mpfs = FS.MidiPlayer(**kwargs)
-        mpfs.apply_rules("config/rule.mute_chan_0.json")
-        mpfs.gain = 0.3
-        print(f"gain: {mpfs.gain:.1f}")
-
         extension = [".mid", ".MID"]
         files = [i for i in Path().glob("mid/*.*") if i.suffix in extension]
+        for file in files:
+            kwargs["standardmidifile"] = [f"mid/{file.name}"]
+            mpfs = FS.MidiPlayer(**kwargs)
+            mpfs.apply_rules("config/rule.mute_chan_0.json")
+            mpfs.gain = 0.3
+            print(f"gain: {mpfs.gain:.1f}")
 
-        with futures.ThreadPoolExecutor(max_workers=1) as e:
-            tick = 50000
-            """for fo in files:
-                f = e.submit(mpfs.start, "mid/" + fo.name, tick)
-                sleep(2.5)
-                print(f"player stop: {fo.name}, {mpfs.stop()}")
-                f = e.submit(mpfs.start)
-                f.add_done_callback(partial(future_callback, mpfs.close))
-                sleep(1.0)
-                print(f"player stop: {fo.name}, {mpfs.stop()}")
-            """
-            filename = "mid/SenBonZakura.mid"
-            f = e.submit(mpfs.start, filename, 170000)  # 178560
-            f.add_done_callback(partial(future_callback, mpfs.close))
-
-            filename = "mid/111867.MID"
-            f = e.submit(mpfs.start, filename, 174000)  # 179352
-            f.add_done_callback(partial(future_callback, mpfs.close))
-
-        print("channel preset")
-        for sound_set in mpfs.channels_preset():
-            print(sound_set)
-        print(mpfs.soundfonts)
-
-        mpfs.note_on(9, 34, 80)
-        sleep(0.5)
-        del mpfs
+            with futures.ThreadPoolExecutor(max_workers=1) as e:
+                f = e.submit(mpfs.playback, 10000)
+                sleep(2)
+                mpfs.stop()
+                f = e.submit(mpfs.playback, mpfs.total_ticks - 1000)
+                f.add_done_callback(partial(future_callback, mpfs.stop))

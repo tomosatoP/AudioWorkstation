@@ -25,10 +25,7 @@ class MidiPlayer:
     """
 
     pause_tick: int = 0
-
-    def __init__(self) -> None:
-
-        self.fsmp = FS.MidiPlayer(**kwargs_fs)
+    gain: float = 0.2
 
     def start(self, filename: str) -> str:
         """start _summary_
@@ -36,34 +33,35 @@ class MidiPlayer:
         :param str filename: _description_
         :return str: _description_
         """
+        kwargs_fs["standardmidifile"] = [filename]
+        self.fsmp = FS.MidiPlayer(**kwargs_fs)
         self.fsmp.apply_rules("config/rule.mute_chan.json")
-        self.fsmp.start(filename, self.pause_tick)
+        self.fsmp.gain = self.gain
+        self.fsmp.playback(self.pause_tick)
         return f"{filename}"
 
-    def close(self) -> None:
-        """close _summary_"""
-        self.pause_tick = 0
-        self.fsmp.close()
-
-    def pause(self) -> None:
+    def stop(self) -> None:
         """pause _summary_"""
         self.pause_tick = self.fsmp.stop()
+        self.gain = self.fsmp.gain
 
     @property
     def tick(self) -> int:
-        """tick _summary_
-
-        :return int: _description_
-        """
-        return self.fsmp.tick
+        return self.fsmp.tick if hasattr(self, "fsmp") else self.pause_tick
 
     @property
     def volume(self) -> int:
-        return gain2dB(self.fsmp.gain)
+        if hasattr(self, "fsmp"):
+            return gain2dB(self.fsmp.gain)
+        else:
+            return gain2dB(self.gain)
 
     @volume.setter
-    def volume(self, value) -> None:
-        self.fsmp.gain = dB2gain(value)
+    def volume(self, value: int) -> None:
+        if hasattr(self, "fsmp"):
+            self.fsmp.gain = dB2gain(value)
+        else:
+            self.gain = dB2gain(value)
 
 
 def info_midifile(midifile: Path) -> dict:

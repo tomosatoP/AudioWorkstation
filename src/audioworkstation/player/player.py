@@ -90,7 +90,7 @@ class PlayerView(Screen):
             Logger.info(f"player: Playback {str(mtb)}")
         elif state == "normal":
             self.ev_ticks.cancel()
-            self.midi_player.close()
+            self.midi_player.stop()
             self.status(PLAYER_STATUS.STANDBY)
             Logger.info("player: Stop")
 
@@ -99,7 +99,7 @@ class PlayerView(Screen):
             self.playback(state="down")
             self.status(PLAYER_STATUS.PLAYBACK)
         elif state == "down":
-            self.midi_player.pause()
+            self.midi_player.stop()
             self.status(PLAYER_STATUS.PAUSE)
             Logger.info("player: Pause")
 
@@ -109,7 +109,7 @@ class PlayerView(Screen):
         :param futures.Future future: playback process
         """
         self.ev_ticks.cancel()
-        self.midi_player.close()
+        self.midi_player.stop()
         self.status(PLAYER_STATUS.STANDBY)
         self.play_button.state = "normal"
         Logger.info("player: End")
