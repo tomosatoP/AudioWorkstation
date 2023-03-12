@@ -3,6 +3,7 @@
 
 from pathlib import Path
 from json import dump
+from time import sleep
 
 from ..libs.audio import fluidsynth as FS
 from ..libs.sublibs import standardmidifile as SMF
@@ -41,9 +42,11 @@ class MidiPlayer:
         return f"{filename}"
 
     def stop(self) -> None:
-        """pause _summary_"""
+        while not hasattr(self, "fsmp"):
+            sleep(0.1)  # Wait for fsmp instance creation
         self.pause_tick = self.fsmp.stop()
         self.gain = self.fsmp.gain
+        del self.fsmp
 
     @property
     def tick(self) -> int:

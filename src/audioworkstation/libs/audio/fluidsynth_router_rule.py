@@ -53,8 +53,6 @@ https://github.com/FluidSynth/fluidsynth/blob/master/src/midi/fluid_midi_router.
 import fluidsynth as FS
 from json import dump
 
-# test router rule
-
 
 def case_study() -> bool:
     """The rules apply even when they are duplicated,

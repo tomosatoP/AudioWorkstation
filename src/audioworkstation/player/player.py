@@ -87,32 +87,38 @@ class PlayerView(Screen):
             future.add_done_callback(self.cleanup_playback)
             self.status(PLAYER_STATUS.PLAYBACK)
             self.ev_ticks = Clock.schedule_interval(self.progress_ticks, 0.5)
-            Logger.info(f"player: Playback {str(mtb)}")
+            Logger.info(f"player: Playback {str(mtb)} - {self.midi_player.pause_tick}")
         elif state == "normal":
             self.ev_ticks.cancel()
-            self.midi_player.stop()
-            self.status(PLAYER_STATUS.STANDBY)
-            Logger.info("player: Stop")
+            self.midi_player.stop()  # call cleanup_playback
 
     def pause(self, state: str) -> None:
         if state == "normal":
-            self.playback(state="down")
-            self.status(PLAYER_STATUS.PLAYBACK)
+            self.playback("down")
         elif state == "down":
-            self.midi_player.stop()
-            self.status(PLAYER_STATUS.PAUSE)
-            Logger.info("player: Pause")
+            self.ev_ticks.cancel()
+            self.midi_player.stop()  # call cleanup_playback
 
     def cleanup_playback(self, future: futures.Future) -> None:
         """Process after playback is finished.
 
         :param futures.Future future: playback process
         """
-        self.ev_ticks.cancel()
-        self.midi_player.stop()
-        self.status(PLAYER_STATUS.STANDBY)
-        self.play_button.state = "normal"
-        Logger.info("player: End")
+        if self.pause_button.state == "normal":
+            if self.play_button.state == "down":
+                self.ev_ticks.cancel()
+                self.midi_player.stop()
+                self.play_button.state = "normal"
+            self.status(PLAYER_STATUS.STANDBY)
+            Logger.info(
+                f"player: End {future.result()} - {int(self.ticks_slider.value)}"
+            )
+            self.ticks_slider.value = 0
+        else:
+            self.status(PLAYER_STATUS.PAUSE)
+            Logger.info(
+                f"player: Pause {future.result()} - {int(self.ticks_slider.value)}"
+            )
 
     @property
     def volume(self) -> int:

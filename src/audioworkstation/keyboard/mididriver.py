@@ -50,3 +50,7 @@ class MidiSoundModule:
         sleep(0.3)
         for i in [60, 62, 64]:
             self.fsmdrv.note_off(0, i)
+
+
+if __name__ == "__main__":
+    print(__file__)

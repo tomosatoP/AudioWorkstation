@@ -82,4 +82,4 @@ def volume(percentage: Optional[str] = None) -> str:
 
 
 if __name__ == "__main__":
-    print("amixer")
+    print(__file__)

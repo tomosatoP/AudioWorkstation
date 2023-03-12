@@ -7,16 +7,18 @@ from kivy.config import Config
 # Kivy
 log_dir = str(Path().absolute()) + "/logs"
 
+
 Config.set("kivy", "log_dir", log_dir)
 Config.set("kivy", "log_level", "debug")
-Config.set("graphics", "borderless", 1)
-Config.set("graphics", "fullscreen", 0)
-Config.set("graphics", "width", 800)
-Config.set("graphics", "height", 480)
+
+Config.set("graphics", "borderless", 1)  # 0, 1
+Config.set("graphics", "fullscreen", "auto")  # 0, 1, "auto", "fake"
+# Config.set("graphics", "width", 800)  # not used if fullscreen is set to "auto".
+# Config.set("graphics", "height", 480)  # not used if fullscreen is set to "auto".
 
 # Kivy: Using Official RPi touch display
 Config.set("input", "mouse", "mouse")
-# Config.set('input', 'mtdev_%(name)s', 'probesysfs,provider=mtdev')
+# Config.set("input", "mtdev_%(name)s", "probesysfs,provider=mtdev")
 Config.set("input", "hid_%(name)s", "probesysfs,provider=hidinput")
 
 
