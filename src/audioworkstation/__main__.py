@@ -13,8 +13,8 @@ Config.set("kivy", "log_level", "debug")
 
 Config.set("graphics", "borderless", 1)  # 0, 1
 Config.set("graphics", "fullscreen", "auto")  # 0, 1, "auto", "fake"
-# Config.set("graphics", "width", 800)  # not used if fullscreen is set to "auto".
-# Config.set("graphics", "height", 480)  # not used if fullscreen is set to "auto".
+Config.set("graphics", "width", 800)  # not used if fullscreen is set to "auto".
+Config.set("graphics", "height", 480)  # not used if fullscreen is set to "auto".
 
 # Kivy: Using Official RPi touch display
 Config.set("input", "mouse", "mouse")
