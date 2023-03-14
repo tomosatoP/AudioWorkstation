@@ -75,22 +75,25 @@ snd_card_get_longname = prototype(
 snd_card_get_index = prototype(
     CAS2.c_int, "snd_card_get_index", (CAS2.c_char_p, 1, "string")
 )
+
 snd_card_next = prototype(
     CAS2.c_int, "snd_card_next", (CAS2.POINTER(CAS2.c_int), 1, "rcard")
 )
 
-print(bytes(snd_asoundlib_version()).decode())
-for i in range(5):
-    print(f"index - {i}: {int(snd_card_load(CAS2.c_int(i)))}")
+if __name__ == "__main__":
+    print(__file__)
 
-for j in range(5):
-    sname: CAS2.c_char_p = CAS2.c_char_p()
-    lname: CAS2.c_char_p = CAS2.c_char_p()
+    print(bytes(snd_asoundlib_version()).decode())
+    for i in range(5):
+        print(f"index - {i}: {int(snd_card_load(CAS2.c_int(i)))}")
 
-    snd_card_get_name(card=CAS2.c_int(j), name=CAS2.byref(sname))
-    snd_card_get_longname(card=CAS2.c_int(j), name=CAS2.byref(lname))
-    print(f"index - {j}: name - {sname.value.decode()}/{lname.value.decode()}")
+    for j in range(5):
+        sname: CAS2.c_char_p = CAS2.c_char_p()
+        lname: CAS2.c_char_p = CAS2.c_char_p()
 
+        snd_card_get_name(card=CAS2.c_int(j), name=CAS2.byref(sname))
+        snd_card_get_longname(card=CAS2.c_int(j), name=CAS2.byref(lname))
+        print(f"index - {j}: name - {sname.value.decode()}/{lname.value.decode()}")
 
-for s in [b"Headphones", b"fmidi", b"S", b"vc4hdmi0", b"vc4hdmi1"]:
-    print(f"{s.decode()}: index {int(snd_card_get_index(s))}")
+    for s in [b"Headphones", b"fmidi", b"S", b"vc4hdmi0", b"vc4hdmi1"]:
+        print(f"{s.decode()}: index {int(snd_card_get_index(s))}")

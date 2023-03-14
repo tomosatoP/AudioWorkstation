@@ -34,7 +34,7 @@ class KeyboardView(Screen):
     gmss = ObjectProperty()
 
     def __init__(self, **kwargs):
-        super(KeyboardView, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
         Logger.debug("keyboard: initializing...")
 

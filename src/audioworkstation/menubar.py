@@ -20,7 +20,7 @@ class MenubarView(Widget):
     vol2 = ObjectProperty()
 
     def __init__(self, **kwargs):
-        super(MenubarView, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
         Logger.debug("Menubar: initializing...")
 
@@ -58,7 +58,14 @@ class MenubarView(Widget):
 class MenubarApp(App):
     def build(self):
         self.title = "AudioWorkstation"
-        return MenubarView()
+        self.MainView = MenubarView()
+        return self.MainView
+
+    def on_stop(self):
+        print("mainview: on_stop")
+        # self.MainView.panel.clear_widgets()
+
+        return super().on_stop()
 
 
 if __name__ == "__main__":

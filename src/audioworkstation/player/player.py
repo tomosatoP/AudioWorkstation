@@ -5,6 +5,7 @@ from functools import partial
 from concurrent import futures
 from pathlib import Path
 from enum import IntEnum, auto
+from time import sleep
 
 from kivy.logger import Logger
 from kivy.properties import (
@@ -58,7 +59,7 @@ class PlayerView(Screen):
     executor = futures.ThreadPoolExecutor()
 
     def __init__(self, **kwargs):
-        super(PlayerView, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
         Logger.debug("player: initializing...")
 
@@ -86,6 +87,7 @@ class PlayerView(Screen):
             future = self.executor.submit(self.midi_player.start, mtb.filename)
             future.add_done_callback(self.cleanup_playback)
             self.status(PLAYER_STATUS.PLAYBACK)
+            sleep(0.5)  # Wait for fsmp instance creation
             self.ev_ticks = Clock.schedule_interval(self.progress_ticks, 0.5)
             Logger.info(f"player: Playback {str(mtb)} - {self.midi_player.pause_tick}")
         elif state == "normal":

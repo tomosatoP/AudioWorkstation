@@ -28,7 +28,7 @@ class MetronomeView(Screen):
     beat = ListProperty()
 
     def __init__(self, **kwargs):
-        super(MetronomeView, self).__init__(**kwargs)
+        super().__init__(**kwargs)
 
         Logger.debug("metronome: initializing...")
 

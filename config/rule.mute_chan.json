@@ -47,7 +47,7 @@
             "add": 0
         }
     },
-    "NOTE: unmute chan 12": {
+    "NOTE: mute chan 12": {
         "type": 0,
         "chan": {
             "min": 12,
@@ -56,9 +56,14 @@
             "add": 0
         },
         "param1": null,
-        "param2": null
+        "param2": {
+            "min": 0,
+            "max": 127,
+            "mul": 0.0,
+            "add": 0
+        }
     },
-    "NOTE: unmute chan 11": {
+    "NOTE: mute chan 11": {
         "type": 0,
         "chan": {
             "min": 11,
@@ -67,7 +72,12 @@
             "add": 0
         },
         "param1": null,
-        "param2": null
+        "param2": {
+            "min": 0,
+            "max": 127,
+            "mul": 0.0,
+            "add": 0
+        }
     },
     "NOTE: unmute chan 10": {
         "type": 0,
@@ -91,7 +101,7 @@
         "param1": null,
         "param2": null
     },
-    "NOTE: unmute chan 8": {
+    "NOTE: mute chan 8": {
         "type": 0,
         "chan": {
             "min": 8,
@@ -100,7 +110,12 @@
             "add": 0
         },
         "param1": null,
-        "param2": null
+        "param2": {
+            "min": 0,
+            "max": 127,
+            "mul": 0.0,
+            "add": 0
+        }
     },
     "NOTE: unmute chan 7": {
         "type": 0,
@@ -179,7 +194,7 @@
         "param1": null,
         "param2": null
     },
-    "NOTE: unmute chan 0": {
+    "NOTE: mute chan 0": {
         "type": 0,
         "chan": {
             "min": 0,
@@ -188,7 +203,12 @@
             "add": 0
         },
         "param1": null,
-        "param2": null
+        "param2": {
+            "min": 0,
+            "max": 127,
+            "mul": 0.0,
+            "add": 0
+        }
     },
     "CC": {
         "type": 1,
