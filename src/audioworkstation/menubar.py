@@ -58,14 +58,7 @@ class MenubarView(Widget):
 class MenubarApp(App):
     def build(self):
         self.title = "AudioWorkstation"
-        self.MainView = MenubarView()
-        return self.MainView
-
-    def on_stop(self):
-        print("mainview: on_stop")
-        # self.MainView.panel.clear_widgets()
-
-        return super().on_stop()
+        return MenubarView()
 
 
 if __name__ == "__main__":
