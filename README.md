@@ -15,27 +15,33 @@ USB MIDI 鍵盤を繋げて、ピアノ風の演奏を楽しみたいなぁ
     - jackd2 version 1.9.17
     - fluidsynth version 2.1.7
     - python version 3.9.2
-    - kivy version 2.1.0
+    - kivy[base] version 2.1.0
 ---
 ## 準備
 ~~~sh
 # 日本語フォント
 ~ $ sudo apt -y install fonts-ipaexfont
-# jack, fluidsynth
-~ $ sudo apt -y install jackd pulseaudio-module-jack fluidsynth libasound2-dev
+# jackd, fluidsynth
+~ $ sudo apt -y install jackd pulseaudio-module-jack fluidsynth
 ~~~
-## Kivyと依存関係のインストール(アプリ開発用)
-方法1 (window用のbackendしか必要ないなら、これでOK？)
-
-https://kivy.org/doc/stable/gettingstarted/installation.html#installing-kivy-s-dependencies
+## 仮想環境[venv]でインストール
 ~~~sh
-(venv) ~/AudioWorkstation $ python3 -m pip install "kivy[dev,base,sdl2]" kivy-example
+~ $ git clone https://github.com/tomosatoP/AudioWorkstation.git
+~ $ cd AudioWorkstation
+~/AudioWorkstation $ python3 -m venv venv
+~/AudioWorkstation $ source venv/bin/activate
+(venv) ~/AudioWorkstation $ pip install .
+(venv) ~/AudioWorkstation $ deactivate
 ~~~
-方法2
-
-https://kivy.org/doc/stable/installation/installation-rpi.html#install-python-rpi
+## 仮想環境[venv]で実行
 ~~~sh
-~ $ sudo apt -y install pkg-config libgl1-mesa-dev libgles2-mesa-dev libgstreamer1.0-dev gstreamer1.0-plugins-{bad,base,good,ugly} gstreamer1.0-alsa libmtdev-dev xclip xsel libjpeg-dev
-~ $ sudo apt -y install libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev
-(venv) ~/AudioWorkstation $ python3 -m pip install "kivy[dev,base]" kivy-example
+~ $ cd AudioWorkstation
+~/AudioWorkstation $ source venv/bin/activate
+(venv) ~/AudioWorkstation $ python3 -m audioworkstation
+# 終わったら
+(venv) ~/AudioWorkstation $ deactivate
+~~~
+## 仮想環境[venv]ごと削除
+~~~sh
+~ $ rm -rf AudioWorkstation
 ~~~

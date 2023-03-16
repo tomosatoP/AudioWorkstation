@@ -42,7 +42,7 @@ dev = [
   "mypy",
   "isort",
 ]
-gui = ["Kivy~=2.0.0"]
+gui = ["Kivy[base]~=2.0.0"]
 
 [tool.setuptools]
 package-dir = {"" = "src"}
