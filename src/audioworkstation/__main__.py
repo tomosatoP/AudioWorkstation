@@ -18,6 +18,7 @@ Config.set("graphics", "height", 480)  # not used if fullscreen is set to "auto"
 
 # Kivy: Using Official RPi touch display
 Config.set("input", "mouse", "mouse")
+Config.set("input", "%(name)s", "")
 # Config.set("input", "mtdev_%(name)s", "probesysfs,provider=mtdev")
 Config.set("input", "hid_%(name)s", "probesysfs,provider=hidinput")
 
