@@ -13,7 +13,7 @@ from typing import Optional
 # Master Volume (PulseAudio)
 _amixer_master = ["amixer", "sset", "Master", "50%,50%", "-M", "unmute"]
 
-# If using S (USB-Audio - Sharkoon Gmaing DAC Pro S/ latency 4ms)
+# If using S (USB-Audio - Sharkoon Gmaing DAC Pro S/ latency 8ms)
 _using_S = [
     ["jack_control", "stop"],
     ["jack_control", "exit"],
@@ -22,9 +22,10 @@ _using_S = [
     ["jack_control", "dps", "duplex", "True"],
     ["jack_control", "dps", "device", "hw:S"],
     ["jack_control", "dps", "playback", "hw:S"],
+    ["jack_control", "dps", "capture", "hw:0"],
     ["jack_control", "dps", "rate", "96000"],
     ["jack_control", "dps", "nperiods", "3"],
-    ["jack_control", "dps", "period", "128"],
+    ["jack_control", "dps", "period", "256"],
     ["jack_control", "dps", "outchannels", "2"],
     ["jack_control", "start"],
     ["amixer", "-c", "S", "sset", "PCM", "100%", "-M", "unmute"],
@@ -39,6 +40,7 @@ _using_Headphones = [
     ["jack_control", "dps", "duplex", "True"],
     ["jack_control", "dps", "device", "hw:Headphones"],
     ["jack_control", "dps", "playback", "hw:Headphones"],
+    ["jack_control", "dps", "capture", "hw:0"],
     ["jack_control", "dps", "rate", "96000"],
     ["jack_control", "dps", "nperiods", "2"],
     ["jack_control", "dps", "period", "1024"],

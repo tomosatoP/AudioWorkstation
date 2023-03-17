@@ -12,7 +12,7 @@ Config.set("kivy", "log_dir", log_dir)
 Config.set("kivy", "log_level", "debug")
 
 Config.set("graphics", "borderless", 1)  # 0, 1
-Config.set("graphics", "fullscreen", 1)  # 0, 1, "auto", "fake"
+Config.set("graphics", "fullscreen", 0)  # 0, 1, "auto", "fake"
 Config.set("graphics", "width", 800)  # not used if fullscreen is set to "auto".
 Config.set("graphics", "height", 480)  # not used if fullscreen is set to "auto".
 
