@@ -47,9 +47,16 @@ dev = [
 
 [tool.setuptools]
 package-dir = {"" = "src"}
+data-files = []
 
 [tool.setuptools.dynamic]
 version = {attr = "audioworkstation.version.version"}
+
+[tool.setuptools.package-data]
+config = ["*.json"]
+mid = []
+sf2 = []
+sf3 = []
 
 [tool.cythonize]
 extensions = ["src/audioworkstation/libs/sublibs/standardmidifile.py"]
