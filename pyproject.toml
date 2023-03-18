@@ -17,6 +17,7 @@ classifiers = [
 ]
 dependencies = [
   "Cython~=0.29",
+  "Kivy[base]~=2.0.0",
 ]
 description = "Using a USB-MIDI Keyboard to Create an Electronic Piano"
 dynamic = ["version"]
@@ -42,7 +43,7 @@ dev = [
   "mypy",
   "isort",
 ]
-gui = ["kivy~=2.0.0"]
+gui = ["Kivy[base]~=2.0.0"]
 
 [tool.setuptools]
 package-dir = {"" = "src"}
