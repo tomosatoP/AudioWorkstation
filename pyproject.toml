@@ -47,7 +47,7 @@ dev = [
 
 [tool.setuptools]
 package-dir = {"" = "src"}
-data-files = []
+data-files = ["config/*.json"]
 
 [tool.setuptools.dynamic]
 version = {attr = "audioworkstation.version.version"}
