@@ -1,5 +1,5 @@
 {
-    "NOTE: unmute chan 15": {
+    "NOTE: mute chan 15": {
         "type": 0,
         "chan": {
             "min": 15,
@@ -8,9 +8,14 @@
             "add": 0
         },
         "param1": null,
-        "param2": null
+        "param2": {
+            "min": 0,
+            "max": 127,
+            "mul": 0.0,
+            "add": 0
+        }
     },
-    "NOTE: unmute chan 14": {
+    "NOTE: mute chan 14": {
         "type": 0,
         "chan": {
             "min": 14,
@@ -19,9 +24,14 @@
             "add": 0
         },
         "param1": null,
-        "param2": null
+        "param2": {
+            "min": 0,
+            "max": 127,
+            "mul": 0.0,
+            "add": 0
+        }
     },
-    "NOTE: unmute chan 13": {
+    "NOTE: mute chan 13": {
         "type": 0,
         "chan": {
             "min": 13,
@@ -30,9 +40,14 @@
             "add": 0
         },
         "param1": null,
-        "param2": null
+        "param2": {
+            "min": 0,
+            "max": 127,
+            "mul": 0.0,
+            "add": 0
+        }
     },
-    "NOTE: unmute chan 12": {
+    "NOTE: mute chan 12": {
         "type": 0,
         "chan": {
             "min": 12,
@@ -41,9 +56,14 @@
             "add": 0
         },
         "param1": null,
-        "param2": null
+        "param2": {
+            "min": 0,
+            "max": 127,
+            "mul": 0.0,
+            "add": 0
+        }
     },
-    "NOTE: unmute chan 11": {
+    "NOTE: mute chan 11": {
         "type": 0,
         "chan": {
             "min": 11,
@@ -52,9 +72,14 @@
             "add": 0
         },
         "param1": null,
-        "param2": null
+        "param2": {
+            "min": 0,
+            "max": 127,
+            "mul": 0.0,
+            "add": 0
+        }
     },
-    "NOTE: unmute chan 10": {
+    "NOTE: mute chan 10": {
         "type": 0,
         "chan": {
             "min": 10,
@@ -63,7 +88,12 @@
             "add": 0
         },
         "param1": null,
-        "param2": null
+        "param2": {
+            "min": 0,
+            "max": 127,
+            "mul": 0.0,
+            "add": 0
+        }
     },
     "NOTE: unmute chan 9": {
         "type": 0,
@@ -76,7 +106,7 @@
         "param1": null,
         "param2": null
     },
-    "NOTE: unmute chan 8": {
+    "NOTE: mute chan 8": {
         "type": 0,
         "chan": {
             "min": 8,
@@ -85,9 +115,14 @@
             "add": 0
         },
         "param1": null,
-        "param2": null
+        "param2": {
+            "min": 0,
+            "max": 127,
+            "mul": 0.0,
+            "add": 0
+        }
     },
-    "NOTE: unmute chan 7": {
+    "NOTE: mute chan 7": {
         "type": 0,
         "chan": {
             "min": 7,
@@ -96,9 +131,14 @@
             "add": 0
         },
         "param1": null,
-        "param2": null
+        "param2": {
+            "min": 0,
+            "max": 127,
+            "mul": 0.0,
+            "add": 0
+        }
     },
-    "NOTE: unmute chan 6": {
+    "NOTE: mute chan 6": {
         "type": 0,
         "chan": {
             "min": 6,
@@ -107,9 +147,14 @@
             "add": 0
         },
         "param1": null,
-        "param2": null
+        "param2": {
+            "min": 0,
+            "max": 127,
+            "mul": 0.0,
+            "add": 0
+        }
     },
-    "NOTE: unmute chan 5": {
+    "NOTE: mute chan 5": {
         "type": 0,
         "chan": {
             "min": 5,
@@ -118,9 +163,14 @@
             "add": 0
         },
         "param1": null,
-        "param2": null
+        "param2": {
+            "min": 0,
+            "max": 127,
+            "mul": 0.0,
+            "add": 0
+        }
     },
-    "NOTE: unmute chan 4": {
+    "NOTE: mute chan 4": {
         "type": 0,
         "chan": {
             "min": 4,
@@ -129,9 +179,14 @@
             "add": 0
         },
         "param1": null,
-        "param2": null
+        "param2": {
+            "min": 0,
+            "max": 127,
+            "mul": 0.0,
+            "add": 0
+        }
     },
-    "NOTE: unmute chan 3": {
+    "NOTE: mute chan 3": {
         "type": 0,
         "chan": {
             "min": 3,
@@ -140,7 +195,12 @@
             "add": 0
         },
         "param1": null,
-        "param2": null
+        "param2": {
+            "min": 0,
+            "max": 127,
+            "mul": 0.0,
+            "add": 0
+        }
     },
     "NOTE: mute chan 2": {
         "type": 0,

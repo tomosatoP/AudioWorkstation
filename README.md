@@ -33,6 +33,13 @@ USB MIDI 鍵盤を繋げて、ピアノ風の演奏を楽しみたいなぁ
 (venv) ~/AudioWorkstation $ pip install .
 (venv) ~/AudioWorkstation $ deactivate
 ~~~
+~~~sh
+~ $ python3 -m venv AudioWorkstation/venv --upgrade-deps
+~ $ cd AudioWorkstation
+~/AudioWorkstation $ source venv/bin/activate
+(venv) ~/AudioWorkstation $ pip install git+https://github.com/tomosatoP/AudioWorkstation.git
+(venv) ~/AudioWorkstation $ deactivate
+~~~
 ## 仮想環境[venv]で実行
 ~~~sh
 ~ $ cd AudioWorkstation
