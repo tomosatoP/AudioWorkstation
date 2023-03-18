@@ -1,6 +1,6 @@
 [build-system]
 build-backend = "setuptools.build_meta"
-requires = ["setuptools", "setuptools_scm", "Cython", "wheel"]
+requires = ["setuptools", "setuptools-scm", "Cython", "wheel"]
 
 [project]
 authors = [
@@ -50,6 +50,9 @@ package-dir = {"" = "src"}
 
 [tool.setuptools.dynamic]
 version = {attr = "audioworkstation.version.version"}
+
+[tool.cythonize]
+extensions = ["src/audioworkstation/libs/sublibs/standardmidifile.py"]
 
 [tool.setuptools_scm]
 local_scheme = "no-local-version"
