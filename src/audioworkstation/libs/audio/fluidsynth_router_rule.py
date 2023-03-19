@@ -50,7 +50,7 @@ typedef struct _fluid_midi_router_rule_t => fluid_midi_router_rule_t
 https://github.com/FluidSynth/fluidsynth/blob/master/src/midi/fluid_midi_router.c
 """
 
-import fluidsynth as FS
+from . import fluidsynth as FS
 from json import dump
 
 
@@ -58,7 +58,7 @@ def case_study() -> bool:
     """The rules apply even when they are duplicated,
     and the results are terrible.
     """
-    rules = dict()
+    rules: dict = dict()
 
     # NOTE: mute channel 0
     rules["NOTE: mute chan 0"] = {

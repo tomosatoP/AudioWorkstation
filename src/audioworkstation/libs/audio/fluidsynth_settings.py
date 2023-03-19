@@ -10,7 +10,7 @@ import ctypes as C
 from typing import Any
 from json import dump
 
-import fluidsynth as FS
+from . import fluidsynth as FS
 
 
 # test foreach settings

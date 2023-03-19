@@ -2,20 +2,14 @@
 # -*- coding: utf-8 -*-
 
 from pathlib import Path
-from json import dump
+from json import dump, load
 
 from ..libs.audio import fluidsynth as FS
 from ..libs.sublibs import standardmidifile as SMF
 from ..libs.sublibs.parts import dB2gain, gain2dB
 
-kwargs_fs: dict = {
-    "settings": "config/settings.json",
-    "soundfont": [
-        "sf2/FluidR3_GM.sf2",
-        "sf2/SGM-V2.01.sf2",
-        "sf2/YDP-GrandPiano-20160804.sf2",
-    ],
-}
+with open("config/player.json", "r") as f:
+    kwargs = load(f)
 
 
 class MidiPlayer:
@@ -33,8 +27,8 @@ class MidiPlayer:
         :param str filename: _description_
         :return str: _description_
         """
-        kwargs_fs["standardmidifile"] = [filename]
-        self.fsmp = FS.MidiPlayer(**kwargs_fs)
+        kwargs["standardmidifile"] = [filename]
+        self.fsmp = FS.MidiPlayer(**kwargs)
         self.fsmp.apply_rules("config/rule.mute_chan.json")
         self.fsmp.gain = self.gain
         self.fsmp.playback(self.pause_tick)
@@ -80,7 +74,7 @@ def info_midifile(midifile: Path) -> dict:
 
 def gm_sound_set_names() -> tuple:
 
-    synth = FS.Synthesizer(**kwargs_fs)
+    synth = FS.Synthesizer(**kwargs)
 
     gm_sound_sets: list = list()
     gm_percussion_sound_sets: list = list()
@@ -95,7 +89,7 @@ def gm_sound_set_names() -> tuple:
     return (snames, pnames)
 
 
-def mute_rules(**kwargs) -> str:
+def mute_rules(**mute_flags) -> str:
     """
     {'0':True, '1':False, ..., '15':False}
         True: mute
@@ -105,8 +99,8 @@ def mute_rules(**kwargs) -> str:
     filename = "config/rule.mute_chan.json"
 
     # Note
-    for chan in list(kwargs):
-        if kwargs[chan]:
+    for chan in list(mute_flags):
+        if mute_flags[chan]:
             # NOTE: mute channel
             comment = "NOTE: mute chan " + chan
             rules[comment] = {

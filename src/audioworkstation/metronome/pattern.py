@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+from json import load
+
 from ..libs.audio import fluidsynth as FS
 from ..libs.sublibs.parts import dB2gain, gain2dB
 
@@ -42,10 +44,9 @@ def pattern():
 class Pattern:
     def __init__(self) -> None:
         global sfs, schedule_stop, rhythm, notevalue
-        kwargs: dict = {
-            "settings": "config/settings.json",
-            "soundfont": ["sf2/FluidR3_GM.sf2"],
-        }
+
+        with open("config/metronome.json", "r") as f:
+            kwargs = load(f)
 
         sfs = FS.Sequencer(**kwargs)
         sfs.register_client("metronome", pcallback)

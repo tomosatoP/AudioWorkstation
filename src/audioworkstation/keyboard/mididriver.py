@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from time import sleep
+from json import load
 
 from ..libs.audio import fluidsynth as FS
 from ..libs.sublibs.parts import gain2dB, dB2gain
@@ -12,14 +13,8 @@ class MidiSoundModule:
     gm_percussion_sound_set: list = list()
 
     def __init__(self) -> None:
-        kwargs: dict = {
-            "settings": "config/settings.json",
-            "soundfont": [
-                "sf2/FluidR3_GM.sf2",
-                "sf2/SGM-V2.01.sf2",
-                "sf2/YDP-GrandPiano-20160804.sf2",
-            ],
-        }
+        with open("config/keyboard.json", "r") as f:
+            kwargs = load(f)
 
         self.fsmdrv = FS.MidiDriver(**kwargs)
 
