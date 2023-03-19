@@ -14,5 +14,4 @@ logs/*.txt
 *.sf2
 *.sf3
 *.log
-*.c
 *.so
