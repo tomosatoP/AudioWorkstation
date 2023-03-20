@@ -51,6 +51,13 @@ dev = [
 package-dir = {"" = "src"}
 include-package-data = true
 
+[tool.setuptoos.data-files]
+config = ["config/*.json"]
+mid = ["mid/*.dir"]
+sf2 = ["sf2/soundfont2files.dir"]
+sf3 = ["sf3/*.dir"]
+logs = [""]
+
 [tool.setuptools.dynamic]
 version = {attr = "audioworkstation.version.version"}
 
