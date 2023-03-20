@@ -7,11 +7,4 @@ __pycache__
 .vscode
 
 
-logs/*.txt
-
-*.mid
-*.MID
-*.sf2
-*.sf3
-*.log
 *.so
