@@ -50,13 +50,10 @@ dev = [
 [tool.setuptools]
 package-dir = {"" = "src"}
 include-package-data = true
+data-files = {config = ["config/fluidsynth.json"]}
 
-[tool.setuptoos.data-files]
-config = ["config/*.json"]
-mid = ["mid/*.dir"]
-sf2 = ["sf2/soundfont2files.dir"]
-sf3 = ["sf3/*.dir"]
-logs = [""]
+# [tool.setuptoos.data-files]
+# config = ["config/fluidsynth.js"]
 
 [tool.setuptools.dynamic]
 version = {attr = "audioworkstation.version.version"}
