@@ -18,7 +18,7 @@
         ],
         "range": null,
         "default": null,
-        "value": "jack"
+        "value": null
     },
     "audio.file.endian": {
         "type": 2,
@@ -93,14 +93,14 @@
             1
         ],
         "default": 0,
-        "value": 1
+        "value": null
     },
     "audio.jack.id": {
         "type": 2,
         "options": null,
         "range": null,
         "default": "fluidsynth",
-        "value": "jFS"
+        "value": null
     },
     "audio.jack.multi": {
         "type": 1,
@@ -235,7 +235,7 @@
             1
         ],
         "default": 0,
-        "value": 1
+        "value": null
     },
     "midi.driver": {
         "type": 2,
@@ -247,7 +247,7 @@
         ],
         "range": null,
         "default": null,
-        "value": "alsa_seq"
+        "value": null
     },
     "midi.jack.id": {
         "type": 2,
@@ -275,7 +275,7 @@
         "options": null,
         "range": null,
         "default": null,
-        "value": "mFS"
+        "value": null
     },
     "midi.realtime-prio": {
         "type": 1,
@@ -402,7 +402,7 @@
             256
         ],
         "default": 1,
-        "value": 2
+        "value": null
     },
     "synth.default-soundfont": {
         "type": 2,
@@ -491,7 +491,7 @@
         ],
         "range": null,
         "default": "gs",
-        "value": "gm"
+        "value": null
     },
     "synth.midi-channels": {
         "type": 1,
@@ -648,7 +648,7 @@
             96000.0
         ],
         "default": 44100.0,
-        "value": 96000.0
+        "value": null
     },
     "synth.threadsafe-api": {
         "type": 1,

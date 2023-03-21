@@ -6,5 +6,4 @@ AudioWorkstation.egg-info
 __pycache__
 .vscode
 
-
 *.so

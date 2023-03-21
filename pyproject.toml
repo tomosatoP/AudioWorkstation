@@ -16,7 +16,7 @@ classifiers = [
   "Topic :: Multimedia :: Sound/Audio :: MIDI",
 ]
 dependencies = [
-#   "Cython~=0.29",
+  "Cython~=0.29",
   "Kivy[base]~=2.1",
 ]
 description = "Using a USB-MIDI Keyboard to Create an Electronic Piano"
@@ -34,7 +34,7 @@ readme = "README.md"
 requires-python = "~=3.9"
 
 [project.scripts]
-setup = "audioworkstation.libs.audio.fluidsynth_settings:fetch_default"
+initialize = "audioworkstation.setup.config:main"
 
 [project.urls]
 Homepage = "https://github.com/tomosatoP/AudioWorkstation"
@@ -50,10 +50,6 @@ dev = [
 [tool.setuptools]
 package-dir = {"" = "src"}
 include-package-data = true
-data-files = {config = ["config/fluidsynth.json"]}
-
-# [tool.setuptoos.data-files]
-# config = ["config/fluidsynth.js"]
 
 [tool.setuptools.dynamic]
 version = {attr = "audioworkstation.version.version"}

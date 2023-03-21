@@ -50,7 +50,7 @@ typedef struct _fluid_midi_router_rule_t => fluid_midi_router_rule_t
 https://github.com/FluidSynth/fluidsynth/blob/master/src/midi/fluid_midi_router.c
 """
 
-from . import fluidsynth as FS
+from audioworkstation.libs.audio import fluidsynth as FS
 from json import dump
 
 
@@ -131,4 +131,4 @@ def case_study() -> bool:
 
 
 if __name__ == "__main__":
-    case_study()
+    print(__file__)

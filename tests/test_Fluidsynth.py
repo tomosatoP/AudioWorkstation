@@ -84,7 +84,7 @@ class TestFluidsynth(unittest.TestCase):
 
     def test_synthesizer(self):
         """test class FS.SynthesizerFS"""
-        kwargs = {"settings": "config/settings.json"}
+        kwargs = {"settings": "config/fluidsynth.json"}
         fs1 = FS.Synthesizer(**kwargs)
         fs2 = FS.Synthesizer()
         del fs2
@@ -128,8 +128,9 @@ class TestFluidsynth(unittest.TestCase):
     def test_midi_driver(self):
         """test class MidiDriverFS"""
         kwargs = {
-            "settings": "config/settings.json",
-            "soundfont": ["sf2/FluidR3_GM.sf2", "sf2/SGM-V2.01.sf2"],
+            "settings": "config/fluidsynth.json",
+            "soundfont": ["sf2/FluidR3_GM.sf2"],
+            "handler": FS.fluid_midi_dump_prerouter,
         }
         # 'handler': midi_event_handler}
 
@@ -152,7 +153,7 @@ class TestFluidsynth(unittest.TestCase):
         """test class SequencerFS"""
         global sfs
         kwargs = {
-            "settings": "config/settings.json",
+            "settings": "config/fluidsynth.json",
             "soundfont": ["sf2/FluidR3_GM.sf2"],
         }
 
@@ -187,11 +188,11 @@ class TestFluidsynth(unittest.TestCase):
         # test class MidiPlayerFS
 
         kwargs = {
-            "settings": "config/settings.json",
+            "settings": "config/fluidsynth.json",
             "soundfont": [
                 "sf2/FluidR3_GM.sf2",
-                "sf2/SGM-V2.01.sf2",
-                "sf2/YDP-GrandPiano-20160804.sf2",
+                "sf2/FluidR3_GM.sf2",
+                "sf2/FluidR3_GM.sf2",
             ],
         }
 

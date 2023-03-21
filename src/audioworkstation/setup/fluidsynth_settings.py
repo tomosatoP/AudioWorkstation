@@ -8,19 +8,19 @@ After editing, the settings can be changed by loading the 'json file'.
 
 import ctypes as C
 from typing import Any
-from json import dump
+from json import dump, load
 
-from . import fluidsynth as FS
+from audioworkstation.libs.audio import fluidsynth as FS
 
 
 # test foreach settings
-all_settings: dict[str, dict[str, Any]] = dict()
+json_settings: dict[str, dict[str, Any]] = dict()
 option_list: list = list()
 
 
 @FS.FLUID_SETTINGS_FOREACH_T
 def settings_types(data, name, type):
-    all_settings[bytes(name).decode()] = {
+    json_settings[bytes(name).decode()] = {
         "type": type,
         "options": None,
         "range": None,
@@ -35,14 +35,14 @@ def settings_option(data, name, option):
     option_list += [bytes(option).decode()]
 
 
-def fetch_default() -> bool:
-    global all_settings, option_list
+def extract_default() -> bool:
+    global json_settings, option_list
     hints_id = C.c_int()
 
     settings = FS.new_fluid_settings()
     FS.fluid_settings_foreach(settings=settings, data=None, func=settings_types)
 
-    for name, part in all_settings.items():
+    for name, part in json_settings.items():
         type = part["type"]
         if type == FS.FLUID_TYPE.NUM:
             d_default = C.c_double()
@@ -106,10 +106,29 @@ def fetch_default() -> bool:
         else:
             pass
 
-    with open("config/settings.default.json", "w") as fw:
-        dump(all_settings, fw, indent=4)
+    with open("config/fluidsynth.default.json", "w") as fw:
+        dump(json_settings, fw, indent=4)
     return True
 
 
+def customize():
+    global json_settings
+    with open("config/fluidsynth.default.json", "r") as fw:
+        json_settings = load(fw)
+
+    json_settings["audio.driver"]["value"] = "jack"
+    json_settings["audio.jack.autoconnect"]["value"] = 1
+    json_settings["audio.jack.id"]["value"] = "jFS"
+    json_settings["midi.autoconnect"]["value"] = 1
+    json_settings["midi.driver"]["value"] = "alsa_seq"
+    json_settings["midi.portname"]["value"] = "mFS"
+    json_settings["synth.cpu-cores"]["value"] = 2
+    json_settings["synth.midi-bank-select"]["value"] = "gm"
+    json_settings["synth.sample-rate"]["value"] = 96000.0
+
+    with open("config/fluidsynth.json", "w") as fw:
+        dump(json_settings, fw, indent=4)
+
+
 if __name__ == "__main__":
-    fetch_default()
+    print(__file__)

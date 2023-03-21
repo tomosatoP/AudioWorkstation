@@ -10,7 +10,7 @@ USB MIDI 鍵盤を繋げて、ピアノ風の演奏を楽しみたいなぁ
     - microSD card 32GB 
     - 4.3inch DSI LCD with case (Waveshare 18645)
     - USB-DAC (Sharkoon GAMING DAC PRO S)
-    - USB-MIDI Keyborad (未定)
+    - USB-MIDI Keyborad (M-AUDIO KEYSTATION49 MK3)
 - ソフトウェア
     - jackd2 version 1.9.17
     - fluidsynth version 2.1.7
@@ -21,26 +21,20 @@ USB MIDI 鍵盤を繋げて、ピアノ風の演奏を楽しみたいなぁ
 ~~~sh
 # 日本語フォント
 ~ $ sudo apt -y install fonts-ipaexfont
-# jackd, fluidsynth
+# jackd(jackd2) with qjackctl 
+# fluidsynth with libfluidsynth2, qsynth, fluid-soundfont-gm)
 ~ $ sudo apt -y install jackd pulseaudio-module-jack fluidsynth
 ~~~
-## 仮想環境[venv]でインストール
-~~~sh
-~ $ git clone --depth 1 https://github.com/tomosatoP/AudioWorkstation.git
-~ $ cd AudioWorkstation
-~/AudioWorkstation $ python3 -m venv venv --upgrade-deps
-~/AudioWorkstation $ source venv/bin/activate
-(venv) ~/AudioWorkstation $ pip install .
-(venv) ~/AudioWorkstation $ deactivate
-~~~
+## インストール
 ~~~sh
 ~ $ python3 -m venv AudioWorkstation/venv --upgrade-deps
 ~ $ cd AudioWorkstation
 ~/AudioWorkstation $ source venv/bin/activate
-(venv) ~/AudioWorkstation $ pip install git+https://github.com/tomosatoP/AudioWorkstation.git
+(venv) ~/AudioWorkstation $ pip install -U git+https://github.com/tomosatoP/AudioWorkstation.git
+(venv) ~/AudioWorkstation $ initialize
 (venv) ~/AudioWorkstation $ deactivate
 ~~~
-## 仮想環境[venv]で実行
+## 実行
 ~~~sh
 ~ $ cd AudioWorkstation
 ~/AudioWorkstation $ source venv/bin/activate
@@ -48,7 +42,7 @@ USB MIDI 鍵盤を繋げて、ピアノ風の演奏を楽しみたいなぁ
 # 終わったら
 (venv) ~/AudioWorkstation $ deactivate
 ~~~
-## 仮想環境[venv]ごと削除
+## アンインストール
 ~~~sh
 ~ $ rm -rf AudioWorkstation
 ~~~

@@ -1,4 +1,0 @@
-include mid/*.dir
-include sf2/*.dir
-include sf3/*.dir
-include config/*.json
