@@ -55,6 +55,24 @@ def prototype(restype: Any, name: str, *params: tuple) -> Any:
 snd_asoundlib_version = prototype(CAS2.c_char_p, "snd_asoundlib_version")
 snd_asoundlib_version.errcheck = errcheck
 
+snd_device_name_hint = prototype(
+    CAS2.c_int,
+    "snd_device_name_hint",
+    (CAS2.c_int, 1, "card"),
+    (CAS2.c_char_p, 1, "iface"),
+    (CAS2.POINTER(CAS2.c_void_p), 1, "hints"),
+)
+
+snd_device_name_free_hint = prototype(
+    CAS2.c_int, "snd_device_name_free_hint", (CAS2.c_void_p, 1, "hints")
+)
+snd_device_name_get_hint = prototype(
+    CAS2.c_char_p,
+    "snd_device_name_get_hint",
+    (CAS2.c_void_p, 1, "hint"),
+    (CAS2.c_char_p, 1, "id"),
+)
+
 snd_card_load = prototype(CAS2.c_int, "snd_card_load", (CAS2.c_int, 1, "card"))
 snd_card_load.errcheck = errcheck
 
@@ -80,14 +98,34 @@ snd_card_next = prototype(
     CAS2.c_int, "snd_card_next", (CAS2.POINTER(CAS2.c_int), 1, "rcard")
 )
 
+
+class SND_CTL_T(CAS2.Structure):
+    _fields_ = [("a", CAS2.c_int)]
+
+
+snd_ctl_open = prototype(
+    CAS2.c_int,
+    "snd_ctl_open",
+    (CAS2.POINTER(CAS2.c_void_p), 1, "ctlp"),
+    (CAS2.c_char_p, 1, "name"),
+    (CAS2.c_int, 1, "mode"),
+)
+
 if __name__ == "__main__":
     print(__file__)
 
-    print(bytes(snd_asoundlib_version()).decode())
-    for i in range(5):
+    print(f"ALSA Version: {bytes(snd_asoundlib_version()).decode()}")
+
+    cards_index = list()
+    index = CAS2.c_int(0)
+    while index.value != -1:
+        cards_index.append(index.value)
+        snd_card_next(CAS2.byref(index))
+
+    for i in cards_index:
         print(f"index - {i}: {int(snd_card_load(CAS2.c_int(i)))}")
 
-    for j in range(5):
+    for j in cards_index:
         sname: CAS2.c_char_p = CAS2.c_char_p()
         lname: CAS2.c_char_p = CAS2.c_char_p()
 
@@ -95,5 +133,18 @@ if __name__ == "__main__":
         snd_card_get_longname(card=CAS2.c_int(j), name=CAS2.byref(lname))
         print(f"index - {j}: name - {sname.value.decode()}/{lname.value.decode()}")
 
-    for s in [b"Headphones", b"fmidi", b"S", b"vc4hdmi0", b"vc4hdmi1"]:
-        print(f"{s.decode()}: index {int(snd_card_get_index(s))}")
+    hints = CAS2.c_void_p()
+    snd_device_name_hint(card=CAS2.c_int(0), iface=b"pcm", hints=CAS2.pointer(hints))
+    print(hints)
+    print(snd_device_name_get_hint(hint=CAS2.pointer(hints), id=b"NAME"))
+    snd_device_name_free_hint(hints=hints)
+
+    # for s in [b"Headphones", b"fmidi", b"S", b"vc4hdmi0", b"vc4hdmi1"]:
+    #    print(f"{s.decode()}: index {int(snd_card_get_index(s))}")
+
+    ctlp = CAS2.c_void_p()
+    print(snd_ctl_open(ctlp=CAS2.byref(ctlp), name=b"hw:S", mode=0))
+    # SND_CTL_NOBLOCK  0x0001: Non blocking mode  (flag for open mode)
+    # SND_CTL_ASYNC    0x0002: Async notification (flag for open mode)
+    # SND_CTL_READONLY 0x0004: Read only          (flag for open mode)
+    print(ctlp)
