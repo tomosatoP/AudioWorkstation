@@ -7,6 +7,7 @@ https://github.com/alsa-project/alsa-python/blob/master/pyalsa/alsacard.c
 """
 
 from typing import Callable, Any
+from enum import IntEnum, auto
 import ctypes as CAS2
 from ctypes.util import find_library
 
@@ -201,6 +202,180 @@ def errcheck_snd_ctl_open(result: Any, cfunc: Callable, args: tuple) -> Any:
 
 snd_ctl_open.errcheck = errcheck_snd_ctl_open
 
+""" snd_ctl_close
+
+Closes the specified CTL handle and frees all associated resources.
+:param snd_ctl_t* ctl: CTL handle
+:return int: 0 on success otherwise a negative error code
+"""
+snd_ctl_close = prototype(CAS2.c_int, "snd_ctl_close", (CAS2.c_void_p, 1, "ctl"))
+snd_ctl_close.errcheck = errcheck_non_zero
+
+""" snd_ctl_elem_id_malloc
+
+allocate an invalid snd_ctl_elem_id_t using standard malloc.
+:return snd_ctl_elem_id_t* ptr:
+"""
+snd_ctl_elem_id_malloc = prototype(
+    CAS2.c_int, "snd_ctl_elem_id_malloc", (CAS2.POINTER(CAS2.c_void_p), 2, "ptr")
+)
+
+
+def errcheck_snd_ctl_elem_id_malloc(result: Any, cfunc: Callable, args: tuple) -> Any:
+    if result != 0:
+        raise AS2Error((cfunc, args))
+    return args[0]
+
+
+snd_ctl_elem_id_malloc.errcheck = errcheck_snd_ctl_elem_id_malloc
+
+""" snd_ctl_elem_id_free
+
+frees a previously allocated snd_ctl_elem_id_t
+:param snd_ctl_elem_id_t* obj:
+"""
+snd_ctl_elem_id_free = prototype(
+    CAS2.c_void_p, "snd_ctl_elem_id_free", (CAS2.c_void_p, 1, "obj")
+)
+
+""" snd_ctl_elem_value_malloc
+
+Allocate an invalid snd_ctl_elem_value_t on the heap.
+The allocated memory must be freed using snd_ctl_elem_value_free().
+:param snd_ctl_elem_value_t** ptr:
+:return: 0 on success, otherwise a negative error code
+"""
+snd_ctl_elem_value_malloc = prototype(
+    CAS2.c_int, "snd_ctl_elem_value_malloc", (CAS2.POINTER(CAS2.c_void_p), 2, "ptr")
+)
+
+
+def errcheck_snd_ctl_elem_value_malloc(
+    result: Any, cfunc: Callable, args: tuple
+) -> Any:
+    if result != 0:
+        raise AS2Error((cfunc, args))
+    return args[0]
+
+
+snd_ctl_elem_value_malloc.errcheck = errcheck_snd_ctl_elem_value_malloc
+
+""" snd_ctl_elem_value_free
+
+Free an snd_ctl_elem_value_t previously allocated using snd_ctl_elem_value_malloc().
+:param the snd_ctl_elem_value_t* obj:
+"""
+snd_ctl_elem_value_free = prototype(
+    CAS2.c_void_p, "snd_ctl_elem_value_free", (CAS2.c_void_p, 1, "obj")
+)
+
+
+class SND_CTL_ELEM_IFACE_T(IntEnum):
+    CARD = 0
+    HWDEP = auto()
+    MIXER = auto()
+    PCM = auto()
+    RAWMIDI = auto()
+    TIMER = auto()
+    SEQUENCER = auto()
+
+
+""" snd_ctl_elem_id_set_interface
+
+Set interface part for a CTL element identifier.
+:param snd_ctl_elem_id_t* obj: CTL element identifier
+:param c_int val: CTL element related interface [enum SND_CTL_ELEM_IFACE_T]
+"""
+snd_ctl_elem_id_set_interface = prototype(
+    CAS2.c_void_p,
+    "snd_ctl_elem_id_set_interface",
+    (CAS2.c_void_p, 1, "obj"),
+    (CAS2.c_int, 1, "val"),
+)
+
+""" snd_ctl_elem_id_set_name
+
+Set name part for a CTL element identifier.
+:param snd_ctl_elem_id_t* obj: CTL element identifier
+:param c_char_p val: CTL element name
+"""
+snd_ctl_elem_id_set_name = prototype(
+    CAS2.c_void_p,
+    "snd_ctl_elem_id_set_name",
+    (CAS2.c_void_p, 1, "obj"),
+    (CAS2.c_char_p, 1, "val"),
+)
+
+""" snd_ctl_elem_info_malloc
+
+allocate an invalid snd_ctl_elem_info_t using standard malloc
+:param snd_ctl_elem_info_t** ptr: returned pointer
+:return c_int:0 on success otherwise negative error code
+"""
+snd_ctl_elem_info_malloc = prototype(
+    CAS2.c_int, "snd_ctl_elem_info_malloc", (CAS2.POINTER(CAS2.c_void_p), 2, "ptr")
+)
+
+
+def errcheck_snd_ctl_elem_info_malloc(result: Any, cfunc: Callable, args: tuple) -> Any:
+    if result != 0:
+        raise AS2Error((cfunc, args))
+    return args[0]
+
+
+snd_ctl_elem_info_malloc.errcheck = errcheck_snd_ctl_elem_info_malloc
+
+""" snd_ctl_elem_info_free
+
+frees a previously allocated snd_ctl_elem_info_t
+:param snd_ctl_elem_info_t* obj: pointer to object to free
+"""
+snd_ctl_elem_info_free = prototype(
+    CAS2.c_void_p, "snd_ctl_elem_info_free", (CAS2.c_void_p, 1, "obj")
+)
+
+""" snd_ctl_elem_info_set_id
+
+Set CTL element identifier of a CTL element id/info.
+:param snd_ctl_elem_info_t* obj: CTL element id/info
+:param const snd_ctl_elem_id_t* ptr: CTL element identifier
+"""
+snd_ctl_elem_info_set_id = prototype(
+    CAS2.c_void_p,
+    "snd_ctl_elem_info_set_id",
+    (CAS2.c_void_p, 1, "obj"),
+    (CAS2.c_void_p, 1, "ptr"),
+)
+
+""" snd_ctl_elem_info
+
+Get CTL element information.
+:param snd_ctl_t* ctl: CTL handle
+:param snd_ctl_elem_info_t* info: CTL element id/information pointer
+0 on success otherwise a negative error code
+"""
+snd_ctl_elem_info = prototype(
+    CAS2.c_int,
+    "snd_ctl_elem_info",
+    (CAS2.c_void_p, 1, "ctl"),
+    (CAS2.c_void_p, 1, "info"),
+)
+snd_ctl_elem_info.errcheck = errcheck_non_zero
+
+""" snd_ctl_elem_info_get_id
+
+Get CTL element identifier of a CTL element id/info.
+:param const snd_ctl_elem_info_t* obj: CTL element id/info
+:param snd_ctl_elem_id_t* ptr: Pointer to returned CTL element identifier
+"""
+snd_ctl_elem_info_get_id = prototype(
+    CAS2.c_void_p,
+    "snd_ctl_elem_info_get_id",
+    (CAS2.c_void_p, 1, "obj"),
+    (CAS2.c_void_p, 1, "ptr"),
+)
+
+
 """ list funcs
 int lookup_id(snd_ctl_elem_id_t *id, snd_ctl_t *handle){
     snd_ctl_elem_info_t *info;
@@ -332,5 +507,20 @@ if __name__ == "__main__":
 
     # "ctl" + "index" で id(hw:CARD=Sなど)リストを取得する
 
-    ctlp = snd_ctl_open(name=b"hw:CARD=S", mode=0)
-    print(ctlp)
+    p_ctl = snd_ctl_open(name=b"hw:0", mode=0)
+    p_ctl_elem_id = snd_ctl_elem_id_malloc().value
+    p_ctl_elem_value = snd_ctl_elem_value_malloc().value
+    p_ctl_elem_info = snd_ctl_elem_info_malloc().value
+
+    snd_ctl_elem_id_set_interface(p_ctl_elem_id, CAS2.c_int(SND_CTL_ELEM_IFACE_T.MIXER))
+    snd_ctl_elem_id_set_name(p_ctl_elem_id, b"Headphones playback volume")
+    snd_ctl_elem_info_set_id(p_ctl_elem_info, p_ctl_elem_id)
+    snd_ctl_elem_info(p_ctl, p_ctl_elem_info)
+    snd_ctl_elem_info_get_id(p_ctl_elem_info, p_ctl_elem_id)
+
+    print("Headphones")
+
+    snd_ctl_elem_info_free(p_ctl_elem_info)
+    snd_ctl_elem_value_free(p_ctl_elem_value)
+    snd_ctl_elem_id_free(p_ctl_elem_id)
+    snd_ctl_close(p_ctl)
