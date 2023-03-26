@@ -426,92 +426,188 @@ snd_ctl_elem_read = prototype(
 )
 snd_ctl_elem_read.errcheck = errcheck_non_zero
 
-""" list funcs
-int lookup_id(snd_ctl_elem_id_t *id, snd_ctl_t *handle){
-    snd_ctl_elem_info_t *info;
-    snd_ctl_elem_info_alloca(&info);    マクロ
 
-    snd_ctl_elem_info_set_id(info, id); idをinfoに設定
-    snd_ctl_elem_info(handle, info);    handleを持つサウンドカード上の要素を検索
-    snd_ctl_elem_info_get_id(info, id); idを完全に埋められたidで更新。
-    return 0;
-}
+"""Simple Mixer Interface"""
+"""snd_mixer_open
 
-int main(){
-    snd_ctl_t *handle;
-    snd_ctl_elem_id_t *id;
-    snd_ctl_elem_value_t *value;
-
-    snd_ctl_elem_id_alloca(&id);
-    snd_ctl_elem_value_alloca(&value);
-
-    snd_ctl_open(&handle, "hw:0", 0);
-
-    snd_ctl_elem_id_set_interface(id, SND_CTL_ELEM_IFACE_MIXER);
-    snd_ctl_elem_id_set_name(id, "Headphone Playback Volume");
-
-    lookup_id(id, handle);
-
-    snd_ctl_elem_value_set_id(value, id);
-    snd_ctl_elem_value_set_integer(value, 0, 55);
-    snd_ctl_elem_value_set_integer(value, 1, 77);
-
-    snd_ctl_elem_write(handle, value);
-
-さて、これでコントロールの値が変更されました。
-  snd_ctl_elem_value_set_id()      変更するコントロールのidを設定
-  snd_ctl_elem_value_set_integer() 実際の値を設定
-このコントロールには複数のメンバー(この場合、左右のチャンネル)があるため、
-複数の呼び出しがあります。
-  snd_ctl_elem_write()             値をコミット
-
-なお、snd_ctl_elem_value_set_integer()が直接呼ばれるのは、
-このコントロールが整数であることがわかっているからですが、実際には、
-  snd_ctl_elem_type_t snd_ctl_elem_info_get_type(const snd_ctl_elem_info_t* obj)
-でどの種類の値が使われるべきかを照会することができます。
-整数のスケールもデバイス固有で、
-  long snd_ctl_elem_info_get_min(const snd_ctl_elem_info_t* obj)
-  long snd_ctl_elem_info_get_max(const snd_ctl_elem_info_t* obj)
-  long snd_ctl_elem_info_get_step(const snd_ctl_elem_info_t* obj)
-ヘルパーで取得することができる。
-
-    snd_ctl_elem_id_clear(id);
-    snd_ctl_elem_id_set_interface(id, SND_CTL_ELEM_IFACE_MIXER);
-    snd_ctl_elem_id_set_name(id, "Headphone Playback Switch");
-    lookup_id(id, handle);
-
-    snd_ctl_elem_value_clear(value);
-    snd_ctl_elem_value_set_id(value, id);
-    snd_ctl_elem_value_set_boolean(value, 1, 1);
-
-    snd_ctl_elem_write(handle, value);
-
-これはHeadphone再生の右チャンネルのミュートを解除するもので、今回はブール値です。
-もう1つの一般的なエレメントの種類は、列挙型コンテンツ用の
-  SND_CTL_ELEM_TYPE_ENUMERATED
-enum snd_ctl_elem_type_t{
-  SND_CTL_ELEM_TYPE_NONE = 0,
-  SND_CTL_ELEM_TYPE_BOOLEAN,
-  SND_CTL_ELEM_TYPE_INTEGER,
-  SND_CTL_ELEM_TYPE_ENUMERATED,
-  SND_CTL_ELEM_TYPE_BYTES,
-  SND_CTL_ELEM_TYPE_IEC958,
-  SND_CTL_ELEM_TYPE_INTEGER64,
-  SND_CTL_ELEM_TYPE_LAST = SND_CTL_ELEM_TYPE_INTEGER64
-}
-です。
-これは、例えばチャンネル多重化や復元値の選択などに使用されます。
-選択された項目を設定するには、
-    void snd_ctl_elem_value_set_enumerated(
-        snd_ctl_elem_value_t* obj,
-        unsigned int idx,
-        unsigned int val
-    )
-を使用する必要があります。
-
-  return 0;
-}
+Opens an empty mixer.
+:param int mode: open mode
+:return snd_mixer_t*: mixer handler, otherwise a negative error code
 """
+snd_mixer_open = prototype(
+    CAS2.c_int,
+    "snd_mixer_open",
+    (CAS2.POINTER(CAS2.c_void_p), 2, "mixerp"),
+    (CAS2.c_int, 1, "mode"),
+)
+
+
+def errcheck_snd_mixer_open(result: Any, cfunc: Callable, args: tuple) -> Any:
+    if result != 0:
+        raise AS2Error((cfunc, args))
+    return args[0].value
+
+
+snd_mixer_open.errcheck = errcheck_snd_mixer_open
+
+"""snd_mixer_close
+
+Close a mixer and free all related resources.
+:param snd_mixet_t** mixer:
+:returns c_int: 0 on success otherwise a negative error code
+"""
+snd_mixer_close = prototype(CAS2.c_int, "snd_mixer_close", (CAS2.c_void_p, 1, "mixer"))
+snd_mixer_close.errcheck = errcheck_non_zero
+
+
+"""snd_mixer_attach
+
+Attach an HCTL specified with the CTL device name to an opened mixer.
+:param snd_mixer_t* mixer: mixer handler
+:param const char* name: HCTL name
+:return c_int: 0 on success otherwise a negative error code
+"""
+snd_mixer_attach = prototype(
+    CAS2.c_int,
+    "snd_mixer_attach",
+    (CAS2.c_void_p, 1, "mixer"),
+    (CAS2.c_char_p, 1, "name"),
+)
+snd_mixer_attach.errcheck = errcheck_non_zero
+
+"""snd_mixer_selem_register
+
+Register mixer simple element class.
+:param snd_mixet_t* mixer: Mixer handle
+:param struct snd_mixer_selem_regopt* options: Options container
+:param snd_mixer_class_t** classp:
+    Pointer to returned mixer simple element class handle (or NULL)
+:return c_int: 0 on success otherwise a negative error code
+"""
+snd_mixer_selem_register = prototype(
+    CAS2.c_int,
+    "snd_mixer_selem_register",
+    (CAS2.c_void_p, 1, "mixer"),
+    (CAS2.c_void_p, 1, "options"),
+    (CAS2.POINTER(CAS2.c_void_p), 1, "classp"),
+)
+snd_mixer_selem_register.errcheck = errcheck_non_zero
+
+"""snd_mixer_load
+
+Load a mixer elements.
+:param snd_mixer_t* mixer: Mixer handle
+:return c_int: 0 on success otherwise a negative error code
+"""
+snd_mixer_load = prototype(CAS2.c_int, "snd_mixer_load", (CAS2.c_void_p, 1, "mixer"))
+snd_mixer_load.errcheck = errcheck_non_zero
+
+"""snd_mixer_selem_id_malloc
+
+allocate an invalid snd_mixer_selem_id_t using standard malloc
+:return snd_mixer_selem_id_t*: ptr otherwise negative error code
+"""
+snd_mixer_selem_id_malloc = prototype(
+    CAS2.c_int, "snd_mixer_selem_id_malloc", (CAS2.POINTER(CAS2.c_void_p), 2, "ptr")
+)
+
+
+def errcheck_snd_mixer_selem_id_malloc(
+    result: Any, cfunc: Callable, args: tuple
+) -> Any:
+    if result != 0:
+        raise AS2Error((cfunc, args))
+    return args[0].value
+
+
+snd_mixer_selem_id_malloc.errcheck = errcheck_snd_mixer_selem_id_malloc
+
+"""snd_mixer_selem_id_free
+
+frees a previously allocated snd_mixer_selem_id_t
+:param snd_mixer_selem_id_t* obj: pointer to object to free
+"""
+snd_mixer_selem_id_free = prototype(
+    CAS2.c_void_p, "snd_mixer_selem_id_free", (CAS2.c_void_p, 1, "obj")
+)
+
+"""snd_mixer_selem_id_set_index
+
+Set index part of a mixer simple element identifier.
+:param snd_mixer_selem_id_t* obj: Mixer simple element identifier
+:param c_uint val: index part
+"""
+snd_mixer_selem_id_set_index = prototype(
+    CAS2.c_void_p,
+    "snd_mixer_selem_id_set_index",
+    (CAS2.c_void_p, 1, "obj"),
+    (CAS2.c_uint, 1, "val"),
+)
+
+
+"""snd_mixer_selem_id_set_name
+
+Set name part of a mixer simple element identifier.
+:param snd_mixer_selem_id_t* obj: Mixer simple element identifier
+:param c_char_p val: name part
+"""
+snd_mixer_selem_id_set_name = prototype(
+    CAS2.c_void_p,
+    "snd_mixer_selem_id_set_name",
+    (CAS2.c_void_p, 1, "obj"),
+    (CAS2.c_char_p, 1, "val"),
+)
+
+"""snd_mixer_find_selem
+
+Find a mixer simple element.
+:param snd_mixer_t* mixer: Mixer handle
+:param id: Mixer simple element identifier
+:return snd_mixer_elem_t*: mixer simple element handle or NULL if not found
+"""
+snd_mixer_find_selem = prototype(
+    CAS2.c_void_p,
+    "snd_mixer_find_selem",
+    (CAS2.c_void_p, 1, "mixer"),
+    (CAS2.c_void_p, 1, "id"),
+)
+
+
+def errcheck_snd_mixer_find_selem(result: Any, cfunc: Callable, args: tuple) -> Any:
+    if result is None:
+        raise AS2Error((cfunc, args))
+    return result
+
+
+snd_mixer_find_selem.errchek = errcheck_snd_mixer_find_selem
+
+"""snd_mixer_selem_get_playback_volume_range
+
+Get range for playback volume of a mixer simple element.
+
+:param snd_mixer_elem_t* elem: Mixer simple element handle
+:return c_long, c_long: (minimum, maximum)
+"""
+snd_mixer_selem_get_playback_volume_range = prototype(
+    CAS2.c_int,
+    "snd_mixer_selem_get_playback_volume_range",
+    (CAS2.c_void_p, 1, "elem"),
+    (CAS2.POINTER(CAS2.c_long), 2, "min"),
+    (CAS2.POINTER(CAS2.c_long), 2, "max"),
+)
+
+
+def errcheck_snd_mixer_selem_get_playback_volume_range(
+    result: Any, cfunc: Callable, args: tuple
+) -> Any:
+    if result != 0:
+        raise AS2Error((cfunc, args))
+    return (args[1].value, args[2].value)
+
+
+snd_mixer_selem_get_playback_volume_range.errcheck = (
+    errcheck_snd_mixer_selem_get_playback_volume_range
+)
 
 
 if __name__ == "__main__":
@@ -519,14 +615,15 @@ if __name__ == "__main__":
 
     print(f"ALSA sound library version: {bytes(snd_asoundlib_version()).decode()}")
 
-    cards_index = list()
+    card_list = list()
     card_index = CAS2.c_int(0)
 
+    # Get physical sound card list.
     while card_index.value != -1:
-        cards_index.append(card_index.value)
+        card_list.append(card_index.value)
         snd_card_next(CAS2.byref(card_index))
 
-    for ci in cards_index:
+    for ci in card_list:
         if int(snd_card_load(CAS2.c_int(ci))) == 1:
             d_present = "present"
         else:
@@ -538,10 +635,11 @@ if __name__ == "__main__":
             f"index {ci}: driver is {d_present}: name {sname.decode()}/{lname.decode()}"
         )
 
+    # name hint
     print("|iface|NAME|DECS|IOID|")
     print("|---|---|---|---|")
     ifaces: list[str] = ["ctl", "pcm", "rawmidi", "timer", "seq"]
-    ncard: int = 4  # if all is -1, otherwise 0 to 3
+    ncard: int = 0  # if all is -1, otherwise 0 to 3
     for iface in ifaces:
         hints = snd_device_name_hint(card=CAS2.c_int(ncard), iface=iface.encode())
         i = 0
@@ -561,12 +659,15 @@ if __name__ == "__main__":
     # default(or pulse), Master Playback Volume
     # hw:CARD=Headphones, PCM Playback Volume
     # hw:CARD=S, PCM Playback Volume
-    ctl_handler = snd_ctl_open(name=b"hw:CARD=Headphones", mode=0)
+
+    # method using control interface
+    print("default, Master Playback Volume")
+    ctl_handler = snd_ctl_open(name=b"default", mode=0)
     ctl_elem_id = snd_ctl_elem_id_malloc()
     ctl_elem_value = snd_ctl_elem_value_malloc()
 
     snd_ctl_elem_id_set_interface(ctl_elem_id, CAS2.c_int(SND_CTL_ELEM_IFACE_T.MIXER))
-    snd_ctl_elem_id_set_name(ctl_elem_id, b"PCM Playback Volume")
+    snd_ctl_elem_id_set_name(ctl_elem_id, b"Master Playback Volume")
 
     ctl_elem_info = snd_ctl_elem_info_malloc()
     snd_ctl_elem_info_set_id(ctl_elem_info, ctl_elem_id)
@@ -588,8 +689,25 @@ if __name__ == "__main__":
     snd_ctl_elem_value_set_id(ctl_elem_value, ctl_elem_id)
     snd_ctl_elem_read(ctl_handler, ctl_elem_value)
     # snd_ctl_elem_value_get_integer()
-    print("Headphones, PCM Playback Volume")
 
     snd_ctl_elem_value_free(ctl_elem_value)
     snd_ctl_elem_id_free(ctl_elem_id)
     snd_ctl_close(ctl_handler)
+
+    # method using mixer interface
+    mixer_handler = snd_mixer_open(mode=0)
+    # snd_mixer_attach(mixer=mixer_handler, name=b"default")
+    snd_mixer_attach(mixer=mixer_handler, name=b"hw:CARD=Headphones")
+    snd_mixer_selem_register(mixer=mixer_handler, options=None, classp=None)
+    snd_mixer_load(mixer=mixer_handler)
+
+    mixer_selem_id = snd_mixer_selem_id_malloc()
+    snd_mixer_selem_id_set_index(obj=mixer_selem_id, val=0)
+    # snd_mixer_selem_id_set_name(obj=mixer_selem_id, val=b"Master")
+    snd_mixer_selem_id_set_name(obj=mixer_selem_id, val=b"PCM")
+    mixer_volume = snd_mixer_find_selem(mixer_handler, mixer_selem_id)
+    min, max = snd_mixer_selem_get_playback_volume_range(elem=mixer_volume)
+    print(f"default, Master Playback Volume: min={min},max={max}")
+
+    snd_mixer_selem_id_free(obj=mixer_selem_id)
+    snd_mixer_close(mixer=mixer_handler)
