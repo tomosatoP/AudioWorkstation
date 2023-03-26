@@ -197,7 +197,7 @@ snd_ctl_open = prototype(
 def errcheck_snd_ctl_open(result: Any, cfunc: Callable, args: tuple) -> Any:
     if result != 0:
         raise AS2Error((cfunc, args))
-    return args[0]
+    return args[0].value
 
 
 snd_ctl_open.errcheck = errcheck_snd_ctl_open
@@ -224,7 +224,7 @@ snd_ctl_elem_id_malloc = prototype(
 def errcheck_snd_ctl_elem_id_malloc(result: Any, cfunc: Callable, args: tuple) -> Any:
     if result != 0:
         raise AS2Error((cfunc, args))
-    return args[0]
+    return args[0].value
 
 
 snd_ctl_elem_id_malloc.errcheck = errcheck_snd_ctl_elem_id_malloc
@@ -255,7 +255,7 @@ def errcheck_snd_ctl_elem_value_malloc(
 ) -> Any:
     if result != 0:
         raise AS2Error((cfunc, args))
-    return args[0]
+    return args[0].value
 
 
 snd_ctl_elem_value_malloc.errcheck = errcheck_snd_ctl_elem_value_malloc
@@ -320,7 +320,7 @@ snd_ctl_elem_info_malloc = prototype(
 def errcheck_snd_ctl_elem_info_malloc(result: Any, cfunc: Callable, args: tuple) -> Any:
     if result != 0:
         raise AS2Error((cfunc, args))
-    return args[0]
+    return args[0].value
 
 
 snd_ctl_elem_info_malloc.errcheck = errcheck_snd_ctl_elem_info_malloc
@@ -375,6 +375,56 @@ snd_ctl_elem_info_get_id = prototype(
     (CAS2.c_void_p, 1, "ptr"),
 )
 
+""" snd_ctl_elem_info_get_type
+
+Get type from a CTL element id/info.
+:param const snd_ctl_elem_info_t* obj: CTL element id/info
+:return snd_ctl_elem_type_t : CTL element content type
+"""
+snd_ctl_elem_info_get_type = prototype(
+    CAS2.c_int, "snd_ctl_elem_info_get_type", (CAS2.c_void_p, 1, "obj")
+)
+
+""" snd_ctl_elem_info_get_min
+
+Get minimum value from a SND_CTL_ELEM_TYPE_INTEGER CTL element id/info.
+:param const snd_ctl_elem_info_t* obj: CTL element id/info
+:return c_long: Minimum value
+"""
+snd_ctl_elem_info_get_min = prototype(
+    CAS2.c_long, "snd_ctl_elem_info_get_min", (CAS2.c_void_p, 1, "obj")
+)
+
+
+""" snd_ctl_elem_value_set_id
+
+Set the element identifier within the given element value.
+:param snd_ctl_elem_value_t* obj: The element value
+:param const snd_ctl_elem_id_t* ptr: The new identifier
+"""
+snd_ctl_elem_value_set_id = prototype(
+    CAS2.c_void_p,
+    "snd_ctl_elem_value_set_id",
+    (CAS2.c_void_p, 1, "obj"),
+    (CAS2.c_void_p, 1, "ptr"),
+)
+
+""" snd_ctl_elem_read
+
+Get CTL element value.
+Read information from sound card.
+You must set the ID of the element before calling this function.
+:param snd_ctl_t* ctl: CTL handle.
+:param snd_ctl_elem_value_t* data: The element value.
+:return: 0 on success otherwise a negative error code.
+"""
+snd_ctl_elem_read = prototype(
+    CAS2.c_int,
+    "snd_ctl_elem_read",
+    (CAS2.c_void_p, 1, "ctl"),
+    (CAS2.c_void_p, 1, "data"),
+)
+snd_ctl_elem_read.errcheck = errcheck_non_zero
 
 """ list funcs
 int lookup_id(snd_ctl_elem_id_t *id, snd_ctl_t *handle){
@@ -507,20 +557,39 @@ if __name__ == "__main__":
 
     # "ctl" + "index" で id(hw:CARD=Sなど)リストを取得する
 
-    p_ctl = snd_ctl_open(name=b"hw:0", mode=0)
-    p_ctl_elem_id = snd_ctl_elem_id_malloc().value
-    p_ctl_elem_value = snd_ctl_elem_value_malloc().value
-    p_ctl_elem_info = snd_ctl_elem_info_malloc().value
+    # 再生音量の取得と設定
+    # default(or pulse), Master Playback Volume
+    # hw:CARD=Headphones, PCM Playback Volume
+    # hw:CARD=S, PCM Playback Volume
+    ctl_handler = snd_ctl_open(name=b"hw:CARD=Headphones", mode=0)
+    ctl_elem_id = snd_ctl_elem_id_malloc()
+    ctl_elem_value = snd_ctl_elem_value_malloc()
 
-    snd_ctl_elem_id_set_interface(p_ctl_elem_id, CAS2.c_int(SND_CTL_ELEM_IFACE_T.MIXER))
-    snd_ctl_elem_id_set_name(p_ctl_elem_id, b"Headphones playback volume")
-    snd_ctl_elem_info_set_id(p_ctl_elem_info, p_ctl_elem_id)
-    snd_ctl_elem_info(p_ctl, p_ctl_elem_info)
-    snd_ctl_elem_info_get_id(p_ctl_elem_info, p_ctl_elem_id)
+    snd_ctl_elem_id_set_interface(ctl_elem_id, CAS2.c_int(SND_CTL_ELEM_IFACE_T.MIXER))
+    snd_ctl_elem_id_set_name(ctl_elem_id, b"PCM Playback Volume")
 
-    print("Headphones")
+    ctl_elem_info = snd_ctl_elem_info_malloc()
+    snd_ctl_elem_info_set_id(ctl_elem_info, ctl_elem_id)
+    snd_ctl_elem_info(ctl_handler, ctl_elem_info)
+    # snd_ctl_elem_info_get_owner(ctl_elem_info)
+    # snd_ctl_elem_info_get_count(ctl_elem_info)
+    # snd_ctl_elem_info_get_interface(ctl_elem_info)
+    # snd_ctl_elem_info_get_device(ctl_elem_info)
+    # snd_ctl_elem_info_get_subdevice(ctl_elem_info)
+    # snd_ctl_elem_info_get_name(ctl_elem_info)
+    # snd_ctl_elem_info_get_index(ctl_elem_info)
+    print(f"type: {snd_ctl_elem_info_get_type(ctl_elem_info)}")
+    print(f"min: {snd_ctl_elem_info_get_min(ctl_elem_info)}")
+    # snd_ctl_elem_info_get_max(ctl_elem_info)
+    # snd_ctl_elem_info_get_step(ctl_elem_info)
+    snd_ctl_elem_info_get_id(ctl_elem_info, ctl_elem_id)
+    snd_ctl_elem_info_free(ctl_elem_info)
 
-    snd_ctl_elem_info_free(p_ctl_elem_info)
-    snd_ctl_elem_value_free(p_ctl_elem_value)
-    snd_ctl_elem_id_free(p_ctl_elem_id)
-    snd_ctl_close(p_ctl)
+    snd_ctl_elem_value_set_id(ctl_elem_value, ctl_elem_id)
+    snd_ctl_elem_read(ctl_handler, ctl_elem_value)
+    # snd_ctl_elem_value_get_integer()
+    print("Headphones, PCM Playback Volume")
+
+    snd_ctl_elem_value_free(ctl_elem_value)
+    snd_ctl_elem_id_free(ctl_elem_id)
+    snd_ctl_close(ctl_handler)
