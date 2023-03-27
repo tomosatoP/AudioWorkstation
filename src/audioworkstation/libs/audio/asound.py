@@ -284,7 +284,7 @@ class SND_CTL_ELEM_IFACE_T(IntEnum):
 
 Set interface part for a CTL element identifier.
 :param snd_ctl_elem_id_t* obj: CTL element identifier
-:param c_int val: CTL element related interface [enum SND_CTL_ELEM_IFACE_T]
+:param c_int[enum SND_CTL_ELEM_IFACE_T] val: CTL element related interface
 """
 snd_ctl_elem_id_set_interface = prototype(
     CAS2.c_void_p,
@@ -428,6 +428,23 @@ snd_ctl_elem_read.errcheck = errcheck_non_zero
 
 
 """Simple Mixer Interface"""
+
+
+class SND_MIXER_SELEM_CHANNEL_ID_T(IntEnum):
+    UNKNOWN = -1
+    FRONT_LEFT = auto()
+    FRONT_RIGHT = auto()
+    REAR_LEFT = auto()
+    REAR_RIGHT = auto()
+    FRONT_CENTER = auto()
+    WOOFER = auto()
+    SIDE_LEFT = auto()
+    SIDE_RIGHT = auto()
+    REAR_CENTER = auto()
+    MONO = FRONT_LEFT
+    LAST = 31
+
+
 """snd_mixer_open
 
 Opens an empty mixer.
@@ -610,11 +627,108 @@ snd_mixer_selem_get_playback_volume_range.errcheck = (
 )
 
 
-if __name__ == "__main__":
-    print(__file__)
+"""snd_mixer_selem_get_playback_volume
 
-    print(f"ALSA sound library version: {bytes(snd_asoundlib_version()).decode()}")
+Return value of playback volume control of a mixer simple element.
+:param snd_mexer_elem_t* elem: Mixer simple element handle
+:param c_int[SND_MIXER_SELEM_CHANNEL_ID_T] channel:
+    mixer simple element channel identifier
+:return c_long: value on success otherwise a negative error code
+"""
+snd_mixer_selem_get_playback_volume = prototype(
+    CAS2.c_int,
+    "snd_mixer_selem_get_playback_volume",
+    (CAS2.c_void_p, 1, "elem"),
+    (CAS2.c_int, 1, "channel"),
+    (CAS2.POINTER(CAS2.c_long), 2, "value"),
+)
 
+
+def errcheck_snd_mixer_selem_get_playback_volume(
+    result: Any, cfunc: Callable, args: tuple
+) -> Any:
+    if result != 0:
+        raise AS2Error((cfunc, args))
+    return args[2].value
+
+
+snd_mixer_selem_get_playback_volume.errcheck = (
+    errcheck_snd_mixer_selem_get_playback_volume
+)
+
+"""snd_mixer_selem_is_enumerated
+
+Return true if mixer simple element is an enumerated control.
+:param snd_mixer_elem_t* elem: Mixer simple element handle
+:param c_int: 0 normal volume/switch control, 1 enumerated control
+"""
+snd_mixer_selem_is_enumerated = prototype(
+    CAS2.c_int, "snd_mixer_selem_is_enumerated", (CAS2.c_void_p, 1, "elem")
+)
+
+
+"""snd_mixer_selem_has_playback_switch
+
+Return info about playback switch control existence of a mixer simple element.
+:param snd_mixer_elem_t* elem: Mixer simple element handle
+:return c_int: 0 if no control is present, 1 if it's present
+"""
+snd_mixer_selem_has_playback_switch = prototype(
+    CAS2.c_int, "snd_mixer_selem_has_playback_switch", (CAS2.c_void_p, 1, "elem")
+)
+snd_mixer_selem_has_playback_switch.errcheck = errcheck_non_zero
+
+
+"""snd_mixer_selem_has_playback_volume
+
+Return info about playback volume control of a mixer simple element.
+:param snd_mixer_elem_t* elem: Mixer simple element handle
+:return c_int: 0 if no control is present, 1 if it's present
+"""
+snd_mixer_selem_has_playback_volume = prototype(
+    CAS2.c_int, "snd_mixer_selem_has_playback_switch", (CAS2.c_void_p, 1, "elem")
+)
+snd_mixer_selem_has_playback_volume.errcheck = errcheck_non_zero
+
+"""snd_mixer_selem_channel_name
+
+Return name of mixer simple element channel.
+:param c_int[SND_MIXER_SELEM_CHANNNEL_ID_T] channel:
+    mixer simple element channel identifier
+:return c_char_p :channel name
+"""
+snd_mixer_selem_channel_name = prototype(
+    CAS2.c_char_p, "snd_mixer_selem_channel_name", (CAS2.c_int, 1, "channnel")
+)
+
+
+"""snd_mixer_selem_is_playback_mono
+
+Get info about channels of playback stream of a mixer simple element.
+:param snd_mixer_elem_t* elem: Mixer simple element handle
+:return: 0 if not mono, 1 if mono
+"""
+snd_mixer_selem_is_playback_mono = prototype(
+    CAS2.c_int, "snd_mixer_selem_is_playback_mono", (CAS2.c_void_p, 1, "elem")
+)
+
+"""snd_mixer_selem_has_playback_channel
+
+Get info about channels of playback stream of a mixer simple element.
+:param snd_mixer_elem_t* elem: Mixer simple element handle
+:param c_int[SND_MIXER_SELEM_CHANNEL_ID_T] channel:
+    Mixer simple element channel identifier
+:return c_int: 0 if channel is not present, 1 if present
+"""
+snd_mixer_selem_has_playback_channel = prototype(
+    CAS2.c_int,
+    "snd_mixer_selem_has_playback_channel",
+    (CAS2.c_void_p, 1, "elem"),
+    (CAS2.c_int, 1, "channel"),
+)
+
+
+def test_card_list():
     card_list = list()
     card_index = CAS2.c_int(0)
 
@@ -635,11 +749,12 @@ if __name__ == "__main__":
             f"index {ci}: driver is {d_present}: name {sname.decode()}/{lname.decode()}"
         )
 
-    # name hint
+
+def test_name_hint():
     print("|iface|NAME|DECS|IOID|")
     print("|---|---|---|---|")
     ifaces: list[str] = ["ctl", "pcm", "rawmidi", "timer", "seq"]
-    ncard: int = 0  # if all is -1, otherwise 0 to 3
+    ncard: int = int(0)  # if all is -1, otherwise 0 to 3
     for iface in ifaces:
         hints = snd_device_name_hint(card=CAS2.c_int(ncard), iface=iface.encode())
         i = 0
@@ -653,14 +768,8 @@ if __name__ == "__main__":
             i += 1
         snd_device_name_free_hint(hints=hints.contents)
 
-    # "ctl" + "index" で id(hw:CARD=Sなど)リストを取得する
 
-    # 再生音量の取得と設定
-    # default(or pulse), Master Playback Volume
-    # hw:CARD=Headphones, PCM Playback Volume
-    # hw:CARD=S, PCM Playback Volume
-
-    # method using control interface
+def test_control_interface():
     print("default, Master Playback Volume")
     ctl_handler = snd_ctl_open(name=b"default", mode=0)
     ctl_elem_id = snd_ctl_elem_id_malloc()
@@ -694,20 +803,83 @@ if __name__ == "__main__":
     snd_ctl_elem_id_free(ctl_elem_id)
     snd_ctl_close(ctl_handler)
 
-    # method using mixer interface
-    mixer_handler = snd_mixer_open(mode=0)
-    # snd_mixer_attach(mixer=mixer_handler, name=b"default")
-    snd_mixer_attach(mixer=mixer_handler, name=b"hw:CARD=Headphones")
-    snd_mixer_selem_register(mixer=mixer_handler, options=None, classp=None)
-    snd_mixer_load(mixer=mixer_handler)
 
-    mixer_selem_id = snd_mixer_selem_id_malloc()
-    snd_mixer_selem_id_set_index(obj=mixer_selem_id, val=0)
-    # snd_mixer_selem_id_set_name(obj=mixer_selem_id, val=b"Master")
-    snd_mixer_selem_id_set_name(obj=mixer_selem_id, val=b"PCM")
-    mixer_volume = snd_mixer_find_selem(mixer_handler, mixer_selem_id)
-    min, max = snd_mixer_selem_get_playback_volume_range(elem=mixer_volume)
-    print(f"default, Master Playback Volume: min={min},max={max}")
+def test_simple_mixer_interface():
+    list_mixer_playback_name = [
+        {"CTL": b"default", "SELEM_NAME": b"Master", "SELEM_INDEX": 0},
+        {"CTL": b"hw:CARD=Headphones", "SELEM_NAME": b"PCM", "SELEM_INDEX": 0},
+        # {"CTL": b"hw:CARD=S", "SELEM_NAME": b"PCM", "SELEM_INDEX": 0},
+    ]
+    for mixer_playback_name in list_mixer_playback_name:
+        mixer_handler = snd_mixer_open(mode=0)
+        snd_mixer_attach(mixer=mixer_handler, name=mixer_playback_name["CTL"])
+        snd_mixer_selem_register(mixer=mixer_handler, options=None, classp=None)
+        snd_mixer_load(mixer=mixer_handler)
 
-    snd_mixer_selem_id_free(obj=mixer_selem_id)
-    snd_mixer_close(mixer=mixer_handler)
+        mixer_selem_id = snd_mixer_selem_id_malloc()
+        snd_mixer_selem_id_set_name(
+            obj=mixer_selem_id, val=mixer_playback_name["SELEM_NAME"]
+        )
+        snd_mixer_selem_id_set_index(
+            obj=mixer_selem_id, val=mixer_playback_name["SELEM_INDEX"]
+        )
+        mixer_playback = snd_mixer_find_selem(mixer_handler, mixer_selem_id)
+
+        if snd_mixer_selem_is_enumerated(elem=mixer_playback) == 1:
+            print("enumerated control")
+        else:
+            # playback volume control
+            if snd_mixer_selem_has_playback_volume == 0:
+                print("no volume control")
+            else:
+                dict_volume = {}
+                if snd_mixer_selem_is_playback_mono(elem=mixer_playback) == 1:
+                    dict_volume["Mono"] = snd_mixer_selem_get_playback_volume(
+                        elem=mixer_playback,
+                        channel=SND_MIXER_SELEM_CHANNEL_ID_T.MONO,
+                    )
+                else:
+                    list_channel = list(
+                        filter(
+                            lambda x: snd_mixer_selem_has_playback_channel(
+                                mixer_playback, x
+                            )
+                            == 1,
+                            list(SND_MIXER_SELEM_CHANNEL_ID_T),
+                        )
+                    )
+                    for chan in list_channel:
+                        dict_volume[
+                            snd_mixer_selem_channel_name(chan).decode()
+                        ] = snd_mixer_selem_get_playback_volume(
+                            elem=mixer_playback,
+                            channel=chan,
+                        )
+                min, max = snd_mixer_selem_get_playback_volume_range(
+                    elem=mixer_playback
+                )
+                print(
+                    f"{mixer_playback_name['CTL'].decode()}, {mixer_playback_name['SELEM_NAME'].decode()} Playback Volume: min={min}, max={max}, value={dict_volume}"
+                )
+
+            # playback switch control
+            if snd_mixer_selem_has_playback_switch == 0:
+                print("no switch control")
+            else:
+                pass
+
+        snd_mixer_selem_id_free(obj=mixer_selem_id)
+        snd_mixer_close(mixer=mixer_handler)
+
+
+if __name__ == "__main__":
+    print(__file__)
+
+    print(f"ALSA sound library version: {bytes(snd_asoundlib_version()).decode()}")
+
+    # "ctl" + "index" で id(hw:CARD=Sなど)リストを取得する
+
+    # test_card_list()
+    # test_name_hint()
+    # test_control_interface()
+    test_simple_mixer_interface()
