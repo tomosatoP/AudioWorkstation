@@ -36,7 +36,7 @@ if __name__ == "__main__":
 
     # Jackd2 and amixer
     amixer.start()
-    amixer.volume("50%,50%")
+    # amixer.volume("50%,50%")
 
     from .menubar import MenubarApp
 

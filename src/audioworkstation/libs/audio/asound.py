@@ -554,3 +554,4 @@ if __name__ == "__main__":
     print(physical_mixer_names())
     print(f"default: volume( )={mixer_volume()}")
     print(f"Headphones: volume( )={mixer_volume('hw:CARD=Headphones')}")
+    print(f"Headphones: volume( )={mixer_volume('bluealsa')}")
