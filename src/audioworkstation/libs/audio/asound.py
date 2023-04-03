@@ -551,7 +551,7 @@ if __name__ == "__main__":
     print(f"ALSA sound library version: {bytes(snd_asoundlib_version()).decode()}")
 
     print_name_hint()
-    print(physical_mixer_names())
+    print(f"physical sound card: {physical_mixer_names()}")
     print(f"default: volume( )={mixer_volume()}")
     print(f"Headphones: volume( )={mixer_volume('hw:CARD=Headphones')}")
-    print(f"Headphones: volume( )={mixer_volume('bluealsa')}")
+    # print(f"bluealsa: volume( )={mixer_volume('bluealsa')}")

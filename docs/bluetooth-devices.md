@@ -22,8 +22,7 @@ https://joker1007.hatenablog.com/entry/2021/10/17/213109
 ~/bluez-alsa/build $ ../configure [OPTION ...]
 > --enable-aac: require libfdk-aac2, libfdk-aac-dev.
 > --enable-systemd: none required.
-> # --enable-cli: require libdbus-1-3, libdbus-1-dev.
-> # --disable-aplay: 
+> --enable-cli: require libdbus-1-3, libdbus-1-dev.
 ~~~
 ### Build & install
 ~~~sh
@@ -49,20 +48,14 @@ https://joker1007.hatenablog.com/entry/2021/10/17/213109
 ~ $ sudo adduser bluealsa-aplay audio
 ~~~
 ### Files
-|||
+|type|filename|
 | --- | --- |
 |設定|/etc/alsa/conf.d/20-bluealsa.conf<br>/etc/dbus-1/system.d/bluealsa.conf|
 |systemd|/lib/systemd/system/bluealsa.service<br>/lib/systemd/system/bluealsa-aplay.service|
 |binaries|/usr/lib/aarch64-linux-gnu/alsa-lib/*<br>/usr/bin/bluealsa<br>/usr/bin/bluealsa-aplay<br>/usr/bin/bluealsa-cli|
-|||
-## GUI でのペアリング
+## ペアリング
 - deviceをペアリングモードにする
-- RaspberyPi4をBluetooth"検出可能"にする
-- 追加
-- A2DP接続にするため、オーディオメニューから"device"を選択
-
-## bluetoothctl でのペアリング
-- deviceをペアリングモードにする
+- 以下を実行
 ~~~
 ~ $ sudo bluetoothctl
 [bluetooth]# show  # レシーバーの状態確認
@@ -76,14 +69,10 @@ https://joker1007.hatenablog.com/entry/2021/10/17/213109
 [[device name]]# connect [device address]
 [[device name]]# disconnect
 ~~~
-
-## 接続テスト
-~~~
-~ $ aplay -D bluealsa:XX:XX:XX:XX:XX:XX /usr/share/sounds/alsa/Front_Center.wav
-# 接続後にしばらくすると再生ができず、"hw params のインストールに失敗しました:"となる
-~~~
 ## 設定変更
 ~~~diff
+~ $ sudo apt purge --auto-remove pulseaudio-module-bluetooth
+~ $ sudo unlink /etc/alsa/conf.d/99-pulse.conf
 ~ $ sudo ln -s /etc/alsa/conf.d/20-bluealsa.conf /usr/share/alsa/alsa.conf.d/20-bluealsa.conf
 ~ $ sudo nano /etc/dbus-1/system.d/bluetooth.conf
 +   <policy user="bluealsa">
@@ -91,23 +80,37 @@ https://joker1007.hatenablog.com/entry/2021/10/17/213109
 +   </policy>
   
   </busconfig>
-
-~ $ sudo nano /etc/dbus-1/system.d/bluealsa.conf
--     <allow send_destination="org.bluealsa"/>
-+     <allow send_destination="org.bluealsa.sink"/>
-+     <allow send_destination="org.bluealsa.source"/>
-
 ~ $ sudo nano /etc/asound.conf
-+ defaults.bluealsa.interface "hci0"
-+ defaults.bluealsa.device "XX:XX:XX:XX:XX:XX"
-+ defaults.bluealsa.profile "a2dp"
-+ defaults.bluealsa.delay 10000
-+ 
-+ pcm.bt-receiver {
-+  type bluealsa
-+   device "XX:XX:XX:XX:XX:XX"
-+   profile "a2dp"
++ pcm.!default pulse
++ ctl.!default pulse
++ pcm.[好きな名前] {
++   type bluealsa
++   device [device address]
++   profile a2dp
++   codec aac
++   hint {
++     show on
++     description "Bluetooth Headphones|IOIDOutput"
++   }
 + }
++ ctl.[好きな名前] {
++   type bluealsa  
++ }
+~~~
+## 接続テスト
+~~~sh
+~ $ aplay -D bluealsa:XX:XX:XX:XX:XX:XX /usr/share/sounds/alsa/Front_Center.wav
+# 接続後にしばらくすると再生ができず、"hw params のインストールに失敗しました:"となる
+~ $ jack_control stop
+~ $ jack_control exit
+~ $ jack_control dps device [好きな名前]
+~ $ jack_control dps playback [好きな名前]
+~ $ jack_control dps capture hw:Headphones
+~ $ jack_control dps rate 48000
+~ $ jack_control dps period 1024
+~ $ jack_control dps nperiods 3
+~ $ jack_control start
+~ $ fluidsynth -jsr 48000 [soundfont file] [midi file]
 ~~~
 ---
 #### 関連ファイル
