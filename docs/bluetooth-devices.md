@@ -1,7 +1,7 @@
 # RaspberryPi4 - Bluetooth A2DP 接続
+BluetoothデバイスをBlueALSAを使ってjackから直接に扱えるようにする。
 ## BlueALSA: Bluetooth Audio ALSA Backend
 https://github.com/Arkq/bluez-alsa
-https://joker1007.hatenablog.com/entry/2021/10/17/213109
 ### Install Required Tools and Essential Development Libraries
 ~~~sh
 # build tools
@@ -29,6 +29,12 @@ https://joker1007.hatenablog.com/entry/2021/10/17/213109
 ~/bluez-alsa/build $ make
 ~/bluez-alsa/build $ sudo make install
 ~~~
+### Add groups
+~~~sh
+~ $ sudo adduser --system --group --no-create-home bluealsa
+~ $ sudo adduser --system --group --no-create-home bluealsa-aplay
+~ $ sudo adduser bluealsa-aplay audio
+~~~
 ### Update
 ~~~sh
 ~ $ autoreconf --install --force
@@ -40,12 +46,6 @@ https://joker1007.hatenablog.com/entry/2021/10/17/213109
 ### Uninstall
 ~~~sh
 ~/bluez-alsa/build $ sudo make uninstall
-~~~
-### Add groups
-~~~sh
-~ $ sudo adduser --system --group --no-create-home bluealsa
-~ $ sudo adduser --system --group --no-create-home bluealsa-aplay
-~ $ sudo adduser bluealsa-aplay audio
 ~~~
 ### Files
 |type|filename|
@@ -95,12 +95,16 @@ https://joker1007.hatenablog.com/entry/2021/10/17/213109
 + }
 + ctl.[好きな名前] {
 +   type bluealsa  
++   hint {
++     show on
++     description "Bluetooth Headphones|IOIDOutput"
++   }
 + }
 ~~~
 ## 接続テスト
 ~~~sh
-~ $ aplay -D bluealsa:XX:XX:XX:XX:XX:XX /usr/share/sounds/alsa/Front_Center.wav
-# 接続後にしばらくすると再生ができず、"hw params のインストールに失敗しました:"となる
+~ $ aplay -D [好きな名前] /usr/share/sounds/alsa/Front_Center.wav
+# 接続後にしばらくすると再生ができず、"hw params のインストールに失敗しました:"となる。なんで？
 ~ $ jack_control stop
 ~ $ jack_control exit
 ~ $ jack_control dps device [好きな名前]
@@ -111,6 +115,10 @@ https://joker1007.hatenablog.com/entry/2021/10/17/213109
 ~ $ jack_control dps nperiods 3
 ~ $ jack_control start
 ~ $ fluidsynth -jsr 48000 [soundfont file] [midi file]
+~~~
+## ミキサーコントールの要素名を取得
+~~~sh
+~ $ amixer -D [好きな名前] scontrols
 ~~~
 ---
 #### 関連ファイル

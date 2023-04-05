@@ -13,66 +13,15 @@ from typing import Optional
 # Master Volume (PulseAudio)
 _amixer_master = ["amixer", "sset", "Master", "50%,50%", "-M", "unmute"]
 
-# If using S (USB-Audio - Sharkoon Gmaing DAC Pro S/ latency 16ms)
-_using_S = [
-    ["jack_control", "stop"],
-    ["jack_control", "exit"],
-    ["jack_control", "ds", "alsa"],
-    ["jack_control", "eps", "realtime", "True"],
-    ["jack_control", "dps", "duplex", "True"],
-    ["jack_control", "dps", "device", "hw:S"],
-    ["jack_control", "dps", "playback", "hw:S"],
-    ["jack_control", "dps", "capture", "hw:0"],
-    ["jack_control", "dps", "rate", "96000"],
-    ["jack_control", "dps", "nperiods", "3"],
-    ["jack_control", "dps", "period", "512"],
-    ["jack_control", "dps", "outchannels", "3"],
-    ["jack_control", "start"],
-    ["amixer", "-c", "S", "sset", "PCM", "100%", "-M", "unmute"],
-]
-
-# If using MicroII (USB-Audio - Audio Advantage MicroII/ latency 16ms)
-_using_MicroII = [
-    ["jack_control", "stop"],
-    ["jack_control", "exit"],
-    ["jack_control", "ds", "alsa"],
-    ["jack_control", "eps", "realtime", "True"],
-    ["jack_control", "dps", "duplex", "True"],
-    ["jack_control", "dps", "device", "hw:MicroII"],
-    ["jack_control", "dps", "playback", "hw:MicroII"],
-    ["jack_control", "dps", "capture", ""],
-    ["jack_control", "dps", "rate", "48000"],
-    ["jack_control", "dps", "nperiods", "3"],
-    ["jack_control", "dps", "period", "256"],
-    ["jack_control", "dps", "outchannels", "2"],
-    ["jack_control", "start"],
-    ["amixer", "-c", "MicroII", "sset", "PCM", "100%", "-M", "unmute"],
-]
-
-# If using Headphones (bcm2835 Headphones/ latency 93ms)
-_using_Headphones = [
-    ["jack_control", "stop"],
-    ["jack_control", "exit"],
-    ["jack_control", "ds", "alsa"],
-    ["jack_control", "eps", "realtime", "True"],
-    ["jack_control", "dps", "duplex", "True"],
-    ["jack_control", "dps", "device", "hw:Headphones"],
-    ["jack_control", "dps", "playback", "hw:Headphones"],
-    ["jack_control", "dps", "capture", "hw:Headphones"],
-    ["jack_control", "dps", "rate", "44100"],
-    ["jack_control", "dps", "nperiods", "2"],
-    ["jack_control", "dps", "period", "2048"],
-    ["jack_control", "dps", "outchannels", "2"],
-    ["jack_control", "start"],
-    ["amixer", "-c", "Headphones", "sset", "PCM", "100%", "-M", "unmute"],
-]
-
 
 def start() -> bool:
     """start jackd server"""
-    result = filter(lambda i: subprocess.run(i).returncode != 0, _using_Headphones)
-
-    return True if len(list(result)) == 0 else False
+    with open(file="config/linkbuds-aac.jack", mode="r") as f:
+        for line in f:
+            result = subprocess.run(line.strip("\n").split(" "))
+            if result.returncode != 0:
+                return False
+    return True
 
 
 def volume(percentage: Optional[str] = None) -> str:
@@ -103,3 +52,5 @@ def volume(percentage: Optional[str] = None) -> str:
 
 if __name__ == "__main__":
     print(__file__)
+
+    start()

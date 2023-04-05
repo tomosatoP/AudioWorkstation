@@ -497,16 +497,15 @@ def physical_mixer_names() -> list[str]:
     return name_list
 
 
-def mixer_volume(name: str = "default"):
+def mixer_volume(name: str = "default", idname: str = "Master"):
     """mixer_volume _summary_
 
     :param str name: _description_, defaults to "default"
     """
     volumes: dict[str, int] = dict()
     volume_range: dict[str, int] = {"min": 0, "max": 0}
-    id_name = "Master" if name == "default" else "PCM"
     with open_mixer(name=name) as mixer:
-        with open_mixer_selem_id(name=id_name) as id:
+        with open_mixer_selem_id(name=idname) as id:
             elem = snd_mixer_find_selem(mixer=mixer, id=id)
             if snd_mixer_selem_is_enumerated(elem=elem) == 1:
                 raise AS2Error("enumrate control")
@@ -550,8 +549,8 @@ if __name__ == "__main__":
 
     print(f"ALSA sound library version: {bytes(snd_asoundlib_version()).decode()}")
 
-    print_name_hint()
+    # print_name_hint()
     print(f"physical sound card: {physical_mixer_names()}")
     print(f"default: volume( )={mixer_volume()}")
-    print(f"Headphones: volume( )={mixer_volume('hw:CARD=Headphones')}")
-    # print(f"bluealsa: volume( )={mixer_volume('bluealsa')}")
+    print(f"Headphones: volume( )={mixer_volume('hw:CARD=Headphones','PCM')}")
+    print(f"linkbuds-aac: volume( )={mixer_volume('linkbuds-aac', 'LinkBuds A2DP')}")
