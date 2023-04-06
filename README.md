@@ -16,10 +16,10 @@ USB MIDI 鍵盤を繋げて、ピアノ風の演奏を楽しみたいなぁ
     - USB-DAC ([Sharkoon GAMING DAC PRO S][2] )
     - USB-MIDI Keyborad ([M-AUDIO KEYSTATION49 MK3][3] )
 - ソフトウェア
-    - jackd2 version 1.9.17
-    - fluidsynth version 2.1.7
-    - python version 3.9.2
-    - kivy[base] version 2.1.0
+    - JACK Audio Connection Kit version 1.9.17
+    - FluidSynth version 2.1.7
+    - Python version 3.9.2
+    - Kivy[base] version 2.1.0
 ---
 ## 準備
 ~~~sh
