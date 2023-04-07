@@ -8,6 +8,7 @@
 
 
 import subprocess
+import csv
 from typing import Optional
 
 # Master Volume (PulseAudio)
@@ -16,10 +17,11 @@ _amixer_master = ["amixer", "sset", "Master", "50%,50%", "-M", "unmute"]
 
 def start() -> bool:
     """start jackd server"""
-    with open(file="config/linkbuds-aac.jack", mode="r") as f:
-        for line in f:
-            result = subprocess.run(line.strip("\n").split(" "))
-            if result.returncode != 0:
+    with open(file="config/linkbuds-aac.jack", mode="rt", newline="") as f:
+        buf = csv.reader(f, delimiter=" ")
+        for line in buf:
+            result = subprocess.run(line)
+            if result.returncode:
                 return False
     return True
 
@@ -52,5 +54,3 @@ def volume(percentage: Optional[str] = None) -> str:
 
 if __name__ == "__main__":
     print(__file__)
-
-    start()
