@@ -1,5 +1,5 @@
 # RaspberryPi4 - Bluetooth A2DP 接続
-BluetoothデバイスをBlueALSAを使ってjackから直接に扱えるようにする。
+Bluetoothデバイスを **BlueALSA** を使って **JACK** から直接に扱えるようにする。
 ## BlueALSA: Bluetooth Audio ALSA Backend
 https://github.com/Arkq/bluez-alsa
 ### Install Required Tools and Essential Development Libraries
@@ -53,8 +53,26 @@ https://github.com/Arkq/bluez-alsa
 |設定|/etc/alsa/conf.d/20-bluealsa.conf<br>/etc/dbus-1/system.d/bluealsa.conf|
 |systemd|/lib/systemd/system/bluealsa.service<br>/lib/systemd/system/bluealsa-aplay.service|
 |binaries|/usr/lib/aarch64-linux-gnu/alsa-lib/*<br>/usr/bin/bluealsa<br>/usr/bin/bluealsa-aplay<br>/usr/bin/bluealsa-cli|
+## 設定変更
+pulseaudio をBluetoothデバイスから切り離して、**BlueALSA** を有効にする。
+~~~diff
+~ $ sudo apt purge --auto-remove pulseaudio-module-bluetooth
+~ $ sudo unlink /etc/alsa/conf.d/99-pulse.conf
+~ $ sudo nano /etc/dbus-1/system.d/bluetooth.conf
+    </policy>
+
++   <policy user="bluealsa">
++     <allow send_destination="org.bluez"/>
++   </policy>
++   
+  </busconfig>
+~ $ sudo nano /etc/asound.conf
++ defaults.bluealsa.codec "aac"
++ pcm.!default pulse
++ ctl.!default pulse
+~~~
 ## ペアリング
-- deviceをペアリングモードにする
+- Bluetoothデバイスをペアリングモードにする
 - 以下を実行
 ~~~
 ~ $ sudo bluetoothctl
@@ -69,56 +87,24 @@ https://github.com/Arkq/bluez-alsa
 [[device name]]# connect [device address]
 [[device name]]# disconnect
 ~~~
-## 設定変更
-~~~diff
-~ $ sudo apt purge --auto-remove pulseaudio-module-bluetooth
-~ $ sudo unlink /etc/alsa/conf.d/99-pulse.conf
-~ $ sudo ln -s /etc/alsa/conf.d/20-bluealsa.conf /usr/share/alsa/alsa.conf.d/20-bluealsa.conf
-~ $ sudo nano /etc/dbus-1/system.d/bluetooth.conf
-+   <policy user="bluealsa">
-+     <allow send_destination="org.bluez"/>
-+   </policy>
-  
-  </busconfig>
-~ $ sudo nano /etc/asound.conf
-+ pcm.!default pulse
-+ ctl.!default pulse
-+ pcm.[好きな名前] {
-+   type bluealsa
-+   device [device address]
-+   profile a2dp
-+   codec aac
-+   hint {
-+     show on
-+     description "Bluetooth Headphones|IOIDOutput"
-+   }
-+ }
-+ ctl.[好きな名前] {
-+   type bluealsa  
-+   hint {
-+     show on
-+     description "Bluetooth Headphones|IOIDOutput"
-+   }
-+ }
-~~~
 ## 接続テスト
+あらかじめBluetoothデバイスを接続する。
 ~~~sh
-~ $ aplay -D [好きな名前] /usr/share/sounds/alsa/Front_Center.wav
-# 接続後にしばらくすると再生ができず、"hw params のインストールに失敗しました:"となる。なんで？
+~ $ amixer -D bluealsa:00:00:00:00:00:00 scontrols
+# Simple mixer control 'A2DP',0
 ~ $ jack_control stop
 ~ $ jack_control exit
-~ $ jack_control dps device [好きな名前]
-~ $ jack_control dps playback [好きな名前]
-~ $ jack_control dps capture hw:Headphones
+~ $ jack_control ds alsa
+~ $ jack_control eps realtime True
+~ $ jack_control dps duplex True
+~ $ jack_control dps device bluealsa:00:00:00:00:00:00
+~ $ jack_control dps playback bluealsa:00:00:00:00:00:00
+~ $ jack_control dps capture hw:0
 ~ $ jack_control dps rate 48000
 ~ $ jack_control dps period 1024
 ~ $ jack_control dps nperiods 3
 ~ $ jack_control start
 ~ $ fluidsynth -jsr 48000 [soundfont file] [midi file]
-~~~
-## ミキサーコントールの要素名を取得
-~~~sh
-~ $ amixer -D [好きな名前] scontrols
 ~~~
 ---
 #### 関連ファイル
@@ -136,7 +122,7 @@ https://github.com/Arkq/bluez-alsa
 - [ ] /usr/etc/alsa/conf.d
 - [ ] /usr/etc/asound.conf
 
-#### WAVファイル
+#### 音出しテスト用に使えるWAVファイル
 /usr/share/sounds/alsa/Noise.wav<br>
 /usr/share/sounds/alsa/Rear_Left.wav<br>
 /usr/share/sounds/alsa/Rear_Center.wav<br>

@@ -1,0 +1,21 @@
+{
+    "keyboard": {
+        "settings": "config/fluidsynth.json",
+        "soundfont": [
+            "sf2/FluidR3_GM.sf2",
+            "sf2/SGM-V2.01.sf2",
+            "sf2/YDP-GrandPiano-20160804.sf2"
+        ]
+    },
+    "metronome": {
+        "settings": "config/fluidsynth.json"
+    },
+    "player": {
+        "settings": "config/fluidsynth.json",
+        "soundfont": [
+            "sf2/FluidR3_GM.sf2",
+            "sf2/SGM-V2.01.sf2",
+            "sf2/YDP-GrandPiano-20160804.sf2"
+        ]
+    }
+}

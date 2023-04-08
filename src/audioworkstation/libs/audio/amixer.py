@@ -8,21 +8,27 @@
 
 
 import subprocess
-import csv
+from json import load
 from typing import Optional
 
 # Master Volume (PulseAudio)
 _amixer_master = ["amixer", "sset", "Master", "50%,50%", "-M", "unmute"]
 
 
-def start() -> bool:
+def start(devicename: str) -> bool:
     """start jackd server"""
-    with open(file="config/linkbuds-aac.jack", mode="rt", newline="") as f:
-        buf = csv.reader(f, delimiter=" ")
-        for line in buf:
-            result = subprocess.run(line)
-            if result.returncode:
-                return False
+    with open(file="config/jack.json", mode="rt") as f:
+        settings = load(f)
+        for type, commandlist in settings[devicename].items():
+            if isinstance(commandlist, str):
+                result = subprocess.run(commandlist.split())
+                if result.returncode:
+                    return False
+            else:
+                for command in commandlist:
+                    result = subprocess.run(command.split())
+                    if result.returncode:
+                        return False
     return True
 
 
@@ -54,3 +60,5 @@ def volume(percentage: Optional[str] = None) -> str:
 
 if __name__ == "__main__":
     print(__file__)
+
+    start("S")

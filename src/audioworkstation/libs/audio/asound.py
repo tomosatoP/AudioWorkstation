@@ -553,4 +553,4 @@ if __name__ == "__main__":
     print(f"physical sound card: {physical_mixer_names()}")
     print(f"default: volume( )={mixer_volume()}")
     print(f"Headphones: volume( )={mixer_volume('hw:CARD=Headphones','PCM')}")
-    print(f"linkbuds-aac: volume( )={mixer_volume('linkbuds-aac', 'LinkBuds A2DP')}")
+    print(f"bluealsa: volume( )={mixer_volume('bluealsa:00:00:00:00:00:00', 'A2DP')}")

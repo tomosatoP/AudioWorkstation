@@ -8,8 +8,8 @@ from ..libs.audio import fluidsynth as FS
 from ..libs.sublibs import standardmidifile as SMF
 from ..libs.sublibs.parts import dB2gain, gain2dB
 
-with open("config/player.json", "r") as f:
-    kwargs = load(f)
+with open("config/screen.json", "rt") as f:
+    kwargs = load(f)["player"]
 
 
 class MidiPlayer:
@@ -73,7 +73,6 @@ def info_midifile(midifile: Path) -> dict:
 
 
 def gm_sound_set_names() -> tuple:
-
     synth = FS.Synthesizer(**kwargs)
 
     gm_sound_sets: list = list()

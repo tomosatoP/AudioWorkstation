@@ -25,10 +25,11 @@ dynamic = ["version"]
 keywords = [
   "Raspberry Pi",
   "piano",
+  "midi",
   "Kivy",
   "JACK Audio Connection Kit",
-  "fluidsynth",
-  "midi",
+  "FluidSynth",
+  "BlueALSA",
 ]
 license = {file = "LICENSE"}
 name = "AudioWorkstation"

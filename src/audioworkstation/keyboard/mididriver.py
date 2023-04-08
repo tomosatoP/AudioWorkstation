@@ -13,8 +13,8 @@ class MidiSoundModule:
     gm_percussion_sound_set: list = list()
 
     def __init__(self) -> None:
-        with open("config/keyboard.json", "r") as f:
-            kwargs = load(f)
+        with open("config/screen.json", "rt") as f:
+            kwargs = load(f)["keyboard"]
 
         self.fsmdrv = FS.MidiDriver(**kwargs)
 

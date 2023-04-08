@@ -45,8 +45,8 @@ class Pattern:
     def __init__(self) -> None:
         global sfs, schedule_stop, rhythm, notevalue
 
-        with open("config/metronome.json", "r") as f:
-            kwargs = load(f)
+        with open("config/screen.json", "rt") as f:
+            kwargs = load(f)["metronome"]
 
         sfs = FS.Sequencer(**kwargs)
         sfs.register_client("metronome", pcallback)
