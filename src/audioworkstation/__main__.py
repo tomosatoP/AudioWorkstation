@@ -35,7 +35,7 @@ if __name__ == "__main__":
     LabelBase.register(DEFAULT_FONT, "ipaexg.ttf")
 
     # Jackd2 and amixer
-    amixer.start("Headphones")
+    amixer.jackstart()
     amixer.volume("50%,50%")
 
     from .menubar import MenubarApp

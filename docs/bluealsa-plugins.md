@@ -1,5 +1,5 @@
 # bluealsa-plugins
-https://github.com/Arkq/bluez-alsa/blob/master/doc/bluealsa-plugins.7.rst
+https://github.com/Arkq/bluez-alsa/blob/master/doc/bluealsa-plugins.7.rst を日本語化したtext
 ## DESCRIPTION
 BlueALSAは、ALSA alsa-lib APIを使用して、アプリケーションがBluetoothオーディオデバイスにアクセスすることを許可します。アプリケーションのユーザーは、Bluetoothスピーカー、ヘッドフォン、ヘッドセット、ハンズフリーデバイスを、あたかもローカルデバイスのように使用することができます。この統合は、PCMオーディオストリーム用とCTLボリュームコントロール用の2つのALSAプラグインによって実現されています。
 

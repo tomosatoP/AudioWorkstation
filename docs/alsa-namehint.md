@@ -1,4 +1,4 @@
-# Name Hint
+# ALSA NAME Hint for each interface
 |iface|NAME|DECS|IOID|
 |---|---|---|---|
 |ctl|sysdefault|Default control device|None|

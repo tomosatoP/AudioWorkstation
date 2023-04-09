@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Connect to jack server and set MASTER volume
+"""Connect to JACK server and set MASTER volume
 
-:method bool start():
-:method str volume(Optional[str] percentage):
+:method bool jackstart(): connect to JACK server
+:method str volume(Optional[str] percentage): set MASTER volume
 """
 
 
@@ -11,12 +11,20 @@ import subprocess
 from json import load
 from typing import Optional
 
-# Master Volume (PulseAudio)
+from audioworkstation.libs.sublibs import btaudiosink as BTAS
+
+# MASTER Volume (PulseAudio)
 _amixer_master = ["amixer", "sset", "Master", "50%,50%", "-M", "unmute"]
 
 
-def start(devicename: str) -> bool:
-    """start jackd server"""
+def jackstart() -> bool:
+    """start JACK server"""
+    btdevice: dict[str, str] = BTAS.isavailable()
+    if "" not in btdevice:
+        devicename = "bluealsa"
+    else:
+        devicename = "Headphones"
+
     with open(file="config/jack.json", mode="rt") as f:
         settings = load(f)
         for type, commandlist in settings[devicename].items():
@@ -60,5 +68,3 @@ def volume(percentage: Optional[str] = None) -> str:
 
 if __name__ == "__main__":
     print(__file__)
-
-    start("S")

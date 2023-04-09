@@ -78,7 +78,7 @@ def future_callback(func: Callable, future: futures.Future) -> bool:
 
 class TestFluidsynth(unittest.TestCase):
     def setUp(self) -> None:
-        MASTER.start()
+        MASTER.jackstart()
         MASTER.volume("50%,50%")
         return super().setUp()
 

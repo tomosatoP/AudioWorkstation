@@ -1,5 +1,5 @@
 # PulseAudio integration
-https://github.com/Arkq/bluez-alsa/wiki/PulseAudio-integration
+https://github.com/Arkq/bluez-alsa/wiki/PulseAudio-integration を日本語化したtext
 ## Using BlueALSA and PulseAudio Together
 [PulseAudio](https://www.freedesktop.org/wiki/Software/PulseAudio/) は、特にデスクトップインストール用の、事実上のLinux標準オーディオサーバです。多くのLinuxディストリビューションのデスクトップは、完全な機能を提供するために、PulseAudioを必要とします。
 

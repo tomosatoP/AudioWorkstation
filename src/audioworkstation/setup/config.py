@@ -4,8 +4,9 @@
 from pathlib import Path
 
 from audioworkstation.setup import fluidsynth_settings as FSSET
-from audioworkstation.setup import audioworkstation_settings as APSET
-from audioworkstation.setup import fluidsynth_router_rule as FSRULE
+from audioworkstation.setup import audioworkstation_settings as AKSET
+from audioworkstation.setup import jack_settings as JASET
+from audioworkstation.setup import fluidsynth_router_rule as FSRRULE
 
 
 def makedirs():
@@ -21,11 +22,10 @@ def main():
     makedirs()
     FSSET.extract_default()
     FSSET.customize()
-    APSET.player()
-    APSET.metronome()
-    APSET.keyboard()
-    APSET.gmsounset()
-    FSRULE.case_study()
+    AKSET.screens()
+    AKSET.gmsounset()
+    JASET.jacks()
+    FSRRULE.case_study()
 
 
 if __name__ == "__main__":

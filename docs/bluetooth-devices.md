@@ -86,6 +86,7 @@ pulseaudio をBluetoothデバイスから切り離して、**BlueALSA** を有�
 [[device name]]# trust [device address]
 [[device name]]# connect [device address]
 [[device name]]# disconnect
+[[device name]]# quit
 ~~~
 ## 接続テスト
 あらかじめBluetoothデバイスを接続する。

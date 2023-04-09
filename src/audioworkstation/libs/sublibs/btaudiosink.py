@@ -1,26 +1,14 @@
 #!/usr/bin/env python3
-"""PyBluez advanced example read-local-bdaddr.py
+"""Assists in connecting to Bluetooth device.
 
-Read the local Bluetooth device address
+:method dict isavailable(): dict is {name: address}  on connected device
 """
 
 import bluetooth as BT
 from subprocess import Popen, run, PIPE
 
 
-def audiosink(bt_address: str) -> tuple:
-    """Get information on "audio sink" service.
-
-    :param str bt_address: device address
-    :return tuple: (propocol, port)
-    """
-    ass = BT.find_service(address=bt_address, uuid=BT.AUDIO_SINK_CLASS)
-    if not ass:
-        return ("", 0)
-    return (ass[0]["protocol"], ass[0]["port"])
-
-
-def paired_devices() -> dict[str, str]:
+def _paired_devices() -> dict[str, str]:
     """Returns a list of paired devices.
 
     :return dict[str, str]: name, address
@@ -37,18 +25,23 @@ def paired_devices() -> dict[str, str]:
     return devices
 
 
-def isnearby(bt_address: str) -> bool:
-    """Find out if the paired device is nearby
+def _isnearby_audiosink(bt_address: str) -> bool:
+    """Find out if the paired device is nearby.
 
     :param str bt_address: paired device address
     :return bool: True is nearby, False is otherwise
     """
     if not BT.lookup_name(address=bt_address):
         return False
-    return True
+
+    pre_pipe = ["bluetoothctl", "--", "info", bt_address]
+    post_pipe = ["grep", "Audio Sink"]
+    result = Popen(args=pre_pipe, stdout=PIPE, text=True)
+    result = Popen(args=post_pipe, stdin=result.stdout, stdout=PIPE, text=True)
+    return True if result.communicate()[0] else False
 
 
-def isconnected(bt_address: str) -> bool:
+def _isconnected(bt_address: str, audio_sink: bool = True) -> bool:
     """Check the connection of paired devices nearby.
 
     :param str bt_address: address of paired devices nearby
@@ -58,33 +51,32 @@ def isconnected(bt_address: str) -> bool:
     post_pipe = ["grep", "Connected"]
     result = Popen(args=pre_pipe, stdout=PIPE, text=True)
     result = Popen(args=post_pipe, stdin=result.stdout, stdout=PIPE, text=True)
-    if result.returncode:
-        return False
-    elif result.communicate()[0].split()[1] != "yes":
-        return False
-    return True
+    return True if result.communicate()[0].split()[1] == "yes" else False
 
 
-def connect(bt_address) -> bool:
-    protocol, port = audiosink(bt_address=bt_address)
+def _connect(bt_address: str) -> bool:
+    """Attempts to connect to a Bluetooth device.
 
-    sock = BT.BluetoothSocket(proto=BT.L2CAP)
-    sock.connect((bt_address, port))
-    print(f"connect: {sock.get_l2cap_options()}")
-    print(f"disconnect: {sock.close()}")
+    :param str bt_address: device address
+    :return bool: True is success, False is otherwise
+    """
+    command = ["bluetoothctl", "--", "connect", bt_address]
+    result = run(args=command, capture_output=True, text=True)
+    return False if result.returncode else True
 
-    return True
+
+def isavailable() -> dict[str, str]:
+    devices = _paired_devices()
+
+    for name, address in devices.items():
+        if _isnearby_audiosink(address):
+            if _isconnected(address):
+                return {name: address}
+            elif _connect(address):
+                return {name: address}
+
+    return {"": ""}
 
 
 if __name__ == "__main__":
     print(__file__)
-
-    devices = paired_devices()
-
-    for name, address in devices.items():
-        if isnearby(address):
-            if isconnected(address):
-                print(f"{name} is connected")
-            else:
-                print(f"{name} connect")
-                connect(address)

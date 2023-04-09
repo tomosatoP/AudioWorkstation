@@ -4,40 +4,16 @@
 from json import dump
 
 
-def keyboard():
+def screens():
     settings = dict()
+    fs_settings = "config/fluidsynth.json"
+    sfonts = ["sf2/FluidR3_GM.sf2"]
 
-    settings["settings"] = "config/fluidsynth.json"
-    settings["soundfont"] = [
-        "sf2/FluidR3_GM.sf2",
-        "sf2/SGM-V2.01.sf2",
-        "sf2/YDP-GrandPiano-20160804.sf2",
-    ]
+    settings["keyboard"] = {"settings": fs_settings, "soundfont": sfonts}
+    settings["metronome"] = {"settings": fs_settings, "soundfont": sfonts}
+    settings["player"] = {"settings": fs_settings, "soundfont": sfonts}
 
-    with open("config/keyboard.json", "w") as fw:
-        dump(settings, fw, indent=4)
-
-
-def metronome():
-    settings = dict()
-
-    settings["settings"] = "config/fluidsynth.json"
-
-    with open("config/metronome.json", "w") as fw:
-        dump(settings, fw, indent=4)
-
-
-def player():
-    settings = dict()
-
-    settings["settings"] = "config/fluidsynth.json"
-    settings["soundfont"] = [
-        "sf2/FluidR3_GM.sf2",
-        "sf2/SGM-V2.01.sf2",
-        "sf2/YDP-GrandPiano-20160804.sf2",
-    ]
-
-    with open("config/player.json", "w") as fw:
+    with open("config/screen.json", "wt") as fw:
         dump(settings, fw, indent=4)
 
 
@@ -61,7 +37,7 @@ def gmsounset():
     grouping["パーカッシブ"] = {"Start": 112, "End": 119}
     grouping["サウンド・エフェクト"] = {"Start": 120, "End": 127}
 
-    with open("config/gmsoundsetgroping.json", "w") as fw:
+    with open("config/gmsoundsetgroping.json", "wt") as fw:
         dump(grouping, fw, indent=4, ensure_ascii=False)
 
 

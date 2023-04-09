@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 """Purpose: Detect and configure sound card, adjust volume.
 
+:method ** **(**):
+
 https://www.alsa-project.org/alsa-doc/alsa-lib/index.html
 """
 

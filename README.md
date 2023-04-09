@@ -29,6 +29,7 @@ USB MIDI 鍵盤を繋げて、ピアノ風の演奏を楽しみたいなぁ
 # fluidsynth with libfluidsynth2, qsynth, fluid-soundfont-gm)
 ~ $ sudo apt -y install jackd pulseaudio-module-jack fluidsynth
 ~~~
+> Bluetoothデバイスへ出力するには、[BlueALSA](docs/bluetooth-devices.md)を参照
 ## インストール
 ~~~sh
 ~ $ python3 -m venv AudioWorkstation/venv --upgrade-deps
