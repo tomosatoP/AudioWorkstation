@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Assists in connecting to Bluetooth device.
 
-:method dict isavailable(): dict is {name: address}  on connected device
+:method dict attach(): dict is {name: address}  on connected device
 """
 
 import bluetooth as BT
@@ -65,7 +65,7 @@ def _connect(bt_address: str) -> bool:
     return False if result.returncode else True
 
 
-def isavailable() -> dict[str, str]:
+def attach() -> dict[str, str]:
     devices = _paired_devices()
 
     for name, address in devices.items():

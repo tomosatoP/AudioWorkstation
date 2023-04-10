@@ -12,32 +12,43 @@ from json import load
 from typing import Optional
 
 from audioworkstation.libs.sublibs import btaudiosink as BTAS
+from audioworkstation.libs.sublibs import soundcard as SCARD
 
 # MASTER Volume (PulseAudio)
-_amixer_master = ["amixer", "sset", "Master", "50%,50%", "-M", "unmute"]
+_master: str = "amixer sset Master 100%,100% -M unmute"
 
 
-def jackstart() -> bool:
+def jackstart() -> tuple[str, str]:
     """start JACK server"""
-    btdevice: dict[str, str] = BTAS.isavailable()
+    btdevice: dict[str, str] = BTAS.attach()
+    soundcard: list[str] = SCARD.added_soundcard_names()
+    device_name: str = ""
+    device_controlname: str = ""
     if "" not in btdevice:
-        devicename = "bluealsa"
+        device_name = "bluealsa"
+        device_controlname = "A2DP"
+    elif soundcard[0] != "":
+        device_name = soundcard[0].split("CARD=")[1]
+        device_controlname = "PCM"
     else:
-        devicename = "Headphones"
+        device_name = "Headphones"
+        device_controlname = "PCM"
 
+    subprocess.run(args=_master.split())
     with open(file="config/jack.json", mode="rt") as f:
         settings = load(f)
-        for type, commandlist in settings[devicename].items():
+        for type, commandlist in settings[device_name].items():
             if isinstance(commandlist, str):
                 result = subprocess.run(commandlist.split())
                 if result.returncode:
-                    return False
+                    return ("", "")
             else:
                 for command in commandlist:
                     result = subprocess.run(command.split())
                     if result.returncode:
-                        return False
-    return True
+                        return ("", "")
+
+    return (device_name, device_controlname)
 
 
 def volume(percentage: Optional[str] = None) -> str:
@@ -49,11 +60,11 @@ def volume(percentage: Optional[str] = None) -> str:
     - If both left and right are 10% larger, '10%+,10%+'
     - If both left and right are 10% smaller, '10%-,10%-'
     """
-
+    master = ["amixer", "sset", "Master", "100%,100%", "-M", "unmute"]
     if percentage is not None:
-        _amixer_master[3] = percentage
+        master[3] = percentage
 
-    result = subprocess.run(_amixer_master, capture_output=True, text=True)
+    result = subprocess.run(master, capture_output=True, text=True)
     dict_master = dict()
     for line_buffer in result.stdout.splitlines():
         listb = line_buffer.strip().split(":")
@@ -68,3 +79,5 @@ def volume(percentage: Optional[str] = None) -> str:
 
 if __name__ == "__main__":
     print(__file__)
+
+    print(jackstart())

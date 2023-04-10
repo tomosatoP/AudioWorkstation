@@ -1,9 +1,9 @@
 # AudioWorkstation
-USB MIDI 鍵盤を繋げて、ピアノ風の演奏を楽しみたいなぁ
+USB MIDI 鍵盤を繋げて、ピアノ風の演奏を楽しむために。
 ### 機能
-- MIDI Synthesizer
+- MIDI Synthesizer 経由の USB MIDI 演奏
 - メトローム
-- Standard MIDI File 伴奏
+- Standard MIDI File による伴奏
 
 ![keyboard](screenshot/keyboard.small.png)
 ![metronome](screenshot/metronome.small.png)
@@ -12,9 +12,9 @@ USB MIDI 鍵盤を繋げて、ピアノ風の演奏を楽しみたいなぁ
 - ハードウェア
     - Raspberry Pi 4 Model B/4GB (Raspberry Pi OS with desktop 64bit)
     - microSD card 32GB 
-    - 4.3inch DSI LCD with case ([Waveshare 18645][1] )
-    - USB-DAC ([Sharkoon GAMING DAC PRO S][2] )
-    - USB-MIDI Keyborad ([M-AUDIO KEYSTATION49 MK3][3] )
+    - **DISPLAY:** 4.3inch DSI LCD with case ([Waveshare 18645][1] )
+    - **AUDIO OUTPUT:** Headphones Jack/ USB-DAC ([Sharkoon GAMING DAC PRO S][2] )/ Bluetooth Headphones([SONY LinkBuds][4])
+    - **INPUT:** USB-MIDI Keyborad ([M-AUDIO KEYSTATION49 MK3][3] )
 - ソフトウェア
     - JACK Audio Connection Kit version 1.9.17
     - FluidSynth version 2.1.7
@@ -29,7 +29,7 @@ USB MIDI 鍵盤を繋げて、ピアノ風の演奏を楽しみたいなぁ
 # fluidsynth with libfluidsynth2, qsynth, fluid-soundfont-gm)
 ~ $ sudo apt -y install jackd pulseaudio-module-jack fluidsynth
 ~~~
-> Bluetoothデバイスへ出力するには、[BlueALSA](docs/bluetooth-devices.md)を参照
+> Bluetoothデバイスへ音出しするには、[RaspberryPi4 - Bluetooth A2DP 接続](docs/bluetooth-devices.md)を参照
 ## インストール
 ~~~sh
 ~ $ python3 -m venv AudioWorkstation/venv --upgrade-deps
@@ -37,8 +37,8 @@ USB MIDI 鍵盤を繋げて、ピアノ風の演奏を楽しみたいなぁ
 ~/AudioWorkstation $ source venv/bin/activate
 (venv) ~/AudioWorkstation $ pip install -U git+https://github.com/tomosatoP/AudioWorkstation.git
 (venv) ~/AudioWorkstation $ initialize
-# Audioworkstation/sf2フォルダにsf2サウンドフォントファイルを設置してね
-# Audioworkstation/midフォルダにSMF(StandardMidiFile)ファイルを設置してね
+# Audioworkstation/sf2フォルダにsf2サウンドフォントファイルを設置
+# Audioworkstation/midフォルダにSMF(StandardMidiFile)ファイルを設置
 (venv) ~/AudioWorkstation $ deactivate
 ~~~
 ## 実行
@@ -57,3 +57,4 @@ USB MIDI 鍵盤を繋げて、ピアノ風の演奏を楽しみたいなぁ
 [1]:https://www.waveshare.com/4.3inch-dsi-lcd-with-case.htm
 [2]:https://ja.sharkoon.com/product/27415
 [3]:https://m-audio.com/keystation-49-mk3
+[4]:https://www.sony.jp/headphone/products/LinkBuds/
