@@ -3,9 +3,9 @@
 
 from math import pow, log10
 
-
-_min_gain: float = 10**-3  # 10**-4
-_ratio: float = 25  # 20
+# [-4, 100/(4+1)], [-3, 100/(3+1)], [-2, 100/(2+1)]
+_min_gain: float = 10**-2
+_ratio: float = 100.0 / 3.0
 
 
 def gain2dB(value: float) -> int:

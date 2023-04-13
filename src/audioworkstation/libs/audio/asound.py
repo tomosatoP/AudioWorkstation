@@ -10,6 +10,7 @@ https://www.alsa-project.org/alsa-doc/alsa-lib/index.html
 from typing import Callable, Any
 from contextlib import contextmanager
 from enum import IntEnum, auto
+from subprocess import PIPE, Popen
 import ctypes as CAS2
 from ctypes.util import find_library
 
@@ -232,14 +233,14 @@ snd_mixer_load.errcheck = errcheck_non_zero
 
 
 @contextmanager
-def _open_mixer_selem_id(name: str):
+def _open_mixer_selem_id(idname: str):
     """allocate an invalid snd_mixer_selem_id_t using standard malloc
 
     :return snd_mixer_selem_id_t*: ptr otherwise negative error code
     """
     resource = snd_mixer_selem_id_malloc()
     snd_mixer_selem_id_set_index(obj=resource, val=0)
-    snd_mixer_selem_id_set_name(obj=resource, val=name.encode())
+    snd_mixer_selem_id_set_name(obj=resource, val=idname.encode())
     try:
         yield resource
     finally:
@@ -459,6 +460,35 @@ snd_mixer_selem_is_enumerated = prototype(
 :param c_int: 0 normal volume/switch control, 1 enumerated control
 """
 
+snd_mixer_selem_get_playback_volume = prototype(
+    CAS2.c_int,
+    "snd_mixer_selem_get_playback_volume",
+    (CAS2.c_void_p, 1, "elem"),
+    (CAS2.c_int, 1, "channel"),
+    (CAS2.POINTER(CAS2.c_long), 2, "value"),
+)
+"""Return value of playback volume control of a mixer simple element.
+
+:param snd_mexer_elem_t* elem: Mixer simple element handle
+:param c_int[SND_MIXER_SELEM_CHANNEL_ID_T] channel:
+mixer simple element channel identifier
+:return c_long: volmue on success otherwise a negative error code
+"""
+
+
+def errcheck_snd_mixer_selem_get_playback_volume(
+    result: Any, cfunc: Callable, args: tuple
+) -> Any:
+    if result != 0:
+        raise AS2Error((cfunc, args))
+    return args[2].value
+
+
+snd_mixer_selem_get_playback_volume.errcheck = (
+    errcheck_snd_mixer_selem_get_playback_volume
+)
+
+
 snd_mixer_selem_has_playback_switch = prototype(
     CAS2.c_int, "snd_mixer_selem_has_playback_switch", (CAS2.c_void_p, 1, "elem")
 )
@@ -541,7 +571,7 @@ snd_mixer_selem_has_playback_volume_joined = prototype(
 
 
 snd_mixer_selem_channel_name = prototype(
-    CAS2.c_char_p, "snd_mixer_selem_channel_name", (CAS2.c_int, 1, "channnel")
+    CAS2.c_char_p, "snd_mixer_selem_channel_name", (CAS2.c_int, 1, "channel")
 )
 """Return name of mixer simple element channel.
 
@@ -621,13 +651,13 @@ def _physical_mixer_names() -> list[str]:
             name = snd_device_name_get_hint(hint=hints[0], id=b"NAME")
 
         with _open_mixer(name=name.decode()) as mixer:
-            with _open_mixer_selem_id(name="PCM") as selem_id:
+            with _open_mixer_selem_id(idname="PCM") as selem_id:
                 if snd_mixer_find_selem(mixer=mixer, id=selem_id):
                     name_list.append(name.decode())
     return name_list
 
 
-def added_soundcard_names() -> list[str]:
+def soundcardname() -> list[str]:
     """Returns a list of added sound card names.
 
     :return list[str]: list of added sound card names
@@ -641,51 +671,83 @@ def added_soundcard_names() -> list[str]:
     return result
 
 
-def unmute(name: str = "default", idname: str = "Master") -> bool:
-    """Unmute playback channel.
+def volume(devicename: str, idname: str, value: int, mute: str):
+    """volume _summary_
 
-    :param str name:  , defaults to "default"
-    :param str idname: , defaults to "Master"
-    :return bool: True is success, False is otherwise
+    :param str devicename: _description_
+    :param str idname: _description_
+    :param int value: _description_
+    :param str mute: _description_
     """
-    with _open_mixer(name=name) as mixer:
-        with _open_mixer_selem_id(name=idname) as id:
-            elem = snd_mixer_find_selem(mixer=mixer, id=id)
-            if snd_mixer_selem_is_enumerated(elem=elem) == 1:
-                raise AS2Error("enumrate control")
-            if snd_mixer_selem_has_playback_switch(elem=elem) == 0:
-                raise AS2Error("no control playback switch")
+    # amixer -D devicename sset idname value%[,..] -M unmute
+    # amixer -D devicename sget idname
+    chan_names: list[str] = channel_names(devicename, idname)
+    print(chan_names)
+    sget_command = [
+        "amixer",
+        "-D",
+        devicename,
+        "sget",
+        idname,
+        "-M",
+        mute,
+    ]
+    pipe_command = ["grep", chan_names[0] + ": Playback"]
+    result = Popen(args=sget_command, stdout=PIPE, text=True)
+    result = Popen(args=pipe_command, stdin=result.stdout, stdout=PIPE, text=True)
+    print(result.communicate()[0].split())
 
-            snd_mixer_selem_set_playback_switch_all(elem=elem, value=1)
-    return True
 
-
-def mixer_volume(name: str = "default", idname: str = "Master"):
-    """Control playback volume(dB).
-
-    :param str name:  , defaults to "default"
-    :param str idname: , defaults to "Master"
-    :return *:
-    """
-    with _open_mixer(name=name) as mixer:
-        with _open_mixer_selem_id(name=idname) as id:
+def channel_names(devicename: str, idname: str) -> list:
+    result: list[str] = list()
+    with _open_mixer(name=devicename) as mixer:
+        with _open_mixer_selem_id(idname=idname) as id:
             elem = snd_mixer_find_selem(mixer=mixer, id=id)
             if snd_mixer_selem_is_enumerated(elem=elem) == 1:
                 raise AS2Error("enumrate control")
             if snd_mixer_selem_has_playback_volume(elem=elem) == 0:
                 raise AS2Error("no control playback volume")
 
-            print(snd_mixer_selem_has_playback_switch_joined(elem=elem))
+            if snd_mixer_selem_is_playback_mono(elem=elem):
+                result = ["Mono"]
+            else:
+                for channel in list(SND_MIXER_SELEM_CHANNEL_ID_T):
+                    if snd_mixer_selem_has_playback_channel(elem=elem, channel=channel):
+                        buffer = snd_mixer_selem_channel_name(channel=channel)
+                        result.append(buffer.decode())
+    return result
+
+
+def percentage_volume(name: str = "default", idname: str = "Master"):
+    """Control playback percentage volume (-45dB..0dB).
+
+    :param str name:  , defaults to "default"
+    :param str idname: , defaults to "Master"
+    :return *:
+    """
+
+    dBvalue: dict[str, int] = dict()
+    with _open_mixer(name=name) as mixer:
+        with _open_mixer_selem_id(idname=idname) as id:
+            elem = snd_mixer_find_selem(mixer=mixer, id=id)
+            if snd_mixer_selem_is_enumerated(elem=elem) == 1:
+                raise AS2Error("enumrate control")
+            if snd_mixer_selem_has_playback_volume(elem=elem) == 0:
+                raise AS2Error("no control playback volume")
+
             print(snd_mixer_selem_has_playback_volume_joined(elem=elem))
+            dBmin, dBmax = snd_mixer_selem_get_playback_dB_range(elem=elem)
 
-            min, max = snd_mixer_selem_get_playback_dB_range(elem=elem)
-            # min, max = snd_mixer_selem_get_playback_volume_range(elem=elem)
-            min = snd_mixer_selem_ask_playback_dB_vol(elem=elem, value=min * 100, dir=0)
-            max = snd_mixer_selem_ask_playback_dB_vol(elem=elem, value=max * 100, dir=0)
-            # min = snd_mixer_selem_ask_playback_vol_dB(elem=elem, value=min)
-            # max = snd_mixer_selem_ask_playback_vol_dB(elem=elem, value=max)
+            min, max = snd_mixer_selem_get_playback_volume_range(elem=elem)
+            min = snd_mixer_selem_ask_playback_dB_vol(elem=elem, dBvalue=min, dir=0)
+            max = snd_mixer_selem_ask_playback_dB_vol(elem=elem, dBvalue=max, dir=0)
 
-    return min, max
+            volume = snd_mixer_selem_get_playback_volume(elem=elem, channel=0)
+            mindB = snd_mixer_selem_ask_playback_vol_dB(elem=elem, value=min)
+            maxdB = snd_mixer_selem_ask_playback_vol_dB(elem=elem, value=max)
+            voldB = snd_mixer_selem_ask_playback_vol_dB(elem=elem, value=volume)
+
+    return dBmax, dBvalue, mindB, maxdB, voldB
 
 
 if __name__ == "__main__":
@@ -694,13 +756,8 @@ if __name__ == "__main__":
     print(f"ALSA sound library version: {bytes(snd_asoundlib_version()).decode()}")
 
     # print_name_hint()
-    print(f"physical sound card: {added_soundcard_names()}")
+    print(f"physical sound card: {soundcardname()}")
 
-    print(f"default: unmute= {unmute()}")
-    print(f"Headphones: unmute= {unmute('hw:CARD=Headphones','PCM')}")
-    print(f"S: unmute= {unmute('hw:CARD=S','PCM')}")
-
-    # print(f"default: volume( )={mixer_volume()}")
-    print(f"Headphones: volume( )={mixer_volume('hw:CARD=Headphones','PCM')}")
-    print(f"S: volume( )={mixer_volume('hw:CARD=S','PCM')}")
-    # print(f"bluealsa: volume( )={mixer_volume('bluealsa:00:00:00:00:00:00', 'A2DP')}")
+    print(volume("default", "Master", 100, "unmute"))
+    print(volume("hw:CARD=Headphones", "PCM", 100, "unmute"))
+    print(volume("hw:CARD=S", "PCM", 100, "unmute"))

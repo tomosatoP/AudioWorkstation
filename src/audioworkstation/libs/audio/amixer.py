@@ -11,23 +11,23 @@ import subprocess
 from json import load
 from typing import Optional
 
-from audioworkstation.libs.sublibs import btaudiosink as BTAS
-from audioworkstation.libs.sublibs import soundcard as SCARD
+from audioworkstation.libs.audio import btaudiosink as BTAS
+from audioworkstation.libs.audio import asound as SCARD
 
 # MASTER Volume (PulseAudio)
-_master: str = "amixer sset Master 100%,100% -M unmute"
+_master: str = "amixer -D default sset Master 100%,100% -M unmute"
 
 
 def jackstart() -> tuple[str, str]:
     """start JACK server"""
-    btdevice: dict[str, str] = BTAS.attach()
-    soundcard: list[str] = SCARD.added_soundcard_names()
+    btdevice: dict[str, str] = BTAS.btdevicename()
+    soundcard: list[str] = SCARD.soundcardname()
     device_name: str = ""
     device_controlname: str = ""
     if "" not in btdevice:
         device_name = "bluealsa"
         device_controlname = "A2DP"
-    elif soundcard[0] != "":
+    elif soundcard:
         device_name = soundcard[0].split("CARD=")[1]
         device_controlname = "PCM"
     else:
@@ -38,15 +38,10 @@ def jackstart() -> tuple[str, str]:
     with open(file="config/jack.json", mode="rt") as f:
         settings = load(f)
         for type, commandlist in settings[device_name].items():
-            if isinstance(commandlist, str):
-                result = subprocess.run(commandlist.split())
+            for command in commandlist:
+                result = subprocess.run(command.split())
                 if result.returncode:
                     return ("", "")
-            else:
-                for command in commandlist:
-                    result = subprocess.run(command.split())
-                    if result.returncode:
-                        return ("", "")
 
     return (device_name, device_controlname)
 
@@ -79,5 +74,3 @@ def volume(percentage: Optional[str] = None) -> str:
 
 if __name__ == "__main__":
     print(__file__)
-
-    print(jackstart())

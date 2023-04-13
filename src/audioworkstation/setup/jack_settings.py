@@ -21,8 +21,7 @@ def jacks():
         "jack_control dps outchannels 2",
         "jack_control start",
     ]
-    mixer = "amixer -c Headphones sset PCM 100% -M unmute"
-    settings["Headphones"] = {"jack_control": jack_controls, "amixer": mixer}
+    settings["Headphones"] = {"jack_control": jack_controls}
     jack_controls = [
         "jack_control stop",
         "jack_control exit",
@@ -38,8 +37,8 @@ def jacks():
         "jack_control dps outchannels 2",
         "jack_control start",
     ]
-    mixer = "amixer -c S sset PCM 100% -M unmute"
-    settings["S"] = {"jack_control": jack_controls, "amixer": mixer}
+
+    settings["S"] = {"jack_control": jack_controls}
 
     with open(file="config/jack.json", mode="wt") as f:
         dump(obj=settings, fp=f, indent=4)
