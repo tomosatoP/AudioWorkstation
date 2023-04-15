@@ -28,15 +28,16 @@ if __name__ == "__main__":
     from kivy.core.text import LabelBase, DEFAULT_FONT
     from kivy.resources import resource_add_path
 
-    from .libs.audio import amixer
+    from .libs.audio import asound as AS
 
     # To use japanese font in Kivy
     resource_add_path("/usr/share/fonts/opentype/ipaexfont-gothic")
     LabelBase.register(DEFAULT_FONT, "ipaexg.ttf")
 
     # Jackd2 and amixer
-    amixer.jackstart()
-    amixer.volume("50%,50%")
+    AS.set_volume("default", "Master", 100)
+    devicename, devicecontrolname = AS.start_jackserver()
+    AS.set_volume(devicename, devicecontrolname, 50)
 
     from .menubar import MenubarApp
 

@@ -1,5 +1,5 @@
 {
-    "Headphones": {
+    "hw:CARD=Headphones": {
         "jack_control": [
             "jack_control stop",
             "jack_control exit",
@@ -16,7 +16,7 @@
             "jack_control start"
         ]
     },
-    "S": {
+    "hw:CARD=S": {
         "jack_control": [
             "jack_control stop",
             "jack_control exit",
@@ -33,7 +33,7 @@
             "jack_control start"
         ]
     },
-    "MicroII": {
+    "hw:CARD=MicroII": {
         "jack_control": [
             "jack_control stop",
             "jack_control exit",
@@ -50,7 +50,7 @@
             "jack_control start"
         ]
     },
-    "bluealsa": {
+    "bluealsa:00:00:00:00:00:00": {
         "jack_control": [
             "jack_control stop",
             "jack_control exit",

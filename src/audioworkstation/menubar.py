@@ -10,7 +10,7 @@ from kivy.uix.widget import Widget
 from .metronome import metronome
 from .player import player
 from .keyboard import keyboard
-from .libs.audio import amixer
+from .libs.audio import asound
 
 
 class MenubarView(Widget):
@@ -35,7 +35,6 @@ class MenubarView(Widget):
         self.mode.bind(text=self.set_mode)
 
     def set_mode(self, widget, text) -> None:
-
         if text == "キーボード":
             self.panel.current = "keyboard"
             self.vol2.label.text = "キーボード音量"
@@ -49,7 +48,7 @@ class MenubarView(Widget):
         self.vol2.slider.value = self.panel.current_screen.volume
 
     def master_volume(self, widget, value):
-        amixer.volume(f"{value}%,{value}%")
+        asound.set_volume("hw:CARD=S", "PCM", value)
 
     def mode_volume(self, widget, value):
         self.panel.current_screen.volume = value

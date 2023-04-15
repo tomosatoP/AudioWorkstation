@@ -10,10 +10,14 @@ https://www.alsa-project.org/alsa-doc/alsa-lib/index.html
 from typing import Callable, Any
 from contextlib import contextmanager
 from enum import IntEnum, auto
-from subprocess import run, Popen, PIPE
+from subprocess import Popen, PIPE
+from json import load
 from statistics import mean
 import ctypes as CAS2
 from ctypes.util import find_library
+
+
+from audioworkstation.libs.audio import btaudiosink as BTAS
 
 
 class AS2Error(Exception):
@@ -64,9 +68,9 @@ Most applications probably do not need them.
 """
 
 snd_asoundlib_version = prototype(CAS2.c_char_p, "snd_asoundlib_version")
-"""snd_asoundlib_version
+"""Returns the ALSA sound library version in ASCII format.
 
-:return c_char_p:
+:return c_char_p: The ASCII description of the used ALSA sound library.
 """
 
 """The control interface."""
@@ -94,6 +98,7 @@ snd_device_name_hint = prototype(
     (CAS2.c_char_p, 1, "iface"),
     (CAS2.POINTER(CAS2.POINTER(CAS2.c_void_p)), 2, "hints"),
 )
+"""Called from [_open_device_name_hint]"""
 
 
 def errcheck_snd_device_name_hint(result: Any, cfunc: Callable, args: tuple) -> Any:
@@ -107,6 +112,7 @@ snd_device_name_hint.errcheck = errcheck_snd_device_name_hint
 snd_device_name_free_hint = prototype(
     CAS2.c_int, "snd_device_name_free_hint", (CAS2.POINTER(CAS2.c_void_p), 1, "hints")
 )
+"""Called from [_open_device_name_hint]"""
 snd_device_name_free_hint.errcheck = errcheck_non_zero
 
 
@@ -116,8 +122,9 @@ snd_device_name_get_hint = prototype(
     (CAS2.c_void_p, 1, "hint"),
     (CAS2.c_char_p, 1, "id"),
 )
-"""The return value should be freed when no longer needed.
+"""Extract the name from hint.
 
+The return value should be freed when no longer needed.
 :param c_void_p hint:
 :param c_char_p id: b"NAME", b"DESC", b"IOID"
 :return c_char_p: an allocated ASCII string
@@ -127,10 +134,11 @@ snd_device_name_get_hint = prototype(
 snd_card_next = prototype(
     CAS2.c_int, "snd_card_next", (CAS2.POINTER(CAS2.c_int), 1, "rcard")
 )
-""" snd_card_next
+"""Iterate over physical sound cards.
 
 :param POINTER(c_int) rcard:
-:return c_int:
+Index of current card. The index of the next card is stored here.
+:return c_int: zero if success, otherwise a negative error code.
 """
 snd_card_next.errcheck = errcheck_non_zero
 
@@ -157,7 +165,8 @@ class SND_MIXER_SELEM_CHANNEL_ID_T(IntEnum):
 def _open_mixer(name: str, mode: int = 0, options=None, classp=None):
     """Opens an empty mixer.
 
-    :param c_int mode: 0(0x0000) is blocking mode
+    :param str name: HCTL name
+    :param int mode: 0(0x0000) is blocking mode
         SND_CTL_NOBLOCK  0x0001: Non blocking mode  (flag for open mode)
         SND_CTL_ASYNC    0x0002: Async notification (flag for open mode)
         SND_CTL_READONLY 0x0004: Read only          (flag for open mode)
@@ -179,6 +188,12 @@ snd_mixer_open = prototype(
     (CAS2.POINTER(CAS2.c_void_p), 2, "mixerp"),
     (CAS2.c_int, 1, "mode"),
 )
+"""Called from [_open_mixer].
+
+Opens an empty mixer.
+:param c_int mode: Open mode
+:return [snd_mixer_t* | c_int]: mixer handle, otherwise a negative error code
+"""
 
 
 def errcheck_snd_mixer_open(result: Any, cfunc: Callable, args: tuple) -> Any:
@@ -190,6 +205,12 @@ def errcheck_snd_mixer_open(result: Any, cfunc: Callable, args: tuple) -> Any:
 snd_mixer_open.errcheck = errcheck_snd_mixer_open
 
 snd_mixer_close = prototype(CAS2.c_int, "snd_mixer_close", (CAS2.c_void_p, 1, "mixer"))
+"""Called from [_open_mixer].
+
+Close a mixer and free all related resources.
+:param snd_mixer_t* mixer: Mixer handle
+:return c_int: 0 on success otherwise a negative error code
+"""
 snd_mixer_close.errcheck = errcheck_non_zero
 
 
@@ -199,8 +220,9 @@ snd_mixer_attach = prototype(
     (CAS2.c_void_p, 1, "mixer"),
     (CAS2.c_char_p, 1, "name"),
 )
-"""Attach an HCTL specified with the CTL device name to an opened mixer.
+"""Called from [_open_mixer].
 
+Attach an HCTL specified with the CTL device name to an opened mixer.
 :param snd_mixer_t* mixer: mixer handler
 :param const char* name: HCTL name
 :return c_int: 0 on success otherwise a negative error code
@@ -214,8 +236,9 @@ snd_mixer_selem_register = prototype(
     (CAS2.c_void_p, 1, "options"),
     (CAS2.POINTER(CAS2.c_void_p), 1, "classp"),
 )
-"""Register mixer simple element class.
+"""Called from [_open_mixer].
 
+Register mixer simple element class.
 :param snd_mixet_t* mixer: Mixer handle
 :param struct snd_mixer_selem_regopt* options: Options container
 :param snd_mixer_class_t** classp:
@@ -225,8 +248,9 @@ Pointer to returned mixer simple element class handle (or NULL)
 snd_mixer_selem_register.errcheck = errcheck_non_zero
 
 snd_mixer_load = prototype(CAS2.c_int, "snd_mixer_load", (CAS2.c_void_p, 1, "mixer"))
-"""Load a mixer elements.
+"""Called from [_open_mixer].
 
+Load a mixer elements.
 :param snd_mixer_t* mixer: Mixer handle
 :return c_int: 0 on success otherwise a negative error code
 """
@@ -237,6 +261,7 @@ snd_mixer_load.errcheck = errcheck_non_zero
 def _open_mixer_selem_id(idname: str):
     """allocate an invalid snd_mixer_selem_id_t using standard malloc
 
+    :param * idname: name part
     :return snd_mixer_selem_id_t*: ptr otherwise negative error code
     """
     resource = snd_mixer_selem_id_malloc()
@@ -251,6 +276,11 @@ def _open_mixer_selem_id(idname: str):
 snd_mixer_selem_id_malloc = prototype(
     CAS2.c_int, "snd_mixer_selem_id_malloc", (CAS2.POINTER(CAS2.c_void_p), 2, "ptr")
 )
+"""Called from [_open_mixer_selem_id].
+
+allocate an invalid snd_mixer_selem_id_t using standard malloc
+:return [snd_mixer_selem_id_t* | c_int]: returned pointer, otherwise negative error code
+"""
 
 
 def errcheck_snd_mixer_selem_id_malloc(
@@ -266,6 +296,11 @@ snd_mixer_selem_id_malloc.errcheck = errcheck_snd_mixer_selem_id_malloc
 snd_mixer_selem_id_free = prototype(
     CAS2.c_void_p, "snd_mixer_selem_id_free", (CAS2.c_void_p, 1, "obj")
 )
+"""Called from [_open_mixer_selem_id].
+
+frees a previously allocated snd_mixer_selem_id_t
+:param snd_mixer_selem_id_t* obj: pointer to object to free
+"""
 
 snd_mixer_selem_id_set_index = prototype(
     CAS2.c_void_p,
@@ -273,8 +308,9 @@ snd_mixer_selem_id_set_index = prototype(
     (CAS2.c_void_p, 1, "obj"),
     (CAS2.c_uint, 1, "val"),
 )
-"""Set index part of a mixer simple element identifier.
+"""Called from [_open_mixer_selem_id].
 
+Set index part of a mixer simple element identifier.
 :param snd_mixer_selem_id_t* obj: Mixer simple element identifier
 :param c_uint val: index part
 """
@@ -286,8 +322,9 @@ snd_mixer_selem_id_set_name = prototype(
     (CAS2.c_void_p, 1, "obj"),
     (CAS2.c_char_p, 1, "val"),
 )
-"""Set name part of a mixer simple element identifier.
+"""Called from [_open_mixer_selem_id].
 
+Set name part of a mixer simple element identifier.
 :param snd_mixer_selem_id_t* obj: Mixer simple element identifier
 :param c_char_p val: name part
 """
@@ -301,7 +338,7 @@ snd_mixer_find_selem = prototype(
 """Find a mixer simple element.
 
 :param snd_mixer_t* mixer: Mixer handle
-:param id: Mixer simple element identifier
+:param snd_mixer_selem_id_t* id: Mixer simple element identifier
 :return snd_mixer_elem_t*: mixer simple element handle or NULL if not found
 """
 
@@ -350,7 +387,7 @@ snd_mixer_selem_is_playback_mono = prototype(
 """Get info about channels of playback stream of a mixer simple element.
 
 :param snd_mixer_elem_t* elem: Mixer simple element handle
-:return: 0 if not mono, 1 if mono
+:return c_int: 0 if not mono, 1 if mono
 """
 
 snd_mixer_selem_has_playback_channel = prototype(
@@ -368,28 +405,32 @@ snd_mixer_selem_has_playback_channel = prototype(
 """
 
 
-def print_name_hint():
-    """print name hint
+def list_name_hint() -> list[str]:
+    """Return name hints table
 
     :example:
-    @ |iface|NAME |DECS |IOID |
-    @ | --- | --- | --- | --- |
-    @ |ctl  |pulse|None |None |
+    |iface|NAME |DECS |IOID |
+    | --- | --- | --- | --- |
+    |ctl  |pulse|None |None |
     """
-    print("|iface|NAME|DECS|IOID|")
-    print("|---|---|---|---|")
+    result: list[str] = list()
+    result.append("|iface|NAME|DECS|IOID|")
+    result.append("|---|---|---|---|")
     for iface in ["ctl", "pcm", "rawmidi", "timer", "seq"]:
         with _open_device_name_hint(card=-1, iface=iface) as hints:
             for hint in hints:
                 if hint is None:
                     break
-                name = snd_device_name_get_hint(hint=hint, id=b"NAME")
+                name = snd_device_name_get_hint(hint=hint, id=b"NAME").decode()
                 decs = snd_device_name_get_hint(hint=hint, id=b"DESC")
+                decs = "<br>".join(decs.decode().splitlines()) if decs else decs
                 ioid = snd_device_name_get_hint(hint=hint, id=b"IOID")
-                print(f"|{iface}|{name}|{decs}|{ioid}|")
+                ioid = ioid.decode() if ioid else ioid
+                result.append(f"|{iface}|{name}|{decs}|{ioid}|")
+    return result
 
 
-def _physical_sound_card_indexs() -> list[int]:
+def _physical_soundcard_indexs() -> list[int]:
     """Returns a list of physical sound card indexes.
 
     :return list[int]: ex) [0, 1, 2]
@@ -402,79 +443,87 @@ def _physical_sound_card_indexs() -> list[int]:
     return index_list
 
 
-def _physical_mixer_names() -> list[str]:
+def physical_mixer_names() -> list[str]:
     """Returns a list of names of mixer-compatible physical sound cards.
 
     :return list[str]: ex) ["hw:CARD=Headphones"]
     """
-    name_list: list[str] = list()
-    index_list = _physical_sound_card_indexs()
-    for index in index_list:
+    mixer_names: list[str] = list()
+    mixer_indexs = _physical_soundcard_indexs()
+    for index in mixer_indexs:
         with _open_device_name_hint(card=index, iface="ctl") as hints:
             name = snd_device_name_get_hint(hint=hints[0], id=b"NAME")
 
         with _open_mixer(name=name.decode()) as mixer:
             with _open_mixer_selem_id(idname="PCM") as selem_id:
                 if snd_mixer_find_selem(mixer=mixer, id=selem_id):
-                    name_list.append(name.decode())
-    return name_list
+                    mixer_names.append(name.decode())
+    return mixer_names
 
 
-def soundcardname() -> list[str]:
-    """Returns a list of added sound card names.
+def _amixer_volume(amixer_command: list) -> int:
+    """Controlling the volume
 
-    :return list[str]: list of added sound card names
+    :param list amixer_command: shell command for amixer volume control
+    :return int: volume
     """
-    all_card: list = _physical_mixer_names()
-    result: list = list("")
-    for cardname in all_card:
-        if cardname != "hw:CARD=Headphones":
-            result.append(cardname)
-
-    return result
-
-
-def volume(devicename: str, idname: str, value: int, mute: str) -> int:
-    """volume _summary_
-
-    :param str devicename: device name
-    :param str idname: id name
-    :param int value: volume[%]
-    :param str mute: "mute" to mute, otherwise "unmute"
-    :return int: volume[%]
-    """
-    # amixer -D devicename sset idname value%[,..] -M unmute
-    # amixer -D devicename sget idname
-    svalue: str = str(value) + "%"
-    chan_names: list[str] = channel_names(devicename, idname)
+    # command = ["amixer", "-D", devicename, "--", "sset", idname, svalue, "-M", mute]
+    # command = ["amixer", "-D", devicename, "--", "sget", idname, "-M"]
+    chan_names: list[str] = channel_names(
+        devicename=amixer_command[2], idname=amixer_command[5]
+    )
     volumepattern = "/\\[.+%\\]/"
     # unmutepattern = "/\\[(on|off)\\]/"
-    sget_command = ["amixer", "-D", devicename, "sget", idname]
-    sset_command = ["amixer", "-D", devicename, "sset", idname, svalue, "-M", mute]
+    volumes = list()
 
-    # result = run(sset_command, capture_output=True)
-    result = Popen(sset_command)
-    print(result)
-
-    val = list()
-    for channame in chan_names:
+    for chan_name in chan_names:
         awk_command = [
             "awk",
             "/"
-            + channame
+            + chan_name
             + ": Playback/ {if(match($0, "
             + volumepattern
             + ")) print substr($0, RSTART+1, RLENGTH-3)}",
         ]
-
-        with Popen(args=sget_command, stdout=PIPE) as res:
+        with Popen(args=amixer_command, stdout=PIPE) as res:
             with Popen(args=awk_command, stdin=res.stdout, stdout=PIPE) as res2:
-                val.append(int(res2.communicate()[0]))
+                volumes.append(int(res2.communicate()[0]))
+    return int(mean(volumes))
 
-    return int(mean(val))
+
+def get_volume(devicename: str, idname: str) -> int:
+    """get_volume _summary_
+
+    :param str devicename: _description_
+    :param str idname: _description_
+    :return int: _description_
+    """
+    command = ["amixer", "-D", devicename, "--", "sget", idname, "-M"]
+    return _amixer_volume(command)
+
+
+def set_volume(devicename: str, idname: str, value: int) -> int:
+    """set_volume _summary_
+
+    :param str devicename: _description_
+    :param str idname: _description_
+    :param int value: _description_
+    :return int: _description_
+    """
+    svalue: str = str(value) + "%"
+    command = ["amixer", "-D", devicename, "--", "sset", idname, svalue, "-M", "unmute"]
+    return _amixer_volume(command)
 
 
 def channel_names(devicename: str, idname: str) -> list:
+    """channel_names _summary_
+
+    :param str devicename: _description_
+    :param str idname: _description_
+    :raises AS2Error: _description_
+    :raises AS2Error: _description_
+    :return list: _description_
+    """
     result: list[str] = list()
     with _open_mixer(name=devicename) as mixer:
         with _open_mixer_selem_id(idname=idname) as id:
@@ -494,14 +543,42 @@ def channel_names(devicename: str, idname: str) -> list:
     return result
 
 
+def start_jackserver() -> tuple[str, str]:
+    """start jackserver.
+
+    :return tuple[str, str]: (device name, device control name)
+    """
+    btdevice: dict[str, str] = BTAS.device_info()
+    soundcard: list[str] = physical_mixer_names()
+    device_name: str = ""
+    device_controlname: str = ""
+    if "" not in btdevice:
+        device_name = "bluealsa:00:00:00:00:00:00"
+        device_controlname = "A2DP"
+    elif len(soundcard):
+        device_name = soundcard[-1]
+        device_controlname = "PCM"
+    else:
+        return ("", "")
+
+    with open(file="config/jack.json", mode="rt") as f:
+        settings = load(f)
+        for type, commandlist in settings[device_name].items():
+            for command in commandlist:
+                with Popen(command.split()) as res:
+                    if res.returncode:
+                        return ("", "")
+
+    return (device_name, device_controlname)
+
+
 if __name__ == "__main__":
     print(__file__)
 
-    print(f"ALSA sound library version: {bytes(snd_asoundlib_version()).decode()}")
-
-    print_name_hint()
-    print(f"physical sound card: {soundcardname()}")
-
-    print(volume("default", "Master", 50, "unmute"))
-    print(volume("hw:CARD=Headphones", "PCM", 70, "unmute"))
-    print(volume("hw:CARD=S", "PCM", 60, "unmute"))
+    with open("docs/alsa-namehint.md", "wt") as f:
+        print(
+            f"# ALSA sound library version: {bytes(snd_asoundlib_version()).decode()}",
+            file=f,
+        )
+        for name_hint in list_name_hint():
+            print(name_hint, file=f)

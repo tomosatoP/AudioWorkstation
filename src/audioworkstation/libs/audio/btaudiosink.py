@@ -65,7 +65,7 @@ def _connect(bt_address: str) -> bool:
     return False if result.returncode else True
 
 
-def btdevicename() -> dict[str, str]:
+def device_info() -> dict[str, str]:
     devices = _paired_devices()
 
     for name, address in devices.items():

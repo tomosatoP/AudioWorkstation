@@ -4,12 +4,12 @@
 import unittest
 
 # test amixer
-from src.audioworkstation.libs.audio import amixer as Master
+from audioworkstation.libs.audio import jackserver as Master
 
 
 class TestMaster(unittest.TestCase):
     def test_start(self):
-        self.assertTrue(Master.jackstart())
+        self.assertTrue(Master.start())
 
     def test_volume(self) -> None:
         arg = "50%,50%"

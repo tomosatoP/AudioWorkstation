@@ -21,7 +21,8 @@ def jacks():
         "jack_control dps outchannels 2",
         "jack_control start",
     ]
-    settings["Headphones"] = {"jack_control": jack_controls}
+    settings["hw:CARD=Headphones"] = {"jack_control": jack_controls}
+
     jack_controls = [
         "jack_control stop",
         "jack_control exit",
@@ -37,8 +38,7 @@ def jacks():
         "jack_control dps outchannels 2",
         "jack_control start",
     ]
-
-    settings["S"] = {"jack_control": jack_controls}
+    settings["hw:CARD=S"] = {"jack_control": jack_controls}
 
     with open(file="config/jack.json", mode="wt") as f:
         dump(obj=settings, fp=f, indent=4)
