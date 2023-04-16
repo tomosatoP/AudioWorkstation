@@ -1,6 +1,6 @@
 # RaspberryPi4 - Bluetooth A2DP 接続
-Bluetoothデバイスを **BlueALSA** を使って **JACK** から直接に扱えるようにする。<br>
-ただし、PulseAudio(主に、MASTERボリュームコントロール)と連動しなくなる。
+Bluetooth デバイスを **BlueALSA** を使って **JACK** から直接に扱えるようにする。<br>
+ただし、PulseAudio (主に、MASTER ボリュームコントロール)と連動しない。
 ## BlueALSA: Bluetooth Audio ALSA Backend
 https://github.com/Arkq/bluez-alsa
 ### Install Required Tools and Essential Development Libraries
@@ -55,7 +55,7 @@ https://github.com/Arkq/bluez-alsa
 |systemd|/lib/systemd/system/bluealsa.service<br>/lib/systemd/system/bluealsa-aplay.service|
 |binaries|/usr/lib/aarch64-linux-gnu/alsa-lib/*<br>/usr/bin/bluealsa<br>/usr/bin/bluealsa-aplay<br>/usr/bin/bluealsa-cli|
 ## 設定変更
-pulseaudio をBluetoothデバイスから切り離して、**BlueALSA** を有効にする。
+PulseAudio を Bluetooth デバイスから切り離して、**BlueALSA** を有効にする。
 ~~~diff
 ~ $ sudo apt purge --auto-remove pulseaudio-module-bluetooth
 ~ $ sudo unlink /etc/alsa/conf.d/99-pulse.conf

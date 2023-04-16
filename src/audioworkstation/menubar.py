@@ -23,7 +23,6 @@ class MenubarView(Widget):
         super().__init__(**kwargs)
 
         Logger.debug("Menubar: initializing...")
-
         self.panel.add_widget(keyboard.KeyboardView(name="keyboard"))
         self.panel.add_widget(metronome.MetronomeView(name="metronome"))
         self.panel.add_widget(player.PlayerView(name="player"))
@@ -48,7 +47,7 @@ class MenubarView(Widget):
         self.vol2.slider.value = self.panel.current_screen.volume
 
     def master_volume(self, widget, value):
-        asound.set_volume("hw:CARD=S", "PCM", value)
+        asound.set_volume("default", "Master", value)
 
     def mode_volume(self, widget, value):
         self.panel.current_screen.volume = value

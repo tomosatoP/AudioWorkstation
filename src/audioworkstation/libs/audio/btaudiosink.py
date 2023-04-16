@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Assists in connecting to Bluetooth device.
 
-:method dict attach(): dict is {name: address}  on connected device
+:method dict[str, str] device_info():
+Get information on connected Bluetooth devices.
 """
 
 import bluetooth as BT
@@ -25,47 +26,51 @@ def _paired_devices() -> dict[str, str]:
     return devices
 
 
-def _isnearby_audiosink(bt_address: str) -> bool:
-    """Find out if the paired device is nearby.
+def _isnearby_audiosink(address: str) -> bool:
+    """Find out if the paired device with Audio Sink is nearby.
 
-    :param str bt_address: paired device address
+    :param str address: paired device address
     :return bool: True is nearby, False is otherwise
     """
-    if not BT.lookup_name(address=bt_address):
+    if not BT.lookup_name(address=address):
         return False
 
-    pre_pipe = ["bluetoothctl", "--", "info", bt_address]
+    pre_pipe = ["bluetoothctl", "--", "info", address]
     post_pipe = ["grep", "Audio Sink"]
     result = Popen(args=pre_pipe, stdout=PIPE, text=True)
     result = Popen(args=post_pipe, stdin=result.stdout, stdout=PIPE, text=True)
     return True if result.communicate()[0] else False
 
 
-def _isconnected(bt_address: str, audio_sink: bool = True) -> bool:
+def _isconnected(address: str, audio_sink: bool = True) -> bool:
     """Check the connection of paired devices nearby.
 
-    :param str bt_address: address of paired devices nearby
+    :param str address: address of paired devices nearby
     :return bool: True is connected, False is otherwise
     """
-    pre_pipe = ["bluetoothctl", "--", "info", bt_address]
+    pre_pipe = ["bluetoothctl", "--", "info", address]
     post_pipe = ["grep", "Connected"]
     result = Popen(args=pre_pipe, stdout=PIPE, text=True)
     result = Popen(args=post_pipe, stdin=result.stdout, stdout=PIPE, text=True)
     return True if result.communicate()[0].split()[1] == "yes" else False
 
 
-def _connect(bt_address: str) -> bool:
+def _connect(address: str) -> bool:
     """Attempts to connect to a Bluetooth device.
 
-    :param str bt_address: device address
+    :param str address: device address
     :return bool: True is success, False is otherwise
     """
-    command = ["bluetoothctl", "--", "connect", bt_address]
+    command = ["bluetoothctl", "--", "connect", address]
     result = run(args=command, capture_output=True, text=True)
     return False if result.returncode else True
 
 
 def device_info() -> dict[str, str]:
+    """Get information on connected Bluetooth devices.
+
+    :return dict[str, str]: {name: address} during connection, otherwise {"": ""}
+    """
     devices = _paired_devices()
 
     for name, address in devices.items():

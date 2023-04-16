@@ -48,6 +48,8 @@ dev = [
   "black",
   "mypy",
   "isort",
+  "Sphinx",
+  "coverage",
 ]
 
 [tool.setuptools]
