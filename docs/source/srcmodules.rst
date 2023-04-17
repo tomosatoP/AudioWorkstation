@@ -1,5 +1,5 @@
-src
-===
+audioworkstation
+================
 
 .. toctree::
    :maxdepth: 4
