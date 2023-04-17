@@ -19,8 +19,14 @@ extensions = [
     "sphinx.ext.viewcode",
     "sphinx.ext.todo",
     "sphinx.ext.napoleon",
+    "sphinx.ext.githubpages",
 ]
-
+autodoc_typehints = "description"  # 型ヒントを有効
+autoclass_content = "both"  # __init__()も出力
+autodoc_default_options = {
+    "private-members": False,  # プライベートメソッドを表示しない
+    "show-inheritance": True,  # 継承を表示
+}
 templates_path = ["_templates"]
 exclude_patterns = []
 
@@ -29,5 +35,5 @@ language = "ja"
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-html_theme = "alabaster"
+html_theme = "haiku"
 html_static_path = ["_static"]

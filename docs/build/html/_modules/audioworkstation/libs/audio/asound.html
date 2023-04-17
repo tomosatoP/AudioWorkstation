@@ -1,0 +1,656 @@
+
+<!DOCTYPE html>
+
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>audioworkstation.libs.audio.asound &#8212; AudioWorkstation 1.0.0 ドキュメント</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/haiku.css" />
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/translations.js"></script>
+    <link rel="index" title="索引" href="../../../../genindex.html" />
+    <link rel="search" title="検索" href="../../../../search.html" /> 
+  </head><body>
+      <div class="header" role="banner"><h1 class="heading"><a href="../../../../index.html">
+          <span>AudioWorkstation 1.0.0 ドキュメント</span></a></h1>
+        <h2 class="heading"><span>audioworkstation.libs.audio.asound</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        <a class="uplink" href="../../../../index.html">コンテンツ</a>
+        </p>
+
+      </div>
+      <div class="content" role="main">
+        
+        
+  <h1>audioworkstation.libs.audio.asound のソースコード</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;Detect and configure sound devices, control volume.</span>
+
+<span class="sd">:reference: https://www.alsa-project.org/alsa-doc/alsa-lib/index.html</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Any</span>
+<span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">contextmanager</span>
+<span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">IntEnum</span><span class="p">,</span> <span class="n">auto</span>
+<span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">Popen</span><span class="p">,</span> <span class="n">PIPE</span>
+<span class="kn">from</span> <span class="nn">json</span> <span class="kn">import</span> <span class="n">load</span>
+<span class="kn">from</span> <span class="nn">statistics</span> <span class="kn">import</span> <span class="n">mean</span>
+<span class="kn">import</span> <span class="nn">ctypes</span> <span class="k">as</span> <span class="nn">CAS2</span>
+<span class="kn">from</span> <span class="nn">ctypes.util</span> <span class="kn">import</span> <span class="n">find_library</span>
+
+
+<span class="kn">from</span> <span class="nn">audioworkstation.libs.audio</span> <span class="kn">import</span> <span class="n">btaudiosink</span> <span class="k">as</span> <span class="n">BTAS</span>
+
+
+<div class="viewcode-block" id="AS2Error"><a class="viewcode-back" href="../../../../audioworkstation.libs.audio.html#audioworkstation.libs.audio.asound.AS2Error">[ドキュメント]</a><span class="k">class</span> <span class="nc">AS2Error</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Exceptions sent out from errcheck func.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ASError: </span><span class="si">{</span><span class="n">args</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">_errcheck_non_zero</span><span class="p">(</span><span class="n">result</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">cfunc</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">args</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">result</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">AS2Error</span><span class="p">((</span><span class="n">cfunc</span><span class="p">,</span> <span class="n">args</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+
+<span class="sd">&quot;&quot;&quot;libasound2&quot;&quot;&quot;</span>
+<span class="n">_libas2</span> <span class="o">=</span> <span class="n">CAS2</span><span class="o">.</span><span class="n">CDLL</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">find_library</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;asound&quot;</span><span class="p">),</span> <span class="n">use_errno</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_prototype</span><span class="p">(</span><span class="n">restype</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="n">params</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns a foreign function exported by a shared library.</span>
+
+<span class="sd">    :param Any restype: foreign function restype</span>
+<span class="sd">    :param str name: foreign function name</span>
+<span class="sd">    :param tuple params: type, flag, name[, default]</span>
+
+<span class="sd">    :return Any: foreign function object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">_libas2</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="n">argtypes</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">([])</span>
+        <span class="n">paramflags</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">([])</span>
+        <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">params</span><span class="p">:</span>
+            <span class="n">argtypes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">param</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">paramflags</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">param</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+        <span class="n">func_spec</span> <span class="o">=</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">_libas2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">CAS2</span><span class="o">.</span><span class="n">CFUNCTYPE</span><span class="p">(</span><span class="n">restype</span><span class="p">,</span> <span class="o">*</span><span class="n">argtypes</span><span class="p">,</span> <span class="n">use_errno</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span>
+            <span class="n">func_spec</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">paramflags</span><span class="p">)</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+
+<span class="sd">&quot;&quot;&quot;Global defines and functions.</span>
+
+<span class="sd">The ALSA library implementation uses these macros and functions.</span>
+<span class="sd">Most applications probably do not need them.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">_snd_asoundlib_version</span> <span class="o">=</span> <span class="n">_prototype</span><span class="p">(</span><span class="n">CAS2</span><span class="o">.</span><span class="n">c_char_p</span><span class="p">,</span> <span class="s2">&quot;snd_asoundlib_version&quot;</span><span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;Returns the ALSA sound library version in ASCII format.</span>
+
+<span class="sd">:return c_char_p: The ASCII description of the used ALSA sound library.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">&quot;&quot;&quot;The control interface.&quot;&quot;&quot;</span>
+
+
+<span class="nd">@contextmanager</span>
+<span class="k">def</span> <span class="nf">_open_device_name_hint</span><span class="p">(</span><span class="n">card</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">iface</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get a aset of device name hints(array of hint) .</span>
+
+<span class="sd">    :param int card: index of physical sound card</span>
+<span class="sd">    :param str iface: &quot;ctl&quot;, &quot;pcm&quot;, &quot;rawmidi&quot;, &quot;timer&quot;, &quot;seq&quot;</span>
+
+<span class="sd">    :return CAS2.POINTER(CAS2.POINTER(CAS2.c_void_p)): deviece name hints</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">resource</span> <span class="o">=</span> <span class="n">_snd_device_name_hint</span><span class="p">(</span><span class="n">CAS2</span><span class="o">.</span><span class="n">c_int</span><span class="p">(</span><span class="n">card</span><span class="p">),</span> <span class="n">iface</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">resource</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">_snd_device_name_free_hint</span><span class="p">(</span><span class="n">hints</span><span class="o">=</span><span class="n">resource</span><span class="o">.</span><span class="n">contents</span><span class="p">)</span>
+
+
+<span class="n">_snd_device_name_hint</span> <span class="o">=</span> <span class="n">_prototype</span><span class="p">(</span>
+    <span class="n">CAS2</span><span class="o">.</span><span class="n">c_int</span><span class="p">,</span>
+    <span class="s2">&quot;snd_device_name_hint&quot;</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">CAS2</span><span class="o">.</span><span class="n">c_int</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;card&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">CAS2</span><span class="o">.</span><span class="n">c_char_p</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;iface&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">CAS2</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">CAS2</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">CAS2</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">)),</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;hints&quot;</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;Called from [_open_device_name_hint]&quot;&quot;&quot;</span>
+
+
+<span class="k">def</span> <span class="nf">_errcheck_snd_device_name_hint</span><span class="p">(</span><span class="n">result</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">cfunc</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">args</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">result</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">AS2Error</span><span class="p">((</span><span class="n">cfunc</span><span class="p">,</span> <span class="n">args</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">args</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+
+<span class="n">_snd_device_name_hint</span><span class="o">.</span><span class="n">errcheck</span> <span class="o">=</span> <span class="n">_errcheck_snd_device_name_hint</span>
+
+<span class="n">_snd_device_name_free_hint</span> <span class="o">=</span> <span class="n">_prototype</span><span class="p">(</span>
+    <span class="n">CAS2</span><span class="o">.</span><span class="n">c_int</span><span class="p">,</span> <span class="s2">&quot;snd_device_name_free_hint&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">CAS2</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">CAS2</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;hints&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;Called from [_open_device_name_hint]&quot;&quot;&quot;</span>
+<span class="n">_snd_device_name_free_hint</span><span class="o">.</span><span class="n">errcheck</span> <span class="o">=</span> <span class="n">_errcheck_non_zero</span>
+
+
+<span class="n">_snd_device_name_get_hint</span> <span class="o">=</span> <span class="n">_prototype</span><span class="p">(</span>
+    <span class="n">CAS2</span><span class="o">.</span><span class="n">c_char_p</span><span class="p">,</span>
+    <span class="s2">&quot;snd_device_name_get_hint&quot;</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">CAS2</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;hint&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">CAS2</span><span class="o">.</span><span class="n">c_char_p</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;Extract the name from hint.</span>
+
+<span class="sd">The return value should be freed when no longer needed.</span>
+<span class="sd">:param c_void_p hint:</span>
+<span class="sd">:param c_char_p id: b&quot;NAME&quot;, b&quot;DESC&quot;, b&quot;IOID&quot;</span>
+<span class="sd">:return c_char_p: an allocated ASCII string</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="n">_snd_card_next</span> <span class="o">=</span> <span class="n">_prototype</span><span class="p">(</span>
+    <span class="n">CAS2</span><span class="o">.</span><span class="n">c_int</span><span class="p">,</span> <span class="s2">&quot;snd_card_next&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">CAS2</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">CAS2</span><span class="o">.</span><span class="n">c_int</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;rcard&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;Iterate over physical sound cards.</span>
+
+<span class="sd">:param POINTER(c_int) rcard:</span>
+<span class="sd">Index of current card. The index of the next card is stored here.</span>
+<span class="sd">:return c_int: zero if success, otherwise a negative error code.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">_snd_card_next</span><span class="o">.</span><span class="n">errcheck</span> <span class="o">=</span> <span class="n">_errcheck_non_zero</span>
+
+
+<span class="sd">&quot;&quot;&quot;The simple mixer interface.&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="SND_MIXER_SELEM_CHANNEL_ID_T"><a class="viewcode-back" href="../../../../audioworkstation.libs.audio.html#audioworkstation.libs.audio.asound.SND_MIXER_SELEM_CHANNEL_ID_T">[ドキュメント]</a><span class="k">class</span> <span class="nc">SND_MIXER_SELEM_CHANNEL_ID_T</span><span class="p">(</span><span class="n">IntEnum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;humei&quot;&quot;&quot;</span>
+
+    <span class="n">UNKNOWN</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>  <span class="c1">#: humei</span>
+    <span class="n">FRONT_LEFT</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+    <span class="n">FRONT_RIGHT</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+    <span class="n">REAR_LEFT</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+    <span class="n">REAR_RIGHT</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+    <span class="n">FRONT_CENTER</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+    <span class="n">WOOFER</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+    <span class="n">SIDE_LEFT</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+    <span class="n">SIDE_RIGHT</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+    <span class="n">REAR_CENTER</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+    <span class="n">MONO</span> <span class="o">=</span> <span class="n">FRONT_LEFT</span>
+    <span class="n">LAST</span> <span class="o">=</span> <span class="mi">31</span></div>
+
+
+<span class="nd">@contextmanager</span>
+<span class="k">def</span> <span class="nf">_open_mixer</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">classp</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Opens an empty mixer.</span>
+
+<span class="sd">    :param str name: HCTL name</span>
+<span class="sd">    :param int mode: 0(0x0000) is blocking mode</span>
+<span class="sd">        SND_CTL_NOBLOCK  0x0001: Non blocking mode  (flag for open mode)</span>
+<span class="sd">        SND_CTL_ASYNC    0x0002: Async notification (flag for open mode)</span>
+<span class="sd">        SND_CTL_READONLY 0x0004: Read only          (flag for open mode)</span>
+<span class="sd">    :return snd_mixer_t*: mixer handler, otherwise a negative error code</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">resource</span> <span class="o">=</span> <span class="n">_snd_mixer_open</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="n">CAS2</span><span class="o">.</span><span class="n">c_int</span><span class="p">(</span><span class="n">mode</span><span class="p">))</span>
+    <span class="n">_snd_mixer_attach</span><span class="p">(</span><span class="n">mixer</span><span class="o">=</span><span class="n">resource</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span>
+    <span class="n">_snd_mixer_selem_register</span><span class="p">(</span><span class="n">mixer</span><span class="o">=</span><span class="n">resource</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">,</span> <span class="n">classp</span><span class="o">=</span><span class="n">classp</span><span class="p">)</span>
+    <span class="n">_snd_mixer_load</span><span class="p">(</span><span class="n">mixer</span><span class="o">=</span><span class="n">resource</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">resource</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">_snd_mixer_close</span><span class="p">(</span><span class="n">mixer</span><span class="o">=</span><span class="n">resource</span><span class="p">)</span>
+
+
+<span class="n">_snd_mixer_open</span> <span class="o">=</span> <span class="n">_prototype</span><span class="p">(</span>
+    <span class="n">CAS2</span><span class="o">.</span><span class="n">c_int</span><span class="p">,</span>
+    <span class="s2">&quot;snd_mixer_open&quot;</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">CAS2</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">CAS2</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">),</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;mixerp&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">CAS2</span><span class="o">.</span><span class="n">c_int</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;mode&quot;</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;Called from [_open_mixer].</span>
+
+<span class="sd">Opens an empty mixer.</span>
+<span class="sd">:param c_int mode: Open mode</span>
+<span class="sd">:return [snd_mixer_t* | c_int]: mixer handle, otherwise a negative error code</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="k">def</span> <span class="nf">_errcheck_snd_mixer_open</span><span class="p">(</span><span class="n">result</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">cfunc</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">args</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">result</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">AS2Error</span><span class="p">((</span><span class="n">cfunc</span><span class="p">,</span> <span class="n">args</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+
+
+<span class="n">_snd_mixer_open</span><span class="o">.</span><span class="n">errcheck</span> <span class="o">=</span> <span class="n">_errcheck_snd_mixer_open</span>
+
+<span class="n">_snd_mixer_close</span> <span class="o">=</span> <span class="n">_prototype</span><span class="p">(</span>
+    <span class="n">CAS2</span><span class="o">.</span><span class="n">c_int</span><span class="p">,</span> <span class="s2">&quot;snd_mixer_close&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">CAS2</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;mixer&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;Called from [_open_mixer].</span>
+
+<span class="sd">Close a mixer and free all related resources.</span>
+<span class="sd">:param snd_mixer_t* mixer: Mixer handle</span>
+<span class="sd">:return c_int: 0 on success otherwise a negative error code</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">_snd_mixer_close</span><span class="o">.</span><span class="n">errcheck</span> <span class="o">=</span> <span class="n">_errcheck_non_zero</span>
+
+
+<span class="n">_snd_mixer_attach</span> <span class="o">=</span> <span class="n">_prototype</span><span class="p">(</span>
+    <span class="n">CAS2</span><span class="o">.</span><span class="n">c_int</span><span class="p">,</span>
+    <span class="s2">&quot;snd_mixer_attach&quot;</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">CAS2</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;mixer&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">CAS2</span><span class="o">.</span><span class="n">c_char_p</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;Called from [_open_mixer].</span>
+
+<span class="sd">Attach an HCTL specified with the CTL device name to an opened mixer.</span>
+<span class="sd">:param snd_mixer_t* mixer: mixer handler</span>
+<span class="sd">:param const char* name: HCTL name</span>
+<span class="sd">:return c_int: 0 on success otherwise a negative error code</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">_snd_mixer_attach</span><span class="o">.</span><span class="n">errcheck</span> <span class="o">=</span> <span class="n">_errcheck_non_zero</span>
+
+<span class="n">_snd_mixer_selem_register</span> <span class="o">=</span> <span class="n">_prototype</span><span class="p">(</span>
+    <span class="n">CAS2</span><span class="o">.</span><span class="n">c_int</span><span class="p">,</span>
+    <span class="s2">&quot;snd_mixer_selem_register&quot;</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">CAS2</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;mixer&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">CAS2</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;options&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">CAS2</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">CAS2</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;classp&quot;</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;Called from [_open_mixer].</span>
+
+<span class="sd">Register mixer simple element class.</span>
+<span class="sd">:param snd_mixet_t* mixer: Mixer handle</span>
+<span class="sd">:param struct snd_mixer_selem_regopt* options: Options container</span>
+<span class="sd">:param snd_mixer_class_t** classp:</span>
+<span class="sd">Pointer to returned mixer simple element class handle (or NULL)</span>
+<span class="sd">:return c_int: 0 on success otherwise a negative error code</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">_snd_mixer_selem_register</span><span class="o">.</span><span class="n">errcheck</span> <span class="o">=</span> <span class="n">_errcheck_non_zero</span>
+
+<span class="n">_snd_mixer_load</span> <span class="o">=</span> <span class="n">_prototype</span><span class="p">(</span><span class="n">CAS2</span><span class="o">.</span><span class="n">c_int</span><span class="p">,</span> <span class="s2">&quot;snd_mixer_load&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">CAS2</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;mixer&quot;</span><span class="p">))</span>
+<span class="sd">&quot;&quot;&quot;Called from [_open_mixer].</span>
+
+<span class="sd">Load a mixer elements.</span>
+<span class="sd">:param snd_mixer_t* mixer: Mixer handle</span>
+<span class="sd">:return c_int: 0 on success otherwise a negative error code</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">_snd_mixer_load</span><span class="o">.</span><span class="n">errcheck</span> <span class="o">=</span> <span class="n">_errcheck_non_zero</span>
+
+
+<span class="nd">@contextmanager</span>
+<span class="k">def</span> <span class="nf">_open_mixer_selem_id</span><span class="p">(</span><span class="n">idname</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;allocate an invalid snd_mixer_selem_id_t using standard malloc</span>
+
+<span class="sd">    :param * idname: name part</span>
+<span class="sd">    :return snd_mixer_selem_id_t*: ptr otherwise negative error code</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">resource</span> <span class="o">=</span> <span class="n">_snd_mixer_selem_id_malloc</span><span class="p">()</span>
+    <span class="n">_snd_mixer_selem_id_set_index</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="n">resource</span><span class="p">,</span> <span class="n">val</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">_snd_mixer_selem_id_set_name</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="n">resource</span><span class="p">,</span> <span class="n">val</span><span class="o">=</span><span class="n">idname</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">resource</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">_snd_mixer_selem_id_free</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="n">resource</span><span class="p">)</span>
+
+
+<span class="n">_snd_mixer_selem_id_malloc</span> <span class="o">=</span> <span class="n">_prototype</span><span class="p">(</span>
+    <span class="n">CAS2</span><span class="o">.</span><span class="n">c_int</span><span class="p">,</span> <span class="s2">&quot;snd_mixer_selem_id_malloc&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">CAS2</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">CAS2</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">),</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;ptr&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;Called from [_open_mixer_selem_id].</span>
+
+<span class="sd">allocate an invalid snd_mixer_selem_id_t using standard malloc</span>
+<span class="sd">:return [snd_mixer_selem_id_t* | c_int]: returned pointer, otherwise negative error code</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="k">def</span> <span class="nf">_errcheck_snd_mixer_selem_id_malloc</span><span class="p">(</span>
+    <span class="n">result</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">cfunc</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">args</span><span class="p">:</span> <span class="nb">tuple</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">result</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">AS2Error</span><span class="p">((</span><span class="n">cfunc</span><span class="p">,</span> <span class="n">args</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span>
+
+
+<span class="n">_snd_mixer_selem_id_malloc</span><span class="o">.</span><span class="n">errcheck</span> <span class="o">=</span> <span class="n">_errcheck_snd_mixer_selem_id_malloc</span>
+
+<span class="n">_snd_mixer_selem_id_free</span> <span class="o">=</span> <span class="n">_prototype</span><span class="p">(</span>
+    <span class="n">CAS2</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">,</span> <span class="s2">&quot;snd_mixer_selem_id_free&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">CAS2</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;obj&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;Called from [_open_mixer_selem_id].</span>
+
+<span class="sd">frees a previously allocated snd_mixer_selem_id_t</span>
+<span class="sd">:param snd_mixer_selem_id_t* obj: pointer to object to free</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">_snd_mixer_selem_id_set_index</span> <span class="o">=</span> <span class="n">_prototype</span><span class="p">(</span>
+    <span class="n">CAS2</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">,</span>
+    <span class="s2">&quot;snd_mixer_selem_id_set_index&quot;</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">CAS2</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;obj&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">CAS2</span><span class="o">.</span><span class="n">c_uint</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;val&quot;</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;Called from [_open_mixer_selem_id].</span>
+
+<span class="sd">Set index part of a mixer simple element identifier.</span>
+<span class="sd">:param snd_mixer_selem_id_t* obj: Mixer simple element identifier</span>
+<span class="sd">:param c_uint val: index part</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="n">_snd_mixer_selem_id_set_name</span> <span class="o">=</span> <span class="n">_prototype</span><span class="p">(</span>
+    <span class="n">CAS2</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">,</span>
+    <span class="s2">&quot;snd_mixer_selem_id_set_name&quot;</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">CAS2</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;obj&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">CAS2</span><span class="o">.</span><span class="n">c_char_p</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;val&quot;</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;Called from [_open_mixer_selem_id].</span>
+
+<span class="sd">Set name part of a mixer simple element identifier.</span>
+<span class="sd">:param snd_mixer_selem_id_t* obj: Mixer simple element identifier</span>
+<span class="sd">:param c_char_p val: name part</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">_snd_mixer_find_selem</span> <span class="o">=</span> <span class="n">_prototype</span><span class="p">(</span>
+    <span class="n">CAS2</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">,</span>
+    <span class="s2">&quot;snd_mixer_find_selem&quot;</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">CAS2</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;mixer&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">CAS2</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;Find a mixer simple element.</span>
+
+<span class="sd">:param snd_mixer_t* mixer: Mixer handle</span>
+<span class="sd">:param snd_mixer_selem_id_t* id: Mixer simple element identifier</span>
+<span class="sd">:return snd_mixer_elem_t*: mixer simple element handle or NULL if not found</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="k">def</span> <span class="nf">_errcheck_snd_mixer_find_selem</span><span class="p">(</span><span class="n">result</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">cfunc</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">args</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">result</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">AS2Error</span><span class="p">((</span><span class="n">cfunc</span><span class="p">,</span> <span class="n">args</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+
+<span class="n">_snd_mixer_find_selem</span><span class="o">.</span><span class="n">errchek</span> <span class="o">=</span> <span class="n">_errcheck_snd_mixer_find_selem</span>
+
+<span class="n">_snd_mixer_selem_is_enumerated</span> <span class="o">=</span> <span class="n">_prototype</span><span class="p">(</span>
+    <span class="n">CAS2</span><span class="o">.</span><span class="n">c_int</span><span class="p">,</span> <span class="s2">&quot;snd_mixer_selem_is_enumerated&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">CAS2</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;elem&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;Return true if mixer simple element is an enumerated control.</span>
+
+<span class="sd">:param snd_mixer_elem_t* elem: Mixer simple element handle</span>
+<span class="sd">:param c_int: 0 normal volume/switch control, 1 enumerated control</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="n">_snd_mixer_selem_has_playback_volume</span> <span class="o">=</span> <span class="n">_prototype</span><span class="p">(</span>
+    <span class="n">CAS2</span><span class="o">.</span><span class="n">c_int</span><span class="p">,</span> <span class="s2">&quot;snd_mixer_selem_has_playback_switch&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">CAS2</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;elem&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;Return info about playback volume control of a mixer simple element.</span>
+
+<span class="sd">:param snd_mixer_elem_t* elem: Mixer simple element handle</span>
+<span class="sd">:return c_int: 0 if no control is present, 1 if it&#39;s present</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">_snd_mixer_selem_channel_name</span> <span class="o">=</span> <span class="n">_prototype</span><span class="p">(</span>
+    <span class="n">CAS2</span><span class="o">.</span><span class="n">c_char_p</span><span class="p">,</span> <span class="s2">&quot;snd_mixer_selem_channel_name&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">CAS2</span><span class="o">.</span><span class="n">c_int</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;channel&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;Return name of mixer simple element channel.</span>
+
+<span class="sd">:param c_int[SND_MIXER_SELEM_CHANNNEL_ID_T] channel:</span>
+<span class="sd">mixer simple element channel identifier</span>
+<span class="sd">:return c_char_p :channel name</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="n">_snd_mixer_selem_is_playback_mono</span> <span class="o">=</span> <span class="n">_prototype</span><span class="p">(</span>
+    <span class="n">CAS2</span><span class="o">.</span><span class="n">c_int</span><span class="p">,</span> <span class="s2">&quot;snd_mixer_selem_is_playback_mono&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">CAS2</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;elem&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;Get info about channels of playback stream of a mixer simple element.</span>
+
+<span class="sd">:param snd_mixer_elem_t* elem: Mixer simple element handle</span>
+<span class="sd">:return c_int: 0 if not mono, 1 if mono</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">_snd_mixer_selem_has_playback_channel</span> <span class="o">=</span> <span class="n">_prototype</span><span class="p">(</span>
+    <span class="n">CAS2</span><span class="o">.</span><span class="n">c_int</span><span class="p">,</span>
+    <span class="s2">&quot;snd_mixer_selem_has_playback_channel&quot;</span><span class="p">,</span>
+    <span class="p">(</span><span class="n">CAS2</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;elem&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">CAS2</span><span class="o">.</span><span class="n">c_int</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;channel&quot;</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;Get info about channels of playback stream of a mixer simple element.</span>
+
+<span class="sd">:param snd_mixer_elem_t* elem: Mixer simple element handle</span>
+<span class="sd">:param c_int[SND_MIXER_SELEM_CHANNEL_ID_T] channel:</span>
+<span class="sd">    Mixer simple element channel identifier</span>
+<span class="sd">:return c_int: 0 if channel is not present, 1 if present</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="list_name_hint"><a class="viewcode-back" href="../../../../audioworkstation.libs.audio.html#audioworkstation.libs.audio.asound.list_name_hint">[ドキュメント]</a><span class="k">def</span> <span class="nf">list_name_hint</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return name hints table.</span>
+
+<span class="sd">    :returns: name hints table</span>
+<span class="sd">    &lt;examples&gt;</span>
+
+<span class="sd">    +-----+-----+-----+-----+</span>
+<span class="sd">    |iface|NAME |DECS |IOID |</span>
+<span class="sd">    +=====+=====+=====+=====+</span>
+<span class="sd">    |ctl  |pulse|None |None |</span>
+<span class="sd">    +-----+-----+-----+-----+</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">result</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;|iface|NAME|DECS|IOID|&quot;</span><span class="p">)</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;|---|---|---|---|&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">iface</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;ctl&quot;</span><span class="p">,</span> <span class="s2">&quot;pcm&quot;</span><span class="p">,</span> <span class="s2">&quot;rawmidi&quot;</span><span class="p">,</span> <span class="s2">&quot;timer&quot;</span><span class="p">,</span> <span class="s2">&quot;seq&quot;</span><span class="p">]:</span>
+        <span class="k">with</span> <span class="n">_open_device_name_hint</span><span class="p">(</span><span class="n">card</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">iface</span><span class="o">=</span><span class="n">iface</span><span class="p">)</span> <span class="k">as</span> <span class="n">hints</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">hint</span> <span class="ow">in</span> <span class="n">hints</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">hint</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">break</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="n">_snd_device_name_get_hint</span><span class="p">(</span><span class="n">hint</span><span class="o">=</span><span class="n">hint</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="sa">b</span><span class="s2">&quot;NAME&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+                <span class="n">decs</span> <span class="o">=</span> <span class="n">_snd_device_name_get_hint</span><span class="p">(</span><span class="n">hint</span><span class="o">=</span><span class="n">hint</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="sa">b</span><span class="s2">&quot;DESC&quot;</span><span class="p">)</span>
+                <span class="n">decs</span> <span class="o">=</span> <span class="s2">&quot;&lt;br&gt;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">decs</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span><span class="o">.</span><span class="n">splitlines</span><span class="p">())</span> <span class="k">if</span> <span class="n">decs</span> <span class="k">else</span> <span class="n">decs</span>
+                <span class="n">ioid</span> <span class="o">=</span> <span class="n">_snd_device_name_get_hint</span><span class="p">(</span><span class="n">hint</span><span class="o">=</span><span class="n">hint</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="sa">b</span><span class="s2">&quot;IOID&quot;</span><span class="p">)</span>
+                <span class="n">ioid</span> <span class="o">=</span> <span class="n">ioid</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span> <span class="k">if</span> <span class="n">ioid</span> <span class="k">else</span> <span class="n">ioid</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;|</span><span class="si">{</span><span class="n">iface</span><span class="si">}</span><span class="s2">|</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">|</span><span class="si">{</span><span class="n">decs</span><span class="si">}</span><span class="s2">|</span><span class="si">{</span><span class="n">ioid</span><span class="si">}</span><span class="s2">|&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+<span class="k">def</span> <span class="nf">_physical_soundcard_indexs</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns a list of physical sound card indexes.</span>
+
+<span class="sd">    :return list[int]: physical sound card indexes</span>
+<span class="sd">    :examples: [0, 1, 2]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">index_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="n">index</span><span class="p">:</span> <span class="n">CAS2</span><span class="o">.</span><span class="n">c_int</span> <span class="o">=</span> <span class="n">CAS2</span><span class="o">.</span><span class="n">c_int</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">while</span> <span class="n">index</span><span class="o">.</span><span class="n">value</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+        <span class="n">index_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">index</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+        <span class="n">_snd_card_next</span><span class="p">(</span><span class="n">CAS2</span><span class="o">.</span><span class="n">byref</span><span class="p">(</span><span class="n">index</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">index_list</span>
+
+
+<span class="k">def</span> <span class="nf">_physical_mixer_names</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns a list of names of mixer-compatible physical sound cards.</span>
+
+<span class="sd">    :return list[str]: names of mixer-compatible physical sound cards</span>
+<span class="sd">    :examples: [&quot;hw:CARD=Headphones&quot;, &quot;hw:CARD=S&quot;]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">mixer_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="n">mixer_indexs</span> <span class="o">=</span> <span class="n">_physical_soundcard_indexs</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">mixer_indexs</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">_open_device_name_hint</span><span class="p">(</span><span class="n">card</span><span class="o">=</span><span class="n">index</span><span class="p">,</span> <span class="n">iface</span><span class="o">=</span><span class="s2">&quot;ctl&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">hints</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">_snd_device_name_get_hint</span><span class="p">(</span><span class="n">hint</span><span class="o">=</span><span class="n">hints</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">id</span><span class="o">=</span><span class="sa">b</span><span class="s2">&quot;NAME&quot;</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="n">_open_mixer</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span> <span class="k">as</span> <span class="n">mixer</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">_open_mixer_selem_id</span><span class="p">(</span><span class="n">idname</span><span class="o">=</span><span class="s2">&quot;PCM&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">selem_id</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">_snd_mixer_find_selem</span><span class="p">(</span><span class="n">mixer</span><span class="o">=</span><span class="n">mixer</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">selem_id</span><span class="p">):</span>
+                    <span class="n">mixer_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
+    <span class="k">return</span> <span class="n">mixer_names</span>
+
+
+<span class="k">def</span> <span class="nf">_amixer_volume</span><span class="p">(</span><span class="n">amixer_command</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Controlling the volume</span>
+
+<span class="sd">    :param list amixer_command: shell command for amixer volume control</span>
+<span class="sd">    :examples:</span>
+<span class="sd">    [&quot;amixer&quot;, &quot;-D&quot;, devicename, &quot;--&quot;, &quot;sset&quot;, idname, svalue, &quot;-M&quot;, mute]</span>
+<span class="sd">    [&quot;amixer&quot;, &quot;-D&quot;, devicename, &quot;--&quot;, &quot;sget&quot;, idname, &quot;-M&quot;]</span>
+<span class="sd">    :return int: volume</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">chan_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">_channel_names</span><span class="p">(</span>
+        <span class="n">devicename</span><span class="o">=</span><span class="n">amixer_command</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">idname</span><span class="o">=</span><span class="n">amixer_command</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="n">volumepattern</span> <span class="o">=</span> <span class="s2">&quot;/</span><span class="se">\\</span><span class="s2">[.+%</span><span class="se">\\</span><span class="s2">]/&quot;</span>
+    <span class="c1"># unmutepattern = &quot;/\\[(on|off)\\]/&quot;</span>
+    <span class="n">volumes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">chan_name</span> <span class="ow">in</span> <span class="n">chan_names</span><span class="p">:</span>
+        <span class="n">awk_command</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;awk&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;/&quot;</span>
+            <span class="o">+</span> <span class="n">chan_name</span>
+            <span class="o">+</span> <span class="s2">&quot;: Playback/ {if(match($0, &quot;</span>
+            <span class="o">+</span> <span class="n">volumepattern</span>
+            <span class="o">+</span> <span class="s2">&quot;)) print substr($0, RSTART+1, RLENGTH-3)}&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="k">with</span> <span class="n">Popen</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="n">amixer_command</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">PIPE</span><span class="p">)</span> <span class="k">as</span> <span class="n">res</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">Popen</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="n">awk_command</span><span class="p">,</span> <span class="n">stdin</span><span class="o">=</span><span class="n">res</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">PIPE</span><span class="p">)</span> <span class="k">as</span> <span class="n">res2</span><span class="p">:</span>
+                <span class="n">volumes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">res2</span><span class="o">.</span><span class="n">communicate</span><span class="p">()[</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">mean</span><span class="p">(</span><span class="n">volumes</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="get_volume"><a class="viewcode-back" href="../../../../audioworkstation.libs.audio.html#audioworkstation.libs.audio.asound.get_volume">[ドキュメント]</a><span class="k">def</span> <span class="nf">get_volume</span><span class="p">(</span><span class="n">devicename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">idname</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get volume.</span>
+
+<span class="sd">    :param devicename: devicename</span>
+<span class="sd">    :param idname: idname</span>
+<span class="sd">    :returns: volume[%]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">command</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;amixer&quot;</span><span class="p">,</span> <span class="s2">&quot;-D&quot;</span><span class="p">,</span> <span class="n">devicename</span><span class="p">,</span> <span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="s2">&quot;sget&quot;</span><span class="p">,</span> <span class="n">idname</span><span class="p">,</span> <span class="s2">&quot;-M&quot;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">_amixer_volume</span><span class="p">(</span><span class="n">command</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="set_volume"><a class="viewcode-back" href="../../../../audioworkstation.libs.audio.html#audioworkstation.libs.audio.asound.set_volume">[ドキュメント]</a><span class="k">def</span> <span class="nf">set_volume</span><span class="p">(</span><span class="n">devicename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">idname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Set volume.</span>
+
+<span class="sd">    :param devicename: devicename</span>
+<span class="sd">    :param idname: idname</span>
+<span class="sd">    :param value: volume[%] to be set</span>
+<span class="sd">    :returns: volume[%]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">svalue</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;%&quot;</span>
+    <span class="n">command</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;amixer&quot;</span><span class="p">,</span> <span class="s2">&quot;-D&quot;</span><span class="p">,</span> <span class="n">devicename</span><span class="p">,</span> <span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="s2">&quot;sset&quot;</span><span class="p">,</span> <span class="n">idname</span><span class="p">,</span> <span class="n">svalue</span><span class="p">,</span> <span class="s2">&quot;-M&quot;</span><span class="p">,</span> <span class="s2">&quot;unmute&quot;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">_amixer_volume</span><span class="p">(</span><span class="n">command</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">_channel_names</span><span class="p">(</span><span class="n">devicename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">idname</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;channel_names _summary_</span>
+
+<span class="sd">    :param str devicename: devicename</span>
+<span class="sd">    :param str idname: idname</span>
+<span class="sd">    :raises AS2Error: &quot;enumrate control&quot;</span>
+<span class="sd">    :raises AS2Error: &quot;no control playback volume&quot;</span>
+<span class="sd">    :return list: channel names</span>
+<span class="sd">    :examples: [&quot;Mono&quot;]</span>
+<span class="sd">    :examples: [&quot;Front Left&quot;, &quot;Front Right&quot;]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">result</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="k">with</span> <span class="n">_open_mixer</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">devicename</span><span class="p">)</span> <span class="k">as</span> <span class="n">mixer</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">_open_mixer_selem_id</span><span class="p">(</span><span class="n">idname</span><span class="o">=</span><span class="n">idname</span><span class="p">)</span> <span class="k">as</span> <span class="nb">id</span><span class="p">:</span>
+            <span class="n">elem</span> <span class="o">=</span> <span class="n">_snd_mixer_find_selem</span><span class="p">(</span><span class="n">mixer</span><span class="o">=</span><span class="n">mixer</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">_snd_mixer_selem_is_enumerated</span><span class="p">(</span><span class="n">elem</span><span class="o">=</span><span class="n">elem</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">AS2Error</span><span class="p">(</span><span class="s2">&quot;enumrate control&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">_snd_mixer_selem_has_playback_volume</span><span class="p">(</span><span class="n">elem</span><span class="o">=</span><span class="n">elem</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">AS2Error</span><span class="p">(</span><span class="s2">&quot;no control playback volume&quot;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">_snd_mixer_selem_is_playback_mono</span><span class="p">(</span><span class="n">elem</span><span class="o">=</span><span class="n">elem</span><span class="p">):</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Mono&quot;</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">channel</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">SND_MIXER_SELEM_CHANNEL_ID_T</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">_snd_mixer_selem_has_playback_channel</span><span class="p">(</span>
+                        <span class="n">elem</span><span class="o">=</span><span class="n">elem</span><span class="p">,</span> <span class="n">channel</span><span class="o">=</span><span class="n">channel</span>
+                    <span class="p">):</span>
+                        <span class="n">buffer</span> <span class="o">=</span> <span class="n">_snd_mixer_selem_channel_name</span><span class="p">(</span><span class="n">channel</span><span class="o">=</span><span class="n">channel</span><span class="p">)</span>
+                        <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">buffer</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+
+<div class="viewcode-block" id="start_jackserver"><a class="viewcode-back" href="../../../../audioworkstation.libs.audio.html#audioworkstation.libs.audio.asound.start_jackserver">[ドキュメント]</a><span class="k">def</span> <span class="nf">start_jackserver</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Start JACK server.</span>
+
+<span class="sd">    :returns: (device name, device control name)</span>
+<span class="sd">    | &lt;exapmles&gt; (&quot;bluealsa:00:00:00:00:00:00&quot;, &quot;A2DP&quot;)</span>
+<span class="sd">    | &lt;exapmles&gt; (&quot;default&quot;, &quot;Master&quot;)</span>
+<span class="sd">    | &lt;exapmles&gt; (&quot;&quot;, &quot;&quot;) if failed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">btdevice</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">BTAS</span><span class="o">.</span><span class="n">device_info</span><span class="p">()</span>
+    <span class="n">soundcard</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">_physical_mixer_names</span><span class="p">()</span>
+    <span class="n">device_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">device_controlname</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">volume_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">volume_controlname</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">if</span> <span class="s2">&quot;&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">btdevice</span><span class="p">:</span>
+        <span class="n">device_name</span> <span class="o">=</span> <span class="s2">&quot;bluealsa:00:00:00:00:00:00&quot;</span>
+        <span class="n">device_controlname</span> <span class="o">=</span> <span class="s2">&quot;A2DP&quot;</span>
+        <span class="n">volume_name</span> <span class="o">=</span> <span class="n">device_name</span>
+        <span class="n">volume_controlname</span> <span class="o">=</span> <span class="n">device_controlname</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">soundcard</span><span class="p">):</span>
+        <span class="n">device_name</span> <span class="o">=</span> <span class="n">soundcard</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">device_controlname</span> <span class="o">=</span> <span class="s2">&quot;PCM&quot;</span>
+        <span class="n">volume_name</span> <span class="o">=</span> <span class="s2">&quot;default&quot;</span>
+        <span class="n">volume_controlname</span> <span class="o">=</span> <span class="s2">&quot;Master&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">volume_name</span><span class="p">,</span> <span class="n">volume_controlname</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="o">=</span><span class="s2">&quot;config/jack.json&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;rt&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">settings</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="k">for</span> <span class="nb">type</span><span class="p">,</span> <span class="n">commandlist</span> <span class="ow">in</span> <span class="n">settings</span><span class="p">[</span><span class="n">device_name</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">command</span> <span class="ow">in</span> <span class="n">commandlist</span><span class="p">:</span>
+                <span class="k">with</span> <span class="n">Popen</span><span class="p">(</span><span class="n">command</span><span class="o">.</span><span class="n">split</span><span class="p">())</span> <span class="k">as</span> <span class="n">res</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">res</span><span class="o">.</span><span class="n">returncode</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">volume_name</span><span class="p">,</span> <span class="n">volume_controlname</span><span class="p">)</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;docs/alsa-namehint.md&quot;</span><span class="p">,</span> <span class="s2">&quot;wt&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;# ALSA sound library version: </span><span class="si">{</span><span class="nb">bytes</span><span class="p">(</span><span class="n">_snd_asoundlib_version</span><span class="p">())</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">f</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">name_hint</span> <span class="ow">in</span> <span class="n">list_name_hint</span><span class="p">():</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">name_hint</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">f</span><span class="p">)</span>
+</pre></div>
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        <a class="uplink" href="../../../../index.html">コンテンツ</a>
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2023, tomosatoP.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
+    </div>
+  </body>
+</html>

@@ -1,12 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Detect and configure sound cards, control volume.
+"""Detect and configure sound devices, control volume.
 
-:method tuple[str, str] start_jackserver(): Start jackserver.
-:method list[str] list_name_hint(): Return name hints table.
-:method int get_volume(devicename str, idname str): Get volume.
-:method int set_volume(devicename str, idname str, value int): Set volume.
-https://www.alsa-project.org/alsa-doc/alsa-lib/index.html
+:reference: https://www.alsa-project.org/alsa-doc/alsa-lib/index.html
 """
 
 from typing import Callable, Any
@@ -150,7 +146,9 @@ _snd_card_next.errcheck = _errcheck_non_zero
 
 
 class SND_MIXER_SELEM_CHANNEL_ID_T(IntEnum):
-    UNKNOWN = -1
+    """humei"""
+
+    UNKNOWN = -1  #: humei
     FRONT_LEFT = auto()
     FRONT_RIGHT = auto()
     REAR_LEFT = auto()
@@ -413,10 +411,14 @@ _snd_mixer_selem_has_playback_channel = _prototype(
 def list_name_hint() -> list[str]:
     """Return name hints table.
 
-    :examples:
+    :returns: name hints table
+    <examples>
+
+    +-----+-----+-----+-----+
     |iface|NAME |DECS |IOID |
-    | --- | --- | --- | --- |
+    +=====+=====+=====+=====+
     |ctl  |pulse|None |None |
+    +-----+-----+-----+-----+
     """
     result: list[str] = list()
     result.append("|iface|NAME|DECS|IOID|")
@@ -438,7 +440,8 @@ def list_name_hint() -> list[str]:
 def _physical_soundcard_indexs() -> list[int]:
     """Returns a list of physical sound card indexes.
 
-    :return list[int]: ex) [0, 1, 2]
+    :return list[int]: physical sound card indexes
+    :examples: [0, 1, 2]
     """
     index_list: list[int] = list()
     index: CAS2.c_int = CAS2.c_int(0)
@@ -451,7 +454,8 @@ def _physical_soundcard_indexs() -> list[int]:
 def _physical_mixer_names() -> list[str]:
     """Returns a list of names of mixer-compatible physical sound cards.
 
-    :return list[str]: ex) ["hw:CARD=Headphones"]
+    :return list[str]: names of mixer-compatible physical sound cards
+    :examples: ["hw:CARD=Headphones", "hw:CARD=S"]
     """
     mixer_names: list[str] = list()
     mixer_indexs = _physical_soundcard_indexs()
@@ -470,10 +474,11 @@ def _amixer_volume(amixer_command: list) -> int:
     """Controlling the volume
 
     :param list amixer_command: shell command for amixer volume control
+    :examples:
+    ["amixer", "-D", devicename, "--", "sset", idname, svalue, "-M", mute]
+    ["amixer", "-D", devicename, "--", "sget", idname, "-M"]
     :return int: volume
     """
-    # command = ["amixer", "-D", devicename, "--", "sset", idname, svalue, "-M", mute]
-    # command = ["amixer", "-D", devicename, "--", "sget", idname, "-M"]
     chan_names: list[str] = _channel_names(
         devicename=amixer_command[2], idname=amixer_command[5]
     )
@@ -497,23 +502,23 @@ def _amixer_volume(amixer_command: list) -> int:
 
 
 def get_volume(devicename: str, idname: str) -> int:
-    """get_volume _summary_
+    """Get volume.
 
-    :param str devicename: _description_
-    :param str idname: _description_
-    :return int: _description_
+    :param devicename: devicename
+    :param idname: idname
+    :returns: volume[%]
     """
     command = ["amixer", "-D", devicename, "--", "sget", idname, "-M"]
     return _amixer_volume(command)
 
 
 def set_volume(devicename: str, idname: str, value: int) -> int:
-    """set_volume _summary_
+    """Set volume.
 
-    :param str devicename: _description_
-    :param str idname: _description_
-    :param int value: _description_
-    :return int: _description_
+    :param devicename: devicename
+    :param idname: idname
+    :param value: volume[%] to be set
+    :returns: volume[%]
     """
     svalue: str = str(value) + "%"
     command = ["amixer", "-D", devicename, "--", "sset", idname, svalue, "-M", "unmute"]
@@ -523,11 +528,13 @@ def set_volume(devicename: str, idname: str, value: int) -> int:
 def _channel_names(devicename: str, idname: str) -> list:
     """channel_names _summary_
 
-    :param str devicename: _description_
-    :param str idname: _description_
-    :raises AS2Error: _description_
-    :raises AS2Error: _description_
-    :return list: _description_
+    :param str devicename: devicename
+    :param str idname: idname
+    :raises AS2Error: "enumrate control"
+    :raises AS2Error: "no control playback volume"
+    :return list: channel names
+    :examples: ["Mono"]
+    :examples: ["Front Left", "Front Right"]
     """
     result: list[str] = list()
     with _open_mixer(name=devicename) as mixer:
@@ -551,9 +558,12 @@ def _channel_names(devicename: str, idname: str) -> list:
 
 
 def start_jackserver() -> tuple[str, str]:
-    """start jackserver.
+    """Start JACK server.
 
-    :return tuple[str, str]: (device name, device control name)
+    :returns: (device name, device control name)
+    | <exapmles> ("bluealsa:00:00:00:00:00:00", "A2DP")
+    | <exapmles> ("default", "Master")
+    | <exapmles> ("", "") if failed.
     """
     btdevice: dict[str, str] = BTAS.device_info()
     soundcard: list[str] = _physical_mixer_names()

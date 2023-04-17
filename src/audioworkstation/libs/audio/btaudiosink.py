@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
-"""Assists in connecting to Bluetooth device.
-
-:method dict[str, str] device_info():
-Get information on connected Bluetooth devices.
-"""
+"""Assists in connecting to Bluetooth device."""
 
 import bluetooth as BT
 from subprocess import Popen, run, PIPE
@@ -69,7 +65,9 @@ def _connect(address: str) -> bool:
 def device_info() -> dict[str, str]:
     """Get information on connected Bluetooth devices.
 
-    :return dict[str, str]: {name: address} during connection, otherwise {"": ""}
+    :return: {name: address}
+    | <examples> {"name": "00:00:00:00:00:00"}
+    | <examples> {"": ""} if failed.
     """
     devices = _paired_devices()
 
