@@ -54,14 +54,106 @@
 <dd></dd></dl>
 
 </section>
-<section id="audioworkstation-setup-config-module">
-<h2>audioworkstation.setup.config module<a class="headerlink" href="#audioworkstation-setup-config-module" title="この見出しへのパーマリンク">¶</a></h2>
+<section id="module-audioworkstation.setup.config">
+<span id="audioworkstation-setup-config-module"></span><h2>audioworkstation.setup.config module<a class="headerlink" href="#module-audioworkstation.setup.config" title="この見出しへのパーマリンク">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="audioworkstation.setup.config.main">
+<span class="sig-prename descclassname"><span class="pre">audioworkstation.setup.config.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/setup/config.html#main"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.setup.config.main" title="この定義へのパーマリンク">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="audioworkstation.setup.config.makedirs">
+<span class="sig-prename descclassname"><span class="pre">audioworkstation.setup.config.</span></span><span class="sig-name descname"><span class="pre">makedirs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/setup/config.html#makedirs"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.setup.config.makedirs" title="この定義へのパーマリンク">¶</a></dt>
+<dd></dd></dl>
+
 </section>
-<section id="audioworkstation-setup-fluidsynth-router-rule-module">
-<h2>audioworkstation.setup.fluidsynth_router_rule module<a class="headerlink" href="#audioworkstation-setup-fluidsynth-router-rule-module" title="この見出しへのパーマリンク">¶</a></h2>
+<section id="module-audioworkstation.setup.fluidsynth_router_rule">
+<span id="audioworkstation-setup-fluidsynth-router-rule-module"></span><h2>audioworkstation.setup.fluidsynth_router_rule module<a class="headerlink" href="#module-audioworkstation.setup.fluidsynth_router_rule" title="この見出しへのパーマリンク">¶</a></h2>
+<p>Create a 'json file' of rule descriptions for class MidiRouter.</p>
+<section id="this-is-an-example-of-creating-mute-channel-0">
+<h3>This is an example of creating mute channel 0<a class="headerlink" href="#this-is-an-example-of-creating-mute-channel-0" title="この見出しへのパーマリンク">¶</a></h3>
+<p>[NOTE] -Note-
+chan: channel 0-15
+param1: key(note) 0-127
+param2: velocity 0-127</p>
+<p>[CC] -Control Change-
+chan: channel 0-15
+param1: controller number
+param2: value</p>
+<blockquote>
+<div><dl>
+<dt>param1             - param2</dt><dd><blockquote>
+<div><p>1: modulation    - 0-127
+7: volume        - 0-127</p>
+</div></blockquote>
+<p>10: pan           - Right:0-Center:64-Left:127
+11: expression    - 0-127
+64: sustain       - on:32(0b*1*****), off:0(0b*0*****)</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>(memo) Only compatible with the GM1 system.</p>
+<p>[PROG_CHANGER] -Program Change-
+chan: channel 0-15
+param1: program(preset) number 0-127
+param2: -</p>
+<p>[PITCH_BEND] -Pitch Bend Change-
+chan: channel 0-15
+param1: LSB 0-127
+param2: MSB 0-127</p>
+<blockquote>
+<div><p>min:       0 -&gt; LSB=0b0000000(0), MSB=0b0000000(0)
+center: 8192 -&gt; LSB=0b0000000(0), MSB=0b1000000(64)
+max:   16383 -&gt; LSB=0b1111111(127), MSB=0b1111111(127)</p>
+</div></blockquote>
+<p>[CHANNEL_PRESSURE] -Channel Pressure (Aftertouch)-
+chan: channel 0-15
+param1: pressure 0-127
+param2: -</p>
+<p>[KEY_PRESSURE] -Polyphonic Key Pressure (Aftertouch)-
+chan: channel 0-15
+param1: key(note) 0-127
+param2: pressure 0-127
+(memo) Not supported in GM1 system</p>
+<dl class="simple">
+<dt>typedef struct _fluid_midi_router_rule_t =&gt; fluid_midi_router_rule_t</dt><dd><p>default is [min=0, max=999999, mul=1.0, add=0]</p>
+</dd>
+</dl>
+<p><a class="reference external" href="https://github.com/FluidSynth/fluidsynth/blob/master/src/midi/fluid_midi_router.c">https://github.com/FluidSynth/fluidsynth/blob/master/src/midi/fluid_midi_router.c</a></p>
 </section>
-<section id="audioworkstation-setup-fluidsynth-settings-module">
-<h2>audioworkstation.setup.fluidsynth_settings module<a class="headerlink" href="#audioworkstation-setup-fluidsynth-settings-module" title="この見出しへのパーマリンク">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="audioworkstation.setup.fluidsynth_router_rule.case_study">
+<span class="sig-prename descclassname"><span class="pre">audioworkstation.setup.fluidsynth_router_rule.</span></span><span class="sig-name descname"><span class="pre">case_study</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/setup/fluidsynth_router_rule.html#case_study"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.setup.fluidsynth_router_rule.case_study" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>The rules apply even when they are duplicated,
+and the results are terrible.</p>
+<dl class="field-list simple">
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-audioworkstation.setup.fluidsynth_settings">
+<span id="audioworkstation-setup-fluidsynth-settings-module"></span><h2>audioworkstation.setup.fluidsynth_settings module<a class="headerlink" href="#module-audioworkstation.setup.fluidsynth_settings" title="この見出しへのパーマリンク">¶</a></h2>
+<p>Create configuration file for fluidsynth.</p>
+<p>Create a 'json file' containing the initial settings for fluidsynth.
+After editing, the settings can be changed by loading the 'json file'.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="audioworkstation.setup.fluidsynth_settings.customize">
+<span class="sig-prename descclassname"><span class="pre">audioworkstation.setup.fluidsynth_settings.</span></span><span class="sig-name descname"><span class="pre">customize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/setup/fluidsynth_settings.html#customize"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.setup.fluidsynth_settings.customize" title="この定義へのパーマリンク">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="audioworkstation.setup.fluidsynth_settings.extract_default">
+<span class="sig-prename descclassname"><span class="pre">audioworkstation.setup.fluidsynth_settings.</span></span><span class="sig-name descname"><span class="pre">extract_default</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/setup/fluidsynth_settings.html#extract_default"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.setup.fluidsynth_settings.extract_default" title="この定義へのパーマリンク">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 <section id="module-audioworkstation.setup.jack_settings">
 <span id="audioworkstation-setup-jack-settings-module"></span><h2>audioworkstation.setup.jack_settings module<a class="headerlink" href="#module-audioworkstation.setup.jack_settings" title="この見出しへのパーマリンク">¶</a></h2>

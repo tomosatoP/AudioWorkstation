@@ -1,5 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+"""Application Entry
+
+| 1. Kivy logging starts.
+| 2. Configure hardware settings for Kivy.
+| 3. Start JACK server.
+| 4. Start Application.
+"""
 
 from pathlib import Path
 from kivy.config import Config

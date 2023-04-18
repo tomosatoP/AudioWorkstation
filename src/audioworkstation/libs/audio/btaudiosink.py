@@ -8,7 +8,7 @@ from subprocess import Popen, run, PIPE
 def _paired_devices() -> dict[str, str]:
     """Returns a list of paired devices.
 
-    :return dict[str, str]: name, address
+    :return: name, address
     """
     devices: dict[str, str] = dict()
     command = ["bluetoothctl", "--", "paired-devices"]
@@ -26,7 +26,7 @@ def _isnearby_audiosink(address: str) -> bool:
     """Find out if the paired device with Audio Sink is nearby.
 
     :param str address: paired device address
-    :return bool: True is nearby, False is otherwise
+    :return: True is nearby, False is otherwise
     """
     if not BT.lookup_name(address=address):
         return False
@@ -42,7 +42,7 @@ def _isconnected(address: str, audio_sink: bool = True) -> bool:
     """Check the connection of paired devices nearby.
 
     :param str address: address of paired devices nearby
-    :return bool: True is connected, False is otherwise
+    :return: True is connected, False is otherwise
     """
     pre_pipe = ["bluetoothctl", "--", "info", address]
     post_pipe = ["grep", "Connected"]
@@ -55,7 +55,7 @@ def _connect(address: str) -> bool:
     """Attempts to connect to a Bluetooth device.
 
     :param str address: device address
-    :return bool: True is success, False is otherwise
+    :return: True is success, False is otherwise
     """
     command = ["bluetoothctl", "--", "connect", address]
     result = run(args=command, capture_output=True, text=True)

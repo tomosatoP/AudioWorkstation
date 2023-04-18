@@ -42,8 +42,7 @@ def _prototype(restype: Any, name: str, *params: tuple) -> Any:
     :param Any restype: foreign function restype
     :param str name: foreign function name
     :param tuple params: type, flag, name[, default]
-
-    :return Any: foreign function object
+    :return: foreign function object
     """
     if hasattr(_libas2, name):
         argtypes: list = list([])
@@ -68,7 +67,7 @@ Most applications probably do not need them.
 _snd_asoundlib_version = _prototype(CAS2.c_char_p, "snd_asoundlib_version")
 """Returns the ALSA sound library version in ASCII format.
 
-:return c_char_p: The ASCII description of the used ALSA sound library.
+:return: The ASCII description of the used ALSA sound library.
 """
 
 """The control interface."""
@@ -81,7 +80,8 @@ def _open_device_name_hint(card: int, iface: str):
     :param int card: index of physical sound card
     :param str iface: "ctl", "pcm", "rawmidi", "timer", "seq"
 
-    :return CAS2.POINTER(CAS2.POINTER(CAS2.c_void_p)): deviece name hints
+    :return: deviece name hints
+    :rtype: CAS2.POINTER(CAS2.POINTER(CAS2.c_void_p))
     """
     resource = _snd_device_name_hint(CAS2.c_int(card), iface.encode())
     try:
@@ -126,7 +126,8 @@ _snd_device_name_get_hint = _prototype(
 The return value should be freed when no longer needed.
 :param c_void_p hint:
 :param c_char_p id: b"NAME", b"DESC", b"IOID"
-:return c_char_p: an allocated ASCII string
+:return: an allocated ASCII string
+:rtype: c_char_p
 """
 
 
@@ -137,7 +138,8 @@ _snd_card_next = _prototype(
 
 :param POINTER(c_int) rcard:
 Index of current card. The index of the next card is stored here.
-:return c_int: zero if success, otherwise a negative error code.
+:return: zero if success, otherwise a negative error code.
+:rtype: c_int
 """
 _snd_card_next.errcheck = _errcheck_non_zero
 
@@ -171,7 +173,8 @@ def _open_mixer(name: str, mode: int = 0, options=None, classp=None):
         SND_CTL_NOBLOCK  0x0001: Non blocking mode  (flag for open mode)
         SND_CTL_ASYNC    0x0002: Async notification (flag for open mode)
         SND_CTL_READONLY 0x0004: Read only          (flag for open mode)
-    :return snd_mixer_t*: mixer handler, otherwise a negative error code
+    :return: mixer handler, otherwise a negative error code
+    :rtype: snd_mixer_t*
     """
     resource = _snd_mixer_open(mode=CAS2.c_int(mode))
     _snd_mixer_attach(mixer=resource, name=name.encode())
@@ -193,7 +196,8 @@ _snd_mixer_open = _prototype(
 
 Opens an empty mixer.
 :param c_int mode: Open mode
-:return [snd_mixer_t* | c_int]: mixer handle, otherwise a negative error code
+:return: mixer handle, otherwise a negative error code
+:rtype: snd_mixer_t* or c_int
 """
 
 
@@ -212,7 +216,8 @@ _snd_mixer_close = _prototype(
 
 Close a mixer and free all related resources.
 :param snd_mixer_t* mixer: Mixer handle
-:return c_int: 0 on success otherwise a negative error code
+:return: 0 on success otherwise a negative error code
+:rtype: c_int
 """
 _snd_mixer_close.errcheck = _errcheck_non_zero
 
@@ -228,7 +233,8 @@ _snd_mixer_attach = _prototype(
 Attach an HCTL specified with the CTL device name to an opened mixer.
 :param snd_mixer_t* mixer: mixer handler
 :param const char* name: HCTL name
-:return c_int: 0 on success otherwise a negative error code
+:return: 0 on success otherwise a negative error code
+:rtype: c_int
 """
 _snd_mixer_attach.errcheck = _errcheck_non_zero
 
@@ -246,7 +252,8 @@ Register mixer simple element class.
 :param struct snd_mixer_selem_regopt* options: Options container
 :param snd_mixer_class_t** classp:
 Pointer to returned mixer simple element class handle (or NULL)
-:return c_int: 0 on success otherwise a negative error code
+:return: 0 on success otherwise a negative error code
+:rtype: c_int
 """
 _snd_mixer_selem_register.errcheck = _errcheck_non_zero
 
@@ -255,7 +262,8 @@ _snd_mixer_load = _prototype(CAS2.c_int, "snd_mixer_load", (CAS2.c_void_p, 1, "m
 
 Load a mixer elements.
 :param snd_mixer_t* mixer: Mixer handle
-:return c_int: 0 on success otherwise a negative error code
+:return: 0 on success otherwise a negative error code
+:rtype: c_int
 """
 _snd_mixer_load.errcheck = _errcheck_non_zero
 
@@ -265,7 +273,8 @@ def _open_mixer_selem_id(idname: str):
     """allocate an invalid snd_mixer_selem_id_t using standard malloc
 
     :param * idname: name part
-    :return snd_mixer_selem_id_t*: ptr otherwise negative error code
+    :return: ptr otherwise negative error code
+    :rtype: snd_mixer_selem_id_t*
     """
     resource = _snd_mixer_selem_id_malloc()
     _snd_mixer_selem_id_set_index(obj=resource, val=0)
@@ -282,7 +291,8 @@ _snd_mixer_selem_id_malloc = _prototype(
 """Called from [_open_mixer_selem_id].
 
 allocate an invalid snd_mixer_selem_id_t using standard malloc
-:return [snd_mixer_selem_id_t* | c_int]: returned pointer, otherwise negative error code
+:return: returned pointer, otherwise negative error code
+:rtype: snd_mixer_selem_id_t* or c_int
 """
 
 
@@ -342,7 +352,8 @@ _snd_mixer_find_selem = _prototype(
 
 :param snd_mixer_t* mixer: Mixer handle
 :param snd_mixer_selem_id_t* id: Mixer simple element identifier
-:return snd_mixer_elem_t*: mixer simple element handle or NULL if not found
+:return: mixer simple element handle or NULL if not found
+:rtype: snd_mixer_elem_t*
 """
 
 
@@ -370,7 +381,8 @@ _snd_mixer_selem_has_playback_volume = _prototype(
 """Return info about playback volume control of a mixer simple element.
 
 :param snd_mixer_elem_t* elem: Mixer simple element handle
-:return c_int: 0 if no control is present, 1 if it's present
+:return: 0 if no control is present, 1 if it's present
+:rtype: c_int
 """
 
 _snd_mixer_selem_channel_name = _prototype(
@@ -380,7 +392,8 @@ _snd_mixer_selem_channel_name = _prototype(
 
 :param c_int[SND_MIXER_SELEM_CHANNNEL_ID_T] channel:
 mixer simple element channel identifier
-:return c_char_p :channel name
+:return:channel name
+:rtype: c_char_p
 """
 
 
@@ -390,7 +403,8 @@ _snd_mixer_selem_is_playback_mono = _prototype(
 """Get info about channels of playback stream of a mixer simple element.
 
 :param snd_mixer_elem_t* elem: Mixer simple element handle
-:return c_int: 0 if not mono, 1 if mono
+:return: 0 if not mono, 1 if mono
+:rtype: c_int
 """
 
 _snd_mixer_selem_has_playback_channel = _prototype(
@@ -404,14 +418,15 @@ _snd_mixer_selem_has_playback_channel = _prototype(
 :param snd_mixer_elem_t* elem: Mixer simple element handle
 :param c_int[SND_MIXER_SELEM_CHANNEL_ID_T] channel:
     Mixer simple element channel identifier
-:return c_int: 0 if channel is not present, 1 if present
+:return: 0 if channel is not present, 1 if present
+:rtype: c_int
 """
 
 
 def list_name_hint() -> list[str]:
     """Return name hints table.
 
-    :returns: name hints table
+    :return: name hints table
     <examples>
 
     +-----+-----+-----+-----+
@@ -440,7 +455,7 @@ def list_name_hint() -> list[str]:
 def _physical_soundcard_indexs() -> list[int]:
     """Returns a list of physical sound card indexes.
 
-    :return list[int]: physical sound card indexes
+    :return: physical sound card indexes
     :examples: [0, 1, 2]
     """
     index_list: list[int] = list()
@@ -454,7 +469,7 @@ def _physical_soundcard_indexs() -> list[int]:
 def _physical_mixer_names() -> list[str]:
     """Returns a list of names of mixer-compatible physical sound cards.
 
-    :return list[str]: names of mixer-compatible physical sound cards
+    :return: names of mixer-compatible physical sound cards
     :examples: ["hw:CARD=Headphones", "hw:CARD=S"]
     """
     mixer_names: list[str] = list()
@@ -477,7 +492,7 @@ def _amixer_volume(amixer_command: list) -> int:
     :examples:
     ["amixer", "-D", devicename, "--", "sset", idname, svalue, "-M", mute]
     ["amixer", "-D", devicename, "--", "sget", idname, "-M"]
-    :return int: volume
+    :return: volume
     """
     chan_names: list[str] = _channel_names(
         devicename=amixer_command[2], idname=amixer_command[5]
@@ -506,7 +521,7 @@ def get_volume(devicename: str, idname: str) -> int:
 
     :param devicename: devicename
     :param idname: idname
-    :returns: volume[%]
+    :return: volume[%]
     """
     command = ["amixer", "-D", devicename, "--", "sget", idname, "-M"]
     return _amixer_volume(command)
@@ -518,7 +533,7 @@ def set_volume(devicename: str, idname: str, value: int) -> int:
     :param devicename: devicename
     :param idname: idname
     :param value: volume[%] to be set
-    :returns: volume[%]
+    :return: volume[%]
     """
     svalue: str = str(value) + "%"
     command = ["amixer", "-D", devicename, "--", "sset", idname, svalue, "-M", "unmute"]
@@ -532,7 +547,7 @@ def _channel_names(devicename: str, idname: str) -> list:
     :param str idname: idname
     :raises AS2Error: "enumrate control"
     :raises AS2Error: "no control playback volume"
-    :return list: channel names
+    :return: channel names
     :examples: ["Mono"]
     :examples: ["Front Left", "Front Right"]
     """
@@ -560,7 +575,7 @@ def _channel_names(devicename: str, idname: str) -> list:
 def start_jackserver() -> tuple[str, str]:
     """Start JACK server.
 
-    :returns: (device name, device control name)
+    :return: (device name, device control name)
     | <exapmles> ("bluealsa:00:00:00:00:00:00", "A2DP")
     | <exapmles> ("default", "Master")
     | <exapmles> ("", "") if failed.

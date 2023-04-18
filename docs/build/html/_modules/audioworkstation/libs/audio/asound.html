@@ -74,8 +74,7 @@
 <span class="sd">    :param Any restype: foreign function restype</span>
 <span class="sd">    :param str name: foreign function name</span>
 <span class="sd">    :param tuple params: type, flag, name[, default]</span>
-
-<span class="sd">    :return Any: foreign function object</span>
+<span class="sd">    :return: foreign function object</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">_libas2</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="n">argtypes</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">([])</span>
@@ -100,7 +99,7 @@
 <span class="n">_snd_asoundlib_version</span> <span class="o">=</span> <span class="n">_prototype</span><span class="p">(</span><span class="n">CAS2</span><span class="o">.</span><span class="n">c_char_p</span><span class="p">,</span> <span class="s2">&quot;snd_asoundlib_version&quot;</span><span class="p">)</span>
 <span class="sd">&quot;&quot;&quot;Returns the ALSA sound library version in ASCII format.</span>
 
-<span class="sd">:return c_char_p: The ASCII description of the used ALSA sound library.</span>
+<span class="sd">:return: The ASCII description of the used ALSA sound library.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">&quot;&quot;&quot;The control interface.&quot;&quot;&quot;</span>
@@ -113,7 +112,8 @@
 <span class="sd">    :param int card: index of physical sound card</span>
 <span class="sd">    :param str iface: &quot;ctl&quot;, &quot;pcm&quot;, &quot;rawmidi&quot;, &quot;timer&quot;, &quot;seq&quot;</span>
 
-<span class="sd">    :return CAS2.POINTER(CAS2.POINTER(CAS2.c_void_p)): deviece name hints</span>
+<span class="sd">    :return: deviece name hints</span>
+<span class="sd">    :rtype: CAS2.POINTER(CAS2.POINTER(CAS2.c_void_p))</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">resource</span> <span class="o">=</span> <span class="n">_snd_device_name_hint</span><span class="p">(</span><span class="n">CAS2</span><span class="o">.</span><span class="n">c_int</span><span class="p">(</span><span class="n">card</span><span class="p">),</span> <span class="n">iface</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span>
     <span class="k">try</span><span class="p">:</span>
@@ -158,7 +158,8 @@
 <span class="sd">The return value should be freed when no longer needed.</span>
 <span class="sd">:param c_void_p hint:</span>
 <span class="sd">:param c_char_p id: b&quot;NAME&quot;, b&quot;DESC&quot;, b&quot;IOID&quot;</span>
-<span class="sd">:return c_char_p: an allocated ASCII string</span>
+<span class="sd">:return: an allocated ASCII string</span>
+<span class="sd">:rtype: c_char_p</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 
@@ -169,7 +170,8 @@
 
 <span class="sd">:param POINTER(c_int) rcard:</span>
 <span class="sd">Index of current card. The index of the next card is stored here.</span>
-<span class="sd">:return c_int: zero if success, otherwise a negative error code.</span>
+<span class="sd">:return: zero if success, otherwise a negative error code.</span>
+<span class="sd">:rtype: c_int</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="n">_snd_card_next</span><span class="o">.</span><span class="n">errcheck</span> <span class="o">=</span> <span class="n">_errcheck_non_zero</span>
 
@@ -203,7 +205,8 @@
 <span class="sd">        SND_CTL_NOBLOCK  0x0001: Non blocking mode  (flag for open mode)</span>
 <span class="sd">        SND_CTL_ASYNC    0x0002: Async notification (flag for open mode)</span>
 <span class="sd">        SND_CTL_READONLY 0x0004: Read only          (flag for open mode)</span>
-<span class="sd">    :return snd_mixer_t*: mixer handler, otherwise a negative error code</span>
+<span class="sd">    :return: mixer handler, otherwise a negative error code</span>
+<span class="sd">    :rtype: snd_mixer_t*</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">resource</span> <span class="o">=</span> <span class="n">_snd_mixer_open</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="n">CAS2</span><span class="o">.</span><span class="n">c_int</span><span class="p">(</span><span class="n">mode</span><span class="p">))</span>
     <span class="n">_snd_mixer_attach</span><span class="p">(</span><span class="n">mixer</span><span class="o">=</span><span class="n">resource</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span>
@@ -225,7 +228,8 @@
 
 <span class="sd">Opens an empty mixer.</span>
 <span class="sd">:param c_int mode: Open mode</span>
-<span class="sd">:return [snd_mixer_t* | c_int]: mixer handle, otherwise a negative error code</span>
+<span class="sd">:return: mixer handle, otherwise a negative error code</span>
+<span class="sd">:rtype: snd_mixer_t* or c_int</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 
@@ -244,7 +248,8 @@
 
 <span class="sd">Close a mixer and free all related resources.</span>
 <span class="sd">:param snd_mixer_t* mixer: Mixer handle</span>
-<span class="sd">:return c_int: 0 on success otherwise a negative error code</span>
+<span class="sd">:return: 0 on success otherwise a negative error code</span>
+<span class="sd">:rtype: c_int</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="n">_snd_mixer_close</span><span class="o">.</span><span class="n">errcheck</span> <span class="o">=</span> <span class="n">_errcheck_non_zero</span>
 
@@ -260,7 +265,8 @@
 <span class="sd">Attach an HCTL specified with the CTL device name to an opened mixer.</span>
 <span class="sd">:param snd_mixer_t* mixer: mixer handler</span>
 <span class="sd">:param const char* name: HCTL name</span>
-<span class="sd">:return c_int: 0 on success otherwise a negative error code</span>
+<span class="sd">:return: 0 on success otherwise a negative error code</span>
+<span class="sd">:rtype: c_int</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="n">_snd_mixer_attach</span><span class="o">.</span><span class="n">errcheck</span> <span class="o">=</span> <span class="n">_errcheck_non_zero</span>
 
@@ -278,7 +284,8 @@
 <span class="sd">:param struct snd_mixer_selem_regopt* options: Options container</span>
 <span class="sd">:param snd_mixer_class_t** classp:</span>
 <span class="sd">Pointer to returned mixer simple element class handle (or NULL)</span>
-<span class="sd">:return c_int: 0 on success otherwise a negative error code</span>
+<span class="sd">:return: 0 on success otherwise a negative error code</span>
+<span class="sd">:rtype: c_int</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="n">_snd_mixer_selem_register</span><span class="o">.</span><span class="n">errcheck</span> <span class="o">=</span> <span class="n">_errcheck_non_zero</span>
 
@@ -287,7 +294,8 @@
 
 <span class="sd">Load a mixer elements.</span>
 <span class="sd">:param snd_mixer_t* mixer: Mixer handle</span>
-<span class="sd">:return c_int: 0 on success otherwise a negative error code</span>
+<span class="sd">:return: 0 on success otherwise a negative error code</span>
+<span class="sd">:rtype: c_int</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="n">_snd_mixer_load</span><span class="o">.</span><span class="n">errcheck</span> <span class="o">=</span> <span class="n">_errcheck_non_zero</span>
 
@@ -297,7 +305,8 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;allocate an invalid snd_mixer_selem_id_t using standard malloc</span>
 
 <span class="sd">    :param * idname: name part</span>
-<span class="sd">    :return snd_mixer_selem_id_t*: ptr otherwise negative error code</span>
+<span class="sd">    :return: ptr otherwise negative error code</span>
+<span class="sd">    :rtype: snd_mixer_selem_id_t*</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">resource</span> <span class="o">=</span> <span class="n">_snd_mixer_selem_id_malloc</span><span class="p">()</span>
     <span class="n">_snd_mixer_selem_id_set_index</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="n">resource</span><span class="p">,</span> <span class="n">val</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
@@ -314,7 +323,8 @@
 <span class="sd">&quot;&quot;&quot;Called from [_open_mixer_selem_id].</span>
 
 <span class="sd">allocate an invalid snd_mixer_selem_id_t using standard malloc</span>
-<span class="sd">:return [snd_mixer_selem_id_t* | c_int]: returned pointer, otherwise negative error code</span>
+<span class="sd">:return: returned pointer, otherwise negative error code</span>
+<span class="sd">:rtype: snd_mixer_selem_id_t* or c_int</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 
@@ -374,7 +384,8 @@
 
 <span class="sd">:param snd_mixer_t* mixer: Mixer handle</span>
 <span class="sd">:param snd_mixer_selem_id_t* id: Mixer simple element identifier</span>
-<span class="sd">:return snd_mixer_elem_t*: mixer simple element handle or NULL if not found</span>
+<span class="sd">:return: mixer simple element handle or NULL if not found</span>
+<span class="sd">:rtype: snd_mixer_elem_t*</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 
@@ -402,7 +413,8 @@
 <span class="sd">&quot;&quot;&quot;Return info about playback volume control of a mixer simple element.</span>
 
 <span class="sd">:param snd_mixer_elem_t* elem: Mixer simple element handle</span>
-<span class="sd">:return c_int: 0 if no control is present, 1 if it&#39;s present</span>
+<span class="sd">:return: 0 if no control is present, 1 if it&#39;s present</span>
+<span class="sd">:rtype: c_int</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="n">_snd_mixer_selem_channel_name</span> <span class="o">=</span> <span class="n">_prototype</span><span class="p">(</span>
@@ -412,7 +424,8 @@
 
 <span class="sd">:param c_int[SND_MIXER_SELEM_CHANNNEL_ID_T] channel:</span>
 <span class="sd">mixer simple element channel identifier</span>
-<span class="sd">:return c_char_p :channel name</span>
+<span class="sd">:return:channel name</span>
+<span class="sd">:rtype: c_char_p</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 
@@ -422,7 +435,8 @@
 <span class="sd">&quot;&quot;&quot;Get info about channels of playback stream of a mixer simple element.</span>
 
 <span class="sd">:param snd_mixer_elem_t* elem: Mixer simple element handle</span>
-<span class="sd">:return c_int: 0 if not mono, 1 if mono</span>
+<span class="sd">:return: 0 if not mono, 1 if mono</span>
+<span class="sd">:rtype: c_int</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="n">_snd_mixer_selem_has_playback_channel</span> <span class="o">=</span> <span class="n">_prototype</span><span class="p">(</span>
@@ -436,14 +450,15 @@
 <span class="sd">:param snd_mixer_elem_t* elem: Mixer simple element handle</span>
 <span class="sd">:param c_int[SND_MIXER_SELEM_CHANNEL_ID_T] channel:</span>
 <span class="sd">    Mixer simple element channel identifier</span>
-<span class="sd">:return c_int: 0 if channel is not present, 1 if present</span>
+<span class="sd">:return: 0 if channel is not present, 1 if present</span>
+<span class="sd">:rtype: c_int</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 
 <div class="viewcode-block" id="list_name_hint"><a class="viewcode-back" href="../../../../audioworkstation.libs.audio.html#audioworkstation.libs.audio.asound.list_name_hint">[ドキュメント]</a><span class="k">def</span> <span class="nf">list_name_hint</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return name hints table.</span>
 
-<span class="sd">    :returns: name hints table</span>
+<span class="sd">    :return: name hints table</span>
 <span class="sd">    &lt;examples&gt;</span>
 
 <span class="sd">    +-----+-----+-----+-----+</span>
@@ -472,7 +487,7 @@
 <span class="k">def</span> <span class="nf">_physical_soundcard_indexs</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns a list of physical sound card indexes.</span>
 
-<span class="sd">    :return list[int]: physical sound card indexes</span>
+<span class="sd">    :return: physical sound card indexes</span>
 <span class="sd">    :examples: [0, 1, 2]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">index_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
@@ -486,7 +501,7 @@
 <span class="k">def</span> <span class="nf">_physical_mixer_names</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns a list of names of mixer-compatible physical sound cards.</span>
 
-<span class="sd">    :return list[str]: names of mixer-compatible physical sound cards</span>
+<span class="sd">    :return: names of mixer-compatible physical sound cards</span>
 <span class="sd">    :examples: [&quot;hw:CARD=Headphones&quot;, &quot;hw:CARD=S&quot;]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">mixer_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
@@ -509,7 +524,7 @@
 <span class="sd">    :examples:</span>
 <span class="sd">    [&quot;amixer&quot;, &quot;-D&quot;, devicename, &quot;--&quot;, &quot;sset&quot;, idname, svalue, &quot;-M&quot;, mute]</span>
 <span class="sd">    [&quot;amixer&quot;, &quot;-D&quot;, devicename, &quot;--&quot;, &quot;sget&quot;, idname, &quot;-M&quot;]</span>
-<span class="sd">    :return int: volume</span>
+<span class="sd">    :return: volume</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">chan_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">_channel_names</span><span class="p">(</span>
         <span class="n">devicename</span><span class="o">=</span><span class="n">amixer_command</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">idname</span><span class="o">=</span><span class="n">amixer_command</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
@@ -538,7 +553,7 @@
 
 <span class="sd">    :param devicename: devicename</span>
 <span class="sd">    :param idname: idname</span>
-<span class="sd">    :returns: volume[%]</span>
+<span class="sd">    :return: volume[%]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">command</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;amixer&quot;</span><span class="p">,</span> <span class="s2">&quot;-D&quot;</span><span class="p">,</span> <span class="n">devicename</span><span class="p">,</span> <span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="s2">&quot;sget&quot;</span><span class="p">,</span> <span class="n">idname</span><span class="p">,</span> <span class="s2">&quot;-M&quot;</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">_amixer_volume</span><span class="p">(</span><span class="n">command</span><span class="p">)</span></div>
@@ -550,7 +565,7 @@
 <span class="sd">    :param devicename: devicename</span>
 <span class="sd">    :param idname: idname</span>
 <span class="sd">    :param value: volume[%] to be set</span>
-<span class="sd">    :returns: volume[%]</span>
+<span class="sd">    :return: volume[%]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">svalue</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;%&quot;</span>
     <span class="n">command</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;amixer&quot;</span><span class="p">,</span> <span class="s2">&quot;-D&quot;</span><span class="p">,</span> <span class="n">devicename</span><span class="p">,</span> <span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="s2">&quot;sset&quot;</span><span class="p">,</span> <span class="n">idname</span><span class="p">,</span> <span class="n">svalue</span><span class="p">,</span> <span class="s2">&quot;-M&quot;</span><span class="p">,</span> <span class="s2">&quot;unmute&quot;</span><span class="p">]</span>
@@ -564,7 +579,7 @@
 <span class="sd">    :param str idname: idname</span>
 <span class="sd">    :raises AS2Error: &quot;enumrate control&quot;</span>
 <span class="sd">    :raises AS2Error: &quot;no control playback volume&quot;</span>
-<span class="sd">    :return list: channel names</span>
+<span class="sd">    :return: channel names</span>
 <span class="sd">    :examples: [&quot;Mono&quot;]</span>
 <span class="sd">    :examples: [&quot;Front Left&quot;, &quot;Front Right&quot;]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -592,7 +607,7 @@
 <div class="viewcode-block" id="start_jackserver"><a class="viewcode-back" href="../../../../audioworkstation.libs.audio.html#audioworkstation.libs.audio.asound.start_jackserver">[ドキュメント]</a><span class="k">def</span> <span class="nf">start_jackserver</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Start JACK server.</span>
 
-<span class="sd">    :returns: (device name, device control name)</span>
+<span class="sd">    :return: (device name, device control name)</span>
 <span class="sd">    | &lt;exapmles&gt; (&quot;bluealsa:00:00:00:00:00:00&quot;, &quot;A2DP&quot;)</span>
 <span class="sd">    | &lt;exapmles&gt; (&quot;default&quot;, &quot;Master&quot;)</span>
 <span class="sd">    | &lt;exapmles&gt; (&quot;&quot;, &quot;&quot;) if failed.</span>

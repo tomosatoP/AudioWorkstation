@@ -14,7 +14,6 @@ Welcome to AudioWorkstation's documentation!
    testmodules
 
 
-
 Indices and tables
 ==================
 

@@ -41,14 +41,340 @@
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="この見出しへのパーマリンク">¶</a></h2>
 </section>
-<section id="audioworkstation-keyboard-keyboard-module">
-<h2>audioworkstation.keyboard.keyboard module<a class="headerlink" href="#audioworkstation-keyboard-keyboard-module" title="この見出しへのパーマリンク">¶</a></h2>
+<section id="module-audioworkstation.keyboard.keyboard">
+<span id="audioworkstation-keyboard-keyboard-module"></span><h2>audioworkstation.keyboard.keyboard module<a class="headerlink" href="#module-audioworkstation.keyboard.keyboard" title="この見出しへのパーマリンク">¶</a></h2>
+<p>MIDI sequencer function for USB MIDI Keyboard</p>
+<div class="line-block">
+<div class="line">class GMSoundSetButton(ToggleButton, EventDispatcher)</div>
+<div class="line">class GMSoundSetGroupButton(ToggleButton, EventDispatcher)</div>
+<div class="line">class KeyboardView(Screen)</div>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="audioworkstation.keyboard.keyboard.GMSoundSetButton">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">audioworkstation.keyboard.keyboard.</span></span><span class="sig-name descname"><span class="pre">GMSoundSetButton</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/keyboard/keyboard.html#GMSoundSetButton"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.keyboard.keyboard.GMSoundSetButton" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">ToggleButton</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">EventDispatcher</span></code></p>
+<p>class GMSoundSetButton</p>
+<dl class="field-list simple">
+<dt class="field-odd">変数<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>preset_num</strong> (<em>NumericProperty</em>) -- <p><a href="#id1"><span class="problematic" id="id2">**</span></a><a href="#id3"><span class="problematic" id="id4">*</span></a></p>
+</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.keyboard.keyboard.GMSoundSetButton.preset_num">
+<span class="sig-name descname"><span class="pre">preset_num</span></span><a class="headerlink" href="#audioworkstation.keyboard.keyboard.GMSoundSetButton.preset_num" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>NumericProperty(defaultvalue=0, <a href="#id5"><span class="problematic" id="id6">**</span></a>kw)
+Property that represents a numeric value.</p>
+<blockquote>
+<div><p>It only accepts the int or float numeric data type or a string that can be
+converted to a number as shown below. For other numeric types use ObjectProperty
+or use errorhandler to convert it to an int/float.</p>
+<p>It does not support numpy numbers so they must be manually converted to int/float.
+E.g. <code class="docutils literal notranslate"><span class="pre">widget.num</span> <span class="pre">=</span> <span class="pre">np.arange(4)[0]</span></code> will raise an exception. Numpy arrays are not
+supported at all, even by ObjectProperty because their comparision does not return
+a bool. But if you must use a Kivy property, use a ObjectProperty with <code class="docutils literal notranslate"><span class="pre">comparator</span></code>
+set to <code class="docutils literal notranslate"><span class="pre">np.array_equal</span></code>. E.g.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">A</span><span class="p">(</span><span class="n">EventDispatcher</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="n">data</span> <span class="o">=</span> <span class="n">ObjectProperty</span><span class="p">(</span><span class="n">comparator</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">A</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="nb">print</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">&lt;__main__.A object at 0x000001C839B50208&gt; [0 1]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">&lt;__main__.A object at 0x000001C839B50208&gt; [0 1 2]</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><cite>defaultvalue</cite>: int or float, defaults to 0</dt><dd><p>Specifies the default value of the property.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">wid</span> <span class="o">=</span> <span class="n">Widget</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">wid</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="mi">42</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">wid</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+<span class="go">42</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">wid</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;plop&quot;</span>
+<span class="go"> Traceback (most recent call last):</span>
+<span class="go">   File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;</span>
+<span class="go">   File &quot;properties.pyx&quot;, line 93, in kivy.properties.Property.__set__</span>
+<span class="go">   File &quot;properties.pyx&quot;, line 111, in kivy.properties.Property.set</span>
+<span class="go">   File &quot;properties.pyx&quot;, line 159, in kivy.properties.NumericProperty.check</span>
+<span class="go"> ValueError: NumericProperty accept only int/float</span>
+</pre></div>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">バージョン 1.4.1 で変更: </span>NumericProperty can now accept custom text and tuple value to indicate a
+type, like &quot;in&quot;, &quot;pt&quot;, &quot;px&quot;, &quot;cm&quot;, &quot;mm&quot;, in the format: '10pt' or (10,
+'pt').</p>
+</div>
+</div></blockquote>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="audioworkstation.keyboard.keyboard.GMSoundSetGroupButton">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">audioworkstation.keyboard.keyboard.</span></span><span class="sig-name descname"><span class="pre">GMSoundSetGroupButton</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/keyboard/keyboard.html#GMSoundSetGroupButton"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.keyboard.keyboard.GMSoundSetGroupButton" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">ToggleButton</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">EventDispatcher</span></code></p>
+<p>class GMSoundSetGroupButton</p>
+<dl class="field-list simple">
+<dt class="field-odd">変数<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>presets</strong> (<em>DictProperty</em>) -- <p><a href="#id7"><span class="problematic" id="id8">**</span></a><a href="#id9"><span class="problematic" id="id10">*</span></a></p>
+</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.keyboard.keyboard.GMSoundSetGroupButton.presets">
+<span class="sig-name descname"><span class="pre">presets</span></span><a class="headerlink" href="#audioworkstation.keyboard.keyboard.GMSoundSetGroupButton.presets" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>DictProperty(defaultvalue=0, rebind=False, <a href="#id11"><span class="problematic" id="id12">**</span></a>kw)
+Property that represents a dict.</p>
+<blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><cite>defaultvalue</cite>: dict, defaults to {}</dt><dd><p>Specifies the default value of the property.</p>
+</dd>
+<dt><cite>rebind</cite>: bool, defaults to False</dt><dd><p>See <code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectProperty</span></code> for details.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="versionchanged">
+<p><span class="versionmodified changed">バージョン 1.9.0 で変更: </span><cite>rebind</cite> has been introduced.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">警告</p>
+<p>Similar to <code class="xref py py-class docutils literal notranslate"><span class="pre">ListProperty</span></code>, when assigning a dict to a
+<code class="xref py py-class docutils literal notranslate"><span class="pre">DictProperty</span></code>, the dict stored in the property is a shallow copy of the
+dict and not the original dict. See <code class="xref py py-class docutils literal notranslate"><span class="pre">ListProperty</span></code> for details.</p>
+</div>
+</div></blockquote>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="audioworkstation.keyboard.keyboard.KeyboardView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">audioworkstation.keyboard.keyboard.</span></span><span class="sig-name descname"><span class="pre">KeyboardView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/keyboard/keyboard.html#KeyboardView"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.keyboard.keyboard.KeyboardView" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">Screen</span></code></p>
+<p>class KeyboardView</p>
+<dl class="field-list simple">
+<dt class="field-odd">変数<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gmssg</strong> (<em>ObjectProperty</em>) -- <p><a href="#id13"><span class="problematic" id="id14">**</span></a><a href="#id15"><span class="problematic" id="id16">*</span></a></p>
+</p></li>
+<li><p><strong>gmss</strong> (<em>ObjectProperty</em>) -- <p><a href="#id17"><span class="problematic" id="id18">**</span></a><a href="#id19"><span class="problematic" id="id20">*</span></a></p>
+</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="audioworkstation.keyboard.keyboard.KeyboardView.add_gmss_buttons">
+<span class="sig-name descname"><span class="pre">add_gmss_buttons</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/keyboard/keyboard.html#KeyboardView.add_gmss_buttons"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.keyboard.keyboard.KeyboardView.add_gmss_buttons" title="この定義へのパーマリンク">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="audioworkstation.keyboard.keyboard.KeyboardView.add_gmssg_button">
+<span class="sig-name descname"><span class="pre">add_gmssg_button</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">presets</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/keyboard/keyboard.html#KeyboardView.add_gmssg_button"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.keyboard.keyboard.KeyboardView.add_gmssg_button" title="この定義へのパーマリンク">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) -- </p></li>
+<li><p><strong>presets</strong> (<em>dict</em>) -- </p></li>
+</ul>
+</dd>
+<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.keyboard.keyboard.KeyboardView.gmss">
+<span class="sig-name descname"><span class="pre">gmss</span></span><a class="headerlink" href="#audioworkstation.keyboard.keyboard.KeyboardView.gmss" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>ObjectProperty(defaultvalue=None, rebind=False, <a href="#id21"><span class="problematic" id="id22">**</span></a>kw)
+Property that represents a Python object.</p>
+<blockquote>
+<div><dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><cite>defaultvalue</cite>: object type</dt><dd><p>Specifies the default value of the property.</p>
+</dd>
+<dt><cite>rebind</cite>: bool, defaults to False</dt><dd><p>Whether kv rules using this object as an intermediate attribute
+in a kv rule, will update the bound property when this object
+changes.</p>
+<p>That is the standard behavior is that if there's a kv rule
+<code class="docutils literal notranslate"><span class="pre">text:</span> <span class="pre">self.a.b.c.d</span></code>, where <code class="docutils literal notranslate"><span class="pre">a</span></code>, <code class="docutils literal notranslate"><span class="pre">b</span></code>, and <code class="docutils literal notranslate"><span class="pre">c</span></code> are
+properties with <code class="docutils literal notranslate"><span class="pre">rebind</span></code> <code class="docutils literal notranslate"><span class="pre">False</span></code> and <code class="docutils literal notranslate"><span class="pre">d</span></code> is a
+<code class="xref py py-class docutils literal notranslate"><span class="pre">StringProperty</span></code>. Then when the rule is applied, <code class="docutils literal notranslate"><span class="pre">text</span></code>
+becomes bound only to <code class="docutils literal notranslate"><span class="pre">d</span></code>. If <code class="docutils literal notranslate"><span class="pre">a</span></code>, <code class="docutils literal notranslate"><span class="pre">b</span></code>, or <code class="docutils literal notranslate"><span class="pre">c</span></code> change,
+<code class="docutils literal notranslate"><span class="pre">text</span></code> still remains bound to <code class="docutils literal notranslate"><span class="pre">d</span></code>. Furthermore, if any of them
+were <code class="docutils literal notranslate"><span class="pre">None</span></code> when the rule was initially evaluated, e.g. <code class="docutils literal notranslate"><span class="pre">b</span></code> was
+<code class="docutils literal notranslate"><span class="pre">None</span></code>; then <code class="docutils literal notranslate"><span class="pre">text</span></code> is bound to <code class="docutils literal notranslate"><span class="pre">b</span></code> and will not become bound
+to <code class="docutils literal notranslate"><span class="pre">d</span></code> even when <code class="docutils literal notranslate"><span class="pre">b</span></code> is changed to not be <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+<p>By setting <code class="docutils literal notranslate"><span class="pre">rebind</span></code> to <code class="docutils literal notranslate"><span class="pre">True</span></code>, however, the rule will be
+re-evaluated and all the properties rebound when that intermediate
+property changes. E.g. in the example above, whenever <code class="docutils literal notranslate"><span class="pre">b</span></code> changes
+or becomes not <code class="docutils literal notranslate"><span class="pre">None</span></code> if it was <code class="docutils literal notranslate"><span class="pre">None</span></code> before, <code class="docutils literal notranslate"><span class="pre">text</span></code> is
+evaluated again and becomes rebound to <code class="docutils literal notranslate"><span class="pre">d</span></code>. The overall result is
+that <code class="docutils literal notranslate"><span class="pre">text</span></code> is now bound to all the properties among <code class="docutils literal notranslate"><span class="pre">a</span></code>,
+<code class="docutils literal notranslate"><span class="pre">b</span></code>, or <code class="docutils literal notranslate"><span class="pre">c</span></code> that have <code class="docutils literal notranslate"><span class="pre">rebind</span></code> set to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+</dd>
+<dt><cite>**kwargs</cite>: a list of keyword arguments</dt><dd><dl class="simple">
+<dt><cite>baseclass</cite></dt><dd><p>If kwargs includes a <cite>baseclass</cite> argument, this value will be
+used for validation: <cite>isinstance(value, kwargs['baseclass'])</cite>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition warning">
+<p class="admonition-title">警告</p>
+<p>To mark the property as changed, you must reassign a new python object.</p>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">バージョン 1.9.0 で変更: </span><cite>rebind</cite> has been introduced.</p>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">バージョン 1.7.0 で変更: </span><cite>baseclass</cite> parameter added.</p>
+</div>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.keyboard.keyboard.KeyboardView.gmssg">
+<span class="sig-name descname"><span class="pre">gmssg</span></span><a class="headerlink" href="#audioworkstation.keyboard.keyboard.KeyboardView.gmssg" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>ObjectProperty(defaultvalue=None, rebind=False, <a href="#id23"><span class="problematic" id="id24">**</span></a>kw)
+Property that represents a Python object.</p>
+<blockquote>
+<div><dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><cite>defaultvalue</cite>: object type</dt><dd><p>Specifies the default value of the property.</p>
+</dd>
+<dt><cite>rebind</cite>: bool, defaults to False</dt><dd><p>Whether kv rules using this object as an intermediate attribute
+in a kv rule, will update the bound property when this object
+changes.</p>
+<p>That is the standard behavior is that if there's a kv rule
+<code class="docutils literal notranslate"><span class="pre">text:</span> <span class="pre">self.a.b.c.d</span></code>, where <code class="docutils literal notranslate"><span class="pre">a</span></code>, <code class="docutils literal notranslate"><span class="pre">b</span></code>, and <code class="docutils literal notranslate"><span class="pre">c</span></code> are
+properties with <code class="docutils literal notranslate"><span class="pre">rebind</span></code> <code class="docutils literal notranslate"><span class="pre">False</span></code> and <code class="docutils literal notranslate"><span class="pre">d</span></code> is a
+<code class="xref py py-class docutils literal notranslate"><span class="pre">StringProperty</span></code>. Then when the rule is applied, <code class="docutils literal notranslate"><span class="pre">text</span></code>
+becomes bound only to <code class="docutils literal notranslate"><span class="pre">d</span></code>. If <code class="docutils literal notranslate"><span class="pre">a</span></code>, <code class="docutils literal notranslate"><span class="pre">b</span></code>, or <code class="docutils literal notranslate"><span class="pre">c</span></code> change,
+<code class="docutils literal notranslate"><span class="pre">text</span></code> still remains bound to <code class="docutils literal notranslate"><span class="pre">d</span></code>. Furthermore, if any of them
+were <code class="docutils literal notranslate"><span class="pre">None</span></code> when the rule was initially evaluated, e.g. <code class="docutils literal notranslate"><span class="pre">b</span></code> was
+<code class="docutils literal notranslate"><span class="pre">None</span></code>; then <code class="docutils literal notranslate"><span class="pre">text</span></code> is bound to <code class="docutils literal notranslate"><span class="pre">b</span></code> and will not become bound
+to <code class="docutils literal notranslate"><span class="pre">d</span></code> even when <code class="docutils literal notranslate"><span class="pre">b</span></code> is changed to not be <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+<p>By setting <code class="docutils literal notranslate"><span class="pre">rebind</span></code> to <code class="docutils literal notranslate"><span class="pre">True</span></code>, however, the rule will be
+re-evaluated and all the properties rebound when that intermediate
+property changes. E.g. in the example above, whenever <code class="docutils literal notranslate"><span class="pre">b</span></code> changes
+or becomes not <code class="docutils literal notranslate"><span class="pre">None</span></code> if it was <code class="docutils literal notranslate"><span class="pre">None</span></code> before, <code class="docutils literal notranslate"><span class="pre">text</span></code> is
+evaluated again and becomes rebound to <code class="docutils literal notranslate"><span class="pre">d</span></code>. The overall result is
+that <code class="docutils literal notranslate"><span class="pre">text</span></code> is now bound to all the properties among <code class="docutils literal notranslate"><span class="pre">a</span></code>,
+<code class="docutils literal notranslate"><span class="pre">b</span></code>, or <code class="docutils literal notranslate"><span class="pre">c</span></code> that have <code class="docutils literal notranslate"><span class="pre">rebind</span></code> set to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+</dd>
+<dt><cite>**kwargs</cite>: a list of keyword arguments</dt><dd><dl class="simple">
+<dt><cite>baseclass</cite></dt><dd><p>If kwargs includes a <cite>baseclass</cite> argument, this value will be
+used for validation: <cite>isinstance(value, kwargs['baseclass'])</cite>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="admonition warning">
+<p class="admonition-title">警告</p>
+<p>To mark the property as changed, you must reassign a new python object.</p>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">バージョン 1.9.0 で変更: </span><cite>rebind</cite> has been introduced.</p>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">バージョン 1.7.0 で変更: </span><cite>baseclass</cite> parameter added.</p>
+</div>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="audioworkstation.keyboard.keyboard.KeyboardView.select_gmss">
+<span class="sig-name descname"><span class="pre">select_gmss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gmss_button</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/keyboard/keyboard.html#KeyboardView.select_gmss"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.keyboard.keyboard.KeyboardView.select_gmss" title="この定義へのパーマリンク">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>gmss_button</strong> (<a class="reference internal" href="#audioworkstation.keyboard.keyboard.GMSoundSetButton" title="audioworkstation.keyboard.keyboard.GMSoundSetButton"><em>GMSoundSetButton</em></a>) -- </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="audioworkstation.keyboard.keyboard.KeyboardView.select_gmssg">
+<span class="sig-name descname"><span class="pre">select_gmssg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gmssg_button</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/keyboard/keyboard.html#KeyboardView.select_gmssg"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.keyboard.keyboard.KeyboardView.select_gmssg" title="この定義へのパーマリンク">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>gmssg_button</strong> (<a class="reference internal" href="#audioworkstation.keyboard.keyboard.GMSoundSetGroupButton" title="audioworkstation.keyboard.keyboard.GMSoundSetGroupButton"><em>GMSoundSetGroupButton</em></a>) -- </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="audioworkstation.keyboard.keyboard.KeyboardView.volume">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">volume</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#audioworkstation.keyboard.keyboard.KeyboardView.volume" title="この定義へのパーマリンク">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="audioworkstation-keyboard-mididriver-module">
-<h2>audioworkstation.keyboard.mididriver module<a class="headerlink" href="#audioworkstation-keyboard-mididriver-module" title="この見出しへのパーマリンク">¶</a></h2>
+<section id="module-audioworkstation.keyboard.mididriver">
+<span id="audioworkstation-keyboard-mididriver-module"></span><h2>audioworkstation.keyboard.mididriver module<a class="headerlink" href="#module-audioworkstation.keyboard.mididriver" title="この見出しへのパーマリンク">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="audioworkstation.keyboard.mididriver.MidiSoundModule">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">audioworkstation.keyboard.mididriver.</span></span><span class="sig-name descname"><span class="pre">MidiSoundModule</span></span><a class="reference internal" href="_modules/audioworkstation/keyboard/mididriver.html#MidiSoundModule"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.keyboard.mididriver.MidiSoundModule" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="field-list simple">
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.keyboard.mididriver.MidiSoundModule.gm_percussion_sound_set">
+<span class="sig-name descname"><span class="pre">gm_percussion_sound_set</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#audioworkstation.keyboard.mididriver.MidiSoundModule.gm_percussion_sound_set" title="この定義へのパーマリンク">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.keyboard.mididriver.MidiSoundModule.gm_sound_set">
+<span class="sig-name descname"><span class="pre">gm_sound_set</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#audioworkstation.keyboard.mididriver.MidiSoundModule.gm_sound_set" title="この定義へのパーマリンク">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="audioworkstation.keyboard.mididriver.MidiSoundModule.preset_name">
+<span class="sig-name descname"><span class="pre">preset_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">preset_num</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/keyboard/mididriver.html#MidiSoundModule.preset_name"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.keyboard.mididriver.MidiSoundModule.preset_name" title="この定義へのパーマリンク">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="audioworkstation.keyboard.mididriver.MidiSoundModule.programchange">
+<span class="sig-name descname"><span class="pre">programchange</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">preset_num</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/keyboard/mididriver.html#MidiSoundModule.programchange"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.keyboard.mididriver.MidiSoundModule.programchange" title="この定義へのパーマリンク">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="audioworkstation.keyboard.mididriver.MidiSoundModule.sounding">
+<span class="sig-name descname"><span class="pre">sounding</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/keyboard/mididriver.html#MidiSoundModule.sounding"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.keyboard.mididriver.MidiSoundModule.sounding" title="この定義へのパーマリンク">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="audioworkstation.keyboard.mididriver.MidiSoundModule.volume">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">volume</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#audioworkstation.keyboard.mididriver.MidiSoundModule.volume" title="この定義へのパーマリンク">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </section>
 <section id="module-audioworkstation.keyboard">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-audioworkstation.keyboard" title="この見出しへのパーマリンク">¶</a></h2>
+<p>MIDI sequencer function for USB MIDI Keyboard</p>
 </section>
 </section>
 

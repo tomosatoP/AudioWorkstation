@@ -40,7 +40,7 @@
 <span class="k">def</span> <span class="nf">_paired_devices</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns a list of paired devices.</span>
 
-<span class="sd">    :return dict[str, str]: name, address</span>
+<span class="sd">    :return: name, address</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">devices</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
     <span class="n">command</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;bluetoothctl&quot;</span><span class="p">,</span> <span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="s2">&quot;paired-devices&quot;</span><span class="p">]</span>
@@ -58,7 +58,7 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Find out if the paired device with Audio Sink is nearby.</span>
 
 <span class="sd">    :param str address: paired device address</span>
-<span class="sd">    :return bool: True is nearby, False is otherwise</span>
+<span class="sd">    :return: True is nearby, False is otherwise</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">BT</span><span class="o">.</span><span class="n">lookup_name</span><span class="p">(</span><span class="n">address</span><span class="o">=</span><span class="n">address</span><span class="p">):</span>
         <span class="k">return</span> <span class="kc">False</span>
@@ -74,7 +74,7 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Check the connection of paired devices nearby.</span>
 
 <span class="sd">    :param str address: address of paired devices nearby</span>
-<span class="sd">    :return bool: True is connected, False is otherwise</span>
+<span class="sd">    :return: True is connected, False is otherwise</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">pre_pipe</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;bluetoothctl&quot;</span><span class="p">,</span> <span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="s2">&quot;info&quot;</span><span class="p">,</span> <span class="n">address</span><span class="p">]</span>
     <span class="n">post_pipe</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;grep&quot;</span><span class="p">,</span> <span class="s2">&quot;Connected&quot;</span><span class="p">]</span>
@@ -87,7 +87,7 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Attempts to connect to a Bluetooth device.</span>
 
 <span class="sd">    :param str address: device address</span>
-<span class="sd">    :return bool: True is success, False is otherwise</span>
+<span class="sd">    :return: True is success, False is otherwise</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">command</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;bluetoothctl&quot;</span><span class="p">,</span> <span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="s2">&quot;connect&quot;</span><span class="p">,</span> <span class="n">address</span><span class="p">]</span>
     <span class="n">result</span> <span class="o">=</span> <span class="n">run</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="n">command</span><span class="p">,</span> <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>

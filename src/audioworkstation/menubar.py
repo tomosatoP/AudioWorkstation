@@ -1,7 +1,14 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+"""menu bar
 
-
+| 1. Switching Child Screens [Keyboard, Metronome, MIDI Player]
+| 2. Control volumes [Master & Child Screen]
+| 3. Exit this application
+---
+| class MenubarView(Widget)
+| class MenubarApp(App)
+"""
 from kivy.app import App
 from kivy.logger import Logger
 from kivy.properties import ObjectProperty
@@ -14,12 +21,21 @@ from .libs.audio import asound
 
 
 class MenubarView(Widget):
+    """class MenubarView
+
+    :var ObjectProperty panel: child screens
+    :var ObjectProperty mode: spinner
+    :var ObjectProperty vol1: master volume
+    :var ObjectProperty vol2: child screens volume
+    """
+
     panel = ObjectProperty()
     mode = ObjectProperty()
     vol1 = ObjectProperty()
     vol2 = ObjectProperty()
 
     def __init__(self, **kwargs):
+        """Initialize Menubar View"""
         super().__init__(**kwargs)
 
         Logger.debug("Menubar: initializing...")
@@ -33,7 +49,12 @@ class MenubarView(Widget):
         self.vol2.slider.bind(value=self.mode_volume)
         self.mode.bind(text=self.set_mode)
 
-    def set_mode(self, widget, text) -> None:
+    def set_mode(self, widget: Widget, text: str) -> None:
+        """Set child screens mode.
+
+        :param Widget widget: mode
+        :param str text: mode text ["キーボード", "メトロノーム", "伴奏"]
+        """
         if text == "キーボード":
             self.panel.current = "keyboard"
             self.vol2.label.text = "キーボード音量"
@@ -46,14 +67,26 @@ class MenubarView(Widget):
 
         self.vol2.slider.value = self.panel.current_screen.volume
 
-    def master_volume(self, widget, value):
+    def master_volume(self, widget: Widget, value: int) -> None:
+        """Control master volume.
+
+        :param Widget widget: vol1.slider
+        :param int value: value[%] to be set
+        """
         asound.set_volume("default", "Master", value)
 
-    def mode_volume(self, widget, value):
+    def mode_volume(self, widget: Widget, value: int) -> None:
+        """Control child screens volume.
+
+        :param Widget widget: vol2.slider
+        :param int value: value[%] to be set
+        """
         self.panel.current_screen.volume = value
 
 
 class MenubarApp(App):
+    """class MenubarApp"""
+
     def build(self):
         self.title = "AudioWorkstation"
         return MenubarView()

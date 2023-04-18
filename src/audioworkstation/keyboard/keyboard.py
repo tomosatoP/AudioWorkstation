@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+"""MIDI sequencer function for USB MIDI Keyboard
+
+| class GMSoundSetButton(ToggleButton, EventDispatcher)
+| class GMSoundSetGroupButton(ToggleButton, EventDispatcher)
+| class KeyboardView(Screen)
+"""
 
 from pathlib import Path
 from json import load
@@ -22,14 +28,30 @@ Builder.load_file(str(Path(__file__).with_name("keyboard.kv")))
 
 
 class GMSoundSetButton(ToggleButton, EventDispatcher):
+    """class GMSoundSetButton
+
+    :var NumericProperty preset_num: ***
+    """
+
     preset_num = NumericProperty()
 
 
 class GMSoundSetGroupButton(ToggleButton, EventDispatcher):
+    """class GMSoundSetGroupButton
+
+    :var DictProperty presets: ***
+    """
+
     presets = DictProperty()
 
 
 class KeyboardView(Screen):
+    """class KeyboardView
+
+    :var ObjectProperty gmssg: ***
+    :var ObjectProperty gmss: ***
+    """
+
     gmssg = ObjectProperty()
     gmss = ObjectProperty()
 

@@ -44,7 +44,7 @@ class FSError(Exception):
         logger.error(f"FSError: {args}")
 
 
-def errcheck(result: Any, cfunc: Callable, args: tuple) -> Any:
+def _errcheck(result: Any, cfunc: Callable, args: tuple) -> Any:
     if result == FLUID_FAILED:
         raise FSError((cfunc, args))
     return result
@@ -54,7 +54,7 @@ def errcheck(result: Any, cfunc: Callable, args: tuple) -> Any:
 _libfs = CFS.CDLL(name=find_library(name="fluidsynth"), use_errno=True)
 
 
-def prototype(restype: Any, name: str, *params: tuple) -> Any:
+def _prototype(restype: Any, name: str, *params: tuple) -> Any:
     """Returns a foreign function exported by a shared library.
 
     :param Any restype: foreign function restype
@@ -80,37 +80,37 @@ def prototype(restype: Any, name: str, *params: tuple) -> Any:
 # Audio output
 # Audio output - Audio driver
 # [API prototype]
-new_fluid_audio_driver = prototype(
+new_fluid_audio_driver = _prototype(
     CFS.c_void_p,
     "new_fluid_audio_driver",
     (CFS.c_void_p, 1, "settings"),
     (CFS.c_void_p, 1, "synth"),
 )
-new_fluid_audio_driver.errcheck = errcheck
+new_fluid_audio_driver.errcheck = _errcheck
 
-delete_fluid_audio_driver = prototype(
+delete_fluid_audio_driver = _prototype(
     None, "delete_fluid_audio_driver", (CFS.c_void_p, 1, "driver")
 )
 
-fluid_audio_driver_register = prototype(
+fluid_audio_driver_register = _prototype(
     CFS.c_int, "fluid_audio_driver_register", (CFS.POINTER(CFS.c_char_p), 1, "adrivers")
 )
-fluid_audio_driver_register.errcheck = errcheck
+fluid_audio_driver_register.errcheck = _errcheck
 
 # Audio output - File Renderer
 
 # Command Interface
 # Command Interface - Command Handler
 # [API prototype]
-new_fluid_cmd_handler = prototype(
+new_fluid_cmd_handler = _prototype(
     CFS.c_void_p,
     "new_fluid_cmd_handler",
     (CFS.c_void_p, 1, "synth"),
     (CFS.c_void_p, 1, "router"),
 )
-new_fluid_cmd_handler.errcheck = errcheck
+new_fluid_cmd_handler.errcheck = _errcheck
 
-delete_fluid_cmd_handler = prototype(
+delete_fluid_cmd_handler = _prototype(
     None, "delete_fluid_cmd_handler", (CFS.c_void_p, 1, "handler")
 )
 
@@ -150,7 +150,7 @@ FLUID_LOG_FUNCTION_T = CFS.CFUNCTYPE(
 :param POINTER(LogUserData) data:
 """
 # [API prototype]
-fluid_default_log_function = prototype(
+fluid_default_log_function = _prototype(
     None,
     "fluid_default_log_function",
     (CFS.c_int, 1, "level"),
@@ -158,7 +158,7 @@ fluid_default_log_function = prototype(
     (CFS.POINTER(LogUserData), 1, "data"),
 )
 
-fluid_log = prototype(
+fluid_log = _prototype(
     CFS.c_int,
     "fluid_log",
     (CFS.c_int, 1, "level"),
@@ -166,14 +166,14 @@ fluid_log = prototype(
     (CFS.c_char_p, 1, "message"),
 )
 
-fluid_set_log_function = prototype(
+fluid_set_log_function = _prototype(
     FLUID_LOG_FUNCTION_T,
     "fluid_set_log_function",
     (CFS.c_int, 1, "level"),
     (FLUID_LOG_FUNCTION_T, 1, "fun"),
     (CFS.POINTER(LogUserData), 1, "data"),
 )
-fluid_set_log_function.errcheck = errcheck
+fluid_set_log_function.errcheck = _errcheck
 
 # [user function]
 
@@ -204,26 +204,26 @@ HANDLE_MIDI_EVENT_FUNC_T = CFS.CFUNCTYPE(CFS.c_int, CFS.c_void_p, CFS.c_void_p)
 :return c_int:
 """
 # [API prototype]
-fluid_synth_handle_midi_event = prototype(
+fluid_synth_handle_midi_event = _prototype(
     CFS.c_int,
     "fluid_synth_handle_midi_event",
     (CFS.c_void_p, 1, "data"),
     (CFS.c_void_p, 1, "event"),
 )
-fluid_synth_handle_midi_event.errcheck = errcheck
+fluid_synth_handle_midi_event.errcheck = _errcheck
 
 # MIDI Input - MIDI Driver
 # [API prototype]
-new_fluid_midi_driver = prototype(
+new_fluid_midi_driver = _prototype(
     CFS.c_void_p,
     "new_fluid_midi_driver",
     (CFS.c_void_p, 1, "settings"),
     (CFS.c_void_p, 1, "handler"),
     (CFS.c_void_p, 1, "event_handler_data"),
 )
-new_fluid_midi_driver.errcheck = errcheck
+new_fluid_midi_driver.errcheck = _errcheck
 
-delete_fluid_midi_driver = prototype(
+delete_fluid_midi_driver = _prototype(
     None, "delete_fluid_midi_driver", (CFS.c_void_p, 1, "driver")
 )
 
@@ -246,83 +246,83 @@ class FLUID_PLAYER_STATUS(IntEnum):
 
 
 # [API prototype]
-new_fluid_player = prototype(
+new_fluid_player = _prototype(
     CFS.c_void_p, "new_fluid_player", (CFS.c_void_p, 1, "synth")
 )
-new_fluid_player.errcheck = errcheck
+new_fluid_player.errcheck = _errcheck
 
-delete_fluid_player = prototype(
+delete_fluid_player = _prototype(
     None, "delete_fluid_player", (CFS.c_void_p, 1, "player")
 )
 
-fluid_player_set_playback_callback = prototype(
+fluid_player_set_playback_callback = _prototype(
     CFS.c_int,
     "fluid_player_set_playback_callback",
     (CFS.c_void_p, 1, "player"),
     (CFS.c_void_p, 1, "handler"),
     (CFS.c_void_p, 1, "handler_data"),
 )
-fluid_player_set_playback_callback.errcheck = errcheck
+fluid_player_set_playback_callback.errcheck = _errcheck
 
-fluid_player_add = prototype(
+fluid_player_add = _prototype(
     CFS.c_int,
     "fluid_player_add",
     (CFS.c_void_p, 1, "player"),
     (CFS.c_char_p, 1, "midifile"),
 )
-fluid_player_add.errcheck = errcheck
+fluid_player_add.errcheck = _errcheck
 
-fluid_player_add_mem = prototype(
+fluid_player_add_mem = _prototype(
     CFS.c_int,
     "fluid_player_add_mem",
     (CFS.c_void_p, 1, "player"),
     (CFS.POINTER(CFS.c_char), 1, "buffer"),
     (CFS.c_size_t, 1, "len"),
 )
-fluid_player_add_mem.errcheck = errcheck
+fluid_player_add_mem.errcheck = _errcheck
 
-fluid_player_play = prototype(
+fluid_player_play = _prototype(
     CFS.c_int, "fluid_player_play", (CFS.c_void_p, 1, "player")
 )
-fluid_player_play.errcheck = errcheck
+fluid_player_play.errcheck = _errcheck
 
-fluid_player_get_status = prototype(
+fluid_player_get_status = _prototype(
     CFS.c_int, "fluid_player_get_status", (CFS.c_void_p, 1, "player")
 )
-fluid_player_get_status.errcheck = errcheck
+fluid_player_get_status.errcheck = _errcheck
 
-fluid_player_stop = prototype(
+fluid_player_stop = _prototype(
     CFS.c_int, "fluid_player_stop", (CFS.c_void_p, 1, "player")
 )
-fluid_player_stop.errcheck = errcheck
+fluid_player_stop.errcheck = _errcheck
 
-fluid_player_join = prototype(
+fluid_player_join = _prototype(
     CFS.c_int, "fluid_player_join", (CFS.c_void_p, 1, "player")
 )
-fluid_player_join.errcheck = errcheck
+fluid_player_join.errcheck = _errcheck
 
-fluid_player_get_total_ticks = prototype(
+fluid_player_get_total_ticks = _prototype(
     CFS.c_int, "fluid_player_get_total_ticks", (CFS.c_void_p, 1, "player")
 )
-fluid_player_get_total_ticks.errcheck = errcheck
+fluid_player_get_total_ticks.errcheck = _errcheck
 
-fluid_player_get_current_tick = prototype(
+fluid_player_get_current_tick = _prototype(
     CFS.c_int, "fluid_player_get_current_tick", (CFS.c_void_p, 1, "player")
 )
-fluid_player_get_current_tick.errcheck = errcheck
+fluid_player_get_current_tick.errcheck = _errcheck
 
-fluid_player_seek = prototype(
+fluid_player_seek = _prototype(
     CFS.c_int, "fluid_player_seek", (CFS.c_void_p, 1, "player"), (CFS.c_int, 1, "ticks")
 )
-fluid_player_seek.errcheck = errcheck
+fluid_player_seek.errcheck = _errcheck
 
-fluid_player_set_loop = prototype(
+fluid_player_set_loop = _prototype(
     CFS.c_int,
     "fluid_player_set_loop",
     (CFS.c_void_p, 1, "player"),
     (CFS.c_int, 1, "loop"),
 )
-fluid_player_set_loop.errcheck = errcheck
+fluid_player_set_loop.errcheck = _errcheck
 
 
 # MIDI Input - MIDI Router
@@ -340,61 +340,61 @@ class FLUID_MIDI_ROUTER_RULE_TYPE(IntEnum):
 
 
 # [API prototype]
-new_fluid_midi_router = prototype(
+new_fluid_midi_router = _prototype(
     CFS.c_void_p,
     "new_fluid_midi_router",
     (CFS.c_void_p, 1, "settings"),
     (CFS.c_void_p, 1, "handler"),
     (CFS.c_void_p, 1, "event_handler_data"),
 )
-new_fluid_midi_router.errcheck = errcheck
+new_fluid_midi_router.errcheck = _errcheck
 
-delete_fluid_midi_router = prototype(
+delete_fluid_midi_router = _prototype(
     None, "delete_fluid_midi_router", (CFS.c_void_p, 1, "router")
 )
 
-fluid_midi_dump_postrouter = prototype(
+fluid_midi_dump_postrouter = _prototype(
     CFS.c_int,
     "fluid_midi_dump_postrouter",
     (CFS.c_void_p, 1, "data"),
     (CFS.c_void_p, 1, "event"),
 )
-fluid_midi_dump_postrouter.errcheck = errcheck
+fluid_midi_dump_postrouter.errcheck = _errcheck
 
-fluid_midi_dump_prerouter = prototype(
+fluid_midi_dump_prerouter = _prototype(
     CFS.c_int,
     "fluid_midi_dump_prerouter",
     (CFS.c_void_p, 1, "data"),
     (CFS.c_void_p, 1, "event"),
 )
-fluid_midi_dump_prerouter.errcheck = errcheck
+fluid_midi_dump_prerouter.errcheck = _errcheck
 
-fluid_midi_router_handle_midi_event = prototype(
+fluid_midi_router_handle_midi_event = _prototype(
     CFS.c_int,
     "fluid_midi_router_handle_midi_event",
     (CFS.c_void_p, 1, "data"),
     (CFS.c_void_p, 1, "event"),
 )
-fluid_midi_router_handle_midi_event.errcheck = errcheck
+fluid_midi_router_handle_midi_event.errcheck = _errcheck
 
-fluid_midi_router_clear_rules = prototype(
+fluid_midi_router_clear_rules = _prototype(
     CFS.c_int, "fluid_midi_router_clear_rules", (CFS.c_void_p, 1, "router")
 )
-fluid_midi_router_clear_rules.errcheck = errcheck
+fluid_midi_router_clear_rules.errcheck = _errcheck
 
-fluid_midi_router_set_default_rules = prototype(
+fluid_midi_router_set_default_rules = _prototype(
     CFS.c_int, "fluid_midi_router_set_default_rules", (CFS.c_void_p, 1, "router")
 )
-fluid_midi_router_set_default_rules.errcheck = errcheck
+fluid_midi_router_set_default_rules.errcheck = _errcheck
 
-new_fluid_midi_router_rule = prototype(CFS.c_void_p, "new_fluid_midi_router_rule")
-new_fluid_midi_router_rule.errcheck = errcheck
+new_fluid_midi_router_rule = _prototype(CFS.c_void_p, "new_fluid_midi_router_rule")
+new_fluid_midi_router_rule.errcheck = _errcheck
 
-delete_fluid_midi_router_rule = prototype(
+delete_fluid_midi_router_rule = _prototype(
     None, "delete_fluid_midi_router_rule", (CFS.c_void_p, 1, "rule")
 )
 
-fluid_midi_router_rule_set_chan = prototype(
+fluid_midi_router_rule_set_chan = _prototype(
     None,
     "fluid_midi_router_rule_set_chan",
     (CFS.c_void_p, 1, "rule"),
@@ -404,7 +404,7 @@ fluid_midi_router_rule_set_chan = prototype(
     (CFS.c_int, 1, "add"),
 )
 
-fluid_midi_router_rule_set_param1 = prototype(
+fluid_midi_router_rule_set_param1 = _prototype(
     None,
     "fluid_midi_router_rule_set_param1",
     (CFS.c_void_p, 1, "rule"),
@@ -414,7 +414,7 @@ fluid_midi_router_rule_set_param1 = prototype(
     (CFS.c_int, 1, "add"),
 )
 
-fluid_midi_router_rule_set_param2 = prototype(
+fluid_midi_router_rule_set_param2 = _prototype(
     None,
     "fluid_midi_router_rule_set_param2",
     (CFS.c_void_p, 1, "rule"),
@@ -424,14 +424,14 @@ fluid_midi_router_rule_set_param2 = prototype(
     (CFS.c_int, 1, "add"),
 )
 
-fluid_midi_router_add_rule = prototype(
+fluid_midi_router_add_rule = _prototype(
     CFS.c_int,
     "fluid_midi_router_add_rule",
     (CFS.c_void_p, 1, "router"),
     (CFS.c_void_p, 1, "rule"),
     (CFS.c_int, 1, "type"),
 )
-fluid_midi_router_add_rule.errcheck = errcheck
+fluid_midi_router_add_rule.errcheck = _errcheck
 
 # MIDI sequencer
 # [user defined data type]
@@ -455,24 +455,24 @@ FLUID_EVENT_CALLBACK_T = CFS.CFUNCTYPE(
 :param POINTER(EventUserData) data:
 """
 # [API prototype]
-new_fluid_sequencer2 = prototype(
+new_fluid_sequencer2 = _prototype(
     CFS.c_void_p, "new_fluid_sequencer2", (CFS.c_int, 1, "use_system_timer")
 )
-new_fluid_sequencer2.errcheck = errcheck
+new_fluid_sequencer2.errcheck = _errcheck
 
-delete_fluid_sequencer = prototype(
+delete_fluid_sequencer = _prototype(
     None, "delete_fluid_sequencer", (CFS.c_void_p, 1, "seq")
 )
 
-fluid_sequencer_register_fluidsynth = prototype(
+fluid_sequencer_register_fluidsynth = _prototype(
     CFS.c_short,
     "fluid_sequencer_register_fluidsynth",
     (CFS.c_void_p, 1, "seq"),
     (CFS.c_void_p, 1, "synth"),
 )
-fluid_sequencer_register_fluidsynth.errcheck = errcheck
+fluid_sequencer_register_fluidsynth.errcheck = _errcheck
 
-fluid_sequencer_register_client = prototype(
+fluid_sequencer_register_client = _prototype(
     CFS.c_short,
     "fluid_sequencer_register_client",
     (CFS.c_void_p, 1, "seq"),
@@ -480,41 +480,41 @@ fluid_sequencer_register_client = prototype(
     (FLUID_EVENT_CALLBACK_T, 1, "callback"),
     (CFS.POINTER(EventUserData), 1, "data"),
 )
-fluid_sequencer_register_client.errcheck = errcheck
+fluid_sequencer_register_client.errcheck = _errcheck
 
-fluid_sequencer_unregister_client = prototype(
+fluid_sequencer_unregister_client = _prototype(
     None,
     "fluid_sequencer_unregister_client",
     (CFS.c_void_p, 1, "seq"),
     (CFS.c_short, 1, "id"),
 )
 
-fluid_sequencer_get_client_name = prototype(
+fluid_sequencer_get_client_name = _prototype(
     CFS.c_char_p,
     "fluid_sequencer_get_client_name",
     (CFS.c_void_p, 1, "seq"),
     (CFS.c_void_p, 1, "id"),
 )
-fluid_sequencer_get_client_name.errcheck = errcheck
+fluid_sequencer_get_client_name.errcheck = _errcheck
 
-fluid_sequencer_get_tick = prototype(
+fluid_sequencer_get_tick = _prototype(
     CFS.c_uint, "fluid_sequencer_get_tick", (CFS.c_void_p, 1, "seq")
 )
-fluid_sequencer_get_tick.errcheck = errcheck
+fluid_sequencer_get_tick.errcheck = _errcheck
 
-fluid_sequencer_set_time_scale = prototype(
+fluid_sequencer_set_time_scale = _prototype(
     None,
     "fluid_sequencer_set_time_scale",
     (CFS.c_void_p, 1, "seq"),
     (CFS.c_double, 1, "scale", CFS.c_double(1000)),
 )
 
-fluid_sequencer_get_time_scale = prototype(
+fluid_sequencer_get_time_scale = _prototype(
     CFS.c_double, "fluid_sequencer_get_time_scale", (CFS.c_void_p, 1, "seq")
 )
-fluid_sequencer_get_time_scale.errcheck = errcheck
+fluid_sequencer_get_time_scale.errcheck = _errcheck
 
-fluid_sequencer_send_at = prototype(
+fluid_sequencer_send_at = _prototype(
     CFS.c_int,
     "fluid_sequencer_send_at",
     (CFS.c_void_p, 1, "seq"),
@@ -522,24 +522,24 @@ fluid_sequencer_send_at = prototype(
     (CFS.c_uint, 1, "time"),
     (CFS.c_int, 1, "absolute"),
 )
-fluid_sequencer_send_at.errcheck = errcheck
+fluid_sequencer_send_at.errcheck = _errcheck
 
 # MIDI Sequencer - Sequencer Events
 # [API prototype]
-new_fluid_event = prototype(CFS.c_void_p, "new_fluid_event")
-new_fluid_event.errcheck = errcheck
+new_fluid_event = _prototype(CFS.c_void_p, "new_fluid_event")
+new_fluid_event.errcheck = _errcheck
 
-delete_fluid_event = prototype(None, "delete_fluid_event", (CFS.c_void_p, 1, "evt"))
+delete_fluid_event = _prototype(None, "delete_fluid_event", (CFS.c_void_p, 1, "evt"))
 
-fluid_event_set_dest = prototype(
+fluid_event_set_dest = _prototype(
     None, "fluid_event_set_dest", (CFS.c_void_p, 1, "evt"), (CFS.c_short, 1, "dest")
 )
 
-fluid_event_set_source = prototype(
+fluid_event_set_source = _prototype(
     None, "fluid_event_set_source", (CFS.c_void_p, 1, "evt"), (CFS.c_short, 1, "src")
 )
 
-fluid_event_note = prototype(
+fluid_event_note = _prototype(
     None,
     "fluid_event_note",
     (CFS.c_void_p, 1, "evt"),
@@ -549,26 +549,26 @@ fluid_event_note = prototype(
     (CFS.c_uint, 1, "duration"),
 )
 
-fluid_event_timer = prototype(
+fluid_event_timer = _prototype(
     None, "fluid_event_timer", (CFS.c_void_p, 1, "evt"), (CFS.c_void_p, 1, "data")
 )
 
 # Miscellaneous
 # [API prototype]
-fluid_free = prototype(None, "fluid_free", (CFS.POINTER(CFS.c_int), 1, "ptr"))
+fluid_free = _prototype(None, "fluid_free", (CFS.POINTER(CFS.c_int), 1, "ptr"))
 
-fluid_is_midifile = prototype(
+fluid_is_midifile = _prototype(
     CFS.c_int, "fluid_is_midifile", (CFS.c_char_p, 1, "filename")
 )
-fluid_is_midifile.errcheck = errcheck
+fluid_is_midifile.errcheck = _errcheck
 
-fluid_is_soundfont = prototype(
+fluid_is_soundfont = _prototype(
     CFS.c_int, "fluid_is_soundfont", (CFS.c_char_p, 1, "filename")
 )
-fluid_is_soundfont.errcheck = errcheck
+fluid_is_soundfont.errcheck = _errcheck
 
-fluid_version_str = prototype(CFS.c_char_p, "fluid_version_str")
-fluid_version_str.errcheck = errcheck
+fluid_version_str = _prototype(CFS.c_char_p, "fluid_version_str")
+fluid_version_str.errcheck = _errcheck
 
 # Settings
 # [ENUM]
@@ -611,41 +611,41 @@ FLUID_SETTINGS_FOREACH_T = CFS.CFUNCTYPE(None, CFS.c_void_p, CFS.c_char_p, CFS.c
 """
 
 # [API prototype]
-new_fluid_settings = prototype(CFS.c_void_p, "new_fluid_settings")
-new_fluid_settings.errcheck = errcheck
+new_fluid_settings = _prototype(CFS.c_void_p, "new_fluid_settings")
+new_fluid_settings.errcheck = _errcheck
 
-delete_fluid_settings = prototype(
+delete_fluid_settings = _prototype(
     None, "delete_fluid_settings", (CFS.c_void_p, 1, "settings")
 )
 
-fluid_settings_setnum = prototype(
+fluid_settings_setnum = _prototype(
     CFS.c_int,
     "fluid_settings_setnum",
     (CFS.c_void_p, 1, "settings"),
     (CFS.c_char_p, 1, "name"),
     (CFS.c_double, 1, "value"),
 )
-fluid_settings_setnum.errcheck = errcheck
+fluid_settings_setnum.errcheck = _errcheck
 
-fluid_settings_getnum = prototype(
+fluid_settings_getnum = _prototype(
     CFS.c_int,
     "fluid_settings_getnum",
     (CFS.c_void_p, 1, "settings"),
     (CFS.c_char_p, 1, "name"),
     (CFS.POINTER(CFS.c_double), 3, "val"),
 )
-fluid_settings_getnum.errcheck = errcheck
+fluid_settings_getnum.errcheck = _errcheck
 
-fluid_settings_getnum_default = prototype(
+fluid_settings_getnum_default = _prototype(
     CFS.c_int,
     "fluid_settings_getnum_default",
     (CFS.c_void_p, 1, "settings"),
     (CFS.c_char_p, 1, "name"),
     (CFS.POINTER(CFS.c_double), 3, "val"),
 )
-fluid_settings_getnum_default.errcheck = errcheck
+fluid_settings_getnum_default.errcheck = _errcheck
 
-fluid_settings_getnum_range = prototype(
+fluid_settings_getnum_range = _prototype(
     CFS.c_int,
     "fluid_settings_getnum_range",
     (CFS.c_void_p, 1, "settings"),
@@ -653,36 +653,36 @@ fluid_settings_getnum_range = prototype(
     (CFS.POINTER(CFS.c_double), 3, "min"),
     (CFS.POINTER(CFS.c_double), 3, "max"),
 )
-fluid_settings_getnum_range.errcheck = errcheck
+fluid_settings_getnum_range.errcheck = _errcheck
 
-fluid_settings_setint = prototype(
+fluid_settings_setint = _prototype(
     CFS.c_int,
     "fluid_settings_setint",
     (CFS.c_void_p, 1, "settings"),
     (CFS.c_char_p, 1, "name"),
     (CFS.c_int, 1, "val"),
 )
-fluid_settings_setint.errcheck = errcheck
+fluid_settings_setint.errcheck = _errcheck
 
-fluid_settings_getint = prototype(
+fluid_settings_getint = _prototype(
     CFS.c_int,
     "fluid_settings_getint",
     (CFS.c_void_p, 1, "settings"),
     (CFS.c_char_p, 1, "name"),
     (CFS.POINTER(CFS.c_int), 3, "val"),
 )
-fluid_settings_getint.errcheck = errcheck
+fluid_settings_getint.errcheck = _errcheck
 
-fluid_settings_getint_default = prototype(
+fluid_settings_getint_default = _prototype(
     CFS.c_int,
     "fluid_settings_getint_default",
     (CFS.c_void_p, 1, "settings"),
     (CFS.c_char_p, 1, "name"),
     (CFS.POINTER(CFS.c_int), 3, "val"),
 )
-fluid_settings_getint_default.errcheck = errcheck
+fluid_settings_getint_default.errcheck = _errcheck
 
-fluid_settings_getint_range = prototype(
+fluid_settings_getint_range = _prototype(
     CFS.c_int,
     "fluid_settings_getint_range",
     (CFS.c_void_p, 1, "settings"),
@@ -690,27 +690,27 @@ fluid_settings_getint_range = prototype(
     (CFS.POINTER(CFS.c_int), 3, "min"),
     (CFS.POINTER(CFS.c_int), 3, "max"),
 )
-fluid_settings_getint_range.errcheck = errcheck
+fluid_settings_getint_range.errcheck = _errcheck
 
-fluid_settings_setstr = prototype(
+fluid_settings_setstr = _prototype(
     CFS.c_int,
     "fluid_settings_setstr",
     (CFS.c_void_p, 1, "settings"),
     (CFS.c_char_p, 1, "name"),
     (CFS.c_char_p, 1, "str"),
 )
-fluid_settings_setstr.errcheck = errcheck
+fluid_settings_setstr.errcheck = _errcheck
 
-fluid_settings_getstr_default = prototype(
+fluid_settings_getstr_default = _prototype(
     CFS.c_int,
     "fluid_settings_getstr_default",
     (CFS.c_void_p, 1, "settings"),
     (CFS.c_char_p, 1, "name"),
     (CFS.POINTER(CFS.c_char_p), 3, "str"),
 )
-fluid_settings_getstr_default.errcheck = errcheck
+fluid_settings_getstr_default.errcheck = _errcheck
 
-fluid_settings_copystr = prototype(
+fluid_settings_copystr = _prototype(
     CFS.c_int,
     "fluid_settings_copystr",
     (CFS.c_void_p, 1, "settings"),
@@ -718,9 +718,9 @@ fluid_settings_copystr = prototype(
     (CFS.c_char_p, 1, "str"),
     (CFS.c_int, 1, "len"),
 )
-fluid_settings_copystr.errcheck = errcheck
+fluid_settings_copystr.errcheck = _errcheck
 
-fluid_settings_foreach = prototype(
+fluid_settings_foreach = _prototype(
     None,
     "fluid_settings_foreach",
     (CFS.c_void_p, 1, "settings"),
@@ -728,7 +728,7 @@ fluid_settings_foreach = prototype(
     (FLUID_SETTINGS_FOREACH_T, 1, "func"),
 )
 
-fluid_settings_foreach_option = prototype(
+fluid_settings_foreach_option = _prototype(
     None,
     "fluid_settings_foreach_option",
     (CFS.c_void_p, 1, "settings"),
@@ -737,73 +737,73 @@ fluid_settings_foreach_option = prototype(
     (FLUID_SETTINGS_FOREACH_OPTION_T, 1, "func"),
 )
 
-fluid_settings_get_hints = prototype(
+fluid_settings_get_hints = _prototype(
     CFS.c_int,
     "fluid_settings_get_hints",
     (CFS.c_void_p, 1, "settings"),
     (CFS.c_char_p, 1, "name"),
     (CFS.POINTER(CFS.c_int), 3, "hints"),
 )
-fluid_settings_get_hints.errcheck = errcheck
+fluid_settings_get_hints.errcheck = _errcheck
 
 
 # SoundFonts
 # SoundFonts - SoundFont Generators
 # SoundFonts - SoundFont Loader
 # [API prototype]
-fluid_synth_get_channel_preset = prototype(
+fluid_synth_get_channel_preset = _prototype(
     CFS.c_void_p,
     "fluid_synth_get_channel_preset",
     (CFS.c_void_p, 1, "synth"),
     (CFS.c_int, 1, "chan"),
 )
-fluid_synth_get_channel_preset.errcheck = errcheck
+fluid_synth_get_channel_preset.errcheck = _errcheck
 
-fluid_sfont_get_preset = prototype(
+fluid_sfont_get_preset = _prototype(
     CFS.c_void_p,
     "fluid_sfont_get_preset",
     (CFS.c_void_p, 1, "sfont"),
     (CFS.c_int, 1, "bank"),
     (CFS.c_int, 1, "prenum"),
 )
-fluid_sfont_get_preset.errcheck = errcheck
+fluid_sfont_get_preset.errcheck = _errcheck
 
-fluid_preset_get_banknum = prototype(
+fluid_preset_get_banknum = _prototype(
     CFS.c_int, "fluid_preset_get_banknum", (CFS.c_void_p, 1, "preset")
 )
-fluid_preset_get_banknum.errcheck = errcheck
+fluid_preset_get_banknum.errcheck = _errcheck
 
-fluid_preset_get_name = prototype(
+fluid_preset_get_name = _prototype(
     CFS.c_char_p, "fluid_preset_get_name", (CFS.c_void_p, 1, "preset")
 )
-fluid_preset_get_name.errcheck = errcheck
+fluid_preset_get_name.errcheck = _errcheck
 
-fluid_preset_get_num = prototype(
+fluid_preset_get_num = _prototype(
     CFS.c_int, "fluid_preset_get_num", (CFS.c_void_p, 1, "preset")
 )
-fluid_preset_get_num.errcheck = errcheck
+fluid_preset_get_num.errcheck = _errcheck
 
-fluid_preset_get_sfont = prototype(
+fluid_preset_get_sfont = _prototype(
     CFS.c_void_p, "fluid_preset_get_sfont", (CFS.c_void_p, 1, "preset")
 )
-fluid_preset_get_sfont.errcheck = errcheck
+fluid_preset_get_sfont.errcheck = _errcheck
 
-fluid_sfont_get_id = prototype(
+fluid_sfont_get_id = _prototype(
     CFS.c_int, "fluid_sfont_get_id", (CFS.c_void_p, 1, "sfont")
 )
-fluid_sfont_get_id.errcheck = errcheck
+fluid_sfont_get_id.errcheck = _errcheck
 
 # SoundFonts - SoundFont Modulators
 # SoundFonts - SoundFont Maniplation
 
 # Synthesizer
 # [API prototype]
-new_fluid_synth = prototype(
+new_fluid_synth = _prototype(
     CFS.c_void_p, "new_fluid_synth", (CFS.c_void_p, 1, "settings")
 )
-new_fluid_synth.errcheck = errcheck
+new_fluid_synth.errcheck = _errcheck
 
-delete_fluid_synth = prototype(None, "delete_fluid_synth", (CFS.c_void_p, 1, "synth"))
+delete_fluid_synth = _prototype(None, "delete_fluid_synth", (CFS.c_void_p, 1, "synth"))
 
 # Synthesizer - Audio Rendering
 # Synthesizer - Effect - Chorus
@@ -813,23 +813,23 @@ delete_fluid_synth = prototype(None, "delete_fluid_synth", (CFS.c_void_p, 1, "sy
 
 # Synthesizer - MIDI Channel Messages
 # [API prototype]
-fluid_synth_all_notes_off = prototype(
+fluid_synth_all_notes_off = _prototype(
     CFS.c_int,
     "fluid_synth_all_notes_off",
     (CFS.c_void_p, 1, "synth"),
     (CFS.c_int, 1, "chan"),
 )
-fluid_synth_all_notes_off.errcheck = errcheck
+fluid_synth_all_notes_off.errcheck = _errcheck
 
-fluid_synth_all_sounds_off = prototype(
+fluid_synth_all_sounds_off = _prototype(
     CFS.c_int,
     "fluid_synth_all_sounds_off",
     (CFS.c_void_p, 1, "synth"),
     (CFS.c_int, 1, "chan"),
 )
-fluid_synth_all_sounds_off.errcheck = errcheck
+fluid_synth_all_sounds_off.errcheck = _errcheck
 
-fluid_synth_cc = prototype(
+fluid_synth_cc = _prototype(
     CFS.c_int,
     "fluid_synth_cc",
     (CFS.c_void_p, 1, "synth"),
@@ -837,9 +837,9 @@ fluid_synth_cc = prototype(
     (CFS.c_int, 1, "num"),
     (CFS.c_int, 1, "val"),
 )
-fluid_synth_cc.errcheck = errcheck
+fluid_synth_cc.errcheck = _errcheck
 
-fluid_synth_get_cc = prototype(
+fluid_synth_get_cc = _prototype(
     CFS.c_int,
     "fluid_synth_get_cc",
     (CFS.c_void_p, 1, "synth"),
@@ -847,45 +847,45 @@ fluid_synth_get_cc = prototype(
     (CFS.c_int, 1, "num"),
     (CFS.POINTER(CFS.c_int), 3, "pval"),
 )
-fluid_synth_get_cc.errcheck = errcheck
+fluid_synth_get_cc.errcheck = _errcheck
 
-fluid_synth_pitch_bend = prototype(
+fluid_synth_pitch_bend = _prototype(
     CFS.c_int,
     "fluid_synth_pitch_bend",
     (CFS.c_void_p, 1, "synth"),
     (CFS.c_int, 1, "chan"),
     (CFS.c_int, 1, "val"),
 )
-fluid_synth_pitch_bend.errcheck = errcheck
+fluid_synth_pitch_bend.errcheck = _errcheck
 
-fluid_synth_get_pitch_bend = prototype(
+fluid_synth_get_pitch_bend = _prototype(
     CFS.c_int,
     "fluid_synth_get_pitch_bend",
     (CFS.c_void_p, 1, "synth"),
     (CFS.c_int, 1, "chan"),
     (CFS.POINTER(CFS.c_int), 3, "ppitch_bend"),
 )
-fluid_synth_get_pitch_bend.errcheck = errcheck
+fluid_synth_get_pitch_bend.errcheck = _errcheck
 
-fluid_synth_pitch_wheel_sens = prototype(
+fluid_synth_pitch_wheel_sens = _prototype(
     CFS.c_int,
     "fluid_synth_pitch_wheel_sens",
     (CFS.c_void_p, 1, "synth"),
     (CFS.c_int, 1, "chan"),
     (CFS.c_int, 1, "val"),
 )
-fluid_synth_pitch_wheel_sens.errcheck = errcheck
+fluid_synth_pitch_wheel_sens.errcheck = _errcheck
 
-fluid_synth_get_pitch_wheel_sens = prototype(
+fluid_synth_get_pitch_wheel_sens = _prototype(
     CFS.c_int,
     "fluid_synth_get_pitch_wheel_sens",
     (CFS.c_void_p, 1, "synth"),
     (CFS.c_int, 1, "chan"),
     (CFS.POINTER(CFS.c_int), 3, "pval"),
 )
-fluid_synth_get_pitch_wheel_sens.errcheck = errcheck
+fluid_synth_get_pitch_wheel_sens.errcheck = _errcheck
 
-fluid_synth_sysex = prototype(
+fluid_synth_sysex = _prototype(
     CFS.c_int,
     "fluid_synth_sysex",
     (CFS.c_void_p, 1, "synth"),
@@ -896,9 +896,9 @@ fluid_synth_sysex = prototype(
     (CFS.POINTER(CFS.c_int), 1, "handled"),
     (CFS.c_int, 1, "dryrun"),
 )
-fluid_synth_sysex.errcheck = errcheck
+fluid_synth_sysex.errcheck = _errcheck
 
-fluid_synth_program_select = prototype(
+fluid_synth_program_select = _prototype(
     CFS.c_int,
     "fluid_synth_program_select",
     (CFS.c_void_p, 1, "synth"),
@@ -907,9 +907,9 @@ fluid_synth_program_select = prototype(
     (CFS.c_int, 1, "bank_num"),
     (CFS.c_int, 1, "preset_num"),
 )
-fluid_synth_program_select.errcheck = errcheck
+fluid_synth_program_select.errcheck = _errcheck
 
-fluid_synth_noteon = prototype(
+fluid_synth_noteon = _prototype(
     CFS.c_int,
     "fluid_synth_noteon",
     (CFS.c_void_p, 1, "synth"),
@@ -917,78 +917,78 @@ fluid_synth_noteon = prototype(
     (CFS.c_int, 1, "key"),
     (CFS.c_int, 1, "vel"),
 )
-fluid_synth_noteon.errcheck = errcheck
+fluid_synth_noteon.errcheck = _errcheck
 
-fluid_synth_noteoff = prototype(
+fluid_synth_noteoff = _prototype(
     CFS.c_int,
     "fluid_synth_noteoff",
     (CFS.c_void_p, 1, "synth"),
     (CFS.c_int, 1, "chan"),
     (CFS.c_int, 1, "key"),
 )
-fluid_synth_noteoff.errcheck = errcheck
+fluid_synth_noteoff.errcheck = _errcheck
 
-fluid_synth_system_reset = prototype(
+fluid_synth_system_reset = _prototype(
     CFS.c_int, "fluid_synth_system_reset", (CFS.c_void_p, 1, "synth")
 )
-fluid_synth_system_reset.errcheck = errcheck
+fluid_synth_system_reset.errcheck = _errcheck
 
 # Synthesizer - MIDI Channel Setup
 # Synthesizer - MIDI Tuning
 
 # Synthesizer - SoundFont managiment
 # [API prototype]
-fluid_synth_add_sfont = prototype(
+fluid_synth_add_sfont = _prototype(
     CFS.c_int,
     "fluid_synth_add_sfont",
     (CFS.c_void_p, 1, "synth"),
     (CFS.c_void_p, 1, "sfont"),
 )
-fluid_synth_add_sfont.errcheck = errcheck
+fluid_synth_add_sfont.errcheck = _errcheck
 
-fluid_synth_sfload = prototype(
+fluid_synth_sfload = _prototype(
     CFS.c_int,
     "fluid_synth_sfload",
     (CFS.c_void_p, 1, "synth"),
     (CFS.c_char_p, 1, "filename"),
     (CFS.c_int, 1, "reset_preset"),
 )
-fluid_synth_sfload.errcheck = errcheck
+fluid_synth_sfload.errcheck = _errcheck
 
-fluid_synth_sfreload = prototype(
+fluid_synth_sfreload = _prototype(
     CFS.c_int, "fluid_synth_sfreload", (CFS.c_void_p, 1, "synth"), (CFS.c_int, 1, "id")
 )
-fluid_synth_sfreload.errcheck = errcheck
+fluid_synth_sfreload.errcheck = _errcheck
 
-fluid_synth_sfcount = prototype(
+fluid_synth_sfcount = _prototype(
     CFS.c_int, "fluid_synth_sfcount", (CFS.c_void_p, 1, "synth")
 )
-fluid_synth_sfcount.errcheck = errcheck
+fluid_synth_sfcount.errcheck = _errcheck
 
-fluid_synth_get_sfont = prototype(
+fluid_synth_get_sfont = _prototype(
     CFS.c_void_p,
     "fluid_synth_get_sfont",
     (CFS.c_void_p, 1, "synth"),
     (CFS.c_uint, 1, "num"),
 )
-fluid_synth_get_sfont.errcheck = errcheck
+fluid_synth_get_sfont.errcheck = _errcheck
 
-fluid_synth_get_sfont_by_id = prototype(
+fluid_synth_get_sfont_by_id = _prototype(
     CFS.c_void_p,
     "fluid_synth_get_sfont_by_id",
     (CFS.c_void_p, 1, "synth"),
     (CFS.c_int, 1, "id"),
 )
-fluid_synth_get_sfont_by_id.errcheck = errcheck
+fluid_synth_get_sfont_by_id.errcheck = _errcheck
 
 # Synthesizer - Synthesis Parameters
 # [API prototype]
-fluid_synth_get_gain = prototype(
+fluid_synth_get_gain = _prototype(
     CFS.c_float, "fluid_synth_get_gain", (CFS.c_void_p, 1, "synth")
 )
-fluid_synth_get_gain.errcheck = errcheck
+fluid_synth_get_gain.errcheck = _errcheck
 
-fluid_synth_set_gain = prototype(
+fluid_synth_set_gain = _prototype(
     None, "fluid_synth_set_gain", (CFS.c_void_p, 1, "synth"), (CFS.c_float, 1, "gain")
 )
 

@@ -49,6 +49,7 @@ USB MIDI 鍵盤を繋げて、ピアノ風の演奏を楽しむために。
 # 終わったら
 (venv) ~/AudioWorkstation $ deactivate
 ~~~
+[API仕様書はこちら](https://tomosatop.github.io/AudioWorkstation/build/html/)
 ## アンインストール
 ~~~sh
 ~ $ rm -rf AudioWorkstation
