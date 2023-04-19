@@ -987,7 +987,7 @@ struct __pyx_obj_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMi
 
 
 
-/* "audioworkstation/libs/sublibs/standardmidifile.py":31
+/* "audioworkstation/libs/sublibs/standardmidifile.py":22
  * 
  * 
  * class StandardMidiFile:             # <<<<<<<<<<<<<<
@@ -1623,7 +1623,7 @@ static const char __pyx_k_StandardMidiFile_lyrics[] = "StandardMidiFile.lyrics";
 static const char __pyx_k_StandardMidiFile_total_tick[] = "StandardMidiFile.total_tick";
 static const char __pyx_k_StandardMidiFile_instruments[] = "StandardMidiFile.instruments";
 static const char __pyx_k_pyx_unpickle_StandardMidiFile[] = "__pyx_unpickle_StandardMidiFile";
-static const char __pyx_k_Analyze_MIDI_files_according_to[] = "Analyze MIDI files according to  SMF (Standard MIDI File) format.\n\nclass StandardMidiFile\n - param\n   - pathlib.Path midifile: SMF\n - method\n   - str title(): title\n   - int total_tick(): total ticks\n   - list[str] instruments(): instruments\n   - list[str] lyrics(): lyrics\n   - list[int] channels_preset(): channels preset\n\n:reference:\n    MIDI1.0\350\246\217\346\240\274\346\233\270(\346\227\245\346\234\254\350\252\236\347\211\21098.1) ISBN4-8456-0348-9 C3055  http://www.amei.or.jp/\n\n        2. MIDI 1.0\n        4. \343\202\271\343\202\277\343\203\263\343\203\200\343\203\274\343\203\211MIDI\343\203\225\343\202\241\343\202\244\343\203\2531.0\n";
+static const char __pyx_k_Analyze_MIDI_files_according_to[] = "Analyze MIDI files according to  SMF (Standard MIDI File) format.\n\n:reference:\n    MIDI1.0\350\246\217\346\240\274\346\233\270(\346\227\245\346\234\254\350\252\236\347\211\21098.1) ISBN4-8456-0348-9 C3055\n    http://www.amei.or.jp/\n\n        2 MIDI 1.0\n        4 \343\202\271\343\202\277\343\203\263\343\203\200\343\203\274\343\203\211MIDI\343\203\225\343\202\241\343\202\244\343\203\2531.0\n";
 static const char __pyx_k_Incompatible_checksums_0x_x_vs_0[] = "Incompatible checksums (0x%x vs (0xb9d1cb7, 0x5ac3d49, 0x1b3d44e) = (_header, _last_event_type, _smf, _tracks))";
 static const char __pyx_k_StandardMidiFile___reduce_cython[] = "StandardMidiFile.__reduce_cython__";
 static const char __pyx_k_StandardMidiFile___setstate_cyth[] = "StandardMidiFile.__setstate_cython__";
@@ -1742,7 +1742,7 @@ static PyObject *__pyx_codeobj__16;
 static PyObject *__pyx_codeobj__18;
 /* Late includes */
 
-/* "audioworkstation/libs/sublibs/standardmidifile.py":37
+/* "audioworkstation/libs/sublibs/standardmidifile.py":28
  *     """
  * 
  *     def __init__(self, midifile: Path) -> None:             # <<<<<<<<<<<<<<
@@ -1779,7 +1779,7 @@ static int __pyx_pw_16audioworkstation_4libs_7sublibs_16standardmidifile_16Stand
         else goto __pyx_L5_argtuple_error;
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) __PYX_ERR(0, 37, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__init__") < 0)) __PYX_ERR(0, 28, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 1) {
       goto __pyx_L5_argtuple_error;
@@ -1790,7 +1790,7 @@ static int __pyx_pw_16audioworkstation_4libs_7sublibs_16standardmidifile_16Stand
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__init__", 1, 1, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 37, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__init__", 1, 1, 1, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 28, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("audioworkstation.libs.sublibs.standardmidifile.StandardMidiFile.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -1829,14 +1829,14 @@ static int __pyx_pf_16audioworkstation_4libs_7sublibs_16standardmidifile_16Stand
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("__init__", 0);
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":38
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":29
  * 
  *     def __init__(self, midifile: Path) -> None:
  *         self._header: list = list()             # <<<<<<<<<<<<<<
  *         self._tracks: list = list()
  *         self._last_event_type: int = -1
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 38, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 29, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_1);
   __Pyx_GOTREF(__pyx_v_self->_header);
@@ -1844,14 +1844,14 @@ static int __pyx_pf_16audioworkstation_4libs_7sublibs_16standardmidifile_16Stand
   __pyx_v_self->_header = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":39
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":30
  *     def __init__(self, midifile: Path) -> None:
  *         self._header: list = list()
  *         self._tracks: list = list()             # <<<<<<<<<<<<<<
  *         self._last_event_type: int = -1
  * 
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 39, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 30, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_1);
   __Pyx_GOTREF(__pyx_v_self->_tracks);
@@ -1859,7 +1859,7 @@ static int __pyx_pf_16audioworkstation_4libs_7sublibs_16standardmidifile_16Stand
   __pyx_v_self->_tracks = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":40
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":31
  *         self._header: list = list()
  *         self._tracks: list = list()
  *         self._last_event_type: int = -1             # <<<<<<<<<<<<<<
@@ -1868,14 +1868,14 @@ static int __pyx_pf_16audioworkstation_4libs_7sublibs_16standardmidifile_16Stand
  */
   __pyx_v_self->_last_event_type = -1;
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":50
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":41
  *         list_event: list
  * 
  *         self._smf: bytes = midifile.read_bytes()             # <<<<<<<<<<<<<<
  *         self._header, offset = self._header_chunk()
  * 
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_midifile, __pyx_n_s_read_bytes); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 50, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_midifile, __pyx_n_s_read_bytes); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 41, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -1889,24 +1889,24 @@ static int __pyx_pf_16audioworkstation_4libs_7sublibs_16standardmidifile_16Stand
   }
   __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3) : __Pyx_PyObject_CallNoArg(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 50, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 41, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (!(likely(PyBytes_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None)||((void)PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "bytes", Py_TYPE(__pyx_t_1)->tp_name), 0))) __PYX_ERR(0, 50, __pyx_L1_error)
+  if (!(likely(PyBytes_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None)||((void)PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "bytes", Py_TYPE(__pyx_t_1)->tp_name), 0))) __PYX_ERR(0, 41, __pyx_L1_error)
   __Pyx_GIVEREF(__pyx_t_1);
   __Pyx_GOTREF(__pyx_v_self->_smf);
   __Pyx_DECREF(__pyx_v_self->_smf);
   __pyx_v_self->_smf = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":51
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":42
  * 
  *         self._smf: bytes = midifile.read_bytes()
  *         self._header, offset = self._header_chunk()             # <<<<<<<<<<<<<<
  * 
  *         for _ in range(self._header[3]):
  */
-  __pyx_t_1 = ((struct __pyx_vtabstruct_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile *)__pyx_v_self->__pyx_vtab)->_header_chunk(__pyx_v_self); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 51, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile *)__pyx_v_self->__pyx_vtab)->_header_chunk(__pyx_v_self); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 42, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (likely(__pyx_t_1 != Py_None)) {
     PyObject* sequence = __pyx_t_1;
@@ -1914,7 +1914,7 @@ static int __pyx_pf_16audioworkstation_4libs_7sublibs_16standardmidifile_16Stand
     if (unlikely(size != 2)) {
       if (size > 2) __Pyx_RaiseTooManyValuesError(2);
       else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-      __PYX_ERR(0, 51, __pyx_L1_error)
+      __PYX_ERR(0, 42, __pyx_L1_error)
     }
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
     __pyx_t_2 = PyTuple_GET_ITEM(sequence, 0); 
@@ -1922,16 +1922,16 @@ static int __pyx_pf_16audioworkstation_4libs_7sublibs_16standardmidifile_16Stand
     __Pyx_INCREF(__pyx_t_2);
     __Pyx_INCREF(__pyx_t_3);
     #else
-    __pyx_t_2 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 51, __pyx_L1_error)
+    __pyx_t_2 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 42, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 51, __pyx_L1_error)
+    __pyx_t_3 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 42, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     #endif
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   } else {
-    __Pyx_RaiseNoneNotIterableError(); __PYX_ERR(0, 51, __pyx_L1_error)
+    __Pyx_RaiseNoneNotIterableError(); __PYX_ERR(0, 42, __pyx_L1_error)
   }
-  if (!(likely(PyList_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None)||((void)PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_2)->tp_name), 0))) __PYX_ERR(0, 51, __pyx_L1_error)
+  if (!(likely(PyList_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None)||((void)PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_2)->tp_name), 0))) __PYX_ERR(0, 42, __pyx_L1_error)
   __Pyx_GIVEREF(__pyx_t_2);
   __Pyx_GOTREF(__pyx_v_self->_header);
   __Pyx_DECREF(__pyx_v_self->_header);
@@ -1940,7 +1940,7 @@ static int __pyx_pf_16audioworkstation_4libs_7sublibs_16standardmidifile_16Stand
   __pyx_v_offset = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":53
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":44
  *         self._header, offset = self._header_chunk()
  * 
  *         for _ in range(self._header[3]):             # <<<<<<<<<<<<<<
@@ -1949,20 +1949,20 @@ static int __pyx_pf_16audioworkstation_4libs_7sublibs_16standardmidifile_16Stand
  */
   if (unlikely(__pyx_v_self->_header == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(0, 53, __pyx_L1_error)
+    __PYX_ERR(0, 44, __pyx_L1_error)
   }
-  __pyx_t_1 = __Pyx_GetItemInt_List(__pyx_v_self->_header, 3, long, 1, __Pyx_PyInt_From_long, 1, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 53, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetItemInt_List(__pyx_v_self->_header, 3, long, 1, __Pyx_PyInt_From_long, 1, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 44, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_builtin_range, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 53, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_builtin_range, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 44, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (likely(PyList_CheckExact(__pyx_t_3)) || PyTuple_CheckExact(__pyx_t_3)) {
     __pyx_t_1 = __pyx_t_3; __Pyx_INCREF(__pyx_t_1); __pyx_t_4 = 0;
     __pyx_t_5 = NULL;
   } else {
-    __pyx_t_4 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 53, __pyx_L1_error)
+    __pyx_t_4 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 44, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_5 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 53, __pyx_L1_error)
+    __pyx_t_5 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 44, __pyx_L1_error)
   }
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   for (;;) {
@@ -1970,17 +1970,17 @@ static int __pyx_pf_16audioworkstation_4libs_7sublibs_16standardmidifile_16Stand
       if (likely(PyList_CheckExact(__pyx_t_1))) {
         if (__pyx_t_4 >= PyList_GET_SIZE(__pyx_t_1)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_3 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_4); __Pyx_INCREF(__pyx_t_3); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 53, __pyx_L1_error)
+        __pyx_t_3 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_4); __Pyx_INCREF(__pyx_t_3); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 44, __pyx_L1_error)
         #else
-        __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 53, __pyx_L1_error)
+        __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 44, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         #endif
       } else {
         if (__pyx_t_4 >= PyTuple_GET_SIZE(__pyx_t_1)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_3 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_4); __Pyx_INCREF(__pyx_t_3); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 53, __pyx_L1_error)
+        __pyx_t_3 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_4); __Pyx_INCREF(__pyx_t_3); __pyx_t_4++; if (unlikely(0 < 0)) __PYX_ERR(0, 44, __pyx_L1_error)
         #else
-        __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 53, __pyx_L1_error)
+        __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 44, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         #endif
       }
@@ -1990,7 +1990,7 @@ static int __pyx_pf_16audioworkstation_4libs_7sublibs_16standardmidifile_16Stand
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 53, __pyx_L1_error)
+          else __PYX_ERR(0, 44, __pyx_L1_error)
         }
         break;
       }
@@ -1999,18 +1999,18 @@ static int __pyx_pf_16audioworkstation_4libs_7sublibs_16standardmidifile_16Stand
     __Pyx_XDECREF_SET(__pyx_v__, __pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "audioworkstation/libs/sublibs/standardmidifile.py":54
+    /* "audioworkstation/libs/sublibs/standardmidifile.py":45
  * 
  *         for _ in range(self._header[3]):
  *             ckID, ckSize, offset = self._unpack(offset, CKDR)             # <<<<<<<<<<<<<<
  * 
  *             current_tick = 0
  */
-    __pyx_t_6 = __Pyx_PyInt_As_int(__pyx_v_offset); if (unlikely((__pyx_t_6 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 54, __pyx_L1_error)
-    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_CKDR); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 54, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyInt_As_int(__pyx_v_offset); if (unlikely((__pyx_t_6 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 45, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_CKDR); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 45, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    if (!(likely(PyUnicode_CheckExact(__pyx_t_3))||((__pyx_t_3) == Py_None)||((void)PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "unicode", Py_TYPE(__pyx_t_3)->tp_name), 0))) __PYX_ERR(0, 54, __pyx_L1_error)
-    __pyx_t_2 = ((struct __pyx_vtabstruct_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile *)__pyx_v_self->__pyx_vtab)->_unpack(__pyx_v_self, __pyx_t_6, ((PyObject*)__pyx_t_3)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 54, __pyx_L1_error)
+    if (!(likely(PyUnicode_CheckExact(__pyx_t_3))||((__pyx_t_3) == Py_None)||((void)PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "unicode", Py_TYPE(__pyx_t_3)->tp_name), 0))) __PYX_ERR(0, 45, __pyx_L1_error)
+    __pyx_t_2 = ((struct __pyx_vtabstruct_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile *)__pyx_v_self->__pyx_vtab)->_unpack(__pyx_v_self, __pyx_t_6, ((PyObject*)__pyx_t_3)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 45, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     if (likely(__pyx_t_2 != Py_None)) {
@@ -2019,7 +2019,7 @@ static int __pyx_pf_16audioworkstation_4libs_7sublibs_16standardmidifile_16Stand
       if (unlikely(size != 3)) {
         if (size > 3) __Pyx_RaiseTooManyValuesError(3);
         else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-        __PYX_ERR(0, 54, __pyx_L1_error)
+        __PYX_ERR(0, 45, __pyx_L1_error)
       }
       #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
       __pyx_t_3 = PyTuple_GET_ITEM(sequence, 0); 
@@ -2029,18 +2029,18 @@ static int __pyx_pf_16audioworkstation_4libs_7sublibs_16standardmidifile_16Stand
       __Pyx_INCREF(__pyx_t_7);
       __Pyx_INCREF(__pyx_t_8);
       #else
-      __pyx_t_3 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 54, __pyx_L1_error)
+      __pyx_t_3 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 45, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_7 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 54, __pyx_L1_error)
+      __pyx_t_7 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 45, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_7);
-      __pyx_t_8 = PySequence_ITEM(sequence, 2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 54, __pyx_L1_error)
+      __pyx_t_8 = PySequence_ITEM(sequence, 2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 45, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
       #endif
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     } else {
-      __Pyx_RaiseNoneNotIterableError(); __PYX_ERR(0, 54, __pyx_L1_error)
+      __Pyx_RaiseNoneNotIterableError(); __PYX_ERR(0, 45, __pyx_L1_error)
     }
-    if (!(likely(PyBytes_CheckExact(__pyx_t_3))||((__pyx_t_3) == Py_None)||((void)PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "bytes", Py_TYPE(__pyx_t_3)->tp_name), 0))) __PYX_ERR(0, 54, __pyx_L1_error)
+    if (!(likely(PyBytes_CheckExact(__pyx_t_3))||((__pyx_t_3) == Py_None)||((void)PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "bytes", Py_TYPE(__pyx_t_3)->tp_name), 0))) __PYX_ERR(0, 45, __pyx_L1_error)
     __Pyx_XDECREF_SET(__pyx_v_ckID, ((PyObject*)__pyx_t_3));
     __pyx_t_3 = 0;
     __Pyx_XDECREF_SET(__pyx_v_ckSize, __pyx_t_7);
@@ -2048,7 +2048,7 @@ static int __pyx_pf_16audioworkstation_4libs_7sublibs_16standardmidifile_16Stand
     __Pyx_DECREF_SET(__pyx_v_offset, __pyx_t_8);
     __pyx_t_8 = 0;
 
-    /* "audioworkstation/libs/sublibs/standardmidifile.py":56
+    /* "audioworkstation/libs/sublibs/standardmidifile.py":47
  *             ckID, ckSize, offset = self._unpack(offset, CKDR)
  * 
  *             current_tick = 0             # <<<<<<<<<<<<<<
@@ -2058,19 +2058,19 @@ static int __pyx_pf_16audioworkstation_4libs_7sublibs_16standardmidifile_16Stand
     __Pyx_INCREF(__pyx_int_0);
     __Pyx_XDECREF_SET(__pyx_v_current_tick, __pyx_int_0);
 
-    /* "audioworkstation/libs/sublibs/standardmidifile.py":57
+    /* "audioworkstation/libs/sublibs/standardmidifile.py":48
  * 
  *             current_tick = 0
  *             list_event = []             # <<<<<<<<<<<<<<
  *             while ckSize:
  *                 ckSize += offset
  */
-    __pyx_t_2 = PyList_New(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 57, __pyx_L1_error)
+    __pyx_t_2 = PyList_New(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 48, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_XDECREF_SET(__pyx_v_list_event, ((PyObject*)__pyx_t_2));
     __pyx_t_2 = 0;
 
-    /* "audioworkstation/libs/sublibs/standardmidifile.py":58
+    /* "audioworkstation/libs/sublibs/standardmidifile.py":49
  *             current_tick = 0
  *             list_event = []
  *             while ckSize:             # <<<<<<<<<<<<<<
@@ -2078,30 +2078,30 @@ static int __pyx_pf_16audioworkstation_4libs_7sublibs_16standardmidifile_16Stand
  *                 delta_time, offset = self._delta_time(offset)
  */
     while (1) {
-      __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_v_ckSize); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 58, __pyx_L1_error)
+      __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_v_ckSize); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 49, __pyx_L1_error)
       if (!__pyx_t_9) break;
 
-      /* "audioworkstation/libs/sublibs/standardmidifile.py":59
+      /* "audioworkstation/libs/sublibs/standardmidifile.py":50
  *             list_event = []
  *             while ckSize:
  *                 ckSize += offset             # <<<<<<<<<<<<<<
  *                 delta_time, offset = self._delta_time(offset)
  *                 current_tick += delta_time
  */
-      __pyx_t_2 = PyNumber_InPlaceAdd(__pyx_v_ckSize, __pyx_v_offset); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 59, __pyx_L1_error)
+      __pyx_t_2 = PyNumber_InPlaceAdd(__pyx_v_ckSize, __pyx_v_offset); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 50, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF_SET(__pyx_v_ckSize, __pyx_t_2);
       __pyx_t_2 = 0;
 
-      /* "audioworkstation/libs/sublibs/standardmidifile.py":60
+      /* "audioworkstation/libs/sublibs/standardmidifile.py":51
  *             while ckSize:
  *                 ckSize += offset
  *                 delta_time, offset = self._delta_time(offset)             # <<<<<<<<<<<<<<
  *                 current_tick += delta_time
  * 
  */
-      __pyx_t_6 = __Pyx_PyInt_As_int(__pyx_v_offset); if (unlikely((__pyx_t_6 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 60, __pyx_L1_error)
-      __pyx_t_2 = ((struct __pyx_vtabstruct_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile *)__pyx_v_self->__pyx_vtab)->_delta_time(__pyx_v_self, __pyx_t_6); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 60, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_PyInt_As_int(__pyx_v_offset); if (unlikely((__pyx_t_6 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 51, __pyx_L1_error)
+      __pyx_t_2 = ((struct __pyx_vtabstruct_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile *)__pyx_v_self->__pyx_vtab)->_delta_time(__pyx_v_self, __pyx_t_6); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 51, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       if (likely(__pyx_t_2 != Py_None)) {
         PyObject* sequence = __pyx_t_2;
@@ -2109,7 +2109,7 @@ static int __pyx_pf_16audioworkstation_4libs_7sublibs_16standardmidifile_16Stand
         if (unlikely(size != 2)) {
           if (size > 2) __Pyx_RaiseTooManyValuesError(2);
           else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-          __PYX_ERR(0, 60, __pyx_L1_error)
+          __PYX_ERR(0, 51, __pyx_L1_error)
         }
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
         __pyx_t_8 = PyTuple_GET_ITEM(sequence, 0); 
@@ -2117,41 +2117,41 @@ static int __pyx_pf_16audioworkstation_4libs_7sublibs_16standardmidifile_16Stand
         __Pyx_INCREF(__pyx_t_8);
         __Pyx_INCREF(__pyx_t_7);
         #else
-        __pyx_t_8 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 60, __pyx_L1_error)
+        __pyx_t_8 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 51, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_8);
-        __pyx_t_7 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 60, __pyx_L1_error)
+        __pyx_t_7 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 51, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_7);
         #endif
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       } else {
-        __Pyx_RaiseNoneNotIterableError(); __PYX_ERR(0, 60, __pyx_L1_error)
+        __Pyx_RaiseNoneNotIterableError(); __PYX_ERR(0, 51, __pyx_L1_error)
       }
       __Pyx_XDECREF_SET(__pyx_v_delta_time, __pyx_t_8);
       __pyx_t_8 = 0;
       __Pyx_DECREF_SET(__pyx_v_offset, __pyx_t_7);
       __pyx_t_7 = 0;
 
-      /* "audioworkstation/libs/sublibs/standardmidifile.py":61
+      /* "audioworkstation/libs/sublibs/standardmidifile.py":52
  *                 ckSize += offset
  *                 delta_time, offset = self._delta_time(offset)
  *                 current_tick += delta_time             # <<<<<<<<<<<<<<
  * 
  *                 event, offset = self._dequeue_event(offset)
  */
-      __pyx_t_2 = PyNumber_InPlaceAdd(__pyx_v_current_tick, __pyx_v_delta_time); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 61, __pyx_L1_error)
+      __pyx_t_2 = PyNumber_InPlaceAdd(__pyx_v_current_tick, __pyx_v_delta_time); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 52, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF_SET(__pyx_v_current_tick, __pyx_t_2);
       __pyx_t_2 = 0;
 
-      /* "audioworkstation/libs/sublibs/standardmidifile.py":63
+      /* "audioworkstation/libs/sublibs/standardmidifile.py":54
  *                 current_tick += delta_time
  * 
  *                 event, offset = self._dequeue_event(offset)             # <<<<<<<<<<<<<<
  *                 list_event.append([current_tick, *event])
  *                 ckSize -= offset
  */
-      __pyx_t_6 = __Pyx_PyInt_As_int(__pyx_v_offset); if (unlikely((__pyx_t_6 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 63, __pyx_L1_error)
-      __pyx_t_2 = ((struct __pyx_vtabstruct_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile *)__pyx_v_self->__pyx_vtab)->_dequeue_event(__pyx_v_self, __pyx_t_6); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 63, __pyx_L1_error)
+      __pyx_t_6 = __Pyx_PyInt_As_int(__pyx_v_offset); if (unlikely((__pyx_t_6 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 54, __pyx_L1_error)
+      __pyx_t_2 = ((struct __pyx_vtabstruct_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile *)__pyx_v_self->__pyx_vtab)->_dequeue_event(__pyx_v_self, __pyx_t_6); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 54, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       if (likely(__pyx_t_2 != Py_None)) {
         PyObject* sequence = __pyx_t_2;
@@ -2159,7 +2159,7 @@ static int __pyx_pf_16audioworkstation_4libs_7sublibs_16standardmidifile_16Stand
         if (unlikely(size != 2)) {
           if (size > 2) __Pyx_RaiseTooManyValuesError(2);
           else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-          __PYX_ERR(0, 63, __pyx_L1_error)
+          __PYX_ERR(0, 54, __pyx_L1_error)
         }
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
         __pyx_t_7 = PyTuple_GET_ITEM(sequence, 0); 
@@ -2167,64 +2167,64 @@ static int __pyx_pf_16audioworkstation_4libs_7sublibs_16standardmidifile_16Stand
         __Pyx_INCREF(__pyx_t_7);
         __Pyx_INCREF(__pyx_t_8);
         #else
-        __pyx_t_7 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 63, __pyx_L1_error)
+        __pyx_t_7 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 54, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_7);
-        __pyx_t_8 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 63, __pyx_L1_error)
+        __pyx_t_8 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 54, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_8);
         #endif
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       } else {
-        __Pyx_RaiseNoneNotIterableError(); __PYX_ERR(0, 63, __pyx_L1_error)
+        __Pyx_RaiseNoneNotIterableError(); __PYX_ERR(0, 54, __pyx_L1_error)
       }
       __Pyx_XDECREF_SET(__pyx_v_event, __pyx_t_7);
       __pyx_t_7 = 0;
       __Pyx_DECREF_SET(__pyx_v_offset, __pyx_t_8);
       __pyx_t_8 = 0;
 
-      /* "audioworkstation/libs/sublibs/standardmidifile.py":64
+      /* "audioworkstation/libs/sublibs/standardmidifile.py":55
  * 
  *                 event, offset = self._dequeue_event(offset)
  *                 list_event.append([current_tick, *event])             # <<<<<<<<<<<<<<
  *                 ckSize -= offset
  * 
  */
-      __pyx_t_8 = PyList_New(1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 64, __pyx_L1_error)
+      __pyx_t_8 = PyList_New(1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 55, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_INCREF(__pyx_v_current_tick);
       __Pyx_GIVEREF(__pyx_v_current_tick);
       PyList_SET_ITEM(__pyx_t_8, 0, __pyx_v_current_tick);
       __pyx_t_2 = __pyx_t_8;
       __pyx_t_8 = 0;
-      if (__Pyx_PyList_Extend(__pyx_t_2, __pyx_v_event) < 0) __PYX_ERR(0, 64, __pyx_L1_error)
-      __pyx_t_10 = __Pyx_PyList_Append(__pyx_v_list_event, __pyx_t_2); if (unlikely(__pyx_t_10 == ((int)-1))) __PYX_ERR(0, 64, __pyx_L1_error)
+      if (__Pyx_PyList_Extend(__pyx_t_2, __pyx_v_event) < 0) __PYX_ERR(0, 55, __pyx_L1_error)
+      __pyx_t_10 = __Pyx_PyList_Append(__pyx_v_list_event, __pyx_t_2); if (unlikely(__pyx_t_10 == ((int)-1))) __PYX_ERR(0, 55, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-      /* "audioworkstation/libs/sublibs/standardmidifile.py":65
+      /* "audioworkstation/libs/sublibs/standardmidifile.py":56
  *                 event, offset = self._dequeue_event(offset)
  *                 list_event.append([current_tick, *event])
  *                 ckSize -= offset             # <<<<<<<<<<<<<<
  * 
  *             self._tracks += [list_event]
  */
-      __pyx_t_2 = PyNumber_InPlaceSubtract(__pyx_v_ckSize, __pyx_v_offset); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 65, __pyx_L1_error)
+      __pyx_t_2 = PyNumber_InPlaceSubtract(__pyx_v_ckSize, __pyx_v_offset); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 56, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF_SET(__pyx_v_ckSize, __pyx_t_2);
       __pyx_t_2 = 0;
     }
 
-    /* "audioworkstation/libs/sublibs/standardmidifile.py":67
+    /* "audioworkstation/libs/sublibs/standardmidifile.py":58
  *                 ckSize -= offset
  * 
  *             self._tracks += [list_event]             # <<<<<<<<<<<<<<
  * 
  *     def channels_preset(self) -> list:
  */
-    __pyx_t_2 = PyList_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 67, __pyx_L1_error)
+    __pyx_t_2 = PyList_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 58, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_INCREF(__pyx_v_list_event);
     __Pyx_GIVEREF(__pyx_v_list_event);
     PyList_SET_ITEM(__pyx_t_2, 0, __pyx_v_list_event);
-    __pyx_t_8 = PyNumber_InPlaceAdd(__pyx_v_self->_tracks, __pyx_t_2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 67, __pyx_L1_error)
+    __pyx_t_8 = PyNumber_InPlaceAdd(__pyx_v_self->_tracks, __pyx_t_2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 58, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_GIVEREF(__pyx_t_8);
@@ -2233,7 +2233,7 @@ static int __pyx_pf_16audioworkstation_4libs_7sublibs_16standardmidifile_16Stand
     __pyx_v_self->_tracks = ((PyObject*)__pyx_t_8);
     __pyx_t_8 = 0;
 
-    /* "audioworkstation/libs/sublibs/standardmidifile.py":53
+    /* "audioworkstation/libs/sublibs/standardmidifile.py":44
  *         self._header, offset = self._header_chunk()
  * 
  *         for _ in range(self._header[3]):             # <<<<<<<<<<<<<<
@@ -2243,7 +2243,7 @@ static int __pyx_pf_16audioworkstation_4libs_7sublibs_16standardmidifile_16Stand
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":37
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":28
  *     """
  * 
  *     def __init__(self, midifile: Path) -> None:             # <<<<<<<<<<<<<<
@@ -2275,7 +2275,7 @@ static int __pyx_pf_16audioworkstation_4libs_7sublibs_16standardmidifile_16Stand
   return __pyx_r;
 }
 
-/* "audioworkstation/libs/sublibs/standardmidifile.py":69
+/* "audioworkstation/libs/sublibs/standardmidifile.py":60
  *             self._tracks += [list_event]
  * 
  *     def channels_preset(self) -> list:             # <<<<<<<<<<<<<<
@@ -2311,7 +2311,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_channels_preset); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 69, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_channels_preset); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 60, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_3channels_preset)) {
         __Pyx_XDECREF(__pyx_r);
@@ -2328,10 +2328,10 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 69, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 60, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-        if (!(likely(PyList_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None)||((void)PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_2)->tp_name), 0))) __PYX_ERR(0, 69, __pyx_L1_error)
+        if (!(likely(PyList_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None)||((void)PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_2)->tp_name), 0))) __PYX_ERR(0, 60, __pyx_L1_error)
         __pyx_r = ((PyObject*)__pyx_t_2);
         __pyx_t_2 = 0;
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -2350,16 +2350,16 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
     #endif
   }
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":74
- *         :return list[int]:
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":65
+ *         :return:
  *         """
  *         channels: list = [[]] * 16             # <<<<<<<<<<<<<<
  *         for track in self._tracks:
  *             for event in track:
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 74, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 65, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyList_New(1 * 16); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 74, __pyx_L1_error)
+  __pyx_t_2 = PyList_New(1 * 16); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 65, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   { Py_ssize_t __pyx_temp;
     for (__pyx_temp=0; __pyx_temp < 16; __pyx_temp++) {
@@ -2372,7 +2372,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
   __pyx_v_channels = ((PyObject*)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":75
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":66
  *         """
  *         channels: list = [[]] * 16
  *         for track in self._tracks:             # <<<<<<<<<<<<<<
@@ -2381,21 +2381,21 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
  */
   if (unlikely(__pyx_v_self->_tracks == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-    __PYX_ERR(0, 75, __pyx_L1_error)
+    __PYX_ERR(0, 66, __pyx_L1_error)
   }
   __pyx_t_2 = __pyx_v_self->_tracks; __Pyx_INCREF(__pyx_t_2); __pyx_t_5 = 0;
   for (;;) {
     if (__pyx_t_5 >= PyList_GET_SIZE(__pyx_t_2)) break;
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_5); __Pyx_INCREF(__pyx_t_1); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(0, 75, __pyx_L1_error)
+    __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_5); __Pyx_INCREF(__pyx_t_1); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(0, 66, __pyx_L1_error)
     #else
-    __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 75, __pyx_L1_error)
+    __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 66, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     #endif
     __Pyx_XDECREF_SET(__pyx_v_track, __pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "audioworkstation/libs/sublibs/standardmidifile.py":76
+    /* "audioworkstation/libs/sublibs/standardmidifile.py":67
  *         channels: list = [[]] * 16
  *         for track in self._tracks:
  *             for event in track:             # <<<<<<<<<<<<<<
@@ -2406,26 +2406,26 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
       __pyx_t_1 = __pyx_v_track; __Pyx_INCREF(__pyx_t_1); __pyx_t_6 = 0;
       __pyx_t_7 = NULL;
     } else {
-      __pyx_t_6 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_v_track); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 76, __pyx_L1_error)
+      __pyx_t_6 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_v_track); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 67, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_7 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 76, __pyx_L1_error)
+      __pyx_t_7 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 67, __pyx_L1_error)
     }
     for (;;) {
       if (likely(!__pyx_t_7)) {
         if (likely(PyList_CheckExact(__pyx_t_1))) {
           if (__pyx_t_6 >= PyList_GET_SIZE(__pyx_t_1)) break;
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_3 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_6); __Pyx_INCREF(__pyx_t_3); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 76, __pyx_L1_error)
+          __pyx_t_3 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_6); __Pyx_INCREF(__pyx_t_3); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 67, __pyx_L1_error)
           #else
-          __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 76, __pyx_L1_error)
+          __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 67, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_3);
           #endif
         } else {
           if (__pyx_t_6 >= PyTuple_GET_SIZE(__pyx_t_1)) break;
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_3 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_6); __Pyx_INCREF(__pyx_t_3); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 76, __pyx_L1_error)
+          __pyx_t_3 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_6); __Pyx_INCREF(__pyx_t_3); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 67, __pyx_L1_error)
           #else
-          __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 76, __pyx_L1_error)
+          __pyx_t_3 = PySequence_ITEM(__pyx_t_1, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 67, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_3);
           #endif
         }
@@ -2435,7 +2435,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
           PyObject* exc_type = PyErr_Occurred();
           if (exc_type) {
             if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-            else __PYX_ERR(0, 76, __pyx_L1_error)
+            else __PYX_ERR(0, 67, __pyx_L1_error)
           }
           break;
         }
@@ -2444,38 +2444,38 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
       __Pyx_XDECREF_SET(__pyx_v_event, __pyx_t_3);
       __pyx_t_3 = 0;
 
-      /* "audioworkstation/libs/sublibs/standardmidifile.py":77
+      /* "audioworkstation/libs/sublibs/standardmidifile.py":68
  *         for track in self._tracks:
  *             for event in track:
  *                 if event[1] == 0xC:             # <<<<<<<<<<<<<<
  *                     channels[event[2]] = event[3]
  *         return channels
  */
-      __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_event, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 77, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_event, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 68, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_4 = __Pyx_PyInt_EqObjC(__pyx_t_3, __pyx_int_12, 0xC, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 77, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyInt_EqObjC(__pyx_t_3, __pyx_int_12, 0xC, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 68, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_t_8 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_8 < 0)) __PYX_ERR(0, 77, __pyx_L1_error)
+      __pyx_t_8 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_8 < 0)) __PYX_ERR(0, 68, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       if (__pyx_t_8) {
 
-        /* "audioworkstation/libs/sublibs/standardmidifile.py":78
+        /* "audioworkstation/libs/sublibs/standardmidifile.py":69
  *             for event in track:
  *                 if event[1] == 0xC:
  *                     channels[event[2]] = event[3]             # <<<<<<<<<<<<<<
  *         return channels
  * 
  */
-        __pyx_t_4 = __Pyx_GetItemInt(__pyx_v_event, 3, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 78, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_GetItemInt(__pyx_v_event, 3, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 69, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
-        __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_event, 2, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 78, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_event, 2, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 69, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
-        if (unlikely(PyObject_SetItem(__pyx_v_channels, __pyx_t_3, __pyx_t_4) < 0)) __PYX_ERR(0, 78, __pyx_L1_error)
+        if (unlikely(PyObject_SetItem(__pyx_v_channels, __pyx_t_3, __pyx_t_4) < 0)) __PYX_ERR(0, 69, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-        /* "audioworkstation/libs/sublibs/standardmidifile.py":77
+        /* "audioworkstation/libs/sublibs/standardmidifile.py":68
  *         for track in self._tracks:
  *             for event in track:
  *                 if event[1] == 0xC:             # <<<<<<<<<<<<<<
@@ -2484,7 +2484,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
  */
       }
 
-      /* "audioworkstation/libs/sublibs/standardmidifile.py":76
+      /* "audioworkstation/libs/sublibs/standardmidifile.py":67
  *         channels: list = [[]] * 16
  *         for track in self._tracks:
  *             for event in track:             # <<<<<<<<<<<<<<
@@ -2494,7 +2494,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
     }
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "audioworkstation/libs/sublibs/standardmidifile.py":75
+    /* "audioworkstation/libs/sublibs/standardmidifile.py":66
  *         """
  *         channels: list = [[]] * 16
  *         for track in self._tracks:             # <<<<<<<<<<<<<<
@@ -2504,7 +2504,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":79
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":70
  *                 if event[1] == 0xC:
  *                     channels[event[2]] = event[3]
  *         return channels             # <<<<<<<<<<<<<<
@@ -2516,7 +2516,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
   __pyx_r = __pyx_v_channels;
   goto __pyx_L0;
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":69
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":60
  *             self._tracks += [list_event]
  * 
  *     def channels_preset(self) -> list:             # <<<<<<<<<<<<<<
@@ -2543,7 +2543,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
 
 /* Python wrapper */
 static PyObject *__pyx_pw_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_3channels_preset(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static char __pyx_doc_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_2channels_preset[] = "Get a list of preset numbers for each of the 16 channels.\n\n        :return list[int]:\n        ";
+static char __pyx_doc_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_2channels_preset[] = "Get a list of preset numbers for each of the 16 channels.\n\n        :return:\n        ";
 static PyMethodDef __pyx_mdef_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_3channels_preset = {"channels_preset", (PyCFunction)__pyx_pw_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_3channels_preset, METH_NOARGS, __pyx_doc_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_2channels_preset};
 static PyObject *__pyx_pw_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_3channels_preset(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
@@ -2565,7 +2565,7 @@ static PyObject *__pyx_pf_16audioworkstation_4libs_7sublibs_16standardmidifile_1
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("channels_preset", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_channels_preset(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 69, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_channels_preset(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 60, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -2582,7 +2582,7 @@ static PyObject *__pyx_pf_16audioworkstation_4libs_7sublibs_16standardmidifile_1
   return __pyx_r;
 }
 
-/* "audioworkstation/libs/sublibs/standardmidifile.py":81
+/* "audioworkstation/libs/sublibs/standardmidifile.py":72
  *         return channels
  * 
  *     def title(self) -> str:             # <<<<<<<<<<<<<<
@@ -2615,7 +2615,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_title); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 81, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_title); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 72, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_5title)) {
         __Pyx_XDECREF(__pyx_r);
@@ -2632,10 +2632,10 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 81, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 72, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-        if (!(likely(PyUnicode_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None)||((void)PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "unicode", Py_TYPE(__pyx_t_2)->tp_name), 0))) __PYX_ERR(0, 81, __pyx_L1_error)
+        if (!(likely(PyUnicode_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None)||((void)PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "unicode", Py_TYPE(__pyx_t_2)->tp_name), 0))) __PYX_ERR(0, 72, __pyx_L1_error)
         __pyx_r = ((PyObject*)__pyx_t_2);
         __pyx_t_2 = 0;
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -2654,8 +2654,8 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
     #endif
   }
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":86
- *         :return str:
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":77
+ *         :return:
  *         """
  *         for event in self._tracks[0]:             # <<<<<<<<<<<<<<
  *             if all([event[1] == 0xFF, event[2] == 0x03]):
@@ -2663,17 +2663,17 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
  */
   if (unlikely(__pyx_v_self->_tracks == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(0, 86, __pyx_L1_error)
+    __PYX_ERR(0, 77, __pyx_L1_error)
   }
-  __pyx_t_1 = __Pyx_GetItemInt_List(__pyx_v_self->_tracks, 0, long, 1, __Pyx_PyInt_From_long, 1, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 86, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetItemInt_List(__pyx_v_self->_tracks, 0, long, 1, __Pyx_PyInt_From_long, 1, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 77, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (likely(PyList_CheckExact(__pyx_t_1)) || PyTuple_CheckExact(__pyx_t_1)) {
     __pyx_t_2 = __pyx_t_1; __Pyx_INCREF(__pyx_t_2); __pyx_t_5 = 0;
     __pyx_t_6 = NULL;
   } else {
-    __pyx_t_5 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 86, __pyx_L1_error)
+    __pyx_t_5 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 77, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_6 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 86, __pyx_L1_error)
+    __pyx_t_6 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 77, __pyx_L1_error)
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   for (;;) {
@@ -2681,17 +2681,17 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
       if (likely(PyList_CheckExact(__pyx_t_2))) {
         if (__pyx_t_5 >= PyList_GET_SIZE(__pyx_t_2)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_5); __Pyx_INCREF(__pyx_t_1); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(0, 86, __pyx_L1_error)
+        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_5); __Pyx_INCREF(__pyx_t_1); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(0, 77, __pyx_L1_error)
         #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 86, __pyx_L1_error)
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 77, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         #endif
       } else {
         if (__pyx_t_5 >= PyTuple_GET_SIZE(__pyx_t_2)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_5); __Pyx_INCREF(__pyx_t_1); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(0, 86, __pyx_L1_error)
+        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_5); __Pyx_INCREF(__pyx_t_1); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(0, 77, __pyx_L1_error)
         #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 86, __pyx_L1_error)
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 77, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         #endif
       }
@@ -2701,7 +2701,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 86, __pyx_L1_error)
+          else __PYX_ERR(0, 77, __pyx_L1_error)
         }
         break;
       }
@@ -2710,24 +2710,24 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
     __Pyx_XDECREF_SET(__pyx_v_event, __pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "audioworkstation/libs/sublibs/standardmidifile.py":87
+    /* "audioworkstation/libs/sublibs/standardmidifile.py":78
  *         """
  *         for event in self._tracks[0]:
  *             if all([event[1] == 0xFF, event[2] == 0x03]):             # <<<<<<<<<<<<<<
  *                 return event[3].decode("sjis")
  *         return "-"
  */
-    __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_event, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 87, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_event, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 78, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_3 = __Pyx_PyInt_EqObjC(__pyx_t_1, __pyx_int_255, 0xFF, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 87, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyInt_EqObjC(__pyx_t_1, __pyx_int_255, 0xFF, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 78, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_event, 2, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 87, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_event, 2, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 78, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_4 = __Pyx_PyInt_EqObjC(__pyx_t_1, __pyx_int_3, 0x03, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 87, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyInt_EqObjC(__pyx_t_1, __pyx_int_3, 0x03, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 78, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = PyList_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 87, __pyx_L1_error)
+    __pyx_t_1 = PyList_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 78, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_GIVEREF(__pyx_t_3);
     PyList_SET_ITEM(__pyx_t_1, 0, __pyx_t_3);
@@ -2735,14 +2735,14 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
     PyList_SET_ITEM(__pyx_t_1, 1, __pyx_t_4);
     __pyx_t_3 = 0;
     __pyx_t_4 = 0;
-    __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_builtin_all, __pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 87, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_builtin_all, __pyx_t_1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 78, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_7 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_7 < 0)) __PYX_ERR(0, 87, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_7 < 0)) __PYX_ERR(0, 78, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     if (__pyx_t_7) {
 
-      /* "audioworkstation/libs/sublibs/standardmidifile.py":88
+      /* "audioworkstation/libs/sublibs/standardmidifile.py":79
  *         for event in self._tracks[0]:
  *             if all([event[1] == 0xFF, event[2] == 0x03]):
  *                 return event[3].decode("sjis")             # <<<<<<<<<<<<<<
@@ -2750,9 +2750,9 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
  * 
  */
       __Pyx_XDECREF(__pyx_r);
-      __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_event, 3, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 88, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_event, 3, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 79, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_decode); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 88, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_decode); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 79, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __pyx_t_1 = NULL;
@@ -2767,16 +2767,16 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
       }
       __pyx_t_4 = (__pyx_t_1) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_1, __pyx_n_u_sjis) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_n_u_sjis);
       __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
-      if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 88, __pyx_L1_error)
+      if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 79, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      if (!(likely(PyUnicode_CheckExact(__pyx_t_4))||((__pyx_t_4) == Py_None)||((void)PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "unicode", Py_TYPE(__pyx_t_4)->tp_name), 0))) __PYX_ERR(0, 88, __pyx_L1_error)
+      if (!(likely(PyUnicode_CheckExact(__pyx_t_4))||((__pyx_t_4) == Py_None)||((void)PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "unicode", Py_TYPE(__pyx_t_4)->tp_name), 0))) __PYX_ERR(0, 79, __pyx_L1_error)
       __pyx_r = ((PyObject*)__pyx_t_4);
       __pyx_t_4 = 0;
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       goto __pyx_L0;
 
-      /* "audioworkstation/libs/sublibs/standardmidifile.py":87
+      /* "audioworkstation/libs/sublibs/standardmidifile.py":78
  *         """
  *         for event in self._tracks[0]:
  *             if all([event[1] == 0xFF, event[2] == 0x03]):             # <<<<<<<<<<<<<<
@@ -2785,8 +2785,8 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
  */
     }
 
-    /* "audioworkstation/libs/sublibs/standardmidifile.py":86
- *         :return str:
+    /* "audioworkstation/libs/sublibs/standardmidifile.py":77
+ *         :return:
  *         """
  *         for event in self._tracks[0]:             # <<<<<<<<<<<<<<
  *             if all([event[1] == 0xFF, event[2] == 0x03]):
@@ -2795,7 +2795,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":89
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":80
  *             if all([event[1] == 0xFF, event[2] == 0x03]):
  *                 return event[3].decode("sjis")
  *         return "-"             # <<<<<<<<<<<<<<
@@ -2807,7 +2807,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
   __pyx_r = __pyx_kp_u_;
   goto __pyx_L0;
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":81
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":72
  *         return channels
  * 
  *     def title(self) -> str:             # <<<<<<<<<<<<<<
@@ -2832,7 +2832,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
 
 /* Python wrapper */
 static PyObject *__pyx_pw_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_5title(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static char __pyx_doc_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_4title[] = "Get Title.\n\n        :return str:\n        ";
+static char __pyx_doc_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_4title[] = "Get Title.\n\n        :return:\n        ";
 static PyMethodDef __pyx_mdef_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_5title = {"title", (PyCFunction)__pyx_pw_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_5title, METH_NOARGS, __pyx_doc_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_4title};
 static PyObject *__pyx_pw_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_5title(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
@@ -2854,7 +2854,7 @@ static PyObject *__pyx_pf_16audioworkstation_4libs_7sublibs_16standardmidifile_1
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("title", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_title(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 81, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_title(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 72, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -2871,7 +2871,7 @@ static PyObject *__pyx_pf_16audioworkstation_4libs_7sublibs_16standardmidifile_1
   return __pyx_r;
 }
 
-/* "audioworkstation/libs/sublibs/standardmidifile.py":91
+/* "audioworkstation/libs/sublibs/standardmidifile.py":82
  *         return "-"
  * 
  *     def instruments(self) -> list:             # <<<<<<<<<<<<<<
@@ -2908,7 +2908,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_instruments); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 91, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_instruments); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 82, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_7instruments)) {
         __Pyx_XDECREF(__pyx_r);
@@ -2925,10 +2925,10 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 91, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 82, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-        if (!(likely(PyList_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None)||((void)PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_2)->tp_name), 0))) __PYX_ERR(0, 91, __pyx_L1_error)
+        if (!(likely(PyList_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None)||((void)PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_2)->tp_name), 0))) __PYX_ERR(0, 82, __pyx_L1_error)
         __pyx_r = ((PyObject*)__pyx_t_2);
         __pyx_t_2 = 0;
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -2947,19 +2947,19 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
     #endif
   }
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":96
- *         :return list[str]:
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":87
+ *         :return:
  *         """
  *         names: list = list()             # <<<<<<<<<<<<<<
  *         for track in self._tracks:
  *             for event in track:
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 96, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 87, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_names = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":97
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":88
  *         """
  *         names: list = list()
  *         for track in self._tracks:             # <<<<<<<<<<<<<<
@@ -2968,21 +2968,21 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
  */
   if (unlikely(__pyx_v_self->_tracks == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-    __PYX_ERR(0, 97, __pyx_L1_error)
+    __PYX_ERR(0, 88, __pyx_L1_error)
   }
   __pyx_t_1 = __pyx_v_self->_tracks; __Pyx_INCREF(__pyx_t_1); __pyx_t_5 = 0;
   for (;;) {
     if (__pyx_t_5 >= PyList_GET_SIZE(__pyx_t_1)) break;
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    __pyx_t_2 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_5); __Pyx_INCREF(__pyx_t_2); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(0, 97, __pyx_L1_error)
+    __pyx_t_2 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_5); __Pyx_INCREF(__pyx_t_2); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(0, 88, __pyx_L1_error)
     #else
-    __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 97, __pyx_L1_error)
+    __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 88, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     #endif
     __Pyx_XDECREF_SET(__pyx_v_track, __pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "audioworkstation/libs/sublibs/standardmidifile.py":98
+    /* "audioworkstation/libs/sublibs/standardmidifile.py":89
  *         names: list = list()
  *         for track in self._tracks:
  *             for event in track:             # <<<<<<<<<<<<<<
@@ -2993,26 +2993,26 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
       __pyx_t_2 = __pyx_v_track; __Pyx_INCREF(__pyx_t_2); __pyx_t_6 = 0;
       __pyx_t_7 = NULL;
     } else {
-      __pyx_t_6 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_v_track); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 98, __pyx_L1_error)
+      __pyx_t_6 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_v_track); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 89, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_7 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 98, __pyx_L1_error)
+      __pyx_t_7 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 89, __pyx_L1_error)
     }
     for (;;) {
       if (likely(!__pyx_t_7)) {
         if (likely(PyList_CheckExact(__pyx_t_2))) {
           if (__pyx_t_6 >= PyList_GET_SIZE(__pyx_t_2)) break;
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_3 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_6); __Pyx_INCREF(__pyx_t_3); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 98, __pyx_L1_error)
+          __pyx_t_3 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_6); __Pyx_INCREF(__pyx_t_3); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 89, __pyx_L1_error)
           #else
-          __pyx_t_3 = PySequence_ITEM(__pyx_t_2, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 98, __pyx_L1_error)
+          __pyx_t_3 = PySequence_ITEM(__pyx_t_2, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 89, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_3);
           #endif
         } else {
           if (__pyx_t_6 >= PyTuple_GET_SIZE(__pyx_t_2)) break;
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_3 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_6); __Pyx_INCREF(__pyx_t_3); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 98, __pyx_L1_error)
+          __pyx_t_3 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_6); __Pyx_INCREF(__pyx_t_3); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 89, __pyx_L1_error)
           #else
-          __pyx_t_3 = PySequence_ITEM(__pyx_t_2, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 98, __pyx_L1_error)
+          __pyx_t_3 = PySequence_ITEM(__pyx_t_2, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 89, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_3);
           #endif
         }
@@ -3022,7 +3022,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
           PyObject* exc_type = PyErr_Occurred();
           if (exc_type) {
             if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-            else __PYX_ERR(0, 98, __pyx_L1_error)
+            else __PYX_ERR(0, 89, __pyx_L1_error)
           }
           break;
         }
@@ -3031,24 +3031,24 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
       __Pyx_XDECREF_SET(__pyx_v_event, __pyx_t_3);
       __pyx_t_3 = 0;
 
-      /* "audioworkstation/libs/sublibs/standardmidifile.py":99
+      /* "audioworkstation/libs/sublibs/standardmidifile.py":90
  *         for track in self._tracks:
  *             for event in track:
  *                 if all([event[1] == 0xFF, event[2] == 0x04]):             # <<<<<<<<<<<<<<
  *                     names += [event[3].decode("sjis")]
  *         return names
  */
-      __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_event, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 99, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_event, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 90, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_4 = __Pyx_PyInt_EqObjC(__pyx_t_3, __pyx_int_255, 0xFF, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 99, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyInt_EqObjC(__pyx_t_3, __pyx_int_255, 0xFF, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 90, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_event, 2, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 99, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_event, 2, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 90, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_8 = __Pyx_PyInt_EqObjC(__pyx_t_3, __pyx_int_4, 0x04, 0); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 99, __pyx_L1_error)
+      __pyx_t_8 = __Pyx_PyInt_EqObjC(__pyx_t_3, __pyx_int_4, 0x04, 0); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 90, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_t_3 = PyList_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 99, __pyx_L1_error)
+      __pyx_t_3 = PyList_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 90, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_GIVEREF(__pyx_t_4);
       PyList_SET_ITEM(__pyx_t_3, 0, __pyx_t_4);
@@ -3056,23 +3056,23 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
       PyList_SET_ITEM(__pyx_t_3, 1, __pyx_t_8);
       __pyx_t_4 = 0;
       __pyx_t_8 = 0;
-      __pyx_t_8 = __Pyx_PyObject_CallOneArg(__pyx_builtin_all, __pyx_t_3); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 99, __pyx_L1_error)
+      __pyx_t_8 = __Pyx_PyObject_CallOneArg(__pyx_builtin_all, __pyx_t_3); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 90, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_t_8); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 99, __pyx_L1_error)
+      __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_t_8); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 90, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
       if (__pyx_t_9) {
 
-        /* "audioworkstation/libs/sublibs/standardmidifile.py":100
+        /* "audioworkstation/libs/sublibs/standardmidifile.py":91
  *             for event in track:
  *                 if all([event[1] == 0xFF, event[2] == 0x04]):
  *                     names += [event[3].decode("sjis")]             # <<<<<<<<<<<<<<
  *         return names
  * 
  */
-        __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_event, 3, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 100, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_event, 3, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 91, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
-        __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_decode); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 100, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_decode); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 91, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __pyx_t_3 = NULL;
@@ -3087,21 +3087,21 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
         }
         __pyx_t_8 = (__pyx_t_3) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_3, __pyx_n_u_sjis) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_n_u_sjis);
         __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-        if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 100, __pyx_L1_error)
+        if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 91, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_8);
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-        __pyx_t_4 = PyList_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 100, __pyx_L1_error)
+        __pyx_t_4 = PyList_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 91, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_GIVEREF(__pyx_t_8);
         PyList_SET_ITEM(__pyx_t_4, 0, __pyx_t_8);
         __pyx_t_8 = 0;
-        __pyx_t_8 = PyNumber_InPlaceAdd(__pyx_v_names, __pyx_t_4); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 100, __pyx_L1_error)
+        __pyx_t_8 = PyNumber_InPlaceAdd(__pyx_v_names, __pyx_t_4); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 91, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_8);
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
         __Pyx_DECREF_SET(__pyx_v_names, ((PyObject*)__pyx_t_8));
         __pyx_t_8 = 0;
 
-        /* "audioworkstation/libs/sublibs/standardmidifile.py":99
+        /* "audioworkstation/libs/sublibs/standardmidifile.py":90
  *         for track in self._tracks:
  *             for event in track:
  *                 if all([event[1] == 0xFF, event[2] == 0x04]):             # <<<<<<<<<<<<<<
@@ -3110,7 +3110,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
  */
       }
 
-      /* "audioworkstation/libs/sublibs/standardmidifile.py":98
+      /* "audioworkstation/libs/sublibs/standardmidifile.py":89
  *         names: list = list()
  *         for track in self._tracks:
  *             for event in track:             # <<<<<<<<<<<<<<
@@ -3120,7 +3120,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
     }
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-    /* "audioworkstation/libs/sublibs/standardmidifile.py":97
+    /* "audioworkstation/libs/sublibs/standardmidifile.py":88
  *         """
  *         names: list = list()
  *         for track in self._tracks:             # <<<<<<<<<<<<<<
@@ -3130,7 +3130,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":101
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":92
  *                 if all([event[1] == 0xFF, event[2] == 0x04]):
  *                     names += [event[3].decode("sjis")]
  *         return names             # <<<<<<<<<<<<<<
@@ -3142,7 +3142,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
   __pyx_r = __pyx_v_names;
   goto __pyx_L0;
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":91
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":82
  *         return "-"
  * 
  *     def instruments(self) -> list:             # <<<<<<<<<<<<<<
@@ -3170,7 +3170,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
 
 /* Python wrapper */
 static PyObject *__pyx_pw_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_7instruments(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static char __pyx_doc_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_6instruments[] = "Get a list of instrument names for each of the 16 channels.\n\n        :return list[str]:\n        ";
+static char __pyx_doc_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_6instruments[] = "Get a list of instrument names for each of the 16 channels.\n\n        :return:\n        ";
 static PyMethodDef __pyx_mdef_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_7instruments = {"instruments", (PyCFunction)__pyx_pw_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_7instruments, METH_NOARGS, __pyx_doc_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_6instruments};
 static PyObject *__pyx_pw_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_7instruments(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
@@ -3192,7 +3192,7 @@ static PyObject *__pyx_pf_16audioworkstation_4libs_7sublibs_16standardmidifile_1
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("instruments", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_instruments(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 91, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_instruments(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 82, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -3209,7 +3209,7 @@ static PyObject *__pyx_pf_16audioworkstation_4libs_7sublibs_16standardmidifile_1
   return __pyx_r;
 }
 
-/* "audioworkstation/libs/sublibs/standardmidifile.py":103
+/* "audioworkstation/libs/sublibs/standardmidifile.py":94
  *         return names
  * 
  *     def lyrics(self) -> list:             # <<<<<<<<<<<<<<
@@ -3246,7 +3246,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_lyrics); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 103, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_lyrics); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 94, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_9lyrics)) {
         __Pyx_XDECREF(__pyx_r);
@@ -3263,10 +3263,10 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 103, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 94, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-        if (!(likely(PyList_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None)||((void)PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_2)->tp_name), 0))) __PYX_ERR(0, 103, __pyx_L1_error)
+        if (!(likely(PyList_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None)||((void)PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "list", Py_TYPE(__pyx_t_2)->tp_name), 0))) __PYX_ERR(0, 94, __pyx_L1_error)
         __pyx_r = ((PyObject*)__pyx_t_2);
         __pyx_t_2 = 0;
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -3285,19 +3285,19 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
     #endif
   }
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":108
- *         :return list[str]:
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":99
+ *         :return:
  *         """
  *         texts: list = list()             # <<<<<<<<<<<<<<
  *         for track in self._tracks:
  *             for event in track:
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 108, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 99, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_texts = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":109
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":100
  *         """
  *         texts: list = list()
  *         for track in self._tracks:             # <<<<<<<<<<<<<<
@@ -3306,21 +3306,21 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
  */
   if (unlikely(__pyx_v_self->_tracks == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-    __PYX_ERR(0, 109, __pyx_L1_error)
+    __PYX_ERR(0, 100, __pyx_L1_error)
   }
   __pyx_t_1 = __pyx_v_self->_tracks; __Pyx_INCREF(__pyx_t_1); __pyx_t_5 = 0;
   for (;;) {
     if (__pyx_t_5 >= PyList_GET_SIZE(__pyx_t_1)) break;
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    __pyx_t_2 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_5); __Pyx_INCREF(__pyx_t_2); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(0, 109, __pyx_L1_error)
+    __pyx_t_2 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_5); __Pyx_INCREF(__pyx_t_2); __pyx_t_5++; if (unlikely(0 < 0)) __PYX_ERR(0, 100, __pyx_L1_error)
     #else
-    __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 109, __pyx_L1_error)
+    __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_5); __pyx_t_5++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 100, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     #endif
     __Pyx_XDECREF_SET(__pyx_v_track, __pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "audioworkstation/libs/sublibs/standardmidifile.py":110
+    /* "audioworkstation/libs/sublibs/standardmidifile.py":101
  *         texts: list = list()
  *         for track in self._tracks:
  *             for event in track:             # <<<<<<<<<<<<<<
@@ -3331,26 +3331,26 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
       __pyx_t_2 = __pyx_v_track; __Pyx_INCREF(__pyx_t_2); __pyx_t_6 = 0;
       __pyx_t_7 = NULL;
     } else {
-      __pyx_t_6 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_v_track); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 110, __pyx_L1_error)
+      __pyx_t_6 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_v_track); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 101, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_7 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 110, __pyx_L1_error)
+      __pyx_t_7 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 101, __pyx_L1_error)
     }
     for (;;) {
       if (likely(!__pyx_t_7)) {
         if (likely(PyList_CheckExact(__pyx_t_2))) {
           if (__pyx_t_6 >= PyList_GET_SIZE(__pyx_t_2)) break;
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_3 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_6); __Pyx_INCREF(__pyx_t_3); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 110, __pyx_L1_error)
+          __pyx_t_3 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_6); __Pyx_INCREF(__pyx_t_3); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 101, __pyx_L1_error)
           #else
-          __pyx_t_3 = PySequence_ITEM(__pyx_t_2, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 110, __pyx_L1_error)
+          __pyx_t_3 = PySequence_ITEM(__pyx_t_2, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 101, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_3);
           #endif
         } else {
           if (__pyx_t_6 >= PyTuple_GET_SIZE(__pyx_t_2)) break;
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_3 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_6); __Pyx_INCREF(__pyx_t_3); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 110, __pyx_L1_error)
+          __pyx_t_3 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_6); __Pyx_INCREF(__pyx_t_3); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 101, __pyx_L1_error)
           #else
-          __pyx_t_3 = PySequence_ITEM(__pyx_t_2, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 110, __pyx_L1_error)
+          __pyx_t_3 = PySequence_ITEM(__pyx_t_2, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 101, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_3);
           #endif
         }
@@ -3360,7 +3360,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
           PyObject* exc_type = PyErr_Occurred();
           if (exc_type) {
             if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-            else __PYX_ERR(0, 110, __pyx_L1_error)
+            else __PYX_ERR(0, 101, __pyx_L1_error)
           }
           break;
         }
@@ -3369,24 +3369,24 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
       __Pyx_XDECREF_SET(__pyx_v_event, __pyx_t_3);
       __pyx_t_3 = 0;
 
-      /* "audioworkstation/libs/sublibs/standardmidifile.py":111
+      /* "audioworkstation/libs/sublibs/standardmidifile.py":102
  *         for track in self._tracks:
  *             for event in track:
  *                 if all([event[1] == 0xFF, event[2] == 0x05]):             # <<<<<<<<<<<<<<
  *                     texts += [event[3].decode("sjis")]
  *         return texts
  */
-      __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_event, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 111, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_event, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 102, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_4 = __Pyx_PyInt_EqObjC(__pyx_t_3, __pyx_int_255, 0xFF, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 111, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyInt_EqObjC(__pyx_t_3, __pyx_int_255, 0xFF, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 102, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_event, 2, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 111, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_event, 2, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 102, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_8 = __Pyx_PyInt_EqObjC(__pyx_t_3, __pyx_int_5, 0x05, 0); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 111, __pyx_L1_error)
+      __pyx_t_8 = __Pyx_PyInt_EqObjC(__pyx_t_3, __pyx_int_5, 0x05, 0); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 102, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_t_3 = PyList_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 111, __pyx_L1_error)
+      __pyx_t_3 = PyList_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 102, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_GIVEREF(__pyx_t_4);
       PyList_SET_ITEM(__pyx_t_3, 0, __pyx_t_4);
@@ -3394,23 +3394,23 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
       PyList_SET_ITEM(__pyx_t_3, 1, __pyx_t_8);
       __pyx_t_4 = 0;
       __pyx_t_8 = 0;
-      __pyx_t_8 = __Pyx_PyObject_CallOneArg(__pyx_builtin_all, __pyx_t_3); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 111, __pyx_L1_error)
+      __pyx_t_8 = __Pyx_PyObject_CallOneArg(__pyx_builtin_all, __pyx_t_3); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 102, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-      __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_t_8); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 111, __pyx_L1_error)
+      __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_t_8); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 102, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
       if (__pyx_t_9) {
 
-        /* "audioworkstation/libs/sublibs/standardmidifile.py":112
+        /* "audioworkstation/libs/sublibs/standardmidifile.py":103
  *             for event in track:
  *                 if all([event[1] == 0xFF, event[2] == 0x05]):
  *                     texts += [event[3].decode("sjis")]             # <<<<<<<<<<<<<<
  *         return texts
  * 
  */
-        __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_event, 3, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 112, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_event, 3, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 103, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
-        __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_decode); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 112, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_decode); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 103, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __pyx_t_3 = NULL;
@@ -3425,21 +3425,21 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
         }
         __pyx_t_8 = (__pyx_t_3) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_3, __pyx_n_u_sjis) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_n_u_sjis);
         __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-        if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 112, __pyx_L1_error)
+        if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 103, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_8);
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-        __pyx_t_4 = PyList_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 112, __pyx_L1_error)
+        __pyx_t_4 = PyList_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 103, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_GIVEREF(__pyx_t_8);
         PyList_SET_ITEM(__pyx_t_4, 0, __pyx_t_8);
         __pyx_t_8 = 0;
-        __pyx_t_8 = PyNumber_InPlaceAdd(__pyx_v_texts, __pyx_t_4); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 112, __pyx_L1_error)
+        __pyx_t_8 = PyNumber_InPlaceAdd(__pyx_v_texts, __pyx_t_4); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 103, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_8);
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
         __Pyx_DECREF_SET(__pyx_v_texts, ((PyObject*)__pyx_t_8));
         __pyx_t_8 = 0;
 
-        /* "audioworkstation/libs/sublibs/standardmidifile.py":111
+        /* "audioworkstation/libs/sublibs/standardmidifile.py":102
  *         for track in self._tracks:
  *             for event in track:
  *                 if all([event[1] == 0xFF, event[2] == 0x05]):             # <<<<<<<<<<<<<<
@@ -3448,7 +3448,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
  */
       }
 
-      /* "audioworkstation/libs/sublibs/standardmidifile.py":110
+      /* "audioworkstation/libs/sublibs/standardmidifile.py":101
  *         texts: list = list()
  *         for track in self._tracks:
  *             for event in track:             # <<<<<<<<<<<<<<
@@ -3458,7 +3458,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
     }
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-    /* "audioworkstation/libs/sublibs/standardmidifile.py":109
+    /* "audioworkstation/libs/sublibs/standardmidifile.py":100
  *         """
  *         texts: list = list()
  *         for track in self._tracks:             # <<<<<<<<<<<<<<
@@ -3468,7 +3468,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":113
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":104
  *                 if all([event[1] == 0xFF, event[2] == 0x05]):
  *                     texts += [event[3].decode("sjis")]
  *         return texts             # <<<<<<<<<<<<<<
@@ -3480,7 +3480,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
   __pyx_r = __pyx_v_texts;
   goto __pyx_L0;
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":103
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":94
  *         return names
  * 
  *     def lyrics(self) -> list:             # <<<<<<<<<<<<<<
@@ -3508,7 +3508,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
 
 /* Python wrapper */
 static PyObject *__pyx_pw_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_9lyrics(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static char __pyx_doc_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_8lyrics[] = "Get lyrics list.\n\n        :return list[str]:\n        ";
+static char __pyx_doc_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_8lyrics[] = "Get lyrics list.\n\n        :return:\n        ";
 static PyMethodDef __pyx_mdef_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_9lyrics = {"lyrics", (PyCFunction)__pyx_pw_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_9lyrics, METH_NOARGS, __pyx_doc_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_8lyrics};
 static PyObject *__pyx_pw_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_9lyrics(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
@@ -3530,7 +3530,7 @@ static PyObject *__pyx_pf_16audioworkstation_4libs_7sublibs_16standardmidifile_1
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("lyrics", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_lyrics(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 103, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_lyrics(__pyx_v_self, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 94, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -3547,7 +3547,7 @@ static PyObject *__pyx_pf_16audioworkstation_4libs_7sublibs_16standardmidifile_1
   return __pyx_r;
 }
 
-/* "audioworkstation/libs/sublibs/standardmidifile.py":115
+/* "audioworkstation/libs/sublibs/standardmidifile.py":106
  *         return texts
  * 
  *     def total_tick(self) -> int:             # <<<<<<<<<<<<<<
@@ -3584,7 +3584,7 @@ static int __pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16Standa
     if (unlikely(!__Pyx_object_dict_version_matches(((PyObject *)__pyx_v_self), __pyx_tp_dict_version, __pyx_obj_dict_version))) {
       PY_UINT64_T __pyx_type_dict_guard = __Pyx_get_tp_dict_version(((PyObject *)__pyx_v_self));
       #endif
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_total_tick); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 115, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_total_tick); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 106, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)(void*)__pyx_pw_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_11total_tick)) {
         __Pyx_INCREF(__pyx_t_1);
@@ -3600,10 +3600,10 @@ static int __pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16Standa
         }
         __pyx_t_2 = (__pyx_t_4) ? __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_4) : __Pyx_PyObject_CallNoArg(__pyx_t_3);
         __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
-        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 115, __pyx_L1_error)
+        if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 106, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-        __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 115, __pyx_L1_error)
+        __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 106, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
         __pyx_r = __pyx_t_5;
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -3622,8 +3622,8 @@ static int __pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16Standa
     #endif
   }
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":120
- *         :return int:
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":111
+ *         :return:
  *         """
  *         result: int = 0             # <<<<<<<<<<<<<<
  *         for track in self._tracks:
@@ -3632,7 +3632,7 @@ static int __pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16Standa
   __Pyx_INCREF(__pyx_int_0);
   __pyx_v_result = __pyx_int_0;
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":121
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":112
  *         """
  *         result: int = 0
  *         for track in self._tracks:             # <<<<<<<<<<<<<<
@@ -3641,46 +3641,46 @@ static int __pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16Standa
  */
   if (unlikely(__pyx_v_self->_tracks == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-    __PYX_ERR(0, 121, __pyx_L1_error)
+    __PYX_ERR(0, 112, __pyx_L1_error)
   }
   __pyx_t_1 = __pyx_v_self->_tracks; __Pyx_INCREF(__pyx_t_1); __pyx_t_6 = 0;
   for (;;) {
     if (__pyx_t_6 >= PyList_GET_SIZE(__pyx_t_1)) break;
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-    __pyx_t_2 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_6); __Pyx_INCREF(__pyx_t_2); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 121, __pyx_L1_error)
+    __pyx_t_2 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_6); __Pyx_INCREF(__pyx_t_2); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 112, __pyx_L1_error)
     #else
-    __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 121, __pyx_L1_error)
+    __pyx_t_2 = PySequence_ITEM(__pyx_t_1, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 112, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     #endif
     __Pyx_XDECREF_SET(__pyx_v_track, __pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "audioworkstation/libs/sublibs/standardmidifile.py":122
+    /* "audioworkstation/libs/sublibs/standardmidifile.py":113
  *         result: int = 0
  *         for track in self._tracks:
  *             temp = track[len(track) - 1][0]             # <<<<<<<<<<<<<<
  *             result = temp if temp > result else result
  *         return result
  */
-    __pyx_t_7 = PyObject_Length(__pyx_v_track); if (unlikely(__pyx_t_7 == ((Py_ssize_t)-1))) __PYX_ERR(0, 122, __pyx_L1_error)
+    __pyx_t_7 = PyObject_Length(__pyx_v_track); if (unlikely(__pyx_t_7 == ((Py_ssize_t)-1))) __PYX_ERR(0, 113, __pyx_L1_error)
     __pyx_t_8 = (__pyx_t_7 - 1);
-    __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_track, __pyx_t_8, Py_ssize_t, 1, PyInt_FromSsize_t, 0, 1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 122, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_track, __pyx_t_8, Py_ssize_t, 1, PyInt_FromSsize_t, 0, 1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 113, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_2, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 122, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_GetItemInt(__pyx_t_2, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 113, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_XDECREF_SET(__pyx_v_temp, __pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "audioworkstation/libs/sublibs/standardmidifile.py":123
+    /* "audioworkstation/libs/sublibs/standardmidifile.py":114
  *         for track in self._tracks:
  *             temp = track[len(track) - 1][0]
  *             result = temp if temp > result else result             # <<<<<<<<<<<<<<
  *         return result
  * 
  */
-    __pyx_t_2 = PyObject_RichCompare(__pyx_v_temp, __pyx_v_result, Py_GT); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 123, __pyx_L1_error)
-    __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 123, __pyx_L1_error)
+    __pyx_t_2 = PyObject_RichCompare(__pyx_v_temp, __pyx_v_result, Py_GT); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 114, __pyx_L1_error)
+    __pyx_t_9 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_9 < 0)) __PYX_ERR(0, 114, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     if (__pyx_t_9) {
       __Pyx_INCREF(__pyx_v_temp);
@@ -3692,7 +3692,7 @@ static int __pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16Standa
     __Pyx_DECREF_SET(__pyx_v_result, __pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "audioworkstation/libs/sublibs/standardmidifile.py":121
+    /* "audioworkstation/libs/sublibs/standardmidifile.py":112
  *         """
  *         result: int = 0
  *         for track in self._tracks:             # <<<<<<<<<<<<<<
@@ -3702,18 +3702,18 @@ static int __pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16Standa
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":124
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":115
  *             temp = track[len(track) - 1][0]
  *             result = temp if temp > result else result
  *         return result             # <<<<<<<<<<<<<<
  * 
  *     def _dequeue_as_midi_event(self, event_type: int, offset: int) -> tuple:
  */
-  __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_v_result); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 124, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_v_result); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 115, __pyx_L1_error)
   __pyx_r = __pyx_t_5;
   goto __pyx_L0;
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":115
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":106
  *         return texts
  * 
  *     def total_tick(self) -> int:             # <<<<<<<<<<<<<<
@@ -3739,7 +3739,7 @@ static int __pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16Standa
 
 /* Python wrapper */
 static PyObject *__pyx_pw_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_11total_tick(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static char __pyx_doc_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_10total_tick[] = "Count ticks.\n\n        :return int:\n        ";
+static char __pyx_doc_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_10total_tick[] = "Count ticks.\n\n        :return:\n        ";
 static PyMethodDef __pyx_mdef_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_11total_tick = {"total_tick", (PyCFunction)__pyx_pw_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_11total_tick, METH_NOARGS, __pyx_doc_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_10total_tick};
 static PyObject *__pyx_pw_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_11total_tick(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
@@ -3761,7 +3761,7 @@ static PyObject *__pyx_pf_16audioworkstation_4libs_7sublibs_16standardmidifile_1
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("total_tick", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_total_tick(__pyx_v_self, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 115, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_total_tick(__pyx_v_self, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 106, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -3778,7 +3778,7 @@ static PyObject *__pyx_pf_16audioworkstation_4libs_7sublibs_16standardmidifile_1
   return __pyx_r;
 }
 
-/* "audioworkstation/libs/sublibs/standardmidifile.py":126
+/* "audioworkstation/libs/sublibs/standardmidifile.py":117
  *         return result
  * 
  *     def _dequeue_as_midi_event(self, event_type: int, offset: int) -> tuple:             # <<<<<<<<<<<<<<
@@ -3805,8 +3805,8 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_dequeue_as_midi_event", 0);
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":133
- *         :return tuple:
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":124
+ *         :return:
  *         """
  *         param = event_type >> 4             # <<<<<<<<<<<<<<
  *         channel = event_type & 0xF
@@ -3814,7 +3814,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
  */
   __pyx_v_param = (__pyx_v_event_type >> 4);
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":134
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":125
  *         """
  *         param = event_type >> 4
  *         channel = event_type & 0xF             # <<<<<<<<<<<<<<
@@ -3823,19 +3823,19 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
  */
   __pyx_v_channel = (__pyx_v_event_type & 0xF);
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":135
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":126
  *         param = event_type >> 4
  *         channel = event_type & 0xF
  *         midi_event: list = list()             # <<<<<<<<<<<<<<
  *         if param in [0x8, 0x9, 0xA, 0xB, 0xE]:
  *             value0, value1, offset = self._unpack(offset, ">" "BB")
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 135, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 126, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_midi_event = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":136
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":127
  *         channel = event_type & 0xF
  *         midi_event: list = list()
  *         if param in [0x8, 0x9, 0xA, 0xB, 0xE]:             # <<<<<<<<<<<<<<
@@ -3849,14 +3849,14 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
     case 0xB:
     case 0xE:
 
-    /* "audioworkstation/libs/sublibs/standardmidifile.py":137
+    /* "audioworkstation/libs/sublibs/standardmidifile.py":128
  *         midi_event: list = list()
  *         if param in [0x8, 0x9, 0xA, 0xB, 0xE]:
  *             value0, value1, offset = self._unpack(offset, ">" "BB")             # <<<<<<<<<<<<<<
  *             midi_event = [param, channel, value0, value1]
  *         elif param in [0xC, 0xD]:
  */
-    __pyx_t_1 = ((struct __pyx_vtabstruct_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile *)__pyx_v_self->__pyx_vtab)->_unpack(__pyx_v_self, __pyx_v_offset, __pyx_kp_u_BB); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 137, __pyx_L1_error)
+    __pyx_t_1 = ((struct __pyx_vtabstruct_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile *)__pyx_v_self->__pyx_vtab)->_unpack(__pyx_v_self, __pyx_v_offset, __pyx_kp_u_BB); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 128, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     if (likely(__pyx_t_1 != Py_None)) {
       PyObject* sequence = __pyx_t_1;
@@ -3864,7 +3864,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
       if (unlikely(size != 3)) {
         if (size > 3) __Pyx_RaiseTooManyValuesError(3);
         else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-        __PYX_ERR(0, 137, __pyx_L1_error)
+        __PYX_ERR(0, 128, __pyx_L1_error)
       }
       #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
       __pyx_t_2 = PyTuple_GET_ITEM(sequence, 0); 
@@ -3874,18 +3874,18 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
       __Pyx_INCREF(__pyx_t_3);
       __Pyx_INCREF(__pyx_t_4);
       #else
-      __pyx_t_2 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 137, __pyx_L1_error)
+      __pyx_t_2 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 128, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_3 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 137, __pyx_L1_error)
+      __pyx_t_3 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 128, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_4 = PySequence_ITEM(sequence, 2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 137, __pyx_L1_error)
+      __pyx_t_4 = PySequence_ITEM(sequence, 2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 128, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       #endif
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     } else {
-      __Pyx_RaiseNoneNotIterableError(); __PYX_ERR(0, 137, __pyx_L1_error)
+      __Pyx_RaiseNoneNotIterableError(); __PYX_ERR(0, 128, __pyx_L1_error)
     }
-    __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_t_4); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 137, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_t_4); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 128, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_v_value0 = __pyx_t_2;
     __pyx_t_2 = 0;
@@ -3893,18 +3893,18 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
     __pyx_t_3 = 0;
     __pyx_v_offset = __pyx_t_5;
 
-    /* "audioworkstation/libs/sublibs/standardmidifile.py":138
+    /* "audioworkstation/libs/sublibs/standardmidifile.py":129
  *         if param in [0x8, 0x9, 0xA, 0xB, 0xE]:
  *             value0, value1, offset = self._unpack(offset, ">" "BB")
  *             midi_event = [param, channel, value0, value1]             # <<<<<<<<<<<<<<
  *         elif param in [0xC, 0xD]:
  *             value, offset = self._unpack(offset, BYTE)
  */
-    __pyx_t_1 = __Pyx_PyInt_From_long(__pyx_v_param); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 138, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyInt_From_long(__pyx_v_param); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 129, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_4 = __Pyx_PyInt_From_long(__pyx_v_channel); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 138, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyInt_From_long(__pyx_v_channel); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 129, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_3 = PyList_New(4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 138, __pyx_L1_error)
+    __pyx_t_3 = PyList_New(4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 129, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_GIVEREF(__pyx_t_1);
     PyList_SET_ITEM(__pyx_t_3, 0, __pyx_t_1);
@@ -3921,7 +3921,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
     __Pyx_DECREF_SET(__pyx_v_midi_event, ((PyObject*)__pyx_t_3));
     __pyx_t_3 = 0;
 
-    /* "audioworkstation/libs/sublibs/standardmidifile.py":136
+    /* "audioworkstation/libs/sublibs/standardmidifile.py":127
  *         channel = event_type & 0xF
  *         midi_event: list = list()
  *         if param in [0x8, 0x9, 0xA, 0xB, 0xE]:             # <<<<<<<<<<<<<<
@@ -3931,7 +3931,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
     break;
     case 0xC:
 
-    /* "audioworkstation/libs/sublibs/standardmidifile.py":139
+    /* "audioworkstation/libs/sublibs/standardmidifile.py":130
  *             value0, value1, offset = self._unpack(offset, ">" "BB")
  *             midi_event = [param, channel, value0, value1]
  *         elif param in [0xC, 0xD]:             # <<<<<<<<<<<<<<
@@ -3940,17 +3940,17 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
  */
     case 0xD:
 
-    /* "audioworkstation/libs/sublibs/standardmidifile.py":140
+    /* "audioworkstation/libs/sublibs/standardmidifile.py":131
  *             midi_event = [param, channel, value0, value1]
  *         elif param in [0xC, 0xD]:
  *             value, offset = self._unpack(offset, BYTE)             # <<<<<<<<<<<<<<
  *             midi_event = [param, channel, value]
  *         return (midi_event, offset)
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_BYTE); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 140, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_BYTE); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 131, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    if (!(likely(PyUnicode_CheckExact(__pyx_t_3))||((__pyx_t_3) == Py_None)||((void)PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "unicode", Py_TYPE(__pyx_t_3)->tp_name), 0))) __PYX_ERR(0, 140, __pyx_L1_error)
-    __pyx_t_4 = ((struct __pyx_vtabstruct_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile *)__pyx_v_self->__pyx_vtab)->_unpack(__pyx_v_self, __pyx_v_offset, ((PyObject*)__pyx_t_3)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 140, __pyx_L1_error)
+    if (!(likely(PyUnicode_CheckExact(__pyx_t_3))||((__pyx_t_3) == Py_None)||((void)PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "unicode", Py_TYPE(__pyx_t_3)->tp_name), 0))) __PYX_ERR(0, 131, __pyx_L1_error)
+    __pyx_t_4 = ((struct __pyx_vtabstruct_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile *)__pyx_v_self->__pyx_vtab)->_unpack(__pyx_v_self, __pyx_v_offset, ((PyObject*)__pyx_t_3)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 131, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     if (likely(__pyx_t_4 != Py_None)) {
@@ -3959,7 +3959,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
       if (unlikely(size != 2)) {
         if (size > 2) __Pyx_RaiseTooManyValuesError(2);
         else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-        __PYX_ERR(0, 140, __pyx_L1_error)
+        __PYX_ERR(0, 131, __pyx_L1_error)
       }
       #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
       __pyx_t_3 = PyTuple_GET_ITEM(sequence, 0); 
@@ -3967,33 +3967,33 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
       __Pyx_INCREF(__pyx_t_3);
       __Pyx_INCREF(__pyx_t_1);
       #else
-      __pyx_t_3 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 140, __pyx_L1_error)
+      __pyx_t_3 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 131, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_1 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 140, __pyx_L1_error)
+      __pyx_t_1 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 131, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       #endif
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     } else {
-      __Pyx_RaiseNoneNotIterableError(); __PYX_ERR(0, 140, __pyx_L1_error)
+      __Pyx_RaiseNoneNotIterableError(); __PYX_ERR(0, 131, __pyx_L1_error)
     }
-    __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 140, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 131, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_v_value = __pyx_t_3;
     __pyx_t_3 = 0;
     __pyx_v_offset = __pyx_t_5;
 
-    /* "audioworkstation/libs/sublibs/standardmidifile.py":141
+    /* "audioworkstation/libs/sublibs/standardmidifile.py":132
  *         elif param in [0xC, 0xD]:
  *             value, offset = self._unpack(offset, BYTE)
  *             midi_event = [param, channel, value]             # <<<<<<<<<<<<<<
  *         return (midi_event, offset)
  * 
  */
-    __pyx_t_4 = __Pyx_PyInt_From_long(__pyx_v_param); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 141, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyInt_From_long(__pyx_v_param); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 132, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_1 = __Pyx_PyInt_From_long(__pyx_v_channel); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 141, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyInt_From_long(__pyx_v_channel); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 132, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_3 = PyList_New(3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 141, __pyx_L1_error)
+    __pyx_t_3 = PyList_New(3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 132, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_GIVEREF(__pyx_t_4);
     PyList_SET_ITEM(__pyx_t_3, 0, __pyx_t_4);
@@ -4007,7 +4007,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
     __Pyx_DECREF_SET(__pyx_v_midi_event, ((PyObject*)__pyx_t_3));
     __pyx_t_3 = 0;
 
-    /* "audioworkstation/libs/sublibs/standardmidifile.py":139
+    /* "audioworkstation/libs/sublibs/standardmidifile.py":130
  *             value0, value1, offset = self._unpack(offset, ">" "BB")
  *             midi_event = [param, channel, value0, value1]
  *         elif param in [0xC, 0xD]:             # <<<<<<<<<<<<<<
@@ -4018,7 +4018,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
     default: break;
   }
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":142
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":133
  *             value, offset = self._unpack(offset, BYTE)
  *             midi_event = [param, channel, value]
  *         return (midi_event, offset)             # <<<<<<<<<<<<<<
@@ -4026,9 +4026,9 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
  *     def _dequeue_as_meta_event(self, event_type: int, offset: int) -> tuple:
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_offset); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 142, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_offset); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 133, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 142, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 133, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_v_midi_event);
   __Pyx_GIVEREF(__pyx_v_midi_event);
@@ -4040,7 +4040,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":126
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":117
  *         return result
  * 
  *     def _dequeue_as_midi_event(self, event_type: int, offset: int) -> tuple:             # <<<<<<<<<<<<<<
@@ -4066,7 +4066,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
   return __pyx_r;
 }
 
-/* "audioworkstation/libs/sublibs/standardmidifile.py":144
+/* "audioworkstation/libs/sublibs/standardmidifile.py":135
  *         return (midi_event, offset)
  * 
  *     def _dequeue_as_meta_event(self, event_type: int, offset: int) -> tuple:             # <<<<<<<<<<<<<<
@@ -4092,14 +4092,14 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_dequeue_as_meta_event", 0);
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":151
- *         :return tuple:
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":142
+ *         :return:
  *         """
  *         meta_type, length, offset = self._unpack(offset, ">" "BB")             # <<<<<<<<<<<<<<
  *         return (
  *             [event_type, meta_type, self._smf[offset : offset + length]],
  */
-  __pyx_t_1 = ((struct __pyx_vtabstruct_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile *)__pyx_v_self->__pyx_vtab)->_unpack(__pyx_v_self, __pyx_v_offset, __pyx_kp_u_BB); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 151, __pyx_L1_error)
+  __pyx_t_1 = ((struct __pyx_vtabstruct_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile *)__pyx_v_self->__pyx_vtab)->_unpack(__pyx_v_self, __pyx_v_offset, __pyx_kp_u_BB); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 142, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (likely(__pyx_t_1 != Py_None)) {
     PyObject* sequence = __pyx_t_1;
@@ -4107,7 +4107,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
     if (unlikely(size != 3)) {
       if (size > 3) __Pyx_RaiseTooManyValuesError(3);
       else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-      __PYX_ERR(0, 151, __pyx_L1_error)
+      __PYX_ERR(0, 142, __pyx_L1_error)
     }
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
     __pyx_t_2 = PyTuple_GET_ITEM(sequence, 0); 
@@ -4117,18 +4117,18 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
     __Pyx_INCREF(__pyx_t_3);
     __Pyx_INCREF(__pyx_t_4);
     #else
-    __pyx_t_2 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 151, __pyx_L1_error)
+    __pyx_t_2 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 142, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 151, __pyx_L1_error)
+    __pyx_t_3 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 142, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_4 = PySequence_ITEM(sequence, 2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 151, __pyx_L1_error)
+    __pyx_t_4 = PySequence_ITEM(sequence, 2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 142, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     #endif
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   } else {
-    __Pyx_RaiseNoneNotIterableError(); __PYX_ERR(0, 151, __pyx_L1_error)
+    __Pyx_RaiseNoneNotIterableError(); __PYX_ERR(0, 142, __pyx_L1_error)
   }
-  __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_t_4); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 151, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_t_4); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 142, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_v_meta_type = __pyx_t_2;
   __pyx_t_2 = 0;
@@ -4136,7 +4136,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
   __pyx_t_3 = 0;
   __pyx_v_offset = __pyx_t_5;
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":152
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":143
  *         """
  *         meta_type, length, offset = self._unpack(offset, ">" "BB")
  *         return (             # <<<<<<<<<<<<<<
@@ -4145,35 +4145,35 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
  */
   __Pyx_XDECREF(__pyx_r);
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":153
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":144
  *         meta_type, length, offset = self._unpack(offset, ">" "BB")
  *         return (
  *             [event_type, meta_type, self._smf[offset : offset + length]],             # <<<<<<<<<<<<<<
  *             offset + length,
  *         )
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_event_type); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 153, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_event_type); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 144, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (unlikely(__pyx_v_self->_smf == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(0, 153, __pyx_L1_error)
+    __PYX_ERR(0, 144, __pyx_L1_error)
   }
-  __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_offset); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 153, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_offset); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 144, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_3 = PyNumber_Add(__pyx_t_4, __pyx_v_length); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 153, __pyx_L1_error)
+  __pyx_t_3 = PyNumber_Add(__pyx_t_4, __pyx_v_length); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 144, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_t_7 = (__pyx_t_3 == Py_None);
   if (__pyx_t_7) {
     __pyx_t_6 = PY_SSIZE_T_MAX;
   } else {
-    __pyx_t_8 = __Pyx_PyIndex_AsSsize_t(__pyx_t_3); if (unlikely((__pyx_t_8 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 153, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyIndex_AsSsize_t(__pyx_t_3); if (unlikely((__pyx_t_8 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 144, __pyx_L1_error)
     __pyx_t_6 = __pyx_t_8;
   }
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = PySequence_GetSlice(__pyx_v_self->_smf, __pyx_v_offset, __pyx_t_6); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 153, __pyx_L1_error)
+  __pyx_t_3 = PySequence_GetSlice(__pyx_v_self->_smf, __pyx_v_offset, __pyx_t_6); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 144, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = PyList_New(3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 153, __pyx_L1_error)
+  __pyx_t_4 = PyList_New(3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 144, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_GIVEREF(__pyx_t_1);
   PyList_SET_ITEM(__pyx_t_4, 0, __pyx_t_1);
@@ -4185,27 +4185,27 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
   __pyx_t_1 = 0;
   __pyx_t_3 = 0;
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":154
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":145
  *         return (
  *             [event_type, meta_type, self._smf[offset : offset + length]],
  *             offset + length,             # <<<<<<<<<<<<<<
  *         )
  * 
  */
-  __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_offset); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 154, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_offset); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 145, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_1 = PyNumber_Add(__pyx_t_3, __pyx_v_length); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 154, __pyx_L1_error)
+  __pyx_t_1 = PyNumber_Add(__pyx_t_3, __pyx_v_length); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 145, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":153
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":144
  *         meta_type, length, offset = self._unpack(offset, ">" "BB")
  *         return (
  *             [event_type, meta_type, self._smf[offset : offset + length]],             # <<<<<<<<<<<<<<
  *             offset + length,
  *         )
  */
-  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 153, __pyx_L1_error)
+  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 144, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_GIVEREF(__pyx_t_4);
   PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_4);
@@ -4217,7 +4217,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
   __pyx_t_3 = 0;
   goto __pyx_L0;
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":144
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":135
  *         return (midi_event, offset)
  * 
  *     def _dequeue_as_meta_event(self, event_type: int, offset: int) -> tuple:             # <<<<<<<<<<<<<<
@@ -4241,7 +4241,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
   return __pyx_r;
 }
 
-/* "audioworkstation/libs/sublibs/standardmidifile.py":157
+/* "audioworkstation/libs/sublibs/standardmidifile.py":148
  *         )
  * 
  *     def _dequeue_as_sysex_event(self, event_type: int, offset: int) -> tuple:             # <<<<<<<<<<<<<<
@@ -4265,17 +4265,17 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_dequeue_as_sysex_event", 0);
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":164
- *         :return tuple:
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":155
+ *         :return:
  *         """
  *         length, offset = self._unpack(offset, BYTE)             # <<<<<<<<<<<<<<
  *         return ([event_type, self._smf[offset : offset + length]], offset + length)
  * 
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_BYTE); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 164, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_BYTE); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 155, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (!(likely(PyUnicode_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None)||((void)PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "unicode", Py_TYPE(__pyx_t_1)->tp_name), 0))) __PYX_ERR(0, 164, __pyx_L1_error)
-  __pyx_t_2 = ((struct __pyx_vtabstruct_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile *)__pyx_v_self->__pyx_vtab)->_unpack(__pyx_v_self, __pyx_v_offset, ((PyObject*)__pyx_t_1)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 164, __pyx_L1_error)
+  if (!(likely(PyUnicode_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None)||((void)PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "unicode", Py_TYPE(__pyx_t_1)->tp_name), 0))) __PYX_ERR(0, 155, __pyx_L1_error)
+  __pyx_t_2 = ((struct __pyx_vtabstruct_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile *)__pyx_v_self->__pyx_vtab)->_unpack(__pyx_v_self, __pyx_v_offset, ((PyObject*)__pyx_t_1)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 155, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (likely(__pyx_t_2 != Py_None)) {
@@ -4284,7 +4284,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
     if (unlikely(size != 2)) {
       if (size > 2) __Pyx_RaiseTooManyValuesError(2);
       else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-      __PYX_ERR(0, 164, __pyx_L1_error)
+      __PYX_ERR(0, 155, __pyx_L1_error)
     }
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
     __pyx_t_1 = PyTuple_GET_ITEM(sequence, 0); 
@@ -4292,22 +4292,22 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
     __Pyx_INCREF(__pyx_t_1);
     __Pyx_INCREF(__pyx_t_3);
     #else
-    __pyx_t_1 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 164, __pyx_L1_error)
+    __pyx_t_1 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 155, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_3 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 164, __pyx_L1_error)
+    __pyx_t_3 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 155, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     #endif
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   } else {
-    __Pyx_RaiseNoneNotIterableError(); __PYX_ERR(0, 164, __pyx_L1_error)
+    __Pyx_RaiseNoneNotIterableError(); __PYX_ERR(0, 155, __pyx_L1_error)
   }
-  __pyx_t_4 = __Pyx_PyInt_As_int(__pyx_t_3); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 164, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyInt_As_int(__pyx_t_3); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 155, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_v_length = __pyx_t_1;
   __pyx_t_1 = 0;
   __pyx_v_offset = __pyx_t_4;
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":165
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":156
  *         """
  *         length, offset = self._unpack(offset, BYTE)
  *         return ([event_type, self._smf[offset : offset + length]], offset + length)             # <<<<<<<<<<<<<<
@@ -4315,28 +4315,28 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
  *     def _dequeue_event(self, offset: int) -> tuple:
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_event_type); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 165, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_event_type); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 156, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (unlikely(__pyx_v_self->_smf == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(0, 165, __pyx_L1_error)
+    __PYX_ERR(0, 156, __pyx_L1_error)
   }
-  __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_offset); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 165, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_offset); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 156, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_1 = PyNumber_Add(__pyx_t_3, __pyx_v_length); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 165, __pyx_L1_error)
+  __pyx_t_1 = PyNumber_Add(__pyx_t_3, __pyx_v_length); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 156, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_t_6 = (__pyx_t_1 == Py_None);
   if (__pyx_t_6) {
     __pyx_t_5 = PY_SSIZE_T_MAX;
   } else {
-    __pyx_t_7 = __Pyx_PyIndex_AsSsize_t(__pyx_t_1); if (unlikely((__pyx_t_7 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 165, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyIndex_AsSsize_t(__pyx_t_1); if (unlikely((__pyx_t_7 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 156, __pyx_L1_error)
     __pyx_t_5 = __pyx_t_7;
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PySequence_GetSlice(__pyx_v_self->_smf, __pyx_v_offset, __pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 165, __pyx_L1_error)
+  __pyx_t_1 = PySequence_GetSlice(__pyx_v_self->_smf, __pyx_v_offset, __pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 156, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = PyList_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 165, __pyx_L1_error)
+  __pyx_t_3 = PyList_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 156, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_GIVEREF(__pyx_t_2);
   PyList_SET_ITEM(__pyx_t_3, 0, __pyx_t_2);
@@ -4344,12 +4344,12 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
   PyList_SET_ITEM(__pyx_t_3, 1, __pyx_t_1);
   __pyx_t_2 = 0;
   __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_offset); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 165, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_offset); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 156, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyNumber_Add(__pyx_t_1, __pyx_v_length); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 165, __pyx_L1_error)
+  __pyx_t_2 = PyNumber_Add(__pyx_t_1, __pyx_v_length); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 156, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 165, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 156, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_3);
   PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_3);
@@ -4361,7 +4361,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":157
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":148
  *         )
  * 
  *     def _dequeue_as_sysex_event(self, event_type: int, offset: int) -> tuple:             # <<<<<<<<<<<<<<
@@ -4383,7 +4383,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
   return __pyx_r;
 }
 
-/* "audioworkstation/libs/sublibs/standardmidifile.py":167
+/* "audioworkstation/libs/sublibs/standardmidifile.py":158
  *         return ([event_type, self._smf[offset : offset + length]], offset + length)
  * 
  *     def _dequeue_event(self, offset: int) -> tuple:             # <<<<<<<<<<<<<<
@@ -4406,17 +4406,17 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_dequeue_event", 0);
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":174
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":165
  *         """
  *         event_type: int
  *         event_type, offset = self._unpack(offset, BYTE)             # <<<<<<<<<<<<<<
  *         if self._is_status_byte(event_type):
  *             self._last_event_type = event_type
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_BYTE); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 174, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_BYTE); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 165, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (!(likely(PyUnicode_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None)||((void)PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "unicode", Py_TYPE(__pyx_t_1)->tp_name), 0))) __PYX_ERR(0, 174, __pyx_L1_error)
-  __pyx_t_2 = ((struct __pyx_vtabstruct_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile *)__pyx_v_self->__pyx_vtab)->_unpack(__pyx_v_self, __pyx_v_offset, ((PyObject*)__pyx_t_1)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 174, __pyx_L1_error)
+  if (!(likely(PyUnicode_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None)||((void)PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "unicode", Py_TYPE(__pyx_t_1)->tp_name), 0))) __PYX_ERR(0, 165, __pyx_L1_error)
+  __pyx_t_2 = ((struct __pyx_vtabstruct_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile *)__pyx_v_self->__pyx_vtab)->_unpack(__pyx_v_self, __pyx_v_offset, ((PyObject*)__pyx_t_1)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 165, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (likely(__pyx_t_2 != Py_None)) {
@@ -4425,7 +4425,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
     if (unlikely(size != 2)) {
       if (size > 2) __Pyx_RaiseTooManyValuesError(2);
       else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-      __PYX_ERR(0, 174, __pyx_L1_error)
+      __PYX_ERR(0, 165, __pyx_L1_error)
     }
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
     __pyx_t_1 = PyTuple_GET_ITEM(sequence, 0); 
@@ -4433,43 +4433,43 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
     __Pyx_INCREF(__pyx_t_1);
     __Pyx_INCREF(__pyx_t_3);
     #else
-    __pyx_t_1 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 174, __pyx_L1_error)
+    __pyx_t_1 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 165, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_3 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 174, __pyx_L1_error)
+    __pyx_t_3 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 165, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     #endif
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   } else {
-    __Pyx_RaiseNoneNotIterableError(); __PYX_ERR(0, 174, __pyx_L1_error)
+    __Pyx_RaiseNoneNotIterableError(); __PYX_ERR(0, 165, __pyx_L1_error)
   }
-  __pyx_t_4 = __Pyx_PyInt_As_int(__pyx_t_3); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 174, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyInt_As_int(__pyx_t_3); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 165, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_v_event_type = __pyx_t_1;
   __pyx_t_1 = 0;
   __pyx_v_offset = __pyx_t_4;
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":175
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":166
  *         event_type: int
  *         event_type, offset = self._unpack(offset, BYTE)
  *         if self._is_status_byte(event_type):             # <<<<<<<<<<<<<<
  *             self._last_event_type = event_type
  *         else:
  */
-  __pyx_t_4 = __Pyx_PyInt_As_int(__pyx_v_event_type); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 175, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyInt_As_int(__pyx_v_event_type); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 166, __pyx_L1_error)
   __pyx_t_5 = (((struct __pyx_vtabstruct_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile *)__pyx_v_self->__pyx_vtab)->_is_status_byte(__pyx_v_self, __pyx_t_4) != 0);
   if (__pyx_t_5) {
 
-    /* "audioworkstation/libs/sublibs/standardmidifile.py":176
+    /* "audioworkstation/libs/sublibs/standardmidifile.py":167
  *         event_type, offset = self._unpack(offset, BYTE)
  *         if self._is_status_byte(event_type):
  *             self._last_event_type = event_type             # <<<<<<<<<<<<<<
  *         else:
  *             """running status"""
  */
-    __pyx_t_4 = __Pyx_PyInt_As_int(__pyx_v_event_type); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 176, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyInt_As_int(__pyx_v_event_type); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 167, __pyx_L1_error)
     __pyx_v_self->_last_event_type = __pyx_t_4;
 
-    /* "audioworkstation/libs/sublibs/standardmidifile.py":175
+    /* "audioworkstation/libs/sublibs/standardmidifile.py":166
  *         event_type: int
  *         event_type, offset = self._unpack(offset, BYTE)
  *         if self._is_status_byte(event_type):             # <<<<<<<<<<<<<<
@@ -4479,7 +4479,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
     goto __pyx_L3;
   }
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":178
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":169
  *             self._last_event_type = event_type
  *         else:
  *             """running status"""             # <<<<<<<<<<<<<<
@@ -4488,19 +4488,19 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
  */
   /*else*/ {
 
-    /* "audioworkstation/libs/sublibs/standardmidifile.py":179
+    /* "audioworkstation/libs/sublibs/standardmidifile.py":170
  *         else:
  *             """running status"""
  *             event_type = self._last_event_type             # <<<<<<<<<<<<<<
  *             offset -= 1
  * 
  */
-    __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_self->_last_event_type); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 179, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_self->_last_event_type); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 170, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF_SET(__pyx_v_event_type, __pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "audioworkstation/libs/sublibs/standardmidifile.py":180
+    /* "audioworkstation/libs/sublibs/standardmidifile.py":171
  *             """running status"""
  *             event_type = self._last_event_type
  *             offset -= 1             # <<<<<<<<<<<<<<
@@ -4511,20 +4511,20 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
   }
   __pyx_L3:;
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":182
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":173
  *             offset -= 1
  * 
  *         if event_type == 0xFF:             # <<<<<<<<<<<<<<
  *             return self._dequeue_as_meta_event(event_type, offset)
  *         elif event_type in [0xF0, 0xF7]:
  */
-  __pyx_t_2 = __Pyx_PyInt_EqObjC(__pyx_v_event_type, __pyx_int_255, 0xFF, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 182, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_EqObjC(__pyx_v_event_type, __pyx_int_255, 0xFF, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 173, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 182, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 173, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   if (__pyx_t_5) {
 
-    /* "audioworkstation/libs/sublibs/standardmidifile.py":183
+    /* "audioworkstation/libs/sublibs/standardmidifile.py":174
  * 
  *         if event_type == 0xFF:
  *             return self._dequeue_as_meta_event(event_type, offset)             # <<<<<<<<<<<<<<
@@ -4532,14 +4532,14 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
  *             return self._dequeue_as_sysex_event(event_type, offset)
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_4 = __Pyx_PyInt_As_int(__pyx_v_event_type); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 183, __pyx_L1_error)
-    __pyx_t_2 = ((struct __pyx_vtabstruct_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile *)__pyx_v_self->__pyx_vtab)->_dequeue_as_meta_event(__pyx_v_self, __pyx_t_4, __pyx_v_offset); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 183, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyInt_As_int(__pyx_v_event_type); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 174, __pyx_L1_error)
+    __pyx_t_2 = ((struct __pyx_vtabstruct_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile *)__pyx_v_self->__pyx_vtab)->_dequeue_as_meta_event(__pyx_v_self, __pyx_t_4, __pyx_v_offset); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 174, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_r = ((PyObject*)__pyx_t_2);
     __pyx_t_2 = 0;
     goto __pyx_L0;
 
-    /* "audioworkstation/libs/sublibs/standardmidifile.py":182
+    /* "audioworkstation/libs/sublibs/standardmidifile.py":173
  *             offset -= 1
  * 
  *         if event_type == 0xFF:             # <<<<<<<<<<<<<<
@@ -4548,7 +4548,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
  */
   }
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":184
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":175
  *         if event_type == 0xFF:
  *             return self._dequeue_as_meta_event(event_type, offset)
  *         elif event_type in [0xF0, 0xF7]:             # <<<<<<<<<<<<<<
@@ -4557,18 +4557,18 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
  */
   __Pyx_INCREF(__pyx_v_event_type);
   __pyx_t_2 = __pyx_v_event_type;
-  __pyx_t_3 = __Pyx_PyInt_EqObjC(__pyx_t_2, __pyx_int_240, 0xF0, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 184, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_EqObjC(__pyx_t_2, __pyx_int_240, 0xF0, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 175, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 184, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 175, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   if (!__pyx_t_6) {
   } else {
     __pyx_t_5 = __pyx_t_6;
     goto __pyx_L5_bool_binop_done;
   }
-  __pyx_t_3 = __Pyx_PyInt_EqObjC(__pyx_t_2, __pyx_int_247, 0xF7, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 184, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_EqObjC(__pyx_t_2, __pyx_int_247, 0xF7, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 175, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 184, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_3); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 175, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_t_5 = __pyx_t_6;
   __pyx_L5_bool_binop_done:;
@@ -4576,7 +4576,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
   __pyx_t_6 = (__pyx_t_5 != 0);
   if (__pyx_t_6) {
 
-    /* "audioworkstation/libs/sublibs/standardmidifile.py":185
+    /* "audioworkstation/libs/sublibs/standardmidifile.py":176
  *             return self._dequeue_as_meta_event(event_type, offset)
  *         elif event_type in [0xF0, 0xF7]:
  *             return self._dequeue_as_sysex_event(event_type, offset)             # <<<<<<<<<<<<<<
@@ -4584,14 +4584,14 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
  *             return self._dequeue_as_midi_event(event_type, offset)
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_4 = __Pyx_PyInt_As_int(__pyx_v_event_type); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 185, __pyx_L1_error)
-    __pyx_t_2 = ((struct __pyx_vtabstruct_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile *)__pyx_v_self->__pyx_vtab)->_dequeue_as_sysex_event(__pyx_v_self, __pyx_t_4, __pyx_v_offset); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 185, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyInt_As_int(__pyx_v_event_type); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 176, __pyx_L1_error)
+    __pyx_t_2 = ((struct __pyx_vtabstruct_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile *)__pyx_v_self->__pyx_vtab)->_dequeue_as_sysex_event(__pyx_v_self, __pyx_t_4, __pyx_v_offset); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 176, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_r = ((PyObject*)__pyx_t_2);
     __pyx_t_2 = 0;
     goto __pyx_L0;
 
-    /* "audioworkstation/libs/sublibs/standardmidifile.py":184
+    /* "audioworkstation/libs/sublibs/standardmidifile.py":175
  *         if event_type == 0xFF:
  *             return self._dequeue_as_meta_event(event_type, offset)
  *         elif event_type in [0xF0, 0xF7]:             # <<<<<<<<<<<<<<
@@ -4600,7 +4600,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
  */
   }
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":187
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":178
  *             return self._dequeue_as_sysex_event(event_type, offset)
  *         else:
  *             return self._dequeue_as_midi_event(event_type, offset)             # <<<<<<<<<<<<<<
@@ -4609,15 +4609,15 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
  */
   /*else*/ {
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_4 = __Pyx_PyInt_As_int(__pyx_v_event_type); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 187, __pyx_L1_error)
-    __pyx_t_2 = ((struct __pyx_vtabstruct_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile *)__pyx_v_self->__pyx_vtab)->_dequeue_as_midi_event(__pyx_v_self, __pyx_t_4, __pyx_v_offset); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 187, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyInt_As_int(__pyx_v_event_type); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 178, __pyx_L1_error)
+    __pyx_t_2 = ((struct __pyx_vtabstruct_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile *)__pyx_v_self->__pyx_vtab)->_dequeue_as_midi_event(__pyx_v_self, __pyx_t_4, __pyx_v_offset); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 178, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_r = ((PyObject*)__pyx_t_2);
     __pyx_t_2 = 0;
     goto __pyx_L0;
   }
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":167
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":158
  *         return ([event_type, self._smf[offset : offset + length]], offset + length)
  * 
  *     def _dequeue_event(self, offset: int) -> tuple:             # <<<<<<<<<<<<<<
@@ -4639,7 +4639,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
   return __pyx_r;
 }
 
-/* "audioworkstation/libs/sublibs/standardmidifile.py":189
+/* "audioworkstation/libs/sublibs/standardmidifile.py":180
  *             return self._dequeue_as_midi_event(event_type, offset)
  * 
  *     def _header_chunk(self) -> tuple:             # <<<<<<<<<<<<<<
@@ -4668,17 +4668,17 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_header_chunk", 0);
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":194
- *         :return tuple: chunk type, length, format, ntrks, division
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":185
+ *         :return: chunk type, length, format, ntrks, division
  *         """
  *         ckID, ckSize, format, ntrks, division, offset = self._unpack(0, HEADER_CHUNK)             # <<<<<<<<<<<<<<
  *         return ([ckID.decode(), ckSize, format, ntrks, division], offset)
  * 
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_HEADER_CHUNK); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 194, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_HEADER_CHUNK); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 185, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (!(likely(PyUnicode_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None)||((void)PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "unicode", Py_TYPE(__pyx_t_1)->tp_name), 0))) __PYX_ERR(0, 194, __pyx_L1_error)
-  __pyx_t_2 = ((struct __pyx_vtabstruct_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile *)__pyx_v_self->__pyx_vtab)->_unpack(__pyx_v_self, 0, ((PyObject*)__pyx_t_1)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 194, __pyx_L1_error)
+  if (!(likely(PyUnicode_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None)||((void)PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "unicode", Py_TYPE(__pyx_t_1)->tp_name), 0))) __PYX_ERR(0, 185, __pyx_L1_error)
+  __pyx_t_2 = ((struct __pyx_vtabstruct_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile *)__pyx_v_self->__pyx_vtab)->_unpack(__pyx_v_self, 0, ((PyObject*)__pyx_t_1)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 185, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (likely(__pyx_t_2 != Py_None)) {
@@ -4687,7 +4687,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
     if (unlikely(size != 6)) {
       if (size > 6) __Pyx_RaiseTooManyValuesError(6);
       else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-      __PYX_ERR(0, 194, __pyx_L1_error)
+      __PYX_ERR(0, 185, __pyx_L1_error)
     }
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
     __pyx_t_1 = PyTuple_GET_ITEM(sequence, 0); 
@@ -4707,7 +4707,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
       Py_ssize_t i;
       PyObject** temps[6] = {&__pyx_t_1,&__pyx_t_3,&__pyx_t_4,&__pyx_t_5,&__pyx_t_6,&__pyx_t_7};
       for (i=0; i < 6; i++) {
-        PyObject* item = PySequence_ITEM(sequence, i); if (unlikely(!item)) __PYX_ERR(0, 194, __pyx_L1_error)
+        PyObject* item = PySequence_ITEM(sequence, i); if (unlikely(!item)) __PYX_ERR(0, 185, __pyx_L1_error)
         __Pyx_GOTREF(item);
         *(temps[i]) = item;
       }
@@ -4715,7 +4715,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
     #endif
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   } else {
-    __Pyx_RaiseNoneNotIterableError(); __PYX_ERR(0, 194, __pyx_L1_error)
+    __Pyx_RaiseNoneNotIterableError(); __PYX_ERR(0, 185, __pyx_L1_error)
   }
   __pyx_v_ckID = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -4730,7 +4730,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
   __pyx_v_offset = __pyx_t_7;
   __pyx_t_7 = 0;
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":195
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":186
  *         """
  *         ckID, ckSize, format, ntrks, division, offset = self._unpack(0, HEADER_CHUNK)
  *         return ([ckID.decode(), ckSize, format, ntrks, division], offset)             # <<<<<<<<<<<<<<
@@ -4738,7 +4738,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
  *     def _is_status_byte(self, value: int) -> bool:
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_ckID, __pyx_n_s_decode); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 195, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_v_ckID, __pyx_n_s_decode); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 186, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __pyx_t_6 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_7))) {
@@ -4752,10 +4752,10 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
   }
   __pyx_t_2 = (__pyx_t_6) ? __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_t_6) : __Pyx_PyObject_CallNoArg(__pyx_t_7);
   __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
-  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 195, __pyx_L1_error)
+  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 186, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  __pyx_t_7 = PyList_New(5); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 195, __pyx_L1_error)
+  __pyx_t_7 = PyList_New(5); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 186, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_GIVEREF(__pyx_t_2);
   PyList_SET_ITEM(__pyx_t_7, 0, __pyx_t_2);
@@ -4772,7 +4772,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
   __Pyx_GIVEREF(__pyx_v_division);
   PyList_SET_ITEM(__pyx_t_7, 4, __pyx_v_division);
   __pyx_t_2 = 0;
-  __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 195, __pyx_L1_error)
+  __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 186, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_7);
   PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_7);
@@ -4784,7 +4784,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":189
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":180
  *             return self._dequeue_as_midi_event(event_type, offset)
  * 
  *     def _header_chunk(self) -> tuple:             # <<<<<<<<<<<<<<
@@ -4815,7 +4815,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
   return __pyx_r;
 }
 
-/* "audioworkstation/libs/sublibs/standardmidifile.py":197
+/* "audioworkstation/libs/sublibs/standardmidifile.py":188
  *         return ([ckID.decode(), ckSize, format, ntrks, division], offset)
  * 
  *     def _is_status_byte(self, value: int) -> bool:             # <<<<<<<<<<<<<<
@@ -4829,8 +4829,8 @@ static int __pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16Standa
   int __pyx_t_1;
   __Pyx_RefNannySetupContext("_is_status_byte", 0);
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":203
- *         :return bool: True is status byte, False is data byte.
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":194
+ *         :return: True is status byte, False is data byte.
  *         """
  *         return True if value & 0x80 else False             # <<<<<<<<<<<<<<
  * 
@@ -4844,7 +4844,7 @@ static int __pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16Standa
   __pyx_r = __pyx_t_1;
   goto __pyx_L0;
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":197
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":188
  *         return ([ckID.decode(), ckSize, format, ntrks, division], offset)
  * 
  *     def _is_status_byte(self, value: int) -> bool:             # <<<<<<<<<<<<<<
@@ -4858,7 +4858,7 @@ static int __pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16Standa
   return __pyx_r;
 }
 
-/* "audioworkstation/libs/sublibs/standardmidifile.py":205
+/* "audioworkstation/libs/sublibs/standardmidifile.py":196
  *         return True if value & 0x80 else False
  * 
  *     def _delta_time(self, offset: int) -> tuple:             # <<<<<<<<<<<<<<
@@ -4881,8 +4881,8 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_delta_time", 0);
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":211
- *         :return tuple[int, int]: delta-time and new unpack start position
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":202
+ *         :return: delta-time and new unpack start position
  *         """
  *         delta_time: int = 0             # <<<<<<<<<<<<<<
  *         temp: int
@@ -4891,7 +4891,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
   __Pyx_INCREF(__pyx_int_0);
   __pyx_v_delta_time = __pyx_int_0;
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":213
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":204
  *         delta_time: int = 0
  *         temp: int
  *         while True:             # <<<<<<<<<<<<<<
@@ -4900,17 +4900,17 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
  */
   while (1) {
 
-    /* "audioworkstation/libs/sublibs/standardmidifile.py":214
+    /* "audioworkstation/libs/sublibs/standardmidifile.py":205
  *         temp: int
  *         while True:
  *             temp, offset = self._unpack(offset, BYTE)             # <<<<<<<<<<<<<<
  *             delta_time = temp & 0x7F
  *             while self._is_status_byte(temp):
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_BYTE); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 214, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_BYTE); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 205, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    if (!(likely(PyUnicode_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None)||((void)PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "unicode", Py_TYPE(__pyx_t_1)->tp_name), 0))) __PYX_ERR(0, 214, __pyx_L1_error)
-    __pyx_t_2 = ((struct __pyx_vtabstruct_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile *)__pyx_v_self->__pyx_vtab)->_unpack(__pyx_v_self, __pyx_v_offset, ((PyObject*)__pyx_t_1)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 214, __pyx_L1_error)
+    if (!(likely(PyUnicode_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None)||((void)PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "unicode", Py_TYPE(__pyx_t_1)->tp_name), 0))) __PYX_ERR(0, 205, __pyx_L1_error)
+    __pyx_t_2 = ((struct __pyx_vtabstruct_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile *)__pyx_v_self->__pyx_vtab)->_unpack(__pyx_v_self, __pyx_v_offset, ((PyObject*)__pyx_t_1)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 205, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     if (likely(__pyx_t_2 != Py_None)) {
@@ -4919,7 +4919,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
       if (unlikely(size != 2)) {
         if (size > 2) __Pyx_RaiseTooManyValuesError(2);
         else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-        __PYX_ERR(0, 214, __pyx_L1_error)
+        __PYX_ERR(0, 205, __pyx_L1_error)
       }
       #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
       __pyx_t_1 = PyTuple_GET_ITEM(sequence, 0); 
@@ -4927,34 +4927,34 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
       __Pyx_INCREF(__pyx_t_1);
       __Pyx_INCREF(__pyx_t_3);
       #else
-      __pyx_t_1 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 214, __pyx_L1_error)
+      __pyx_t_1 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 205, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_3 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 214, __pyx_L1_error)
+      __pyx_t_3 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 205, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       #endif
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     } else {
-      __Pyx_RaiseNoneNotIterableError(); __PYX_ERR(0, 214, __pyx_L1_error)
+      __Pyx_RaiseNoneNotIterableError(); __PYX_ERR(0, 205, __pyx_L1_error)
     }
-    __pyx_t_4 = __Pyx_PyInt_As_int(__pyx_t_3); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 214, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyInt_As_int(__pyx_t_3); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 205, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __pyx_v_temp = __pyx_t_1;
     __pyx_t_1 = 0;
     __pyx_v_offset = __pyx_t_4;
 
-    /* "audioworkstation/libs/sublibs/standardmidifile.py":215
+    /* "audioworkstation/libs/sublibs/standardmidifile.py":206
  *         while True:
  *             temp, offset = self._unpack(offset, BYTE)
  *             delta_time = temp & 0x7F             # <<<<<<<<<<<<<<
  *             while self._is_status_byte(temp):
  *                 temp, offset = self._unpack(offset, BYTE)
  */
-    __pyx_t_2 = __Pyx_PyInt_AndObjC(__pyx_v_temp, __pyx_int_127, 0x7F, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 215, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyInt_AndObjC(__pyx_v_temp, __pyx_int_127, 0x7F, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 206, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF_SET(__pyx_v_delta_time, __pyx_t_2);
     __pyx_t_2 = 0;
 
-    /* "audioworkstation/libs/sublibs/standardmidifile.py":216
+    /* "audioworkstation/libs/sublibs/standardmidifile.py":207
  *             temp, offset = self._unpack(offset, BYTE)
  *             delta_time = temp & 0x7F
  *             while self._is_status_byte(temp):             # <<<<<<<<<<<<<<
@@ -4962,21 +4962,21 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
  *                 delta_time = (temp & 0x7F) + (delta_time << 7)
  */
     while (1) {
-      __pyx_t_4 = __Pyx_PyInt_As_int(__pyx_v_temp); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 216, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyInt_As_int(__pyx_v_temp); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 207, __pyx_L1_error)
       __pyx_t_5 = (((struct __pyx_vtabstruct_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile *)__pyx_v_self->__pyx_vtab)->_is_status_byte(__pyx_v_self, __pyx_t_4) != 0);
       if (!__pyx_t_5) break;
 
-      /* "audioworkstation/libs/sublibs/standardmidifile.py":217
+      /* "audioworkstation/libs/sublibs/standardmidifile.py":208
  *             delta_time = temp & 0x7F
  *             while self._is_status_byte(temp):
  *                 temp, offset = self._unpack(offset, BYTE)             # <<<<<<<<<<<<<<
  *                 delta_time = (temp & 0x7F) + (delta_time << 7)
  *             return (delta_time, offset)
  */
-      __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_BYTE); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 217, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_BYTE); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 208, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
-      if (!(likely(PyUnicode_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None)||((void)PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "unicode", Py_TYPE(__pyx_t_2)->tp_name), 0))) __PYX_ERR(0, 217, __pyx_L1_error)
-      __pyx_t_3 = ((struct __pyx_vtabstruct_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile *)__pyx_v_self->__pyx_vtab)->_unpack(__pyx_v_self, __pyx_v_offset, ((PyObject*)__pyx_t_2)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 217, __pyx_L1_error)
+      if (!(likely(PyUnicode_CheckExact(__pyx_t_2))||((__pyx_t_2) == Py_None)||((void)PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "unicode", Py_TYPE(__pyx_t_2)->tp_name), 0))) __PYX_ERR(0, 208, __pyx_L1_error)
+      __pyx_t_3 = ((struct __pyx_vtabstruct_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile *)__pyx_v_self->__pyx_vtab)->_unpack(__pyx_v_self, __pyx_v_offset, ((PyObject*)__pyx_t_2)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 208, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       if (likely(__pyx_t_3 != Py_None)) {
@@ -4985,7 +4985,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
         if (unlikely(size != 2)) {
           if (size > 2) __Pyx_RaiseTooManyValuesError(2);
           else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-          __PYX_ERR(0, 217, __pyx_L1_error)
+          __PYX_ERR(0, 208, __pyx_L1_error)
         }
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
         __pyx_t_2 = PyTuple_GET_ITEM(sequence, 0); 
@@ -4993,33 +4993,33 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
         __Pyx_INCREF(__pyx_t_2);
         __Pyx_INCREF(__pyx_t_1);
         #else
-        __pyx_t_2 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 217, __pyx_L1_error)
+        __pyx_t_2 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 208, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
-        __pyx_t_1 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 217, __pyx_L1_error)
+        __pyx_t_1 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 208, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         #endif
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       } else {
-        __Pyx_RaiseNoneNotIterableError(); __PYX_ERR(0, 217, __pyx_L1_error)
+        __Pyx_RaiseNoneNotIterableError(); __PYX_ERR(0, 208, __pyx_L1_error)
       }
-      __pyx_t_4 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 217, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_4 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 208, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __Pyx_DECREF_SET(__pyx_v_temp, __pyx_t_2);
       __pyx_t_2 = 0;
       __pyx_v_offset = __pyx_t_4;
 
-      /* "audioworkstation/libs/sublibs/standardmidifile.py":218
+      /* "audioworkstation/libs/sublibs/standardmidifile.py":209
  *             while self._is_status_byte(temp):
  *                 temp, offset = self._unpack(offset, BYTE)
  *                 delta_time = (temp & 0x7F) + (delta_time << 7)             # <<<<<<<<<<<<<<
  *             return (delta_time, offset)
  * 
  */
-      __pyx_t_3 = __Pyx_PyInt_AndObjC(__pyx_v_temp, __pyx_int_127, 0x7F, 0, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 218, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyInt_AndObjC(__pyx_v_temp, __pyx_int_127, 0x7F, 0, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 209, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_1 = __Pyx_PyInt_LshiftObjC(__pyx_v_delta_time, __pyx_int_7, 7, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 218, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyInt_LshiftObjC(__pyx_v_delta_time, __pyx_int_7, 7, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 209, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_2 = PyNumber_Add(__pyx_t_3, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 218, __pyx_L1_error)
+      __pyx_t_2 = PyNumber_Add(__pyx_t_3, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 209, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -5027,7 +5027,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
       __pyx_t_2 = 0;
     }
 
-    /* "audioworkstation/libs/sublibs/standardmidifile.py":219
+    /* "audioworkstation/libs/sublibs/standardmidifile.py":210
  *                 temp, offset = self._unpack(offset, BYTE)
  *                 delta_time = (temp & 0x7F) + (delta_time << 7)
  *             return (delta_time, offset)             # <<<<<<<<<<<<<<
@@ -5035,9 +5035,9 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
  *     def _unpack(self, offset: int, format: Union[str, bytes]) -> tuple:
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_offset); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 219, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_offset); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 210, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 219, __pyx_L1_error)
+    __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 210, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_INCREF(__pyx_v_delta_time);
     __Pyx_GIVEREF(__pyx_v_delta_time);
@@ -5050,7 +5050,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
     goto __pyx_L0;
   }
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":205
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":196
  *         return True if value & 0x80 else False
  * 
  *     def _delta_time(self, offset: int) -> tuple:             # <<<<<<<<<<<<<<
@@ -5075,7 +5075,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
   return __pyx_r;
 }
 
-/* "audioworkstation/libs/sublibs/standardmidifile.py":221
+/* "audioworkstation/libs/sublibs/standardmidifile.py":212
  *             return (delta_time, offset)
  * 
  *     def _unpack(self, offset: int, format: Union[str, bytes]) -> tuple:             # <<<<<<<<<<<<<<
@@ -5098,8 +5098,8 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_unpack", 0);
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":228
- *         :return tuple: unpack data and new unpack start position
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":219
+ *         :return: unpack data and new unpack start position
  *         """
  *         return (             # <<<<<<<<<<<<<<
  *             *struct.unpack_from(format, self._smf, offset),
@@ -5107,19 +5107,19 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
  */
   __Pyx_XDECREF(__pyx_r);
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":229
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":220
  *         """
  *         return (
  *             *struct.unpack_from(format, self._smf, offset),             # <<<<<<<<<<<<<<
  *             offset + struct.calcsize(format),
  *         )
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_struct); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 229, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_struct); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 220, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_unpack_from); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 229, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_unpack_from); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 220, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_offset); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 229, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_offset); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 220, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_5 = NULL;
   __pyx_t_6 = 0;
@@ -5136,7 +5136,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_4)) {
     PyObject *__pyx_temp[4] = {__pyx_t_5, __pyx_v_format, __pyx_v_self->_smf, __pyx_t_3};
-    __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_6, 3+__pyx_t_6); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 229, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_6, 3+__pyx_t_6); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 220, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -5145,14 +5145,14 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_4)) {
     PyObject *__pyx_temp[4] = {__pyx_t_5, __pyx_v_format, __pyx_v_self->_smf, __pyx_t_3};
-    __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_6, 3+__pyx_t_6); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 229, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_6, 3+__pyx_t_6); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 220, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   } else
   #endif
   {
-    __pyx_t_7 = PyTuple_New(3+__pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 229, __pyx_L1_error)
+    __pyx_t_7 = PyTuple_New(3+__pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 220, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     if (__pyx_t_5) {
       __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_5); __pyx_t_5 = NULL;
@@ -5166,27 +5166,27 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
     __Pyx_GIVEREF(__pyx_t_3);
     PyTuple_SET_ITEM(__pyx_t_7, 2+__pyx_t_6, __pyx_t_3);
     __pyx_t_3 = 0;
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_7, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 229, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_7, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 220, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   }
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_1 = PySequence_List(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 229, __pyx_L1_error)
+  __pyx_t_1 = PySequence_List(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 220, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":230
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":221
  *         return (
  *             *struct.unpack_from(format, self._smf, offset),
  *             offset + struct.calcsize(format),             # <<<<<<<<<<<<<<
  *         )
  * 
  */
-  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_offset); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 230, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_offset); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 221, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_GetModuleGlobalName(__pyx_t_7, __pyx_n_s_struct); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 230, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_7, __pyx_n_s_struct); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 221, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_calcsize); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 230, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_calcsize); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 221, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   __pyx_t_7 = NULL;
@@ -5201,26 +5201,26 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
   }
   __pyx_t_4 = (__pyx_t_7) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_7, __pyx_v_format) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_format);
   __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
-  if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 230, __pyx_L1_error)
+  if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 221, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = PyNumber_Add(__pyx_t_2, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 230, __pyx_L1_error)
+  __pyx_t_3 = PyNumber_Add(__pyx_t_2, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 221, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (__Pyx_ListComp_Append(__pyx_t_1, __pyx_t_3) < 0) __PYX_ERR(0, 230, __pyx_L1_error)
+  if (__Pyx_ListComp_Append(__pyx_t_1, __pyx_t_3) < 0) __PYX_ERR(0, 221, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   {
     PyObject *__pyx_temp = PyList_AsTuple(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_1);
-    __pyx_t_1 = __pyx_temp; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 229, __pyx_L1_error)
+    __pyx_t_1 = __pyx_temp; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 220, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
   }
   __pyx_r = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":221
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":212
  *             return (delta_time, offset)
  * 
  *     def _unpack(self, offset: int, format: Union[str, bytes]) -> tuple:             # <<<<<<<<<<<<<<
@@ -6257,9 +6257,9 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_print = __Pyx_GetBuiltinName(__pyx_n_s_print); if (!__pyx_builtin_print) __PYX_ERR(0, 235, __pyx_L1_error)
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 53, __pyx_L1_error)
-  __pyx_builtin_all = __Pyx_GetBuiltinName(__pyx_n_s_all); if (!__pyx_builtin_all) __PYX_ERR(0, 87, __pyx_L1_error)
+  __pyx_builtin_print = __Pyx_GetBuiltinName(__pyx_n_s_print); if (!__pyx_builtin_print) __PYX_ERR(0, 226, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 44, __pyx_L1_error)
+  __pyx_builtin_all = __Pyx_GetBuiltinName(__pyx_n_s_all); if (!__pyx_builtin_all) __PYX_ERR(0, 78, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -6280,65 +6280,65 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__2);
   __Pyx_GIVEREF(__pyx_tuple__2);
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":69
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":60
  *             self._tracks += [list_event]
  * 
  *     def channels_preset(self) -> list:             # <<<<<<<<<<<<<<
  *         """Get a list of preset numbers for each of the 16 channels.
  * 
  */
-  __pyx_tuple__3 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(0, 69, __pyx_L1_error)
+  __pyx_tuple__3 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(0, 60, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__3);
   __Pyx_GIVEREF(__pyx_tuple__3);
-  __pyx_codeobj__4 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__3, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_libs_sublibs_standardmidifile_py, __pyx_n_s_channels_preset, 69, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__4)) __PYX_ERR(0, 69, __pyx_L1_error)
+  __pyx_codeobj__4 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__3, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_libs_sublibs_standardmidifile_py, __pyx_n_s_channels_preset, 60, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__4)) __PYX_ERR(0, 60, __pyx_L1_error)
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":81
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":72
  *         return channels
  * 
  *     def title(self) -> str:             # <<<<<<<<<<<<<<
  *         """Get Title.
  * 
  */
-  __pyx_tuple__5 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(0, 81, __pyx_L1_error)
+  __pyx_tuple__5 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(0, 72, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__5);
   __Pyx_GIVEREF(__pyx_tuple__5);
-  __pyx_codeobj__6 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__5, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_libs_sublibs_standardmidifile_py, __pyx_n_s_title, 81, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__6)) __PYX_ERR(0, 81, __pyx_L1_error)
+  __pyx_codeobj__6 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__5, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_libs_sublibs_standardmidifile_py, __pyx_n_s_title, 72, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__6)) __PYX_ERR(0, 72, __pyx_L1_error)
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":91
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":82
  *         return "-"
  * 
  *     def instruments(self) -> list:             # <<<<<<<<<<<<<<
  *         """Get a list of instrument names for each of the 16 channels.
  * 
  */
-  __pyx_tuple__7 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__7)) __PYX_ERR(0, 91, __pyx_L1_error)
+  __pyx_tuple__7 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__7)) __PYX_ERR(0, 82, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__7);
   __Pyx_GIVEREF(__pyx_tuple__7);
-  __pyx_codeobj__8 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__7, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_libs_sublibs_standardmidifile_py, __pyx_n_s_instruments, 91, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__8)) __PYX_ERR(0, 91, __pyx_L1_error)
+  __pyx_codeobj__8 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__7, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_libs_sublibs_standardmidifile_py, __pyx_n_s_instruments, 82, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__8)) __PYX_ERR(0, 82, __pyx_L1_error)
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":103
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":94
  *         return names
  * 
  *     def lyrics(self) -> list:             # <<<<<<<<<<<<<<
  *         """Get lyrics list.
  * 
  */
-  __pyx_tuple__9 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__9)) __PYX_ERR(0, 103, __pyx_L1_error)
+  __pyx_tuple__9 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__9)) __PYX_ERR(0, 94, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__9);
   __Pyx_GIVEREF(__pyx_tuple__9);
-  __pyx_codeobj__10 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__9, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_libs_sublibs_standardmidifile_py, __pyx_n_s_lyrics, 103, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__10)) __PYX_ERR(0, 103, __pyx_L1_error)
+  __pyx_codeobj__10 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__9, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_libs_sublibs_standardmidifile_py, __pyx_n_s_lyrics, 94, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__10)) __PYX_ERR(0, 94, __pyx_L1_error)
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":115
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":106
  *         return texts
  * 
  *     def total_tick(self) -> int:             # <<<<<<<<<<<<<<
  *         """Count ticks.
  * 
  */
-  __pyx_tuple__11 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__11)) __PYX_ERR(0, 115, __pyx_L1_error)
+  __pyx_tuple__11 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__11)) __PYX_ERR(0, 106, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__11);
   __Pyx_GIVEREF(__pyx_tuple__11);
-  __pyx_codeobj__12 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__11, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_libs_sublibs_standardmidifile_py, __pyx_n_s_total_tick, 115, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__12)) __PYX_ERR(0, 115, __pyx_L1_error)
+  __pyx_codeobj__12 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__11, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_libs_sublibs_standardmidifile_py, __pyx_n_s_total_tick, 106, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__12)) __PYX_ERR(0, 106, __pyx_L1_error)
 
   /* "(tree fragment)":1
  * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
@@ -6450,16 +6450,16 @@ static int __Pyx_modinit_type_init_code(void) {
   __pyx_vtable_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile._is_status_byte = (int (*)(struct __pyx_obj_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile *, int))__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile__is_status_byte;
   __pyx_vtable_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile._delta_time = (PyObject *(*)(struct __pyx_obj_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile *, int))__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile__delta_time;
   __pyx_vtable_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile._unpack = (PyObject *(*)(struct __pyx_obj_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile *, int, PyObject *))__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile__unpack;
-  if (PyType_Ready(&__pyx_type_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile) < 0) __PYX_ERR(0, 31, __pyx_L1_error)
+  if (PyType_Ready(&__pyx_type_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile) < 0) __PYX_ERR(0, 22, __pyx_L1_error)
   #if PY_VERSION_HEX < 0x030800B1
   __pyx_type_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile.tp_print = 0;
   #endif
   if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile.tp_dictoffset && __pyx_type_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile.tp_getattro == PyObject_GenericGetAttr)) {
     __pyx_type_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile.tp_getattro = __Pyx_PyObject_GenericGetAttr;
   }
-  if (__Pyx_SetVtable(__pyx_type_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile.tp_dict, __pyx_vtabptr_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile) < 0) __PYX_ERR(0, 31, __pyx_L1_error)
-  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_StandardMidiFile, (PyObject *)&__pyx_type_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile) < 0) __PYX_ERR(0, 31, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile) < 0) __PYX_ERR(0, 31, __pyx_L1_error)
+  if (__Pyx_SetVtable(__pyx_type_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile.tp_dict, __pyx_vtabptr_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile) < 0) __PYX_ERR(0, 22, __pyx_L1_error)
+  if (PyObject_SetAttr(__pyx_m, __pyx_n_s_StandardMidiFile, (PyObject *)&__pyx_type_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile) < 0) __PYX_ERR(0, 22, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile) < 0) __PYX_ERR(0, 22, __pyx_L1_error)
   __pyx_ptype_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile = &__pyx_type_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile;
   __Pyx_RefNannyFinishContext();
   return 0;
@@ -6694,170 +6694,170 @@ if (!__Pyx_RefNanny) {
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":21
- *         4. MIDI1.0
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":12
+ *         4 MIDI1.0
  * """
  * import struct             # <<<<<<<<<<<<<<
  * from typing import Union
  * from pathlib import Path
  */
-  __pyx_t_1 = __Pyx_Import(__pyx_n_s_struct, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 21, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_Import(__pyx_n_s_struct, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 12, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_struct, __pyx_t_1) < 0) __PYX_ERR(0, 21, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_struct, __pyx_t_1) < 0) __PYX_ERR(0, 12, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":22
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":13
  * """
  * import struct
  * from typing import Union             # <<<<<<<<<<<<<<
  * from pathlib import Path
  * 
  */
-  __pyx_t_1 = PyList_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 22, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 13, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_n_s_Union);
   __Pyx_GIVEREF(__pyx_n_s_Union);
   PyList_SET_ITEM(__pyx_t_1, 0, __pyx_n_s_Union);
-  __pyx_t_2 = __Pyx_Import(__pyx_n_s_typing, __pyx_t_1, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 22, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_Import(__pyx_n_s_typing, __pyx_t_1, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 13, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_Union); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 22, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_Union); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 13, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_Union, __pyx_t_1) < 0) __PYX_ERR(0, 22, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_Union, __pyx_t_1) < 0) __PYX_ERR(0, 13, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":23
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":14
  * import struct
  * from typing import Union
  * from pathlib import Path             # <<<<<<<<<<<<<<
  * 
  * FOURCC = ">" "4s"
  */
-  __pyx_t_2 = PyList_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 23, __pyx_L1_error)
+  __pyx_t_2 = PyList_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 14, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_INCREF(__pyx_n_s_Path);
   __Pyx_GIVEREF(__pyx_n_s_Path);
   PyList_SET_ITEM(__pyx_t_2, 0, __pyx_n_s_Path);
-  __pyx_t_1 = __Pyx_Import(__pyx_n_s_pathlib, __pyx_t_2, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 23, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_Import(__pyx_n_s_pathlib, __pyx_t_2, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 14, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_ImportFrom(__pyx_t_1, __pyx_n_s_Path); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 23, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_ImportFrom(__pyx_t_1, __pyx_n_s_Path); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 14, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_Path, __pyx_t_2) < 0) __PYX_ERR(0, 23, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_Path, __pyx_t_2) < 0) __PYX_ERR(0, 14, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":25
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":16
  * from pathlib import Path
  * 
  * FOURCC = ">" "4s"             # <<<<<<<<<<<<<<
  * CKDR = FOURCC + "L"
  * HEADER_CHUNK = CKDR + "HHH"
  */
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_FOURCC, __pyx_kp_u_4s) < 0) __PYX_ERR(0, 25, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_FOURCC, __pyx_kp_u_4s) < 0) __PYX_ERR(0, 16, __pyx_L1_error)
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":26
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":17
  * 
  * FOURCC = ">" "4s"
  * CKDR = FOURCC + "L"             # <<<<<<<<<<<<<<
  * HEADER_CHUNK = CKDR + "HHH"
  * BYTE = ">" "B"
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_FOURCC); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 26, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_FOURCC); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 17, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyNumber_Add(__pyx_t_1, __pyx_n_u_L); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 26, __pyx_L1_error)
+  __pyx_t_2 = PyNumber_Add(__pyx_t_1, __pyx_n_u_L); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 17, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_CKDR, __pyx_t_2) < 0) __PYX_ERR(0, 26, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_CKDR, __pyx_t_2) < 0) __PYX_ERR(0, 17, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":27
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":18
  * FOURCC = ">" "4s"
  * CKDR = FOURCC + "L"
  * HEADER_CHUNK = CKDR + "HHH"             # <<<<<<<<<<<<<<
  * BYTE = ">" "B"
  * 
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_CKDR); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 27, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_CKDR); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 18, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = PyNumber_Add(__pyx_t_2, __pyx_n_u_HHH); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 27, __pyx_L1_error)
+  __pyx_t_1 = PyNumber_Add(__pyx_t_2, __pyx_n_u_HHH); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 18, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_HEADER_CHUNK, __pyx_t_1) < 0) __PYX_ERR(0, 27, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_HEADER_CHUNK, __pyx_t_1) < 0) __PYX_ERR(0, 18, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":28
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":19
  * CKDR = FOURCC + "L"
  * HEADER_CHUNK = CKDR + "HHH"
  * BYTE = ">" "B"             # <<<<<<<<<<<<<<
  * 
  * 
  */
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_BYTE, __pyx_kp_u_B) < 0) __PYX_ERR(0, 28, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_BYTE, __pyx_kp_u_B) < 0) __PYX_ERR(0, 19, __pyx_L1_error)
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":69
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":60
  *             self._tracks += [list_event]
  * 
  *     def channels_preset(self) -> list:             # <<<<<<<<<<<<<<
  *         """Get a list of preset numbers for each of the 16 channels.
  * 
  */
-  __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_3channels_preset, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_StandardMidiFile_channels_preset, NULL, __pyx_n_s_audioworkstation_libs_sublibs_st, __pyx_d, ((PyObject *)__pyx_codeobj__4)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 69, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_3channels_preset, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_StandardMidiFile_channels_preset, NULL, __pyx_n_s_audioworkstation_libs_sublibs_st, __pyx_d, ((PyObject *)__pyx_codeobj__4)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 60, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile->tp_dict, __pyx_n_s_channels_preset, __pyx_t_1) < 0) __PYX_ERR(0, 69, __pyx_L1_error)
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile->tp_dict, __pyx_n_s_channels_preset, __pyx_t_1) < 0) __PYX_ERR(0, 60, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   PyType_Modified(__pyx_ptype_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile);
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":81
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":72
  *         return channels
  * 
  *     def title(self) -> str:             # <<<<<<<<<<<<<<
  *         """Get Title.
  * 
  */
-  __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_5title, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_StandardMidiFile_title, NULL, __pyx_n_s_audioworkstation_libs_sublibs_st, __pyx_d, ((PyObject *)__pyx_codeobj__6)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 81, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_5title, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_StandardMidiFile_title, NULL, __pyx_n_s_audioworkstation_libs_sublibs_st, __pyx_d, ((PyObject *)__pyx_codeobj__6)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 72, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile->tp_dict, __pyx_n_s_title, __pyx_t_1) < 0) __PYX_ERR(0, 81, __pyx_L1_error)
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile->tp_dict, __pyx_n_s_title, __pyx_t_1) < 0) __PYX_ERR(0, 72, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   PyType_Modified(__pyx_ptype_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile);
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":91
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":82
  *         return "-"
  * 
  *     def instruments(self) -> list:             # <<<<<<<<<<<<<<
  *         """Get a list of instrument names for each of the 16 channels.
  * 
  */
-  __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_7instruments, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_StandardMidiFile_instruments, NULL, __pyx_n_s_audioworkstation_libs_sublibs_st, __pyx_d, ((PyObject *)__pyx_codeobj__8)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 91, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_7instruments, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_StandardMidiFile_instruments, NULL, __pyx_n_s_audioworkstation_libs_sublibs_st, __pyx_d, ((PyObject *)__pyx_codeobj__8)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 82, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile->tp_dict, __pyx_n_s_instruments, __pyx_t_1) < 0) __PYX_ERR(0, 91, __pyx_L1_error)
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile->tp_dict, __pyx_n_s_instruments, __pyx_t_1) < 0) __PYX_ERR(0, 82, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   PyType_Modified(__pyx_ptype_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile);
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":103
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":94
  *         return names
  * 
  *     def lyrics(self) -> list:             # <<<<<<<<<<<<<<
  *         """Get lyrics list.
  * 
  */
-  __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_9lyrics, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_StandardMidiFile_lyrics, NULL, __pyx_n_s_audioworkstation_libs_sublibs_st, __pyx_d, ((PyObject *)__pyx_codeobj__10)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 103, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_9lyrics, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_StandardMidiFile_lyrics, NULL, __pyx_n_s_audioworkstation_libs_sublibs_st, __pyx_d, ((PyObject *)__pyx_codeobj__10)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 94, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile->tp_dict, __pyx_n_s_lyrics, __pyx_t_1) < 0) __PYX_ERR(0, 103, __pyx_L1_error)
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile->tp_dict, __pyx_n_s_lyrics, __pyx_t_1) < 0) __PYX_ERR(0, 94, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   PyType_Modified(__pyx_ptype_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile);
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":115
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":106
  *         return texts
  * 
  *     def total_tick(self) -> int:             # <<<<<<<<<<<<<<
  *         """Count ticks.
  * 
  */
-  __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_11total_tick, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_StandardMidiFile_total_tick, NULL, __pyx_n_s_audioworkstation_libs_sublibs_st, __pyx_d, ((PyObject *)__pyx_codeobj__12)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 115, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_16audioworkstation_4libs_7sublibs_16standardmidifile_16StandardMidiFile_11total_tick, __Pyx_CYFUNCTION_CCLASS, __pyx_n_s_StandardMidiFile_total_tick, NULL, __pyx_n_s_audioworkstation_libs_sublibs_st, __pyx_d, ((PyObject *)__pyx_codeobj__12)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 106, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem((PyObject *)__pyx_ptype_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile->tp_dict, __pyx_n_s_total_tick, __pyx_t_1) < 0) __PYX_ERR(0, 115, __pyx_L1_error)
+  if (PyDict_SetItem((PyObject *)__pyx_ptype_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile->tp_dict, __pyx_n_s_total_tick, __pyx_t_1) < 0) __PYX_ERR(0, 106, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   PyType_Modified(__pyx_ptype_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile);
 
@@ -6884,31 +6884,31 @@ if (!__Pyx_RefNanny) {
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   PyType_Modified(__pyx_ptype_16audioworkstation_4libs_7sublibs_16standardmidifile_StandardMidiFile);
 
-  /* "audioworkstation/libs/sublibs/standardmidifile.py":234
+  /* "audioworkstation/libs/sublibs/standardmidifile.py":225
  * 
  * 
  * if __name__ == "__main__":             # <<<<<<<<<<<<<<
  *     print(__file__)
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_name); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 234, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_name); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 225, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = (__Pyx_PyUnicode_Equals(__pyx_t_1, __pyx_n_u_main, Py_EQ)); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 234, __pyx_L1_error)
+  __pyx_t_3 = (__Pyx_PyUnicode_Equals(__pyx_t_1, __pyx_n_u_main, Py_EQ)); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 225, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_3) {
 
-    /* "audioworkstation/libs/sublibs/standardmidifile.py":235
+    /* "audioworkstation/libs/sublibs/standardmidifile.py":226
  * 
  * if __name__ == "__main__":
  *     print(__file__)             # <<<<<<<<<<<<<<
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_file); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 235, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_file); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 226, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_print, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 235, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_print, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 226, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-    /* "audioworkstation/libs/sublibs/standardmidifile.py":234
+    /* "audioworkstation/libs/sublibs/standardmidifile.py":225
  * 
  * 
  * if __name__ == "__main__":             # <<<<<<<<<<<<<<

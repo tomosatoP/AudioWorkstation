@@ -201,7 +201,7 @@ HANDLE_MIDI_EVENT_FUNC_T = CFS.CFUNCTYPE(CFS.c_int, CFS.c_void_p, CFS.c_void_p)
 :param c_void_p data:
 :param c_void_p event:
 
-:return c_int:
+:return:
 """
 # [API prototype]
 fluid_synth_handle_midi_event = _prototype(
@@ -1204,7 +1204,7 @@ class Synthesizer:
 
         :param int sfont: _description_
         :param int bank: _description_
-        :return list[PRESET]: PRESET: dict[str, Union[str, int, None]]
+        :return: PRESET: dict[str, Union[str, int, None]]
            - ["name": str | None], ["num"     : int | None],
              ["bank": int | None], ["sfont_id": int | None]
         """
@@ -1219,7 +1219,7 @@ class Synthesizer:
     def channels_preset(self) -> list[PRESET]:
         """Get a list of presets per channel
 
-        :return list[PRESET]: PRESET: dict[str, Union[str, int, None]]
+        :return: PRESET: dict[str, Union[str, int, None]]
            - ["name": str | None], ["num"     : int | None],
              ["bank": int | None], ["sfont_id": int | None]
         """
@@ -1232,7 +1232,7 @@ class Synthesizer:
         """_channel_preset _summary_
 
         :param int chan: channel number
-        :return PRESET: dict[str, Union[str, int, None]]
+        :return: dict[str, Union[str, int, None]]
            - ["name": str | None], ["num"     : int | None],
              ["bank": int | None], ["sfont_id": int | None]
         """
@@ -1247,7 +1247,7 @@ class Synthesizer:
         """_preset _summary_
 
         :param int preset: _description_
-        :return PRESET: dict[str, Union[str, int, None]]
+        :return: dict[str, Union[str, int, None]]
            - ["name": str | None], ["num"     : int | None],
              ["bank": int | None], ["sfont_id": int | None]
         """
@@ -1424,7 +1424,7 @@ class Sequencer(Synthesizer):
         :param Callable callback: Sequencer client callback or NULL for a source client.
         :param EventUserData data: User data to pass to the callback
 
-        :return int: Unique sequencer ID or FLUID_FAILED on error
+        :return: Unique sequencer ID or FLUID_FAILED on error
         """
         if callback:
             callback = FLUID_EVENT_CALLBACK_T(callback)
@@ -1563,7 +1563,7 @@ class MidiRouter(Synthesizer):
         :param str rule_file: Rule file to be applied  in json file,
             or default rules if none
 
-        :return bool: True, or False
+        :return: True, or False
         """
         try:
             fluid_midi_router_clear_rules(router=CFS.c_void_p(self._midi_router))
@@ -1689,7 +1689,7 @@ class MidiPlayer(MidiRouter):
     def stop(self) -> int:
         """Stop or end playback.
 
-        :return int: ticks when stopped
+        :return: ticks when stopped
         """
         fluid_player_stop(player=CFS.c_void_p(self._player))
         fluid_player_join(player=CFS.c_void_p(self._player))

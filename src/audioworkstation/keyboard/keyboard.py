@@ -2,9 +2,14 @@
 # -*- coding: utf-8 -*-
 """MIDI sequencer function for USB MIDI Keyboard
 
-| class GMSoundSetButton(ToggleButton, EventDispatcher)
-| class GMSoundSetGroupButton(ToggleButton, EventDispatcher)
-| class KeyboardView(Screen)
+class GMSoundSetButton(ToggleButton, EventDispatcher)
+    Buttons to be placed on the GM Sound Set layout widget
+
+class GMSoundSetGroupButton(ToggleButton, EventDispatcher)
+    Buttons to be placed on the GM Sound Set Group layout widget
+
+class KeyboardView(Screen)
+    Screen Widget to place GM Sound Set and GM Sound Set Group layout widgets
 """
 
 from pathlib import Path
@@ -28,28 +33,29 @@ Builder.load_file(str(Path(__file__).with_name("keyboard.kv")))
 
 
 class GMSoundSetButton(ToggleButton, EventDispatcher):
-    """class GMSoundSetButton
+    """GMSoundSetButton is placed on GM Sound Set layout.
 
-    :var NumericProperty preset_num: ***
+    :var NumericProperty preset_num: GM Sound Set program(preset) number
     """
 
     preset_num = NumericProperty()
 
 
 class GMSoundSetGroupButton(ToggleButton, EventDispatcher):
-    """class GMSoundSetGroupButton
+    """GMSoundSetGroupButton is placed on the GM Sound Set Gourp layout widget.
 
-    :var DictProperty presets: ***
+    :var DictProperty presets: GM Sound Set Gourp program(preset) numbers
+        {"Start":int, "End":int}
     """
 
     presets = DictProperty()
 
 
 class KeyboardView(Screen):
-    """class KeyboardView
+    """KeyboardView places GM Sound Set and GM Sound Set Group layout widget.
 
-    :var ObjectProperty gmssg: ***
-    :var ObjectProperty gmss: ***
+    :var ObjectProperty gmssg: Layout for GM Sound Set Group
+    :var ObjectProperty gmss: Layout for GM Sound Set
     """
 
     gmssg = ObjectProperty()
@@ -72,12 +78,20 @@ class KeyboardView(Screen):
 
         self.add_gmss_buttons()
 
-    def select_gmss(self, gmss_button: GMSoundSetButton):
+    def select_gmss(self, gmss_button: GMSoundSetButton) -> None:
+        """Select program(preset) number assigned to the button.
+
+        :param GMSoundSetButton gmss_button: selected button
+        """
         Logger.debug(f"keyboard: program change {gmss_button.preset_num}")
         self.msm.programchange(gmss_button.preset_num)
         Clock.schedule_once(lambda dt: self.msm.sounding())
 
-    def select_gmssg(self, gmssg_button: GMSoundSetGroupButton):
+    def select_gmssg(self, gmssg_button: GMSoundSetGroupButton) -> None:
+        """Select GM Sound Set Group assigned to the button.
+
+        :param GMSoundSetGroupButton gmssg_button: selected button
+        """
         presets_num: list = list(
             reversed(
                 range(gmssg_button.presets["Start"], gmssg_button.presets["End"] + 1)
@@ -88,13 +102,19 @@ class KeyboardView(Screen):
             self.gmss.children[i].text = self.msm.preset_name(presets_num[i])
             self.gmss.children[i].preset_num = presets_num[i]
 
-    def add_gmss_buttons(self):
+    def add_gmss_buttons(self) -> None:
+        """Add GMSoundSetButtons that has not been assigned a program(preset) number."""
         for i in range(8):
             button = GMSoundSetButton(text=f"楽器 {i}", preset_num=0)
             button.bind(on_press=self.select_gmss)
             self.gmss.add_widget(button)
 
     def add_gmssg_button(self, name: str, presets: dict) -> None:
+        """Add GMSoundSetGroupButton
+
+        :param str name: button text
+        :param dict presets: GM Sound Set Group program(preset) numbers
+        """
         button = GMSoundSetGroupButton(text=name, presets=presets)
         button.bind(on_press=self.select_gmssg)
         self.gmssg.add_widget(button)

@@ -2,52 +2,117 @@
 # -*- coding: utf-8 -*-
 """Create a 'json file' of rule descriptions for class MidiRouter.
 
-This is an example of creating mute channel 0
---------------------
-[NOTE] -Note-
-chan: channel 0-15
-param1: key(note) 0-127
-param2: velocity 0-127
+The rules apply even when they are duplicated, and the results are terrible.
 
-[CC] -Control Change-
-chan: channel 0-15
-param1: controller number
-param2: value
- param1             - param2
-   1: modulation    - 0-127
-   7: volume        - 0-127
-  10: pan           - Right:0-Center:64-Left:127
-  11: expression    - 0-127
-  64: sustain       - on:32(0b*1*****), off:0(0b*0*****)
-(memo) Only compatible with the GM1 system.
+MIDI note rule.
+    type: FLUID_MIDI_ROUTER_RULE_TYPE.NOTE
+        +-------+---------+--------+
+        |chan   |param1   |param2  |
+        +=======+=========+========+
+        |channel|key(note)|velocity|
+        +-------+---------+--------+
+        |0..15  |0..127   |0..127  |
+        +-------+---------+--------+
 
-[PROG_CHANGER] -Program Change-
-chan: channel 0-15
-param1: program(preset) number 0-127
-param2: -
+MIDI controller rule.
+Only compatible with the GM1 system.
+    type: FLUID_MIDI_ROUTER_RULE_TYPE.CC
+        modulation
+            +-------+----------+------+
+            |chan   |param1    |param2|
+            +=======+==========+======+
+            |channel|modulation|value |
+            +-------+----------+------+
+            |0..15  |1         |0..127|
+            +-------+----------+------+
+        volume
+            +-------+------+------+
+            |chan   |param1|param2|
+            +=======+======+======+
+            |channel|volume|value |
+            +-------+------+------+
+            |0..15  |7     |0..127|
+            +-------+------+------+
+        pan
+            +-------+------+----------------------------+
+            |chan   |param1|param2                      |
+            +=======+======+============================+
+            |channel|pan   |value                       |
+            +-------+------+----------------------------+
+            |0..15  |10    |Right:0..Center:64..Left:127|
+            +-------+------+----------------------------+
+        expression
+            +-------+----------+------+
+            |chan   |param1    |param2|
+            +=======+==========+======+
+            |channel|expression|value |
+            +-------+----------+------+
+            |0..15  |11        |0..127|
+            +-------+----------+------+
+        sustaion
+            +-------+--------+----------------------------------+
+            |chan   |param1  |param2                            |
+            +=======+========+==================================+
+            |channel|sustaion|value                             |
+            +-------+--------+----------------------------------+
+            |0..15  |64      |on:32(0b*1*****), off:0(0b*0*****)|
+            +-------+--------+----------------------------------+
 
-[PITCH_BEND] -Pitch Bend Change-
-chan: channel 0-15
-param1: LSB 0-127
-param2: MSB 0-127
- min:       0 -> LSB=0b0000000(0), MSB=0b0000000(0)
- center: 8192 -> LSB=0b0000000(0), MSB=0b1000000(64)
- max:   16383 -> LSB=0b1111111(127), MSB=0b1111111(127)
+MIDI program change rule.
+    type: FLUID_MIDI_ROUTER_RULE_TYPE.PROG_CHANGER
+        +-------+----------------------+--------+
+        |chan   |param1                |param2  |
+        +=======+======================+========+
+        |channel|program(preset) number|not used|
+        +-------+----------------------+--------+
+        |0..15  |0..127                |not used|
+        +-------+----------------------+--------+
 
-[CHANNEL_PRESSURE] -Channel Pressure (Aftertouch)-
-chan: channel 0-15
-param1: pressure 0-127
-param2: -
+MIDI pitch bend rule.
+    type: FLUID_MIDI_ROUTER_RULE_TYPE.PITCH_BEND
+        +-------+------+------+
+        |chan   |param1|param2|
+        +=======+======+======+
+        |channel|LSB   |MSB   |
+        +-------+------+------+
+        |0..15  |0..127|0..127|
+        +-------+------+------+
 
-[KEY_PRESSURE] -Polyphonic Key Pressure (Aftertouch)-
-chan: channel 0-15
-param1: key(note) 0-127
-param2: pressure 0-127
-(memo) Not supported in GM1 system
+        +------+-----+--------------+--------------+
+        |      |     |LSB           |MSB           |
+        +======+=====+==============+==============+
+        |min   |    0|  0(0b0000000)|  0(0b0000000)|
+        +------+-----+--------------+--------------+
+        |center| 8192|  0(0b0000000)| 64(0b1000000)|
+        +------+-----+--------------+--------------+
+        |max   |16383|127(0b1111111)|127(0b1111111)|
+        +------+-----+--------------+--------------+
+
+MIDI channel pressure (Aftertouch) rule.
+    type: FLUID_MIDI_ROUTER_RULE_TYPE.CHANNEL_PRESSURE
+        +-------+--------+--------+
+        |chan   |param1  |param2  |
+        +=======+========+========+
+        |channel|pressure|not used|
+        +-------+--------+--------+
+        |0..15  |0..127  |not used|
+        +-------+--------+--------+
+
+MIDI key pressure (Aftertouch) rule.
+Not supported in GM1 system
+    type: FLUID_MIDI_ROUTER_RULE_TYPE.KEY_PRESSURE
+        +-------+---------+--------+
+        |chan   |param1   |param2  |
+        +=======+=========+========+
+        |channel|key(note)|pressure|
+        +-------+---------+--------+
+        |0..15  |0..127   |0..127  |
+        +-------+---------+--------+
 
 typedef struct _fluid_midi_router_rule_t => fluid_midi_router_rule_t
     default is [min=0, max=999999, mul=1.0, add=0]
-https://github.com/FluidSynth/fluidsynth/blob/master/src/midi/fluid_midi_router.c
+
+:reference: https://github.com/FluidSynth/fluidsynth/blob/master/src/midi/fluid_midi_router.c
 """
 
 from audioworkstation.libs.audio import fluidsynth as FS
@@ -55,8 +120,11 @@ from json import dump
 
 
 def case_study() -> bool:
-    """The rules apply even when they are duplicated,
-    and the results are terrible.
+    """This is an example of creating mute channel 0
+
+    Outputs a JSON format file "config/rule.mute_chan_0.json".
+    :var dict rules: {"name": {"type":"", "chan":"", "param1":"", "param2":""}}
+    :return: True on success, otherwise False.
     """
     rules: dict = dict()
 

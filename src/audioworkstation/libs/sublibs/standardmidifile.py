@@ -2,21 +2,12 @@
 # -*- coding: utf-8 -*-
 """Analyze MIDI files according to  SMF (Standard MIDI File) format.
 
-class StandardMidiFile
- - param
-   - pathlib.Path midifile: SMF
- - method
-   - str title(): title
-   - int total_tick(): total ticks
-   - list[str] instruments(): instruments
-   - list[str] lyrics(): lyrics
-   - list[int] channels_preset(): channels preset
-
 :reference:
-    MIDI1.0規格書(日本語版98.1) ISBN4-8456-0348-9 C3055  http://www.amei.or.jp/
+    MIDI1.0規格書(日本語版98.1) ISBN4-8456-0348-9 C3055
+    http://www.amei.or.jp/
 
-        2. MIDI 1.0
-        4. スタンダードMIDIファイル1.0
+        2 MIDI 1.0
+        4 スタンダードMIDIファイル1.0
 """
 import struct
 from typing import Union
@@ -69,7 +60,7 @@ class StandardMidiFile:
     def channels_preset(self) -> list:
         """Get a list of preset numbers for each of the 16 channels.
 
-        :return list[int]:
+        :return:
         """
         channels: list = [[]] * 16
         for track in self._tracks:
@@ -81,7 +72,7 @@ class StandardMidiFile:
     def title(self) -> str:
         """Get Title.
 
-        :return str:
+        :return:
         """
         for event in self._tracks[0]:
             if all([event[1] == 0xFF, event[2] == 0x03]):
@@ -91,7 +82,7 @@ class StandardMidiFile:
     def instruments(self) -> list:
         """Get a list of instrument names for each of the 16 channels.
 
-        :return list[str]:
+        :return:
         """
         names: list = list()
         for track in self._tracks:
@@ -103,7 +94,7 @@ class StandardMidiFile:
     def lyrics(self) -> list:
         """Get lyrics list.
 
-        :return list[str]:
+        :return:
         """
         texts: list = list()
         for track in self._tracks:
@@ -115,7 +106,7 @@ class StandardMidiFile:
     def total_tick(self) -> int:
         """Count ticks.
 
-        :return int:
+        :return:
         """
         result: int = 0
         for track in self._tracks:
@@ -128,7 +119,7 @@ class StandardMidiFile:
 
         :param int event_type:
         :param int offset:
-        :return tuple:
+        :return:
         """
         param = event_type >> 4
         channel = event_type & 0xF
@@ -146,7 +137,7 @@ class StandardMidiFile:
 
         :param int event_type:
         :param int offset:
-        :return tuple:
+        :return:
         """
         meta_type, length, offset = self._unpack(offset, ">" "BB")
         return (
@@ -159,7 +150,7 @@ class StandardMidiFile:
 
         :param int event_type:
         :param int offset:
-        :return tuple:
+        :return:
         """
         length, offset = self._unpack(offset, BYTE)
         return ([event_type, self._smf[offset : offset + length]], offset + length)
@@ -168,7 +159,7 @@ class StandardMidiFile:
         """
 
         :param int offset:
-        :return tuple:
+        :return:
         """
         event_type: int
         event_type, offset = self._unpack(offset, BYTE)
@@ -189,7 +180,7 @@ class StandardMidiFile:
     def _header_chunk(self) -> tuple:
         """<Header Chunk>, <Track Chunk>+ <- <Standard MIDI File>
 
-        :return tuple: chunk type, length, format, ntrks, division
+        :return: chunk type, length, format, ntrks, division
         """
         ckID, ckSize, format, ntrks, division, offset = self._unpack(0, HEADER_CHUNK)
         return ([ckID.decode(), ckSize, format, ntrks, division], offset)
@@ -198,7 +189,7 @@ class StandardMidiFile:
         """Find out if it's a status byte.
 
         :param int value:
-        :return bool: True is status byte, False is data byte.
+        :return: True is status byte, False is data byte.
         """
         return True if value & 0x80 else False
 
@@ -206,7 +197,7 @@ class StandardMidiFile:
         """<delta-time>, <event>+ <- <MTrk event>
 
         :param int offset: unpack start position
-        :return tuple[int, int]: delta-time and new unpack start position
+        :return: delta-time and new unpack start position
         """
         delta_time: int = 0
         temp: int
@@ -223,7 +214,7 @@ class StandardMidiFile:
 
         :param int offset: unpack start position
         :param str format: Format strings describe the unpack data layout
-        :return tuple: unpack data and new unpack start position
+        :return: unpack data and new unpack start position
         """
         return (
             *struct.unpack_from(format, self._smf, offset),
