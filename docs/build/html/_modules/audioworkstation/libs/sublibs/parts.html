@@ -38,6 +38,7 @@
   <h1>audioworkstation.libs.sublibs.parts のソースコード</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python3</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;Miscellaneous Functions.&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="nb">pow</span><span class="p">,</span> <span class="n">log10</span>
 
@@ -47,12 +48,22 @@
 
 
 <div class="viewcode-block" id="gain2dB"><a class="viewcode-back" href="../../../../audioworkstation.libs.sublibs.html#audioworkstation.libs.sublibs.parts.gain2dB">[ドキュメント]</a><span class="k">def</span> <span class="nf">gain2dB</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert gain to dB-like value.</span>
+
+<span class="sd">    :param float value: gain</span>
+<span class="sd">    :return: dB-like value</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="n">_min_gain</span><span class="p">:</span>
         <span class="n">value</span> <span class="o">=</span> <span class="n">_min_gain</span>
     <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">_ratio</span> <span class="o">*</span> <span class="n">log10</span><span class="p">(</span><span class="n">value</span> <span class="o">/</span> <span class="n">_min_gain</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="dB2gain"><a class="viewcode-back" href="../../../../audioworkstation.libs.sublibs.html#audioworkstation.libs.sublibs.parts.dB2gain">[ドキュメント]</a><span class="k">def</span> <span class="nf">dB2gain</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert dB-like value to gain.</span>
+
+<span class="sd">    :param int value: dB-like value</span>
+<span class="sd">    :return: gain</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">_min_gain</span> <span class="o">*</span> <span class="nb">pow</span><span class="p">(</span><span class="mf">10.0</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">/</span> <span class="n">_ratio</span><span class="p">)</span></div>
 
 

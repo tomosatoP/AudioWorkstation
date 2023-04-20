@@ -423,11 +423,8 @@ _snd_mixer_selem_has_playback_channel = _prototype(
 """
 
 
-def list_name_hint() -> list[str]:
+def list_name_hint() -> None:
     """Return name hints table.
-
-    :return: name hints table
-    <examples>
 
     +-----+-----+-----+-----+
     |iface|NAME |DECS |IOID |
@@ -449,7 +446,14 @@ def list_name_hint() -> list[str]:
                 ioid = _snd_device_name_get_hint(hint=hint, id=b"IOID")
                 ioid = ioid.decode() if ioid else ioid
                 result.append(f"|{iface}|{name}|{decs}|{ioid}|")
-    return result
+
+    with open("docs/alsa-namehint.md", "wt") as f:
+        print(
+            f"# ALSA sound library version: {bytes(_snd_asoundlib_version()).decode()}",
+            file=f,
+        )
+        for name_hint in result:
+            print(name_hint, file=f)
 
 
 def _physical_soundcard_indexs() -> list[int]:
@@ -612,11 +616,3 @@ def start_jackserver() -> tuple[str, str]:
 
 if __name__ == "__main__":
     print(__file__)
-
-    with open("docs/alsa-namehint.md", "wt") as f:
-        print(
-            f"# ALSA sound library version: {bytes(_snd_asoundlib_version()).decode()}",
-            file=f,
-        )
-        for name_hint in list_name_hint():
-            print(name_hint, file=f)

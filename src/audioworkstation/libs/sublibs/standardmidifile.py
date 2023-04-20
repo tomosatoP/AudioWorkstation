@@ -2,12 +2,11 @@
 # -*- coding: utf-8 -*-
 """Analyze MIDI files according to  SMF (Standard MIDI File) format.
 
-:reference:
+:reference: http://www.amei.or.jp/
     MIDI1.0規格書(日本語版98.1) ISBN4-8456-0348-9 C3055
-    http://www.amei.or.jp/
 
-        2 MIDI 1.0
-        4 スタンダードMIDIファイル1.0
+        2. MIDI 1.0
+        4. スタンダードMIDIファイル1.0
 """
 import struct
 from typing import Union
@@ -20,9 +19,9 @@ BYTE = ">" "B"
 
 
 class StandardMidiFile:
-    """StandardMidiFile.
+    """StandardMidiFile analyzes SMF(Standard MIDI File).
 
-    :param pathlib.Path midifile:
+    :param pathlib.Path midifile: target SMF(Standard MIDI File)
     """
 
     def __init__(self, midifile: Path) -> None:
@@ -60,7 +59,7 @@ class StandardMidiFile:
     def channels_preset(self) -> list:
         """Get a list of preset numbers for each of the 16 channels.
 
-        :return:
+        :return: list of prest numbers
         """
         channels: list = [[]] * 16
         for track in self._tracks:
@@ -72,7 +71,7 @@ class StandardMidiFile:
     def title(self) -> str:
         """Get Title.
 
-        :return:
+        :return: title
         """
         for event in self._tracks[0]:
             if all([event[1] == 0xFF, event[2] == 0x03]):
@@ -82,7 +81,7 @@ class StandardMidiFile:
     def instruments(self) -> list:
         """Get a list of instrument names for each of the 16 channels.
 
-        :return:
+        :return: instruments
         """
         names: list = list()
         for track in self._tracks:
@@ -94,7 +93,7 @@ class StandardMidiFile:
     def lyrics(self) -> list:
         """Get lyrics list.
 
-        :return:
+        :return: lyrics
         """
         texts: list = list()
         for track in self._tracks:
@@ -106,7 +105,7 @@ class StandardMidiFile:
     def total_tick(self) -> int:
         """Count ticks.
 
-        :return:
+        :return: total ticks
         """
         result: int = 0
         for track in self._tracks:

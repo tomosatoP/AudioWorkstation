@@ -2,10 +2,10 @@
 # -*- coding: utf-8 -*-
 """Application Entry
 
-| 1. Kivy logging starts.
-| 2. Configure hardware settings for Kivy.
-| 3. Start JACK server.
-| 4. Start Application.
+#. Kivy logging starts.
+#. Configure hardware settings for Kivy.
+#. Start JACK server.
+#. Start Application.
 """
 
 from pathlib import Path

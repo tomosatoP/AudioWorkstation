@@ -5,6 +5,17 @@ import bluetooth as BT
 from subprocess import Popen, run, PIPE
 
 
+def _audiosink(address: str) -> tuple:
+    """Get information on "audio sink" service.
+    :param str address: device address
+    :return: (address, port)
+    """
+    ass = BT.find_service(uuid=BT.AUDIO_SINK_CLASS, address=address)
+    if not ass:
+        return ("", 0)
+    return (ass[0]["host"], ass[0]["port"])
+
+
 def _paired_devices() -> dict[str, str]:
     """Returns a list of paired devices.
 

@@ -1,5 +1,7 @@
 # Sphinx を使った API 仕様書の作成
 https://www.sphinx-doc.org/ja/master/index.html
+
+なぜか css ファイルをコミットできないので、github pages でスタイルを反映できない。
 ## Sphinx のインストールと、プロジェクトの基本設定
 ~~~sh
 (venv) ~/AudioWorkstation $ pip install Sphinx
@@ -43,6 +45,7 @@ https://www.sphinx-doc.org/ja/master/index.html
 ~~~
 ## API 仕様書(html)の作成
 ~~~sh
+(venv) ~/AudioWorkstation $ make -C docs clean
 (venv) ~/AudioWorkstation $ sphinx-build -M html docs/source docs/build
 (venv) ~/AudioWorkstation $ chrome docs/build/html/index.html
 ~~~

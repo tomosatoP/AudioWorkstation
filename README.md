@@ -12,9 +12,14 @@ USB MIDI 鍵盤を繋げて、ピアノ風の演奏を楽しむために。
 - ハードウェア
     - Raspberry Pi 4 Model B/4GB (Raspberry Pi OS with desktop 64bit)
     - microSD card 32GB 
-    - **DISPLAY:** 4.3inch DSI LCD with case ([Waveshare 18645][1] )
-    - **AUDIO OUTPUT:** Headphones Jack/ USB-DAC ([Sharkoon GAMING DAC PRO S][2] )/ Bluetooth Headphones([SONY LinkBuds][4])
-    - **INPUT:** USB-MIDI Keyborad ([M-AUDIO KEYSTATION49 MK3][3] )
+    - DISPLAY
+        - 4.3inch DSI LCD with case ([Waveshare 18645][1] )
+    - AUDIO OUTPUT 
+        - Headphones Jack
+        - USB-DAC ([Sharkoon GAMING DAC PRO S][2] )
+        - Bluetooth Headphones([SONY LinkBuds][4])
+    - INPUT
+        - USB-MIDI Keyborad ([M-AUDIO KEYSTATION49 MK3][3] )
 - ソフトウェア
     - JACK Audio Connection Kit version 1.9.17
     - FluidSynth version 2.1.7

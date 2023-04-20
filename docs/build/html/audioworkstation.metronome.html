@@ -50,237 +50,8 @@
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="この見出しへのパーマリンク">¶</a></h2>
 </section>
-<section id="module-audioworkstation.metronome.metronome">
-<span id="audioworkstation-metronome-metronome-module"></span><h2>audioworkstation.metronome.metronome module<a class="headerlink" href="#module-audioworkstation.metronome.metronome" title="この見出しへのパーマリンク">¶</a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="audioworkstation.metronome.metronome.MetronomeView">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MetronomeView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/metronome/metronome.html#MetronomeView"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.metronome.metronome.MetronomeView" title="この定義へのパーマリンク">¶</a></dt>
-<dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">Screen</span></code></p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="audioworkstation.metronome.metronome.MetronomeView.beat">
-<span class="sig-name descname"><span class="pre">beat</span></span><a class="headerlink" href="#audioworkstation.metronome.metronome.MetronomeView.beat" title="この定義へのパーマリンク">¶</a></dt>
-<dd><p>ListProperty(defaultvalue=0, <a href="#id1"><span class="problematic" id="id2">**</span></a>kw)
-Property that represents a list.</p>
-<blockquote>
-<div><dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><cite>defaultvalue</cite>: list, defaults to []</dt><dd><p>Specifies the default value of the property.</p>
-</dd>
-</dl>
-</dd>
-</dl>
-<div class="admonition warning">
-<p class="admonition-title">警告</p>
-<p>When assigning a list to a <code class="xref py py-class docutils literal notranslate"><span class="pre">ListProperty</span></code>, the list stored in
-the property is a shallow copy of the list and not the original list. This can
-be demonstrated with the following example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">MyWidget</span><span class="p">(</span><span class="n">Widget</span><span class="p">):</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="n">my_list</span> <span class="o">=</span> <span class="n">ListProperty</span><span class="p">([])</span>
-
-<span class="gp">&gt;&gt;&gt; </span><span class="n">widget</span> <span class="o">=</span> <span class="n">MyWidget</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_list</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;hi&#39;</span><span class="p">:</span> <span class="s1">&#39;hello&#39;</span><span class="p">}]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">widget</span><span class="o">.</span><span class="n">my_list</span> <span class="o">=</span> <span class="n">my_list</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">my_list</span> <span class="ow">is</span> <span class="n">widget</span><span class="o">.</span><span class="n">my_list</span><span class="p">)</span>
-<span class="go">False</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">my_list</span><span class="p">,</span> <span class="n">widget</span><span class="o">.</span><span class="n">my_list</span><span class="p">)</span>
-<span class="go">[1, 5, {&#39;hi&#39;: &#39;hello&#39;}, 10] [1, 5, {&#39;hi&#39;: &#39;hello&#39;}]</span>
-</pre></div>
-</div>
-<p>However, changes to nested levels will affect the property as well,
-since the property uses a shallow copy of my_list.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_list</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="s1">&#39;hi&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;bye&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">my_list</span><span class="p">,</span> <span class="n">widget</span><span class="o">.</span><span class="n">my_list</span><span class="p">)</span>
-<span class="go">[1, 5, {&#39;hi&#39;: &#39;bye&#39;}, 10] [1, 5, {&#39;hi&#39;: &#39;bye&#39;}]</span>
-</pre></div>
-</div>
-</div>
-</div></blockquote>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="audioworkstation.metronome.metronome.MetronomeView.beat_layout">
-<span class="sig-name descname"><span class="pre">beat_layout</span></span><a class="headerlink" href="#audioworkstation.metronome.metronome.MetronomeView.beat_layout" title="この定義へのパーマリンク">¶</a></dt>
-<dd><p>ObjectProperty(defaultvalue=None, rebind=False, <a href="#id3"><span class="problematic" id="id4">**</span></a>kw)
-Property that represents a Python object.</p>
-<blockquote>
-<div><dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl>
-<dt><cite>defaultvalue</cite>: object type</dt><dd><p>Specifies the default value of the property.</p>
-</dd>
-<dt><cite>rebind</cite>: bool, defaults to False</dt><dd><p>Whether kv rules using this object as an intermediate attribute
-in a kv rule, will update the bound property when this object
-changes.</p>
-<p>That is the standard behavior is that if there's a kv rule
-<code class="docutils literal notranslate"><span class="pre">text:</span> <span class="pre">self.a.b.c.d</span></code>, where <code class="docutils literal notranslate"><span class="pre">a</span></code>, <code class="docutils literal notranslate"><span class="pre">b</span></code>, and <code class="docutils literal notranslate"><span class="pre">c</span></code> are
-properties with <code class="docutils literal notranslate"><span class="pre">rebind</span></code> <code class="docutils literal notranslate"><span class="pre">False</span></code> and <code class="docutils literal notranslate"><span class="pre">d</span></code> is a
-<code class="xref py py-class docutils literal notranslate"><span class="pre">StringProperty</span></code>. Then when the rule is applied, <code class="docutils literal notranslate"><span class="pre">text</span></code>
-becomes bound only to <code class="docutils literal notranslate"><span class="pre">d</span></code>. If <code class="docutils literal notranslate"><span class="pre">a</span></code>, <code class="docutils literal notranslate"><span class="pre">b</span></code>, or <code class="docutils literal notranslate"><span class="pre">c</span></code> change,
-<code class="docutils literal notranslate"><span class="pre">text</span></code> still remains bound to <code class="docutils literal notranslate"><span class="pre">d</span></code>. Furthermore, if any of them
-were <code class="docutils literal notranslate"><span class="pre">None</span></code> when the rule was initially evaluated, e.g. <code class="docutils literal notranslate"><span class="pre">b</span></code> was
-<code class="docutils literal notranslate"><span class="pre">None</span></code>; then <code class="docutils literal notranslate"><span class="pre">text</span></code> is bound to <code class="docutils literal notranslate"><span class="pre">b</span></code> and will not become bound
-to <code class="docutils literal notranslate"><span class="pre">d</span></code> even when <code class="docutils literal notranslate"><span class="pre">b</span></code> is changed to not be <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
-<p>By setting <code class="docutils literal notranslate"><span class="pre">rebind</span></code> to <code class="docutils literal notranslate"><span class="pre">True</span></code>, however, the rule will be
-re-evaluated and all the properties rebound when that intermediate
-property changes. E.g. in the example above, whenever <code class="docutils literal notranslate"><span class="pre">b</span></code> changes
-or becomes not <code class="docutils literal notranslate"><span class="pre">None</span></code> if it was <code class="docutils literal notranslate"><span class="pre">None</span></code> before, <code class="docutils literal notranslate"><span class="pre">text</span></code> is
-evaluated again and becomes rebound to <code class="docutils literal notranslate"><span class="pre">d</span></code>. The overall result is
-that <code class="docutils literal notranslate"><span class="pre">text</span></code> is now bound to all the properties among <code class="docutils literal notranslate"><span class="pre">a</span></code>,
-<code class="docutils literal notranslate"><span class="pre">b</span></code>, or <code class="docutils literal notranslate"><span class="pre">c</span></code> that have <code class="docutils literal notranslate"><span class="pre">rebind</span></code> set to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
-</dd>
-<dt><cite>**kwargs</cite>: a list of keyword arguments</dt><dd><dl class="simple">
-<dt><cite>baseclass</cite></dt><dd><p>If kwargs includes a <cite>baseclass</cite> argument, this value will be
-used for validation: <cite>isinstance(value, kwargs['baseclass'])</cite>.</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd>
-</dl>
-<div class="admonition warning">
-<p class="admonition-title">警告</p>
-<p>To mark the property as changed, you must reassign a new python object.</p>
-</div>
-<div class="versionchanged">
-<p><span class="versionmodified changed">バージョン 1.9.0 で変更: </span><cite>rebind</cite> has been introduced.</p>
-</div>
-<div class="versionchanged">
-<p><span class="versionmodified changed">バージョン 1.7.0 で変更: </span><cite>baseclass</cite> parameter added.</p>
-</div>
-</div></blockquote>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="audioworkstation.metronome.metronome.MetronomeView.bps">
-<span class="sig-name descname"><span class="pre">bps</span></span><a class="headerlink" href="#audioworkstation.metronome.metronome.MetronomeView.bps" title="この定義へのパーマリンク">¶</a></dt>
-<dd><p>BoundedNumericProperty(<a href="#id5"><span class="problematic" id="id6">*</span></a>largs, <a href="#id7"><span class="problematic" id="id8">**</span></a>kw)
-Property that represents a numeric value within a minimum bound and/or</p>
-<blockquote>
-<div><p>maximum bound -- within a numeric range.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><cite>default</cite>: numeric</dt><dd><p>Specifies the default value of the property.</p>
-</dd>
-<dt><cite>**kwargs</cite>: a list of keyword arguments</dt><dd><p>If a <cite>min</cite> parameter is included, this specifies the minimum
-numeric value that will be accepted.
-If a <cite>max</cite> parameter is included, this specifies the maximum
-numeric value that will be accepted.</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</div></blockquote>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="audioworkstation.metronome.metronome.MetronomeView.bps_layout">
-<span class="sig-name descname"><span class="pre">bps_layout</span></span><a class="headerlink" href="#audioworkstation.metronome.metronome.MetronomeView.bps_layout" title="この定義へのパーマリンク">¶</a></dt>
-<dd><p>ObjectProperty(defaultvalue=None, rebind=False, <a href="#id9"><span class="problematic" id="id10">**</span></a>kw)
-Property that represents a Python object.</p>
-<blockquote>
-<div><dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl>
-<dt><cite>defaultvalue</cite>: object type</dt><dd><p>Specifies the default value of the property.</p>
-</dd>
-<dt><cite>rebind</cite>: bool, defaults to False</dt><dd><p>Whether kv rules using this object as an intermediate attribute
-in a kv rule, will update the bound property when this object
-changes.</p>
-<p>That is the standard behavior is that if there's a kv rule
-<code class="docutils literal notranslate"><span class="pre">text:</span> <span class="pre">self.a.b.c.d</span></code>, where <code class="docutils literal notranslate"><span class="pre">a</span></code>, <code class="docutils literal notranslate"><span class="pre">b</span></code>, and <code class="docutils literal notranslate"><span class="pre">c</span></code> are
-properties with <code class="docutils literal notranslate"><span class="pre">rebind</span></code> <code class="docutils literal notranslate"><span class="pre">False</span></code> and <code class="docutils literal notranslate"><span class="pre">d</span></code> is a
-<code class="xref py py-class docutils literal notranslate"><span class="pre">StringProperty</span></code>. Then when the rule is applied, <code class="docutils literal notranslate"><span class="pre">text</span></code>
-becomes bound only to <code class="docutils literal notranslate"><span class="pre">d</span></code>. If <code class="docutils literal notranslate"><span class="pre">a</span></code>, <code class="docutils literal notranslate"><span class="pre">b</span></code>, or <code class="docutils literal notranslate"><span class="pre">c</span></code> change,
-<code class="docutils literal notranslate"><span class="pre">text</span></code> still remains bound to <code class="docutils literal notranslate"><span class="pre">d</span></code>. Furthermore, if any of them
-were <code class="docutils literal notranslate"><span class="pre">None</span></code> when the rule was initially evaluated, e.g. <code class="docutils literal notranslate"><span class="pre">b</span></code> was
-<code class="docutils literal notranslate"><span class="pre">None</span></code>; then <code class="docutils literal notranslate"><span class="pre">text</span></code> is bound to <code class="docutils literal notranslate"><span class="pre">b</span></code> and will not become bound
-to <code class="docutils literal notranslate"><span class="pre">d</span></code> even when <code class="docutils literal notranslate"><span class="pre">b</span></code> is changed to not be <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
-<p>By setting <code class="docutils literal notranslate"><span class="pre">rebind</span></code> to <code class="docutils literal notranslate"><span class="pre">True</span></code>, however, the rule will be
-re-evaluated and all the properties rebound when that intermediate
-property changes. E.g. in the example above, whenever <code class="docutils literal notranslate"><span class="pre">b</span></code> changes
-or becomes not <code class="docutils literal notranslate"><span class="pre">None</span></code> if it was <code class="docutils literal notranslate"><span class="pre">None</span></code> before, <code class="docutils literal notranslate"><span class="pre">text</span></code> is
-evaluated again and becomes rebound to <code class="docutils literal notranslate"><span class="pre">d</span></code>. The overall result is
-that <code class="docutils literal notranslate"><span class="pre">text</span></code> is now bound to all the properties among <code class="docutils literal notranslate"><span class="pre">a</span></code>,
-<code class="docutils literal notranslate"><span class="pre">b</span></code>, or <code class="docutils literal notranslate"><span class="pre">c</span></code> that have <code class="docutils literal notranslate"><span class="pre">rebind</span></code> set to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
-</dd>
-<dt><cite>**kwargs</cite>: a list of keyword arguments</dt><dd><dl class="simple">
-<dt><cite>baseclass</cite></dt><dd><p>If kwargs includes a <cite>baseclass</cite> argument, this value will be
-used for validation: <cite>isinstance(value, kwargs['baseclass'])</cite>.</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd>
-</dl>
-<div class="admonition warning">
-<p class="admonition-title">警告</p>
-<p>To mark the property as changed, you must reassign a new python object.</p>
-</div>
-<div class="versionchanged">
-<p><span class="versionmodified changed">バージョン 1.9.0 で変更: </span><cite>rebind</cite> has been introduced.</p>
-</div>
-<div class="versionchanged">
-<p><span class="versionmodified changed">バージョン 1.7.0 で変更: </span><cite>baseclass</cite> parameter added.</p>
-</div>
-</div></blockquote>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="audioworkstation.metronome.metronome.MetronomeView.executor">
-<span class="sig-name descname"><span class="pre">executor</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;concurrent.futures.thread.ThreadPoolExecutor</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#audioworkstation.metronome.metronome.MetronomeView.executor" title="この定義へのパーマリンク">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="audioworkstation.metronome.metronome.MetronomeView.pSFS">
-<span class="sig-name descname"><span class="pre">pSFS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;audioworkstation.metronome.pattern.Pattern</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#audioworkstation.metronome.metronome.MetronomeView.pSFS" title="この定義へのパーマリンク">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="audioworkstation.metronome.metronome.MetronomeView.sound">
-<span class="sig-name descname"><span class="pre">sound</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">on</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/metronome/metronome.html#MetronomeView.sound"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.metronome.metronome.MetronomeView.sound" title="この定義へのパーマリンク">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>on</strong> (<em>str</em>) -- </p>
-</dd>
-<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="audioworkstation.metronome.metronome.MetronomeView.status">
-<span class="sig-name descname"><span class="pre">status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">disable</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/metronome/metronome.html#MetronomeView.status"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.metronome.metronome.MetronomeView.status" title="この定義へのパーマリンク">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>disable</strong> (<em>bool</em>) -- </p>
-</dd>
-<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="audioworkstation.metronome.metronome.MetronomeView.update_beat">
-<span class="sig-name descname"><span class="pre">update_beat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/metronome/metronome.html#MetronomeView.update_beat"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.metronome.metronome.MetronomeView.update_beat" title="この定義へのパーマリンク">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="audioworkstation.metronome.metronome.MetronomeView.update_bps">
-<span class="sig-name descname"><span class="pre">update_bps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/metronome/metronome.html#MetronomeView.update_bps"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.metronome.metronome.MetronomeView.update_bps" title="この定義へのパーマリンク">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="audioworkstation.metronome.metronome.MetronomeView.volume">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">volume</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#audioworkstation.metronome.metronome.MetronomeView.volume" title="この定義へのパーマリンク">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
+<section id="audioworkstation-metronome-metronome-module">
+<h2>audioworkstation.metronome.metronome module<a class="headerlink" href="#audioworkstation-metronome-metronome-module" title="この見出しへのパーマリンク">¶</a></h2>
 </section>
 <section id="module-audioworkstation.metronome.pattern">
 <span id="audioworkstation-metronome-pattern-module"></span><h2>audioworkstation.metronome.pattern module<a class="headerlink" href="#module-audioworkstation.metronome.pattern" title="この見出しへのパーマリンク">¶</a></h2>
@@ -333,6 +104,11 @@ used for validation: <cite>isinstance(value, kwargs['baseclass'])</cite>.</p>
 <span class="sig-name descname"><span class="pre">rhythm</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#audioworkstation.metronome.pattern.rhythm" title="この定義へのパーマリンク">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="py data">
+<dt class="sig sig-object py" id="audioworkstation.metronome.pattern.sfs">
+<span class="sig-name descname"><span class="pre">sfs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="audioworkstation.libs.audio.html#audioworkstation.libs.audio.fluidsynth.Sequencer" title="audioworkstation.libs.audio.fluidsynth.Sequencer"><span class="pre">Sequencer</span></a></em><a class="headerlink" href="#audioworkstation.metronome.pattern.sfs" title="この定義へのパーマリンク">¶</a></dt>
+<dd></dd></dl>
+
 </section>
 <section id="module-audioworkstation.metronome">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-audioworkstation.metronome" title="この見出しへのパーマリンク">¶</a></h2>
@@ -351,23 +127,7 @@ used for validation: <cite>isinstance(value, kwargs['baseclass'])</cite>.</p>
     <ul>
 <li><a class="reference internal" href="#">audioworkstation.metronome package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#module-audioworkstation.metronome.metronome">audioworkstation.metronome.metronome module</a><ul>
-<li><a class="reference internal" href="#audioworkstation.metronome.metronome.MetronomeView"><code class="docutils literal notranslate"><span class="pre">MetronomeView</span></code></a><ul>
-<li><a class="reference internal" href="#audioworkstation.metronome.metronome.MetronomeView.beat"><code class="docutils literal notranslate"><span class="pre">MetronomeView.beat</span></code></a></li>
-<li><a class="reference internal" href="#audioworkstation.metronome.metronome.MetronomeView.beat_layout"><code class="docutils literal notranslate"><span class="pre">MetronomeView.beat_layout</span></code></a></li>
-<li><a class="reference internal" href="#audioworkstation.metronome.metronome.MetronomeView.bps"><code class="docutils literal notranslate"><span class="pre">MetronomeView.bps</span></code></a></li>
-<li><a class="reference internal" href="#audioworkstation.metronome.metronome.MetronomeView.bps_layout"><code class="docutils literal notranslate"><span class="pre">MetronomeView.bps_layout</span></code></a></li>
-<li><a class="reference internal" href="#audioworkstation.metronome.metronome.MetronomeView.executor"><code class="docutils literal notranslate"><span class="pre">MetronomeView.executor</span></code></a></li>
-<li><a class="reference internal" href="#audioworkstation.metronome.metronome.MetronomeView.pSFS"><code class="docutils literal notranslate"><span class="pre">MetronomeView.pSFS</span></code></a></li>
-<li><a class="reference internal" href="#audioworkstation.metronome.metronome.MetronomeView.sound"><code class="docutils literal notranslate"><span class="pre">MetronomeView.sound()</span></code></a></li>
-<li><a class="reference internal" href="#audioworkstation.metronome.metronome.MetronomeView.status"><code class="docutils literal notranslate"><span class="pre">MetronomeView.status()</span></code></a></li>
-<li><a class="reference internal" href="#audioworkstation.metronome.metronome.MetronomeView.update_beat"><code class="docutils literal notranslate"><span class="pre">MetronomeView.update_beat()</span></code></a></li>
-<li><a class="reference internal" href="#audioworkstation.metronome.metronome.MetronomeView.update_bps"><code class="docutils literal notranslate"><span class="pre">MetronomeView.update_bps()</span></code></a></li>
-<li><a class="reference internal" href="#audioworkstation.metronome.metronome.MetronomeView.volume"><code class="docutils literal notranslate"><span class="pre">MetronomeView.volume</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li><a class="reference internal" href="#audioworkstation-metronome-metronome-module">audioworkstation.metronome.metronome module</a></li>
 <li><a class="reference internal" href="#module-audioworkstation.metronome.pattern">audioworkstation.metronome.pattern module</a><ul>
 <li><a class="reference internal" href="#audioworkstation.metronome.pattern.Pattern"><code class="docutils literal notranslate"><span class="pre">Pattern</span></code></a><ul>
 <li><a class="reference internal" href="#audioworkstation.metronome.pattern.Pattern.start"><code class="docutils literal notranslate"><span class="pre">Pattern.start()</span></code></a></li>
@@ -378,6 +138,7 @@ used for validation: <cite>isinstance(value, kwargs['baseclass'])</cite>.</p>
 <li><a class="reference internal" href="#audioworkstation.metronome.pattern.notevalue"><code class="docutils literal notranslate"><span class="pre">notevalue</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.metronome.pattern.pattern"><code class="docutils literal notranslate"><span class="pre">pattern()</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.metronome.pattern.rhythm"><code class="docutils literal notranslate"><span class="pre">rhythm</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.metronome.pattern.sfs"><code class="docutils literal notranslate"><span class="pre">sfs</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#module-audioworkstation.metronome">Module contents</a></li>

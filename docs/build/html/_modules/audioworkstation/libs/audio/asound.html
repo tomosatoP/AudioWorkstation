@@ -461,11 +461,8 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 
-<div class="viewcode-block" id="list_name_hint"><a class="viewcode-back" href="../../../../audioworkstation.libs.audio.html#audioworkstation.libs.audio.asound.list_name_hint">[ドキュメント]</a><span class="k">def</span> <span class="nf">list_name_hint</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<div class="viewcode-block" id="list_name_hint"><a class="viewcode-back" href="../../../../audioworkstation.libs.audio.html#audioworkstation.libs.audio.asound.list_name_hint">[ドキュメント]</a><span class="k">def</span> <span class="nf">list_name_hint</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return name hints table.</span>
-
-<span class="sd">    :return: name hints table</span>
-<span class="sd">    &lt;examples&gt;</span>
 
 <span class="sd">    +-----+-----+-----+-----+</span>
 <span class="sd">    |iface|NAME |DECS |IOID |</span>
@@ -487,7 +484,14 @@
                 <span class="n">ioid</span> <span class="o">=</span> <span class="n">_snd_device_name_get_hint</span><span class="p">(</span><span class="n">hint</span><span class="o">=</span><span class="n">hint</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="sa">b</span><span class="s2">&quot;IOID&quot;</span><span class="p">)</span>
                 <span class="n">ioid</span> <span class="o">=</span> <span class="n">ioid</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span> <span class="k">if</span> <span class="n">ioid</span> <span class="k">else</span> <span class="n">ioid</span>
                 <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;|</span><span class="si">{</span><span class="n">iface</span><span class="si">}</span><span class="s2">|</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">|</span><span class="si">{</span><span class="n">decs</span><span class="si">}</span><span class="s2">|</span><span class="si">{</span><span class="n">ioid</span><span class="si">}</span><span class="s2">|&quot;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">result</span></div>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;docs/alsa-namehint.md&quot;</span><span class="p">,</span> <span class="s2">&quot;wt&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;# ALSA sound library version: </span><span class="si">{</span><span class="nb">bytes</span><span class="p">(</span><span class="n">_snd_asoundlib_version</span><span class="p">())</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">file</span><span class="o">=</span><span class="n">f</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">name_hint</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">name_hint</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">f</span><span class="p">)</span></div>
 
 
 <span class="k">def</span> <span class="nf">_physical_soundcard_indexs</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
@@ -650,14 +654,6 @@
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span>
-
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;docs/alsa-namehint.md&quot;</span><span class="p">,</span> <span class="s2">&quot;wt&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;# ALSA sound library version: </span><span class="si">{</span><span class="nb">bytes</span><span class="p">(</span><span class="n">_snd_asoundlib_version</span><span class="p">())</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-            <span class="n">file</span><span class="o">=</span><span class="n">f</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="k">for</span> <span class="n">name_hint</span> <span class="ow">in</span> <span class="n">list_name_hint</span><span class="p">():</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">name_hint</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">f</span><span class="p">)</span>
 </pre></div>
 
             <div class="clearer"></div>

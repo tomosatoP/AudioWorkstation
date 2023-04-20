@@ -2,12 +2,9 @@
 # -*- coding: utf-8 -*-
 """menu bar
 
-| 1. Switching Child Screens [Keyboard, Metronome, MIDI Player]
-| 2. Control volumes [Master & Child Screen]
-| 3. Exit this application
----
-| class MenubarView(Widget)
-| class MenubarApp(App)
+#. Switching Child Screens [Keyboard, Metronome, MIDI Player]
+#. Control volumes [Master & Child Screen]
+#. Exit this application
 """
 from kivy.app import App
 from kivy.logger import Logger
