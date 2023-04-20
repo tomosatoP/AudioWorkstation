@@ -37,5 +37,8 @@ language = "ja"
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = "sphinxdoc"
-html_static_path = ["_static"]
-html_baseurl = "https://tomosatop.github.io/AudioWorkstation/build/html/"
+html_static_path = [
+    "_static",
+    "https://tomosatop.github.io/AudioWorkstation/build/html/_static",
+]
+# html_baseurl = "https://tomosatop.github.io/AudioWorkstation/build/html/"
