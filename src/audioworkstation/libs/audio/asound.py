@@ -584,7 +584,9 @@ def start_jackserver() -> tuple[str, str]:
     | <exapmles> ("default", "Master")
     | <exapmles> ("", "") if failed.
     """
+    print("Search Bluetooth devices...")
     btdevice: dict[str, str] = BTAS.device_info()
+    print("Search Physical Sound devices...")
     soundcard: list[str] = _physical_mixer_names()
     device_name: str = ""
     device_controlname: str = ""
