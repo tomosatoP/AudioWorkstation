@@ -44,8 +44,8 @@ if __name__ == "__main__":
 
     Logger.debug("JACK server: initializing...")
     asound.set_volume("default", "Master", 100)
-    device, control = asound.start_jackserver()
-    asound.set_volume(device, control, 50)
+    mixer: list[str] = asound.start_jackserver()
+    asound.set_volume(mixer[2], mixer[3], 50)
 
     from .menubar import MenubarApp
 

@@ -1,10 +1,10 @@
-audioworkstation.libs.audio package
+audio package
 ===================================
 
 Submodules
 ----------
 
-audioworkstation.libs.audio.asound module
+asound module
 -----------------------------------------
 
 .. automodule:: audioworkstation.libs.audio.asound
@@ -12,7 +12,7 @@ audioworkstation.libs.audio.asound module
    :undoc-members:
    :show-inheritance:
 
-audioworkstation.libs.audio.btaudiosink module
+btaudiosink module
 ----------------------------------------------
 
 .. automodule:: audioworkstation.libs.audio.btaudiosink
@@ -20,7 +20,7 @@ audioworkstation.libs.audio.btaudiosink module
    :undoc-members:
    :show-inheritance:
 
-audioworkstation.libs.audio.fluidsynth module
+fluidsynth module
 ---------------------------------------------
 
 .. automodule:: audioworkstation.libs.audio.fluidsynth

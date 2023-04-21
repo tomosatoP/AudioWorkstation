@@ -35,6 +35,7 @@ class MenubarView(Widget):
         """Initialize Menubar View"""
         super().__init__(**kwargs)
 
+        self.mixer = asound.mixer_device()
         Logger.debug("Menubar: initializing...")
         self.panel.add_widget(keyboard.KeyboardView(name="keyboard"))
         self.panel.add_widget(metronome.MetronomeView(name="metronome"))
@@ -70,7 +71,7 @@ class MenubarView(Widget):
         :param Widget widget: vol1.slider
         :param int value: value[%] to be set
         """
-        asound.set_volume("default", "Master", value)
+        asound.set_volume(self.mixer[2], self.mixer[3], value)
 
     def mode_volume(self, widget: Widget, value: int) -> None:
         """Control child screens volume.

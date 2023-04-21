@@ -1,21 +1,20 @@
-audioworkstation.player package
+player package
 ===============================
 
 Submodules
 ----------
 
-audioworkstation.player.midifile module
----------------------------------------
-
-.. automodule:: audioworkstation.player.midifile
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-audioworkstation.player.player module
+player module
 -------------------------------------
 
 .. automodule:: audioworkstation.player.player
+   :members:
+   :show-inheritance:
+
+midifile module
+---------------------------------------
+
+.. automodule:: audioworkstation.player.midifile
    :members:
    :undoc-members:
    :show-inheritance:

@@ -1,10 +1,10 @@
-audioworkstation.setup package
+setup package
 ==============================
 
 Submodules
 ----------
 
-audioworkstation.setup.audioworkstation\_settings module
+audioworkstation\_settings module
 --------------------------------------------------------
 
 .. automodule:: audioworkstation.setup.audioworkstation_settings
@@ -12,7 +12,7 @@ audioworkstation.setup.audioworkstation\_settings module
    :undoc-members:
    :show-inheritance:
 
-audioworkstation.setup.config module
+config module
 ------------------------------------
 
 .. automodule:: audioworkstation.setup.config
@@ -20,7 +20,7 @@ audioworkstation.setup.config module
    :undoc-members:
    :show-inheritance:
 
-audioworkstation.setup.fluidsynth\_router\_rule module
+fluidsynth\_router\_rule module
 ------------------------------------------------------
 
 .. automodule:: audioworkstation.setup.fluidsynth_router_rule
@@ -28,7 +28,7 @@ audioworkstation.setup.fluidsynth\_router\_rule module
    :undoc-members:
    :show-inheritance:
 
-audioworkstation.setup.fluidsynth\_settings module
+fluidsynth\_settings module
 --------------------------------------------------
 
 .. automodule:: audioworkstation.setup.fluidsynth_settings
@@ -36,7 +36,7 @@ audioworkstation.setup.fluidsynth\_settings module
    :undoc-members:
    :show-inheritance:
 
-audioworkstation.setup.jack\_settings module
+jack\_settings module
 --------------------------------------------
 
 .. automodule:: audioworkstation.setup.jack_settings

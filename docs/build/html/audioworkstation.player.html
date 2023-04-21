@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>audioworkstation.player package &#8212; AudioWorkstation 0.3 ドキュメント</title>
+    <title>player package &#8212; AudioWorkstation 0.3 ドキュメント</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinxdoc.css" />
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -15,8 +15,8 @@
     <script src="_static/translations.js"></script>
     <link rel="index" title="索引" href="genindex.html" />
     <link rel="search" title="検索" href="search.html" />
-    <link rel="next" title="audioworkstation.setup package" href="audioworkstation.setup.html" />
-    <link rel="prev" title="audioworkstation.metronome package" href="audioworkstation.metronome.html" /> 
+    <link rel="next" title="audio package" href="audioworkstation.libs.audio.html" />
+    <link rel="prev" title="metronome package" href="audioworkstation.metronome.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>ナビゲーション</h3>
@@ -28,15 +28,14 @@
           <a href="py-modindex.html" title="Pythonモジュール索引"
              >モジュール</a> |</li>
         <li class="right" >
-          <a href="audioworkstation.setup.html" title="audioworkstation.setup package"
+          <a href="audioworkstation.libs.audio.html" title="audio package"
              accesskey="N">次へ</a> |</li>
         <li class="right" >
-          <a href="audioworkstation.metronome.html" title="audioworkstation.metronome package"
+          <a href="audioworkstation.metronome.html" title="metronome package"
              accesskey="P">前へ</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">AudioWorkstation 0.3 ドキュメント</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="srcmodules.html" >audioworkstation</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="audioworkstation.html" accesskey="U">audioworkstation package</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">audioworkstation.player package</a></li> 
+          <li class="nav-item nav-item-1"><a href="audioworkstation.html" accesskey="U">audioworkstation package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">player package</a></li> 
       </ul>
     </div>  
 
@@ -45,13 +44,94 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section id="audioworkstation-player-package">
-<h1>audioworkstation.player package<a class="headerlink" href="#audioworkstation-player-package" title="この見出しへのパーマリンク">¶</a></h1>
+  <section id="player-package">
+<h1>player package<a class="headerlink" href="#player-package" title="この見出しへのパーマリンク">¶</a></h1>
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="この見出しへのパーマリンク">¶</a></h2>
 </section>
+<section id="module-audioworkstation.player.player">
+<span id="player-module"></span><h2>player module<a class="headerlink" href="#module-audioworkstation.player.player" title="この見出しへのパーマリンク">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="audioworkstation.player.player.ChannelButton">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ChannelButton</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/player/player.html#ChannelButton"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.player.player.ChannelButton" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">ToggleButton</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">EventDispatcher</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="audioworkstation.player.player.MidiTitleButton">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MidiTitleButton</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/player/player.html#MidiTitleButton"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.player.player.MidiTitleButton" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">ToggleButton</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">EventDispatcher</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="audioworkstation.player.player.PLAYER_STATUS">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PLAYER_STATUS</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/player/player.html#PLAYER_STATUS"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.player.player.PLAYER_STATUS" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">IntEnum</span></code></p>
+<p>An enumeration.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="audioworkstation.player.player.PlayerView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PlayerView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/player/player.html#PlayerView"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.player.player.PlayerView" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">Screen</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="audioworkstation.player.player.PlayerView.cleanup_playback">
+<span class="sig-name descname"><span class="pre">cleanup_playback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">future</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/player/player.html#PlayerView.cleanup_playback"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.player.player.PlayerView.cleanup_playback" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>Process after playback is finished.</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>future</strong> (<em>futures.Future</em>) -- playback process</p>
+</dd>
+<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="audioworkstation.player.player.PlayerView.mute_channels">
+<span class="sig-name descname"><span class="pre">mute_channels</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/player/player.html#PlayerView.mute_channels"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.player.player.PlayerView.mute_channels" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>Mutes channels set to &quot;down&quot;.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return str<span class="colon">:</span></dt>
+<dd class="field-odd"><p>filename of rules</p>
+</dd>
+<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="audioworkstation.player.player.PlayerView.progress_ticks">
+<span class="sig-name descname"><span class="pre">progress_ticks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dt</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/player/player.html#PlayerView.progress_ticks"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.player.player.PlayerView.progress_ticks" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>Request number of ticks passed at intervals.</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dt</strong> (<em>int</em>) -- interval time</p>
+</dd>
+<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="audioworkstation.player.player.PlayerView.select">
+<span class="sig-name descname"><span class="pre">select</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mtb</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/player/player.html#PlayerView.select"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.player.player.PlayerView.select" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>Select the SMF corresponding to the MidiTitleButton</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>mtb</strong> (<a class="reference internal" href="#audioworkstation.player.player.MidiTitleButton" title="audioworkstation.player.player.MidiTitleButton"><em>MidiTitleButton</em></a>) -- pressed MidiTitleButton</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
 <section id="module-audioworkstation.player.midifile">
-<span id="audioworkstation-player-midifile-module"></span><h2>audioworkstation.player.midifile module<a class="headerlink" href="#module-audioworkstation.player.midifile" title="この見出しへのパーマリンク">¶</a></h2>
+<span id="midifile-module"></span><h2>midifile module<a class="headerlink" href="#module-audioworkstation.player.midifile" title="この見出しへのパーマリンク">¶</a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="audioworkstation.player.midifile.MidiPlayer">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MidiPlayer</span></span><a class="reference internal" href="_modules/audioworkstation/player/midifile.html#MidiPlayer"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.player.midifile.MidiPlayer" title="この定義へのパーマリンク">¶</a></dt>
@@ -62,16 +142,6 @@
 <dd class="field-odd"><p>_description_</p>
 </dd>
 </dl>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="audioworkstation.player.midifile.MidiPlayer.gain">
-<span class="sig-name descname"><span class="pre">gain</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.2</span></em><a class="headerlink" href="#audioworkstation.player.midifile.MidiPlayer.gain" title="この定義へのパーマリンク">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="audioworkstation.player.midifile.MidiPlayer.pause_tick">
-<span class="sig-name descname"><span class="pre">pause_tick</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#audioworkstation.player.midifile.MidiPlayer.pause_tick" title="この定義へのパーマリンク">¶</a></dt>
-<dd></dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="audioworkstation.player.midifile.MidiPlayer.start">
 <span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/player/midifile.html#MidiPlayer.start"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.player.midifile.MidiPlayer.start" title="この定義へのパーマリンク">¶</a></dt>
@@ -98,6 +168,16 @@
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.player.midifile.MidiPlayer.gain">
+<span class="sig-name descname"><span class="pre">gain</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.2</span></em><a class="headerlink" href="#audioworkstation.player.midifile.MidiPlayer.gain" title="この定義へのパーマリンク">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.player.midifile.MidiPlayer.pause_tick">
+<span class="sig-name descname"><span class="pre">pause_tick</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#audioworkstation.player.midifile.MidiPlayer.pause_tick" title="この定義へのパーマリンク">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="audioworkstation.player.midifile.MidiPlayer.tick">
@@ -154,621 +234,6 @@ False: unmute</p>
 </dd></dl>
 
 </section>
-<section id="module-audioworkstation.player.player">
-<span id="audioworkstation-player-player-module"></span><h2>audioworkstation.player.player module<a class="headerlink" href="#module-audioworkstation.player.player" title="この見出しへのパーマリンク">¶</a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="audioworkstation.player.player.ChannelButton">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ChannelButton</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/player/player.html#ChannelButton"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.player.player.ChannelButton" title="この定義へのパーマリンク">¶</a></dt>
-<dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">ToggleButton</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">EventDispatcher</span></code></p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="audioworkstation.player.player.ChannelButton.index">
-<span class="sig-name descname"><span class="pre">index</span></span><a class="headerlink" href="#audioworkstation.player.player.ChannelButton.index" title="この定義へのパーマリンク">¶</a></dt>
-<dd><p>NumericProperty(defaultvalue=0, <a href="#id1"><span class="problematic" id="id2">**</span></a>kw)
-Property that represents a numeric value.</p>
-<blockquote>
-<div><p>It only accepts the int or float numeric data type or a string that can be
-converted to a number as shown below. For other numeric types use ObjectProperty
-or use errorhandler to convert it to an int/float.</p>
-<p>It does not support numpy numbers so they must be manually converted to int/float.
-E.g. <code class="docutils literal notranslate"><span class="pre">widget.num</span> <span class="pre">=</span> <span class="pre">np.arange(4)[0]</span></code> will raise an exception. Numpy arrays are not
-supported at all, even by ObjectProperty because their comparision does not return
-a bool. But if you must use a Kivy property, use a ObjectProperty with <code class="docutils literal notranslate"><span class="pre">comparator</span></code>
-set to <code class="docutils literal notranslate"><span class="pre">np.array_equal</span></code>. E.g.:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">A</span><span class="p">(</span><span class="n">EventDispatcher</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="n">data</span> <span class="o">=</span> <span class="n">ObjectProperty</span><span class="p">(</span><span class="n">comparator</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">A</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="nb">print</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-<span class="go">&lt;__main__.A object at 0x000001C839B50208&gt; [0 1]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-<span class="go">&lt;__main__.A object at 0x000001C839B50208&gt; [0 1 2]</span>
-</pre></div>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><cite>defaultvalue</cite>: int or float, defaults to 0</dt><dd><p>Specifies the default value of the property.</p>
-</dd>
-</dl>
-</dd>
-</dl>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">wid</span> <span class="o">=</span> <span class="n">Widget</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">wid</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="mi">42</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">wid</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
-<span class="go">42</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">wid</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;plop&quot;</span>
-<span class="go"> Traceback (most recent call last):</span>
-<span class="go">   File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;</span>
-<span class="go">   File &quot;properties.pyx&quot;, line 93, in kivy.properties.Property.__set__</span>
-<span class="go">   File &quot;properties.pyx&quot;, line 111, in kivy.properties.Property.set</span>
-<span class="go">   File &quot;properties.pyx&quot;, line 159, in kivy.properties.NumericProperty.check</span>
-<span class="go"> ValueError: NumericProperty accept only int/float</span>
-</pre></div>
-</div>
-<div class="versionchanged">
-<p><span class="versionmodified changed">バージョン 1.4.1 で変更: </span>NumericProperty can now accept custom text and tuple value to indicate a
-type, like &quot;in&quot;, &quot;pt&quot;, &quot;px&quot;, &quot;cm&quot;, &quot;mm&quot;, in the format: '10pt' or (10,
-'pt').</p>
-</div>
-</div></blockquote>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="audioworkstation.player.player.MidiTitleButton">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MidiTitleButton</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/player/player.html#MidiTitleButton"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.player.player.MidiTitleButton" title="この定義へのパーマリンク">¶</a></dt>
-<dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">ToggleButton</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">EventDispatcher</span></code></p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="audioworkstation.player.player.MidiTitleButton.channels_preset">
-<span class="sig-name descname"><span class="pre">channels_preset</span></span><a class="headerlink" href="#audioworkstation.player.player.MidiTitleButton.channels_preset" title="この定義へのパーマリンク">¶</a></dt>
-<dd><p>ListProperty(defaultvalue=0, <a href="#id3"><span class="problematic" id="id4">**</span></a>kw)
-Property that represents a list.</p>
-<blockquote>
-<div><dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><cite>defaultvalue</cite>: list, defaults to []</dt><dd><p>Specifies the default value of the property.</p>
-</dd>
-</dl>
-</dd>
-</dl>
-<div class="admonition warning">
-<p class="admonition-title">警告</p>
-<p>When assigning a list to a <code class="xref py py-class docutils literal notranslate"><span class="pre">ListProperty</span></code>, the list stored in
-the property is a shallow copy of the list and not the original list. This can
-be demonstrated with the following example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">MyWidget</span><span class="p">(</span><span class="n">Widget</span><span class="p">):</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="n">my_list</span> <span class="o">=</span> <span class="n">ListProperty</span><span class="p">([])</span>
-
-<span class="gp">&gt;&gt;&gt; </span><span class="n">widget</span> <span class="o">=</span> <span class="n">MyWidget</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_list</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;hi&#39;</span><span class="p">:</span> <span class="s1">&#39;hello&#39;</span><span class="p">}]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">widget</span><span class="o">.</span><span class="n">my_list</span> <span class="o">=</span> <span class="n">my_list</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">my_list</span> <span class="ow">is</span> <span class="n">widget</span><span class="o">.</span><span class="n">my_list</span><span class="p">)</span>
-<span class="go">False</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">my_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">my_list</span><span class="p">,</span> <span class="n">widget</span><span class="o">.</span><span class="n">my_list</span><span class="p">)</span>
-<span class="go">[1, 5, {&#39;hi&#39;: &#39;hello&#39;}, 10] [1, 5, {&#39;hi&#39;: &#39;hello&#39;}]</span>
-</pre></div>
-</div>
-<p>However, changes to nested levels will affect the property as well,
-since the property uses a shallow copy of my_list.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">my_list</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="s1">&#39;hi&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;bye&#39;</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">my_list</span><span class="p">,</span> <span class="n">widget</span><span class="o">.</span><span class="n">my_list</span><span class="p">)</span>
-<span class="go">[1, 5, {&#39;hi&#39;: &#39;bye&#39;}, 10] [1, 5, {&#39;hi&#39;: &#39;bye&#39;}]</span>
-</pre></div>
-</div>
-</div>
-</div></blockquote>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="audioworkstation.player.player.MidiTitleButton.filename">
-<span class="sig-name descname"><span class="pre">filename</span></span><a class="headerlink" href="#audioworkstation.player.player.MidiTitleButton.filename" title="この定義へのパーマリンク">¶</a></dt>
-<dd><p>StringProperty(defaultvalue=u'', <a href="#id5"><span class="problematic" id="id6">**</span></a>kw)
-Property that represents a string value.</p>
-<blockquote>
-<div><dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><cite>defaultvalue</cite>: string, defaults to ''</dt><dd><p>Specifies the default value of the property.</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</div></blockquote>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="audioworkstation.player.player.MidiTitleButton.total_tick">
-<span class="sig-name descname"><span class="pre">total_tick</span></span><a class="headerlink" href="#audioworkstation.player.player.MidiTitleButton.total_tick" title="この定義へのパーマリンク">¶</a></dt>
-<dd><p>NumericProperty(defaultvalue=0, <a href="#id7"><span class="problematic" id="id8">**</span></a>kw)
-Property that represents a numeric value.</p>
-<blockquote>
-<div><p>It only accepts the int or float numeric data type or a string that can be
-converted to a number as shown below. For other numeric types use ObjectProperty
-or use errorhandler to convert it to an int/float.</p>
-<p>It does not support numpy numbers so they must be manually converted to int/float.
-E.g. <code class="docutils literal notranslate"><span class="pre">widget.num</span> <span class="pre">=</span> <span class="pre">np.arange(4)[0]</span></code> will raise an exception. Numpy arrays are not
-supported at all, even by ObjectProperty because their comparision does not return
-a bool. But if you must use a Kivy property, use a ObjectProperty with <code class="docutils literal notranslate"><span class="pre">comparator</span></code>
-set to <code class="docutils literal notranslate"><span class="pre">np.array_equal</span></code>. E.g.:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">A</span><span class="p">(</span><span class="n">EventDispatcher</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="n">data</span> <span class="o">=</span> <span class="n">ObjectProperty</span><span class="p">(</span><span class="n">comparator</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">A</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="nb">print</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-<span class="go">&lt;__main__.A object at 0x000001C839B50208&gt; [0 1]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-<span class="go">&lt;__main__.A object at 0x000001C839B50208&gt; [0 1 2]</span>
-</pre></div>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><cite>defaultvalue</cite>: int or float, defaults to 0</dt><dd><p>Specifies the default value of the property.</p>
-</dd>
-</dl>
-</dd>
-</dl>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">wid</span> <span class="o">=</span> <span class="n">Widget</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">wid</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="mi">42</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">wid</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
-<span class="go">42</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">wid</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;plop&quot;</span>
-<span class="go"> Traceback (most recent call last):</span>
-<span class="go">   File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;</span>
-<span class="go">   File &quot;properties.pyx&quot;, line 93, in kivy.properties.Property.__set__</span>
-<span class="go">   File &quot;properties.pyx&quot;, line 111, in kivy.properties.Property.set</span>
-<span class="go">   File &quot;properties.pyx&quot;, line 159, in kivy.properties.NumericProperty.check</span>
-<span class="go"> ValueError: NumericProperty accept only int/float</span>
-</pre></div>
-</div>
-<div class="versionchanged">
-<p><span class="versionmodified changed">バージョン 1.4.1 で変更: </span>NumericProperty can now accept custom text and tuple value to indicate a
-type, like &quot;in&quot;, &quot;pt&quot;, &quot;px&quot;, &quot;cm&quot;, &quot;mm&quot;, in the format: '10pt' or (10,
-'pt').</p>
-</div>
-</div></blockquote>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="audioworkstation.player.player.PLAYER_STATUS">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PLAYER_STATUS</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/player/player.html#PLAYER_STATUS"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.player.player.PLAYER_STATUS" title="この定義へのパーマリンク">¶</a></dt>
-<dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">IntEnum</span></code></p>
-<p>An enumeration.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="audioworkstation.player.player.PLAYER_STATUS.PAUSE">
-<span class="sig-name descname"><span class="pre">PAUSE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em><a class="headerlink" href="#audioworkstation.player.player.PLAYER_STATUS.PAUSE" title="この定義へのパーマリンク">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="audioworkstation.player.player.PLAYER_STATUS.PLAYBACK">
-<span class="sig-name descname"><span class="pre">PLAYBACK</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#audioworkstation.player.player.PLAYER_STATUS.PLAYBACK" title="この定義へのパーマリンク">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="audioworkstation.player.player.PLAYER_STATUS.STANDBY">
-<span class="sig-name descname"><span class="pre">STANDBY</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#audioworkstation.player.player.PLAYER_STATUS.STANDBY" title="この定義へのパーマリンク">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="audioworkstation.player.player.PlayerView">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PlayerView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/player/player.html#PlayerView"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.player.player.PlayerView" title="この定義へのパーマリンク">¶</a></dt>
-<dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">Screen</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="audioworkstation.player.player.PlayerView.add_channelbuttons">
-<span class="sig-name descname"><span class="pre">add_channelbuttons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">16</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/player/player.html#PlayerView.add_channelbuttons"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.player.player.PlayerView.add_channelbuttons" title="この定義へのパーマリンク">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>num</strong> (<em>int</em>) -- </p>
-</dd>
-<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="audioworkstation.player.player.PlayerView.add_midititlebutton">
-<span class="sig-name descname"><span class="pre">add_midititlebutton</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">midifile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/player/player.html#PlayerView.add_midititlebutton"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.player.player.PlayerView.add_midititlebutton" title="この定義へのパーマリンク">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>midifile</strong> (<em>Path</em>) -- </p></li>
-<li><p><strong>dt</strong> (<em>int</em>) -- </p></li>
-</ul>
-</dd>
-<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="audioworkstation.player.player.PlayerView.channels">
-<span class="sig-name descname"><span class="pre">channels</span></span><a class="headerlink" href="#audioworkstation.player.player.PlayerView.channels" title="この定義へのパーマリンク">¶</a></dt>
-<dd><p>ObjectProperty(defaultvalue=None, rebind=False, <a href="#id9"><span class="problematic" id="id10">**</span></a>kw)
-Property that represents a Python object.</p>
-<blockquote>
-<div><dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl>
-<dt><cite>defaultvalue</cite>: object type</dt><dd><p>Specifies the default value of the property.</p>
-</dd>
-<dt><cite>rebind</cite>: bool, defaults to False</dt><dd><p>Whether kv rules using this object as an intermediate attribute
-in a kv rule, will update the bound property when this object
-changes.</p>
-<p>That is the standard behavior is that if there's a kv rule
-<code class="docutils literal notranslate"><span class="pre">text:</span> <span class="pre">self.a.b.c.d</span></code>, where <code class="docutils literal notranslate"><span class="pre">a</span></code>, <code class="docutils literal notranslate"><span class="pre">b</span></code>, and <code class="docutils literal notranslate"><span class="pre">c</span></code> are
-properties with <code class="docutils literal notranslate"><span class="pre">rebind</span></code> <code class="docutils literal notranslate"><span class="pre">False</span></code> and <code class="docutils literal notranslate"><span class="pre">d</span></code> is a
-<code class="xref py py-class docutils literal notranslate"><span class="pre">StringProperty</span></code>. Then when the rule is applied, <code class="docutils literal notranslate"><span class="pre">text</span></code>
-becomes bound only to <code class="docutils literal notranslate"><span class="pre">d</span></code>. If <code class="docutils literal notranslate"><span class="pre">a</span></code>, <code class="docutils literal notranslate"><span class="pre">b</span></code>, or <code class="docutils literal notranslate"><span class="pre">c</span></code> change,
-<code class="docutils literal notranslate"><span class="pre">text</span></code> still remains bound to <code class="docutils literal notranslate"><span class="pre">d</span></code>. Furthermore, if any of them
-were <code class="docutils literal notranslate"><span class="pre">None</span></code> when the rule was initially evaluated, e.g. <code class="docutils literal notranslate"><span class="pre">b</span></code> was
-<code class="docutils literal notranslate"><span class="pre">None</span></code>; then <code class="docutils literal notranslate"><span class="pre">text</span></code> is bound to <code class="docutils literal notranslate"><span class="pre">b</span></code> and will not become bound
-to <code class="docutils literal notranslate"><span class="pre">d</span></code> even when <code class="docutils literal notranslate"><span class="pre">b</span></code> is changed to not be <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
-<p>By setting <code class="docutils literal notranslate"><span class="pre">rebind</span></code> to <code class="docutils literal notranslate"><span class="pre">True</span></code>, however, the rule will be
-re-evaluated and all the properties rebound when that intermediate
-property changes. E.g. in the example above, whenever <code class="docutils literal notranslate"><span class="pre">b</span></code> changes
-or becomes not <code class="docutils literal notranslate"><span class="pre">None</span></code> if it was <code class="docutils literal notranslate"><span class="pre">None</span></code> before, <code class="docutils literal notranslate"><span class="pre">text</span></code> is
-evaluated again and becomes rebound to <code class="docutils literal notranslate"><span class="pre">d</span></code>. The overall result is
-that <code class="docutils literal notranslate"><span class="pre">text</span></code> is now bound to all the properties among <code class="docutils literal notranslate"><span class="pre">a</span></code>,
-<code class="docutils literal notranslate"><span class="pre">b</span></code>, or <code class="docutils literal notranslate"><span class="pre">c</span></code> that have <code class="docutils literal notranslate"><span class="pre">rebind</span></code> set to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
-</dd>
-<dt><cite>**kwargs</cite>: a list of keyword arguments</dt><dd><dl class="simple">
-<dt><cite>baseclass</cite></dt><dd><p>If kwargs includes a <cite>baseclass</cite> argument, this value will be
-used for validation: <cite>isinstance(value, kwargs['baseclass'])</cite>.</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd>
-</dl>
-<div class="admonition warning">
-<p class="admonition-title">警告</p>
-<p>To mark the property as changed, you must reassign a new python object.</p>
-</div>
-<div class="versionchanged">
-<p><span class="versionmodified changed">バージョン 1.9.0 で変更: </span><cite>rebind</cite> has been introduced.</p>
-</div>
-<div class="versionchanged">
-<p><span class="versionmodified changed">バージョン 1.7.0 で変更: </span><cite>baseclass</cite> parameter added.</p>
-</div>
-</div></blockquote>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="audioworkstation.player.player.PlayerView.cleanup_playback">
-<span class="sig-name descname"><span class="pre">cleanup_playback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">future</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/player/player.html#PlayerView.cleanup_playback"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.player.player.PlayerView.cleanup_playback" title="この定義へのパーマリンク">¶</a></dt>
-<dd><p>Process after playback is finished.</p>
-<dl class="field-list simple">
-<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>future</strong> (<em>futures.Future</em>) -- playback process</p>
-</dd>
-<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="audioworkstation.player.player.PlayerView.executor">
-<span class="sig-name descname"><span class="pre">executor</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;concurrent.futures.thread.ThreadPoolExecutor</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#audioworkstation.player.player.PlayerView.executor" title="この定義へのパーマリンク">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="audioworkstation.player.player.PlayerView.midifiles">
-<span class="sig-name descname"><span class="pre">midifiles</span></span><a class="headerlink" href="#audioworkstation.player.player.PlayerView.midifiles" title="この定義へのパーマリンク">¶</a></dt>
-<dd><p>ObjectProperty(defaultvalue=None, rebind=False, <a href="#id11"><span class="problematic" id="id12">**</span></a>kw)
-Property that represents a Python object.</p>
-<blockquote>
-<div><dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl>
-<dt><cite>defaultvalue</cite>: object type</dt><dd><p>Specifies the default value of the property.</p>
-</dd>
-<dt><cite>rebind</cite>: bool, defaults to False</dt><dd><p>Whether kv rules using this object as an intermediate attribute
-in a kv rule, will update the bound property when this object
-changes.</p>
-<p>That is the standard behavior is that if there's a kv rule
-<code class="docutils literal notranslate"><span class="pre">text:</span> <span class="pre">self.a.b.c.d</span></code>, where <code class="docutils literal notranslate"><span class="pre">a</span></code>, <code class="docutils literal notranslate"><span class="pre">b</span></code>, and <code class="docutils literal notranslate"><span class="pre">c</span></code> are
-properties with <code class="docutils literal notranslate"><span class="pre">rebind</span></code> <code class="docutils literal notranslate"><span class="pre">False</span></code> and <code class="docutils literal notranslate"><span class="pre">d</span></code> is a
-<code class="xref py py-class docutils literal notranslate"><span class="pre">StringProperty</span></code>. Then when the rule is applied, <code class="docutils literal notranslate"><span class="pre">text</span></code>
-becomes bound only to <code class="docutils literal notranslate"><span class="pre">d</span></code>. If <code class="docutils literal notranslate"><span class="pre">a</span></code>, <code class="docutils literal notranslate"><span class="pre">b</span></code>, or <code class="docutils literal notranslate"><span class="pre">c</span></code> change,
-<code class="docutils literal notranslate"><span class="pre">text</span></code> still remains bound to <code class="docutils literal notranslate"><span class="pre">d</span></code>. Furthermore, if any of them
-were <code class="docutils literal notranslate"><span class="pre">None</span></code> when the rule was initially evaluated, e.g. <code class="docutils literal notranslate"><span class="pre">b</span></code> was
-<code class="docutils literal notranslate"><span class="pre">None</span></code>; then <code class="docutils literal notranslate"><span class="pre">text</span></code> is bound to <code class="docutils literal notranslate"><span class="pre">b</span></code> and will not become bound
-to <code class="docutils literal notranslate"><span class="pre">d</span></code> even when <code class="docutils literal notranslate"><span class="pre">b</span></code> is changed to not be <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
-<p>By setting <code class="docutils literal notranslate"><span class="pre">rebind</span></code> to <code class="docutils literal notranslate"><span class="pre">True</span></code>, however, the rule will be
-re-evaluated and all the properties rebound when that intermediate
-property changes. E.g. in the example above, whenever <code class="docutils literal notranslate"><span class="pre">b</span></code> changes
-or becomes not <code class="docutils literal notranslate"><span class="pre">None</span></code> if it was <code class="docutils literal notranslate"><span class="pre">None</span></code> before, <code class="docutils literal notranslate"><span class="pre">text</span></code> is
-evaluated again and becomes rebound to <code class="docutils literal notranslate"><span class="pre">d</span></code>. The overall result is
-that <code class="docutils literal notranslate"><span class="pre">text</span></code> is now bound to all the properties among <code class="docutils literal notranslate"><span class="pre">a</span></code>,
-<code class="docutils literal notranslate"><span class="pre">b</span></code>, or <code class="docutils literal notranslate"><span class="pre">c</span></code> that have <code class="docutils literal notranslate"><span class="pre">rebind</span></code> set to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
-</dd>
-<dt><cite>**kwargs</cite>: a list of keyword arguments</dt><dd><dl class="simple">
-<dt><cite>baseclass</cite></dt><dd><p>If kwargs includes a <cite>baseclass</cite> argument, this value will be
-used for validation: <cite>isinstance(value, kwargs['baseclass'])</cite>.</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd>
-</dl>
-<div class="admonition warning">
-<p class="admonition-title">警告</p>
-<p>To mark the property as changed, you must reassign a new python object.</p>
-</div>
-<div class="versionchanged">
-<p><span class="versionmodified changed">バージョン 1.9.0 で変更: </span><cite>rebind</cite> has been introduced.</p>
-</div>
-<div class="versionchanged">
-<p><span class="versionmodified changed">バージョン 1.7.0 で変更: </span><cite>baseclass</cite> parameter added.</p>
-</div>
-</div></blockquote>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="audioworkstation.player.player.PlayerView.mute_channels">
-<span class="sig-name descname"><span class="pre">mute_channels</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/player/player.html#PlayerView.mute_channels"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.player.player.PlayerView.mute_channels" title="この定義へのパーマリンク">¶</a></dt>
-<dd><p>Mutes channels set to &quot;down&quot;.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return str<span class="colon">:</span></dt>
-<dd class="field-odd"><p>filename of rules</p>
-</dd>
-<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
-<dd class="field-even"><p>str</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="audioworkstation.player.player.PlayerView.pause">
-<span class="sig-name descname"><span class="pre">pause</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/player/player.html#PlayerView.pause"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.player.player.PlayerView.pause" title="この定義へのパーマリンク">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>state</strong> (<em>str</em>) -- </p>
-</dd>
-<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="audioworkstation.player.player.PlayerView.pause_button">
-<span class="sig-name descname"><span class="pre">pause_button</span></span><a class="headerlink" href="#audioworkstation.player.player.PlayerView.pause_button" title="この定義へのパーマリンク">¶</a></dt>
-<dd><p>ObjectProperty(defaultvalue=None, rebind=False, <a href="#id13"><span class="problematic" id="id14">**</span></a>kw)
-Property that represents a Python object.</p>
-<blockquote>
-<div><dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl>
-<dt><cite>defaultvalue</cite>: object type</dt><dd><p>Specifies the default value of the property.</p>
-</dd>
-<dt><cite>rebind</cite>: bool, defaults to False</dt><dd><p>Whether kv rules using this object as an intermediate attribute
-in a kv rule, will update the bound property when this object
-changes.</p>
-<p>That is the standard behavior is that if there's a kv rule
-<code class="docutils literal notranslate"><span class="pre">text:</span> <span class="pre">self.a.b.c.d</span></code>, where <code class="docutils literal notranslate"><span class="pre">a</span></code>, <code class="docutils literal notranslate"><span class="pre">b</span></code>, and <code class="docutils literal notranslate"><span class="pre">c</span></code> are
-properties with <code class="docutils literal notranslate"><span class="pre">rebind</span></code> <code class="docutils literal notranslate"><span class="pre">False</span></code> and <code class="docutils literal notranslate"><span class="pre">d</span></code> is a
-<code class="xref py py-class docutils literal notranslate"><span class="pre">StringProperty</span></code>. Then when the rule is applied, <code class="docutils literal notranslate"><span class="pre">text</span></code>
-becomes bound only to <code class="docutils literal notranslate"><span class="pre">d</span></code>. If <code class="docutils literal notranslate"><span class="pre">a</span></code>, <code class="docutils literal notranslate"><span class="pre">b</span></code>, or <code class="docutils literal notranslate"><span class="pre">c</span></code> change,
-<code class="docutils literal notranslate"><span class="pre">text</span></code> still remains bound to <code class="docutils literal notranslate"><span class="pre">d</span></code>. Furthermore, if any of them
-were <code class="docutils literal notranslate"><span class="pre">None</span></code> when the rule was initially evaluated, e.g. <code class="docutils literal notranslate"><span class="pre">b</span></code> was
-<code class="docutils literal notranslate"><span class="pre">None</span></code>; then <code class="docutils literal notranslate"><span class="pre">text</span></code> is bound to <code class="docutils literal notranslate"><span class="pre">b</span></code> and will not become bound
-to <code class="docutils literal notranslate"><span class="pre">d</span></code> even when <code class="docutils literal notranslate"><span class="pre">b</span></code> is changed to not be <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
-<p>By setting <code class="docutils literal notranslate"><span class="pre">rebind</span></code> to <code class="docutils literal notranslate"><span class="pre">True</span></code>, however, the rule will be
-re-evaluated and all the properties rebound when that intermediate
-property changes. E.g. in the example above, whenever <code class="docutils literal notranslate"><span class="pre">b</span></code> changes
-or becomes not <code class="docutils literal notranslate"><span class="pre">None</span></code> if it was <code class="docutils literal notranslate"><span class="pre">None</span></code> before, <code class="docutils literal notranslate"><span class="pre">text</span></code> is
-evaluated again and becomes rebound to <code class="docutils literal notranslate"><span class="pre">d</span></code>. The overall result is
-that <code class="docutils literal notranslate"><span class="pre">text</span></code> is now bound to all the properties among <code class="docutils literal notranslate"><span class="pre">a</span></code>,
-<code class="docutils literal notranslate"><span class="pre">b</span></code>, or <code class="docutils literal notranslate"><span class="pre">c</span></code> that have <code class="docutils literal notranslate"><span class="pre">rebind</span></code> set to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
-</dd>
-<dt><cite>**kwargs</cite>: a list of keyword arguments</dt><dd><dl class="simple">
-<dt><cite>baseclass</cite></dt><dd><p>If kwargs includes a <cite>baseclass</cite> argument, this value will be
-used for validation: <cite>isinstance(value, kwargs['baseclass'])</cite>.</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd>
-</dl>
-<div class="admonition warning">
-<p class="admonition-title">警告</p>
-<p>To mark the property as changed, you must reassign a new python object.</p>
-</div>
-<div class="versionchanged">
-<p><span class="versionmodified changed">バージョン 1.9.0 で変更: </span><cite>rebind</cite> has been introduced.</p>
-</div>
-<div class="versionchanged">
-<p><span class="versionmodified changed">バージョン 1.7.0 で変更: </span><cite>baseclass</cite> parameter added.</p>
-</div>
-</div></blockquote>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="audioworkstation.player.player.PlayerView.percussion_sound_set">
-<span class="sig-name descname"><span class="pre">percussion_sound_set</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#audioworkstation.player.player.PlayerView.percussion_sound_set" title="この定義へのパーマリンク">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="audioworkstation.player.player.PlayerView.play_button">
-<span class="sig-name descname"><span class="pre">play_button</span></span><a class="headerlink" href="#audioworkstation.player.player.PlayerView.play_button" title="この定義へのパーマリンク">¶</a></dt>
-<dd><p>ObjectProperty(defaultvalue=None, rebind=False, <a href="#id15"><span class="problematic" id="id16">**</span></a>kw)
-Property that represents a Python object.</p>
-<blockquote>
-<div><dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl>
-<dt><cite>defaultvalue</cite>: object type</dt><dd><p>Specifies the default value of the property.</p>
-</dd>
-<dt><cite>rebind</cite>: bool, defaults to False</dt><dd><p>Whether kv rules using this object as an intermediate attribute
-in a kv rule, will update the bound property when this object
-changes.</p>
-<p>That is the standard behavior is that if there's a kv rule
-<code class="docutils literal notranslate"><span class="pre">text:</span> <span class="pre">self.a.b.c.d</span></code>, where <code class="docutils literal notranslate"><span class="pre">a</span></code>, <code class="docutils literal notranslate"><span class="pre">b</span></code>, and <code class="docutils literal notranslate"><span class="pre">c</span></code> are
-properties with <code class="docutils literal notranslate"><span class="pre">rebind</span></code> <code class="docutils literal notranslate"><span class="pre">False</span></code> and <code class="docutils literal notranslate"><span class="pre">d</span></code> is a
-<code class="xref py py-class docutils literal notranslate"><span class="pre">StringProperty</span></code>. Then when the rule is applied, <code class="docutils literal notranslate"><span class="pre">text</span></code>
-becomes bound only to <code class="docutils literal notranslate"><span class="pre">d</span></code>. If <code class="docutils literal notranslate"><span class="pre">a</span></code>, <code class="docutils literal notranslate"><span class="pre">b</span></code>, or <code class="docutils literal notranslate"><span class="pre">c</span></code> change,
-<code class="docutils literal notranslate"><span class="pre">text</span></code> still remains bound to <code class="docutils literal notranslate"><span class="pre">d</span></code>. Furthermore, if any of them
-were <code class="docutils literal notranslate"><span class="pre">None</span></code> when the rule was initially evaluated, e.g. <code class="docutils literal notranslate"><span class="pre">b</span></code> was
-<code class="docutils literal notranslate"><span class="pre">None</span></code>; then <code class="docutils literal notranslate"><span class="pre">text</span></code> is bound to <code class="docutils literal notranslate"><span class="pre">b</span></code> and will not become bound
-to <code class="docutils literal notranslate"><span class="pre">d</span></code> even when <code class="docutils literal notranslate"><span class="pre">b</span></code> is changed to not be <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
-<p>By setting <code class="docutils literal notranslate"><span class="pre">rebind</span></code> to <code class="docutils literal notranslate"><span class="pre">True</span></code>, however, the rule will be
-re-evaluated and all the properties rebound when that intermediate
-property changes. E.g. in the example above, whenever <code class="docutils literal notranslate"><span class="pre">b</span></code> changes
-or becomes not <code class="docutils literal notranslate"><span class="pre">None</span></code> if it was <code class="docutils literal notranslate"><span class="pre">None</span></code> before, <code class="docutils literal notranslate"><span class="pre">text</span></code> is
-evaluated again and becomes rebound to <code class="docutils literal notranslate"><span class="pre">d</span></code>. The overall result is
-that <code class="docutils literal notranslate"><span class="pre">text</span></code> is now bound to all the properties among <code class="docutils literal notranslate"><span class="pre">a</span></code>,
-<code class="docutils literal notranslate"><span class="pre">b</span></code>, or <code class="docutils literal notranslate"><span class="pre">c</span></code> that have <code class="docutils literal notranslate"><span class="pre">rebind</span></code> set to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
-</dd>
-<dt><cite>**kwargs</cite>: a list of keyword arguments</dt><dd><dl class="simple">
-<dt><cite>baseclass</cite></dt><dd><p>If kwargs includes a <cite>baseclass</cite> argument, this value will be
-used for validation: <cite>isinstance(value, kwargs['baseclass'])</cite>.</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd>
-</dl>
-<div class="admonition warning">
-<p class="admonition-title">警告</p>
-<p>To mark the property as changed, you must reassign a new python object.</p>
-</div>
-<div class="versionchanged">
-<p><span class="versionmodified changed">バージョン 1.9.0 で変更: </span><cite>rebind</cite> has been introduced.</p>
-</div>
-<div class="versionchanged">
-<p><span class="versionmodified changed">バージョン 1.7.0 で変更: </span><cite>baseclass</cite> parameter added.</p>
-</div>
-</div></blockquote>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="audioworkstation.player.player.PlayerView.playback">
-<span class="sig-name descname"><span class="pre">playback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/player/player.html#PlayerView.playback"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.player.player.PlayerView.playback" title="この定義へのパーマリンク">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>state</strong> (<em>str</em>) -- </p>
-</dd>
-<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="audioworkstation.player.player.PlayerView.progress_ticks">
-<span class="sig-name descname"><span class="pre">progress_ticks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dt</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/player/player.html#PlayerView.progress_ticks"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.player.player.PlayerView.progress_ticks" title="この定義へのパーマリンク">¶</a></dt>
-<dd><p>Request number of ticks passed at intervals.</p>
-<dl class="field-list simple">
-<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>dt</strong> (<em>int</em>) -- interval time</p>
-</dd>
-<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="audioworkstation.player.player.PlayerView.select">
-<span class="sig-name descname"><span class="pre">select</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mtb</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/player/player.html#PlayerView.select"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.player.player.PlayerView.select" title="この定義へのパーマリンク">¶</a></dt>
-<dd><p>Select the SMF corresponding to the MidiTitleButton</p>
-<dl class="field-list simple">
-<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>mtb</strong> (<a class="reference internal" href="#audioworkstation.player.player.MidiTitleButton" title="audioworkstation.player.player.MidiTitleButton"><em>MidiTitleButton</em></a>) -- pressed MidiTitleButton</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="audioworkstation.player.player.PlayerView.sound_set">
-<span class="sig-name descname"><span class="pre">sound_set</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#audioworkstation.player.player.PlayerView.sound_set" title="この定義へのパーマリンク">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="audioworkstation.player.player.PlayerView.status">
-<span class="sig-name descname"><span class="pre">status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/player/player.html#PlayerView.status"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.player.player.PlayerView.status" title="この定義へのパーマリンク">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>value</strong> (<a class="reference internal" href="#audioworkstation.player.player.PLAYER_STATUS" title="audioworkstation.player.player.PLAYER_STATUS"><em>PLAYER_STATUS</em></a>) -- </p>
-</dd>
-<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="audioworkstation.player.player.PlayerView.ticks_slider">
-<span class="sig-name descname"><span class="pre">ticks_slider</span></span><a class="headerlink" href="#audioworkstation.player.player.PlayerView.ticks_slider" title="この定義へのパーマリンク">¶</a></dt>
-<dd><p>ObjectProperty(defaultvalue=None, rebind=False, <a href="#id17"><span class="problematic" id="id18">**</span></a>kw)
-Property that represents a Python object.</p>
-<blockquote>
-<div><dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl>
-<dt><cite>defaultvalue</cite>: object type</dt><dd><p>Specifies the default value of the property.</p>
-</dd>
-<dt><cite>rebind</cite>: bool, defaults to False</dt><dd><p>Whether kv rules using this object as an intermediate attribute
-in a kv rule, will update the bound property when this object
-changes.</p>
-<p>That is the standard behavior is that if there's a kv rule
-<code class="docutils literal notranslate"><span class="pre">text:</span> <span class="pre">self.a.b.c.d</span></code>, where <code class="docutils literal notranslate"><span class="pre">a</span></code>, <code class="docutils literal notranslate"><span class="pre">b</span></code>, and <code class="docutils literal notranslate"><span class="pre">c</span></code> are
-properties with <code class="docutils literal notranslate"><span class="pre">rebind</span></code> <code class="docutils literal notranslate"><span class="pre">False</span></code> and <code class="docutils literal notranslate"><span class="pre">d</span></code> is a
-<code class="xref py py-class docutils literal notranslate"><span class="pre">StringProperty</span></code>. Then when the rule is applied, <code class="docutils literal notranslate"><span class="pre">text</span></code>
-becomes bound only to <code class="docutils literal notranslate"><span class="pre">d</span></code>. If <code class="docutils literal notranslate"><span class="pre">a</span></code>, <code class="docutils literal notranslate"><span class="pre">b</span></code>, or <code class="docutils literal notranslate"><span class="pre">c</span></code> change,
-<code class="docutils literal notranslate"><span class="pre">text</span></code> still remains bound to <code class="docutils literal notranslate"><span class="pre">d</span></code>. Furthermore, if any of them
-were <code class="docutils literal notranslate"><span class="pre">None</span></code> when the rule was initially evaluated, e.g. <code class="docutils literal notranslate"><span class="pre">b</span></code> was
-<code class="docutils literal notranslate"><span class="pre">None</span></code>; then <code class="docutils literal notranslate"><span class="pre">text</span></code> is bound to <code class="docutils literal notranslate"><span class="pre">b</span></code> and will not become bound
-to <code class="docutils literal notranslate"><span class="pre">d</span></code> even when <code class="docutils literal notranslate"><span class="pre">b</span></code> is changed to not be <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
-<p>By setting <code class="docutils literal notranslate"><span class="pre">rebind</span></code> to <code class="docutils literal notranslate"><span class="pre">True</span></code>, however, the rule will be
-re-evaluated and all the properties rebound when that intermediate
-property changes. E.g. in the example above, whenever <code class="docutils literal notranslate"><span class="pre">b</span></code> changes
-or becomes not <code class="docutils literal notranslate"><span class="pre">None</span></code> if it was <code class="docutils literal notranslate"><span class="pre">None</span></code> before, <code class="docutils literal notranslate"><span class="pre">text</span></code> is
-evaluated again and becomes rebound to <code class="docutils literal notranslate"><span class="pre">d</span></code>. The overall result is
-that <code class="docutils literal notranslate"><span class="pre">text</span></code> is now bound to all the properties among <code class="docutils literal notranslate"><span class="pre">a</span></code>,
-<code class="docutils literal notranslate"><span class="pre">b</span></code>, or <code class="docutils literal notranslate"><span class="pre">c</span></code> that have <code class="docutils literal notranslate"><span class="pre">rebind</span></code> set to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
-</dd>
-<dt><cite>**kwargs</cite>: a list of keyword arguments</dt><dd><dl class="simple">
-<dt><cite>baseclass</cite></dt><dd><p>If kwargs includes a <cite>baseclass</cite> argument, this value will be
-used for validation: <cite>isinstance(value, kwargs['baseclass'])</cite>.</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd>
-</dl>
-<div class="admonition warning">
-<p class="admonition-title">警告</p>
-<p>To mark the property as changed, you must reassign a new python object.</p>
-</div>
-<div class="versionchanged">
-<p><span class="versionmodified changed">バージョン 1.9.0 で変更: </span><cite>rebind</cite> has been introduced.</p>
-</div>
-<div class="versionchanged">
-<p><span class="versionmodified changed">バージョン 1.7.0 で変更: </span><cite>baseclass</cite> parameter added.</p>
-</div>
-</div></blockquote>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="audioworkstation.player.player.PlayerView.volume">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">volume</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#audioworkstation.player.player.PlayerView.volume" title="この定義へのパーマリンク">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-</section>
 <section id="module-audioworkstation.player">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-audioworkstation.player" title="この見出しへのパーマリンク">¶</a></h2>
 </section>
@@ -784,14 +249,27 @@ used for validation: <cite>isinstance(value, kwargs['baseclass'])</cite>.</p>
   <div>
     <h3><a href="index.html">目次</a></h3>
     <ul>
-<li><a class="reference internal" href="#">audioworkstation.player package</a><ul>
+<li><a class="reference internal" href="#">player package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#module-audioworkstation.player.midifile">audioworkstation.player.midifile module</a><ul>
+<li><a class="reference internal" href="#module-audioworkstation.player.player">player module</a><ul>
+<li><a class="reference internal" href="#audioworkstation.player.player.ChannelButton"><code class="docutils literal notranslate"><span class="pre">ChannelButton</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.player.player.MidiTitleButton"><code class="docutils literal notranslate"><span class="pre">MidiTitleButton</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.player.player.PLAYER_STATUS"><code class="docutils literal notranslate"><span class="pre">PLAYER_STATUS</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.player.player.PlayerView"><code class="docutils literal notranslate"><span class="pre">PlayerView</span></code></a><ul>
+<li><a class="reference internal" href="#audioworkstation.player.player.PlayerView.cleanup_playback"><code class="docutils literal notranslate"><span class="pre">PlayerView.cleanup_playback()</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.player.player.PlayerView.mute_channels"><code class="docutils literal notranslate"><span class="pre">PlayerView.mute_channels()</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.player.player.PlayerView.progress_ticks"><code class="docutils literal notranslate"><span class="pre">PlayerView.progress_ticks()</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.player.player.PlayerView.select"><code class="docutils literal notranslate"><span class="pre">PlayerView.select()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-audioworkstation.player.midifile">midifile module</a><ul>
 <li><a class="reference internal" href="#audioworkstation.player.midifile.MidiPlayer"><code class="docutils literal notranslate"><span class="pre">MidiPlayer</span></code></a><ul>
-<li><a class="reference internal" href="#audioworkstation.player.midifile.MidiPlayer.gain"><code class="docutils literal notranslate"><span class="pre">MidiPlayer.gain</span></code></a></li>
-<li><a class="reference internal" href="#audioworkstation.player.midifile.MidiPlayer.pause_tick"><code class="docutils literal notranslate"><span class="pre">MidiPlayer.pause_tick</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.player.midifile.MidiPlayer.start"><code class="docutils literal notranslate"><span class="pre">MidiPlayer.start()</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.player.midifile.MidiPlayer.stop"><code class="docutils literal notranslate"><span class="pre">MidiPlayer.stop()</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.player.midifile.MidiPlayer.gain"><code class="docutils literal notranslate"><span class="pre">MidiPlayer.gain</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.player.midifile.MidiPlayer.pause_tick"><code class="docutils literal notranslate"><span class="pre">MidiPlayer.pause_tick</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.player.midifile.MidiPlayer.tick"><code class="docutils literal notranslate"><span class="pre">MidiPlayer.tick</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.player.midifile.MidiPlayer.volume"><code class="docutils literal notranslate"><span class="pre">MidiPlayer.volume</span></code></a></li>
 </ul>
@@ -799,46 +277,6 @@ used for validation: <cite>isinstance(value, kwargs['baseclass'])</cite>.</p>
 <li><a class="reference internal" href="#audioworkstation.player.midifile.gm_sound_set_names"><code class="docutils literal notranslate"><span class="pre">gm_sound_set_names()</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.player.midifile.info_midifile"><code class="docutils literal notranslate"><span class="pre">info_midifile()</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.player.midifile.mute_rules"><code class="docutils literal notranslate"><span class="pre">mute_rules()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#module-audioworkstation.player.player">audioworkstation.player.player module</a><ul>
-<li><a class="reference internal" href="#audioworkstation.player.player.ChannelButton"><code class="docutils literal notranslate"><span class="pre">ChannelButton</span></code></a><ul>
-<li><a class="reference internal" href="#audioworkstation.player.player.ChannelButton.index"><code class="docutils literal notranslate"><span class="pre">ChannelButton.index</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#audioworkstation.player.player.MidiTitleButton"><code class="docutils literal notranslate"><span class="pre">MidiTitleButton</span></code></a><ul>
-<li><a class="reference internal" href="#audioworkstation.player.player.MidiTitleButton.channels_preset"><code class="docutils literal notranslate"><span class="pre">MidiTitleButton.channels_preset</span></code></a></li>
-<li><a class="reference internal" href="#audioworkstation.player.player.MidiTitleButton.filename"><code class="docutils literal notranslate"><span class="pre">MidiTitleButton.filename</span></code></a></li>
-<li><a class="reference internal" href="#audioworkstation.player.player.MidiTitleButton.total_tick"><code class="docutils literal notranslate"><span class="pre">MidiTitleButton.total_tick</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#audioworkstation.player.player.PLAYER_STATUS"><code class="docutils literal notranslate"><span class="pre">PLAYER_STATUS</span></code></a><ul>
-<li><a class="reference internal" href="#audioworkstation.player.player.PLAYER_STATUS.PAUSE"><code class="docutils literal notranslate"><span class="pre">PLAYER_STATUS.PAUSE</span></code></a></li>
-<li><a class="reference internal" href="#audioworkstation.player.player.PLAYER_STATUS.PLAYBACK"><code class="docutils literal notranslate"><span class="pre">PLAYER_STATUS.PLAYBACK</span></code></a></li>
-<li><a class="reference internal" href="#audioworkstation.player.player.PLAYER_STATUS.STANDBY"><code class="docutils literal notranslate"><span class="pre">PLAYER_STATUS.STANDBY</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#audioworkstation.player.player.PlayerView"><code class="docutils literal notranslate"><span class="pre">PlayerView</span></code></a><ul>
-<li><a class="reference internal" href="#audioworkstation.player.player.PlayerView.add_channelbuttons"><code class="docutils literal notranslate"><span class="pre">PlayerView.add_channelbuttons()</span></code></a></li>
-<li><a class="reference internal" href="#audioworkstation.player.player.PlayerView.add_midititlebutton"><code class="docutils literal notranslate"><span class="pre">PlayerView.add_midititlebutton()</span></code></a></li>
-<li><a class="reference internal" href="#audioworkstation.player.player.PlayerView.channels"><code class="docutils literal notranslate"><span class="pre">PlayerView.channels</span></code></a></li>
-<li><a class="reference internal" href="#audioworkstation.player.player.PlayerView.cleanup_playback"><code class="docutils literal notranslate"><span class="pre">PlayerView.cleanup_playback()</span></code></a></li>
-<li><a class="reference internal" href="#audioworkstation.player.player.PlayerView.executor"><code class="docutils literal notranslate"><span class="pre">PlayerView.executor</span></code></a></li>
-<li><a class="reference internal" href="#audioworkstation.player.player.PlayerView.midifiles"><code class="docutils literal notranslate"><span class="pre">PlayerView.midifiles</span></code></a></li>
-<li><a class="reference internal" href="#audioworkstation.player.player.PlayerView.mute_channels"><code class="docutils literal notranslate"><span class="pre">PlayerView.mute_channels()</span></code></a></li>
-<li><a class="reference internal" href="#audioworkstation.player.player.PlayerView.pause"><code class="docutils literal notranslate"><span class="pre">PlayerView.pause()</span></code></a></li>
-<li><a class="reference internal" href="#audioworkstation.player.player.PlayerView.pause_button"><code class="docutils literal notranslate"><span class="pre">PlayerView.pause_button</span></code></a></li>
-<li><a class="reference internal" href="#audioworkstation.player.player.PlayerView.percussion_sound_set"><code class="docutils literal notranslate"><span class="pre">PlayerView.percussion_sound_set</span></code></a></li>
-<li><a class="reference internal" href="#audioworkstation.player.player.PlayerView.play_button"><code class="docutils literal notranslate"><span class="pre">PlayerView.play_button</span></code></a></li>
-<li><a class="reference internal" href="#audioworkstation.player.player.PlayerView.playback"><code class="docutils literal notranslate"><span class="pre">PlayerView.playback()</span></code></a></li>
-<li><a class="reference internal" href="#audioworkstation.player.player.PlayerView.progress_ticks"><code class="docutils literal notranslate"><span class="pre">PlayerView.progress_ticks()</span></code></a></li>
-<li><a class="reference internal" href="#audioworkstation.player.player.PlayerView.select"><code class="docutils literal notranslate"><span class="pre">PlayerView.select()</span></code></a></li>
-<li><a class="reference internal" href="#audioworkstation.player.player.PlayerView.sound_set"><code class="docutils literal notranslate"><span class="pre">PlayerView.sound_set</span></code></a></li>
-<li><a class="reference internal" href="#audioworkstation.player.player.PlayerView.status"><code class="docutils literal notranslate"><span class="pre">PlayerView.status()</span></code></a></li>
-<li><a class="reference internal" href="#audioworkstation.player.player.PlayerView.ticks_slider"><code class="docutils literal notranslate"><span class="pre">PlayerView.ticks_slider</span></code></a></li>
-<li><a class="reference internal" href="#audioworkstation.player.player.PlayerView.volume"><code class="docutils literal notranslate"><span class="pre">PlayerView.volume</span></code></a></li>
-</ul>
-</li>
 </ul>
 </li>
 <li><a class="reference internal" href="#module-audioworkstation.player">Module contents</a></li>
@@ -850,12 +288,12 @@ used for validation: <cite>isinstance(value, kwargs['baseclass'])</cite>.</p>
   <div>
     <h4>前のトピックへ</h4>
     <p class="topless"><a href="audioworkstation.metronome.html"
-                          title="前の章へ">audioworkstation.metronome package</a></p>
+                          title="前の章へ">metronome package</a></p>
   </div>
   <div>
     <h4>次のトピックへ</h4>
-    <p class="topless"><a href="audioworkstation.setup.html"
-                          title="次の章へ">audioworkstation.setup package</a></p>
+    <p class="topless"><a href="audioworkstation.libs.audio.html"
+                          title="次の章へ">audio package</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>このページ</h3>
@@ -888,15 +326,14 @@ used for validation: <cite>isinstance(value, kwargs['baseclass'])</cite>.</p>
           <a href="py-modindex.html" title="Pythonモジュール索引"
              >モジュール</a> |</li>
         <li class="right" >
-          <a href="audioworkstation.setup.html" title="audioworkstation.setup package"
+          <a href="audioworkstation.libs.audio.html" title="audio package"
              >次へ</a> |</li>
         <li class="right" >
-          <a href="audioworkstation.metronome.html" title="audioworkstation.metronome package"
+          <a href="audioworkstation.metronome.html" title="metronome package"
              >前へ</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">AudioWorkstation 0.3 ドキュメント</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="srcmodules.html" >audioworkstation</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="audioworkstation.html" >audioworkstation package</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">audioworkstation.player package</a></li> 
+          <li class="nav-item nav-item-1"><a href="audioworkstation.html" >audioworkstation package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">player package</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

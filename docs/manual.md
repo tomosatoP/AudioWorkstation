@@ -1,7 +1,6 @@
 # Sphinx を使った API 仕様書の作成
 https://www.sphinx-doc.org/ja/master/index.html
 
-なぜか css ファイルをコミットできないので、github pages でスタイルを反映できない。
 ## Sphinx のインストールと、プロジェクトの基本設定
 ~~~sh
 (venv) ~/AudioWorkstation $ pip install Sphinx
@@ -28,11 +27,13 @@ https://www.sphinx-doc.org/ja/master/index.html
 +     "sphinx.ext.napoleon",
 +     "sphinx.ext.githubpages",
 + ]
++ add_module_names = False           # オブジェクト名の前にモジュール名を付けない
++ autodoc_member_order = "groupwise" # メンバーのタイプに応じてソートを変更
 + autodoc_typehints = "description"  # 型ヒントを有効
-+ autoclass_content = "both"  # __init__()も出力
++ autoclass_content = "both"         # __init__()も出力
 + autodoc_default_options = {
-+     "private-members": False,  # プライベートメソッドを表示しない
-+     "show-inheritance": True,  # 継承を表示
++     "private-members": False,      # プライベートメソッドを表示しない(デフォルト)
++     "show-inheritance": True,      # 継承を表示
 + }
 
 (venv) ~/AudioWorkstation $ nano docs/source/index.rst

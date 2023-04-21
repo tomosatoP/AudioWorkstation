@@ -10,8 +10,11 @@ Welcome to AudioWorkstation's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   srcmodules
-   testmodules
+   audioworkstation
+   audioworkstation.libs.audio
+   audioworkstation.libs.sublibs
+   audioworkstation.setup
+   tests
 
 
 Indices and tables

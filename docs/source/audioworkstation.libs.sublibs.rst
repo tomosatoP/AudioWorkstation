@@ -1,10 +1,10 @@
-audioworkstation.libs.sublibs package
+sublibs package
 =====================================
 
 Submodules
 ----------
 
-audioworkstation.libs.sublibs.parts module
+parts module
 ------------------------------------------
 
 .. automodule:: audioworkstation.libs.sublibs.parts
@@ -12,7 +12,7 @@ audioworkstation.libs.sublibs.parts module
    :undoc-members:
    :show-inheritance:
 
-audioworkstation.libs.sublibs.standardmidifile module
+standardmidifile module
 -----------------------------------------------------
 
 .. automodule:: audioworkstation.libs.sublibs.standardmidifile

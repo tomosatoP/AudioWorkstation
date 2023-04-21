@@ -1,18 +1,17 @@
-audioworkstation.keyboard package
+keyboard package
 =================================
 
 Submodules
 ----------
 
-audioworkstation.keyboard.keyboard module
+keyboard module
 -----------------------------------------
 
 .. automodule:: audioworkstation.keyboard.keyboard
    :members:
-   :undoc-members:
    :show-inheritance:
 
-audioworkstation.keyboard.mididriver module
+mididriver module
 -------------------------------------------
 
 .. automodule:: audioworkstation.keyboard.mididriver

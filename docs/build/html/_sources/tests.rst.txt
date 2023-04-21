@@ -4,7 +4,7 @@ tests package
 Submodules
 ----------
 
-tests.test\_Fluidsynth module
+test\_Fluidsynth module
 -----------------------------
 
 .. automodule:: tests.test_Fluidsynth
@@ -12,7 +12,7 @@ tests.test\_Fluidsynth module
    :undoc-members:
    :show-inheritance:
 
-tests.test\_Standardmidifile module
+test\_Standardmidifile module
 -----------------------------------
 
 .. automodule:: tests.test_Standardmidifile
@@ -20,7 +20,7 @@ tests.test\_Standardmidifile module
    :undoc-members:
    :show-inheritance:
 
-tests.test\_amixer module
+test\_amixer module
 -------------------------
 
 .. automodule:: tests.test_amixer

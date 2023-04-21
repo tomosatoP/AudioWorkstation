@@ -1,12 +1,25 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """Assists in connecting to Bluetooth device."""
 
 import bluetooth as BT
+import logging as LBT
 from subprocess import Popen, run, PIPE
+
+
+# Logger
+logger = LBT.getLogger(__name__)
+logger.setLevel(LBT.DEBUG)
+_logger_formatter = LBT.Formatter("%(asctime)s %(levelname)s %(message)s")
+# Logger StreamHandler
+_logger_sh = LBT.StreamHandler()
+_logger_sh.setFormatter(_logger_formatter)
+logger.addHandler(_logger_sh)
 
 
 def _audiosink(address: str) -> tuple:
     """Get information on "audio sink" service.
+
     :param str address: device address
     :return: (address, port)
     """
@@ -89,6 +102,7 @@ def device_info() -> dict[str, str]:
             elif _connect(address):
                 return {name: address}
 
+    logger.info("Bluetooth Audio Sink Device: Not found.")
     return {"": ""}
 
 

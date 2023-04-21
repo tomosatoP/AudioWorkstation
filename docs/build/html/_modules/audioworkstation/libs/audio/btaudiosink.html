@@ -37,14 +37,27 @@
             
   <h1>audioworkstation.libs.audio.btaudiosink のソースコード</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;Assists in connecting to Bluetooth device.&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">bluetooth</span> <span class="k">as</span> <span class="nn">BT</span>
+<span class="kn">import</span> <span class="nn">logging</span> <span class="k">as</span> <span class="nn">LBT</span>
 <span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">Popen</span><span class="p">,</span> <span class="n">run</span><span class="p">,</span> <span class="n">PIPE</span>
+
+
+<span class="c1"># Logger</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">LBT</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">LBT</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+<span class="n">_logger_formatter</span> <span class="o">=</span> <span class="n">LBT</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%(asctime)s</span><span class="s2"> </span><span class="si">%(levelname)s</span><span class="s2"> </span><span class="si">%(message)s</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="c1"># Logger StreamHandler</span>
+<span class="n">_logger_sh</span> <span class="o">=</span> <span class="n">LBT</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">()</span>
+<span class="n">_logger_sh</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">_logger_formatter</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">_logger_sh</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">_audiosink</span><span class="p">(</span><span class="n">address</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get information on &quot;audio sink&quot; service.</span>
+
 <span class="sd">    :param str address: device address</span>
 <span class="sd">    :return: (address, port)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -127,6 +140,7 @@
             <span class="k">elif</span> <span class="n">_connect</span><span class="p">(</span><span class="n">address</span><span class="p">):</span>
                 <span class="k">return</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">address</span><span class="p">}</span>
 
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Bluetooth Audio Sink Device: Not found.&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">}</span></div>
 
 

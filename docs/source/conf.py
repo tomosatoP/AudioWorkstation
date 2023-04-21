@@ -21,7 +21,8 @@ extensions = [
     "sphinx.ext.napoleon",
     "sphinx.ext.githubpages",
 ]
-add_module_names = False
+add_module_names = False  # オブジェクト名の前にモジュール名を付けない
+autodoc_member_order = "groupwise"  # メンバーのタイプに応じてソートを変更
 autodoc_typehints = "description"  # 型ヒントを有効
 autoclass_content = "both"  # __init__()も出力
 autodoc_default_options = {

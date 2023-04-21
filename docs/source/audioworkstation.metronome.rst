@@ -1,18 +1,17 @@
-audioworkstation.metronome package
+metronome package
 ==================================
 
 Submodules
 ----------
 
-audioworkstation.metronome.metronome module
+metronome module
 -------------------------------------------
 
 .. automodule:: audioworkstation.metronome.metronome
    :members:
-   :undoc-members:
    :show-inheritance:
 
-audioworkstation.metronome.pattern module
+pattern module
 -----------------------------------------
 
 .. automodule:: audioworkstation.metronome.pattern

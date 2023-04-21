@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>audioworkstation.libs.audio package &#8212; AudioWorkstation 0.3 ドキュメント</title>
+    <title>audio package &#8212; AudioWorkstation 0.3 ドキュメント</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinxdoc.css" />
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -15,8 +15,8 @@
     <script src="_static/translations.js"></script>
     <link rel="index" title="索引" href="genindex.html" />
     <link rel="search" title="検索" href="search.html" />
-    <link rel="next" title="audioworkstation.libs.sublibs package" href="audioworkstation.libs.sublibs.html" />
-    <link rel="prev" title="audioworkstation.libs package" href="audioworkstation.libs.html" /> 
+    <link rel="next" title="sublibs package" href="audioworkstation.libs.sublibs.html" />
+    <link rel="prev" title="player package" href="audioworkstation.player.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>ナビゲーション</h3>
@@ -28,16 +28,13 @@
           <a href="py-modindex.html" title="Pythonモジュール索引"
              >モジュール</a> |</li>
         <li class="right" >
-          <a href="audioworkstation.libs.sublibs.html" title="audioworkstation.libs.sublibs package"
+          <a href="audioworkstation.libs.sublibs.html" title="sublibs package"
              accesskey="N">次へ</a> |</li>
         <li class="right" >
-          <a href="audioworkstation.libs.html" title="audioworkstation.libs package"
+          <a href="audioworkstation.player.html" title="player package"
              accesskey="P">前へ</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">AudioWorkstation 0.3 ドキュメント</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="srcmodules.html" >audioworkstation</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="audioworkstation.html" >audioworkstation package</a> &#187;</li>
-          <li class="nav-item nav-item-3"><a href="audioworkstation.libs.html" accesskey="U">audioworkstation.libs package</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">audioworkstation.libs.audio package</a></li> 
+        <li class="nav-item nav-item-this"><a href="">audio package</a></li> 
       </ul>
     </div>  
 
@@ -46,13 +43,13 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section id="audioworkstation-libs-audio-package">
-<h1>audioworkstation.libs.audio package<a class="headerlink" href="#audioworkstation-libs-audio-package" title="この見出しへのパーマリンク">¶</a></h1>
+  <section id="audio-package">
+<h1>audio package<a class="headerlink" href="#audio-package" title="この見出しへのパーマリンク">¶</a></h1>
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="この見出しへのパーマリンク">¶</a></h2>
 </section>
 <section id="module-audioworkstation.libs.audio.asound">
-<span id="audioworkstation-libs-audio-asound-module"></span><h2>audioworkstation.libs.audio.asound module<a class="headerlink" href="#module-audioworkstation.libs.audio.asound" title="この見出しへのパーマリンク">¶</a></h2>
+<span id="asound-module"></span><h2>asound module<a class="headerlink" href="#module-audioworkstation.libs.audio.asound" title="この見出しへのパーマリンク">¶</a></h2>
 <p>Detect and configure sound devices, control volume.</p>
 <dl class="field-list simple">
 <dt class="field-odd">reference<span class="colon">:</span></dt>
@@ -165,7 +162,16 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="audioworkstation.libs.audio.asound.list_name_hint">
 <span class="sig-name descname"><span class="pre">list_name_hint</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/audio/asound.html#list_name_hint"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.audio.asound.list_name_hint" title="この定義へのパーマリンク">¶</a></dt>
-<dd><p>Return name hints table.</p>
+<dd><p>Save the name hints table to a file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">変数<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>f</strong> (<em>path-like</em>) -- &quot;docs/alsa-namehint.md&quot;</p>
+</dd>
+<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+<p>---</p>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>iface</p></th>
@@ -182,9 +188,24 @@
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="audioworkstation.libs.audio.asound.mixer_device">
+<span class="sig-name descname"><span class="pre">mixer_device</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/audio/asound.html#mixer_device"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.audio.asound.mixer_device" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>Returns information on available mixer devices.</p>
 <dl class="field-list simple">
-<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None</p>
+<dt class="field-odd">戻り値<span class="colon">:</span></dt>
+<dd class="field-odd"><p>[device name, device idname, control name, control idname]</p>
+</dd>
+<dt class="field-even">Examples<span class="colon">:</span></dt>
+<dd class="field-even"><p>[&quot;hw:CARD=Headphones&quot;, &quot;PCM&quot;, &quot;default&quot;, &quot;Master&quot;]</p>
+</dd>
+<dt class="field-odd">Examples<span class="colon">:</span></dt>
+<dd class="field-odd"><p>[&quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;] if not found.</p>
+</dd>
+<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-even"><p>list[str]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -216,22 +237,26 @@
 <dd><p>Start JACK server.</p>
 <dl class="field-list simple">
 <dt class="field-odd">戻り値<span class="colon">:</span></dt>
-<dd class="field-odd"><p>(device name, device control name)</p>
+<dd class="field-odd"><p>[device name, device idname, control name, control idname]</p>
 </dd>
-<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
-<dd class="field-even"><p>tuple[str, str]</p>
+<dt class="field-even">Exapmles<span class="colon">:</span></dt>
+<dd class="field-even"><p>[&quot;bluealsa:00:00:00:00:00:00&quot;, &quot;A2DP&quot;, &quot;bluealsa:00:00:00:00:00:00&quot;, &quot;A2DP&quot;]</p>
+</dd>
+<dt class="field-odd">Examples<span class="colon">:</span></dt>
+<dd class="field-odd"><p>[&quot;hw:CARD=Headphones&quot;, &quot;PCM&quot;, &quot;default&quot;, &quot;Master&quot;]</p>
+</dd>
+<dt class="field-even">Examples<span class="colon">:</span></dt>
+<dd class="field-even"><p>[&quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;] if Not registered.</p>
+</dd>
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[str]</p>
 </dd>
 </dl>
-<div class="line-block">
-<div class="line">&lt;exapmles&gt; (&quot;bluealsa:00:00:00:00:00:00&quot;, &quot;A2DP&quot;)</div>
-<div class="line">&lt;exapmles&gt; (&quot;default&quot;, &quot;Master&quot;)</div>
-<div class="line">&lt;exapmles&gt; (&quot;&quot;, &quot;&quot;) if failed.</div>
-</div>
 </dd></dl>
 
 </section>
 <section id="module-audioworkstation.libs.audio.btaudiosink">
-<span id="audioworkstation-libs-audio-btaudiosink-module"></span><h2>audioworkstation.libs.audio.btaudiosink module<a class="headerlink" href="#module-audioworkstation.libs.audio.btaudiosink" title="この見出しへのパーマリンク">¶</a></h2>
+<span id="btaudiosink-module"></span><h2>btaudiosink module<a class="headerlink" href="#module-audioworkstation.libs.audio.btaudiosink" title="この見出しへのパーマリンク">¶</a></h2>
 <p>Assists in connecting to Bluetooth device.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="audioworkstation.libs.audio.btaudiosink.device_info">
@@ -253,7 +278,7 @@
 
 </section>
 <section id="module-audioworkstation.libs.audio.fluidsynth">
-<span id="audioworkstation-libs-audio-fluidsynth-module"></span><h2>audioworkstation.libs.audio.fluidsynth module<a class="headerlink" href="#module-audioworkstation.libs.audio.fluidsynth" title="この見出しへのパーマリンク">¶</a></h2>
+<span id="fluidsynth-module"></span><h2>fluidsynth module<a class="headerlink" href="#module-audioworkstation.libs.audio.fluidsynth" title="この見出しへのパーマリンク">¶</a></h2>
 <p>Piano playing practice with MIDI keyboard.</p>
 <div class="line-block">
 <div class="line">Use this module from Kivy as a separate thread.</div>
@@ -264,6 +289,21 @@
 <dd class="field-odd"><p><a class="reference external" href="https://www.fluidsynth.org/api/">https://www.fluidsynth.org/api/</a></p>
 </dd>
 </dl>
+<dl class="py exception">
+<dt class="sig sig-object py" id="audioworkstation.libs.audio.fluidsynth.FSError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FSError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/audio/fluidsynth.html#FSError"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.audio.fluidsynth.FSError" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Exceptions sent out from errcheck func.</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>args</strong> (<em>object</em>) -- </p>
+</dd>
+<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="audioworkstation.libs.audio.fluidsynth.EventUserData">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">EventUserData</span></span><a class="reference internal" href="_modules/audioworkstation/libs/audio/fluidsynth.html#EventUserData"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.audio.fluidsynth.EventUserData" title="この定義へのパーマリンク">¶</a></dt>
@@ -519,21 +559,6 @@
 
 </dd></dl>
 
-<dl class="py exception">
-<dt class="sig sig-object py" id="audioworkstation.libs.audio.fluidsynth.FSError">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FSError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/audio/fluidsynth.html#FSError"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.audio.fluidsynth.FSError" title="この定義へのパーマリンク">¶</a></dt>
-<dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
-<p>Exceptions sent out from errcheck func.</p>
-<dl class="field-list simple">
-<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>args</strong> (<em>object</em>) -- </p>
-</dd>
-<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py attribute">
 <dt class="sig sig-object py" id="audioworkstation.libs.audio.fluidsynth.HANDLE_MIDI_EVENT_FUNC_T">
 <span class="sig-name descname"><span class="pre">HANDLE_MIDI_EVENT_FUNC_T</span></span><a class="headerlink" href="#audioworkstation.libs.audio.fluidsynth.HANDLE_MIDI_EVENT_FUNC_T" title="この定義へのパーマリンク">¶</a></dt>
@@ -673,12 +698,6 @@ or default rules if none</p>
 'soundfont':['sf2/FluidR3_GM.sf2', 'sf2/SGM-V2.01.sf2']}</p>
 </dd>
 </dl>
-<dl class="py property">
-<dt class="sig sig-object py" id="audioworkstation.libs.audio.fluidsynth.Sequencer.bps">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bps</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#audioworkstation.libs.audio.fluidsynth.Sequencer.bps" title="この定義へのパーマリンク">¶</a></dt>
-<dd><p>Number of quarternotes per second</p>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="audioworkstation.libs.audio.fluidsynth.Sequencer.client_name">
 <span class="sig-name descname"><span class="pre">client_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/audio/fluidsynth.html#Sequencer.client_name"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.audio.fluidsynth.Sequencer.client_name" title="この定義へのパーマリンク">¶</a></dt>
@@ -691,11 +710,6 @@ or default rules if none</p>
 </dd>
 </dl>
 </dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="audioworkstation.libs.audio.fluidsynth.Sequencer.clients">
-<span class="sig-name descname"><span class="pre">clients</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[1]</span></em><a class="headerlink" href="#audioworkstation.libs.audio.fluidsynth.Sequencer.clients" title="この定義へのパーマリンク">¶</a></dt>
-<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="audioworkstation.libs.audio.fluidsynth.Sequencer.note_at">
@@ -740,19 +754,6 @@ or default rules if none</p>
 </dl>
 </dd></dl>
 
-<dl class="py property">
-<dt class="sig sig-object py" id="audioworkstation.libs.audio.fluidsynth.Sequencer.tick">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">tick</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#audioworkstation.libs.audio.fluidsynth.Sequencer.tick" title="この定義へのパーマリンク">¶</a></dt>
-<dd><p>current tick of the sequencer scaled
-by the time scale currently set</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="audioworkstation.libs.audio.fluidsynth.Sequencer.time_scale">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">time_scale</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#audioworkstation.libs.audio.fluidsynth.Sequencer.time_scale" title="この定義へのパーマリンク">¶</a></dt>
-<dd><p>Ticks per second</p>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="audioworkstation.libs.audio.fluidsynth.Sequencer.timer_at">
 <span class="sig-name descname"><span class="pre">timer_at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ticks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">absolute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/audio/fluidsynth.html#Sequencer.timer_at"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.audio.fluidsynth.Sequencer.timer_at" title="この定義へのパーマリンク">¶</a></dt>
@@ -770,6 +771,30 @@ by the time scale currently set</p>
 <dd class="field-even"><p>None</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="audioworkstation.libs.audio.fluidsynth.Sequencer.bps">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bps</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#audioworkstation.libs.audio.fluidsynth.Sequencer.bps" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>Number of quarternotes per second</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.libs.audio.fluidsynth.Sequencer.clients">
+<span class="sig-name descname"><span class="pre">clients</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[1]</span></em><a class="headerlink" href="#audioworkstation.libs.audio.fluidsynth.Sequencer.clients" title="この定義へのパーマリンク">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="audioworkstation.libs.audio.fluidsynth.Sequencer.tick">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">tick</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#audioworkstation.libs.audio.fluidsynth.Sequencer.tick" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>current tick of the sequencer scaled
+by the time scale currently set</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="audioworkstation.libs.audio.fluidsynth.Sequencer.time_scale">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">time_scale</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#audioworkstation.libs.audio.fluidsynth.Sequencer.time_scale" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>Ticks per second</p>
 </dd></dl>
 
 </dd></dl>
@@ -818,20 +843,6 @@ by the time scale currently set</p>
 </dd>
 <dt class="field-even">戻り値の型<span class="colon">:</span></dt>
 <dd class="field-even"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="audioworkstation.libs.audio.fluidsynth.Synthesizer.gain">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">gain</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#audioworkstation.libs.audio.fluidsynth.Synthesizer.gain" title="この定義へのパーマリンク">¶</a></dt>
-<dd><p>0.0, Max:10.0</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>defalt</p>
-</dd>
-<dt class="field-even">Type<span class="colon">:</span></dt>
-<dd class="field-even"><p>0.2, Min</p>
 </dd>
 </dl>
 </dd></dl>
@@ -977,11 +988,6 @@ by the time scale currently set</p>
 </dl>
 </dd></dl>
 
-<dl class="py property">
-<dt class="sig sig-object py" id="audioworkstation.libs.audio.fluidsynth.Synthesizer.soundfonts">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">soundfonts</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span></em><a class="headerlink" href="#audioworkstation.libs.audio.fluidsynth.Synthesizer.soundfonts" title="この定義へのパーマリンク">¶</a></dt>
-<dd></dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="audioworkstation.libs.audio.fluidsynth.Synthesizer.sustain_off">
 <span class="sig-name descname"><span class="pre">sustain_off</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chan</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/audio/fluidsynth.html#Synthesizer.sustain_off"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.audio.fluidsynth.Synthesizer.sustain_off" title="この定義へのパーマリンク">¶</a></dt>
@@ -1036,6 +1042,25 @@ by the time scale currently set</p>
 </dl>
 </dd></dl>
 
+<dl class="py property">
+<dt class="sig sig-object py" id="audioworkstation.libs.audio.fluidsynth.Synthesizer.gain">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">gain</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#audioworkstation.libs.audio.fluidsynth.Synthesizer.gain" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>0.0, Max:10.0</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>defalt</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>0.2, Min</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="audioworkstation.libs.audio.fluidsynth.Synthesizer.soundfonts">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">soundfonts</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span></em><a class="headerlink" href="#audioworkstation.libs.audio.fluidsynth.Synthesizer.soundfonts" title="この定義へのパーマリンク">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 </section>
@@ -1058,9 +1083,9 @@ by the time scale currently set</p>
   <div>
     <h3><a href="index.html">目次</a></h3>
     <ul>
-<li><a class="reference internal" href="#">audioworkstation.libs.audio package</a><ul>
+<li><a class="reference internal" href="#">audio package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#module-audioworkstation.libs.audio.asound">audioworkstation.libs.audio.asound module</a><ul>
+<li><a class="reference internal" href="#module-audioworkstation.libs.audio.asound">asound module</a><ul>
 <li><a class="reference internal" href="#audioworkstation.libs.audio.asound.AS2Error"><code class="docutils literal notranslate"><span class="pre">AS2Error</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.libs.audio.asound.SND_MIXER_SELEM_CHANNEL_ID_T"><code class="docutils literal notranslate"><span class="pre">SND_MIXER_SELEM_CHANNEL_ID_T</span></code></a><ul>
 <li><a class="reference internal" href="#audioworkstation.libs.audio.asound.SND_MIXER_SELEM_CHANNEL_ID_T.FRONT_CENTER"><code class="docutils literal notranslate"><span class="pre">SND_MIXER_SELEM_CHANNEL_ID_T.FRONT_CENTER</span></code></a></li>
@@ -1079,15 +1104,17 @@ by the time scale currently set</p>
 </li>
 <li><a class="reference internal" href="#audioworkstation.libs.audio.asound.get_volume"><code class="docutils literal notranslate"><span class="pre">get_volume()</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.libs.audio.asound.list_name_hint"><code class="docutils literal notranslate"><span class="pre">list_name_hint()</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.libs.audio.asound.mixer_device"><code class="docutils literal notranslate"><span class="pre">mixer_device()</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.libs.audio.asound.set_volume"><code class="docutils literal notranslate"><span class="pre">set_volume()</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.libs.audio.asound.start_jackserver"><code class="docutils literal notranslate"><span class="pre">start_jackserver()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-audioworkstation.libs.audio.btaudiosink">audioworkstation.libs.audio.btaudiosink module</a><ul>
+<li><a class="reference internal" href="#module-audioworkstation.libs.audio.btaudiosink">btaudiosink module</a><ul>
 <li><a class="reference internal" href="#audioworkstation.libs.audio.btaudiosink.device_info"><code class="docutils literal notranslate"><span class="pre">device_info()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-audioworkstation.libs.audio.fluidsynth">audioworkstation.libs.audio.fluidsynth module</a><ul>
+<li><a class="reference internal" href="#module-audioworkstation.libs.audio.fluidsynth">fluidsynth module</a><ul>
+<li><a class="reference internal" href="#audioworkstation.libs.audio.fluidsynth.FSError"><code class="docutils literal notranslate"><span class="pre">FSError</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.libs.audio.fluidsynth.EventUserData"><code class="docutils literal notranslate"><span class="pre">EventUserData</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.libs.audio.fluidsynth.FLUID_EVENT_CALLBACK_T"><code class="docutils literal notranslate"><span class="pre">FLUID_EVENT_CALLBACK_T</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.libs.audio.fluidsynth.FLUID_HINT"><code class="docutils literal notranslate"><span class="pre">FLUID_HINT</span></code></a><ul>
@@ -1140,7 +1167,6 @@ by the time scale currently set</p>
 <li><a class="reference internal" href="#audioworkstation.libs.audio.fluidsynth.FLUID_TYPE.STR"><code class="docutils literal notranslate"><span class="pre">FLUID_TYPE.STR</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#audioworkstation.libs.audio.fluidsynth.FSError"><code class="docutils literal notranslate"><span class="pre">FSError</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.libs.audio.fluidsynth.HANDLE_MIDI_EVENT_FUNC_T"><code class="docutils literal notranslate"><span class="pre">HANDLE_MIDI_EVENT_FUNC_T</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.libs.audio.fluidsynth.LogUserData"><code class="docutils literal notranslate"><span class="pre">LogUserData</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.libs.audio.fluidsynth.MidiDriver"><code class="docutils literal notranslate"><span class="pre">MidiDriver</span></code></a></li>
@@ -1156,20 +1182,19 @@ by the time scale currently set</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#audioworkstation.libs.audio.fluidsynth.Sequencer"><code class="docutils literal notranslate"><span class="pre">Sequencer</span></code></a><ul>
-<li><a class="reference internal" href="#audioworkstation.libs.audio.fluidsynth.Sequencer.bps"><code class="docutils literal notranslate"><span class="pre">Sequencer.bps</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.libs.audio.fluidsynth.Sequencer.client_name"><code class="docutils literal notranslate"><span class="pre">Sequencer.client_name()</span></code></a></li>
-<li><a class="reference internal" href="#audioworkstation.libs.audio.fluidsynth.Sequencer.clients"><code class="docutils literal notranslate"><span class="pre">Sequencer.clients</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.libs.audio.fluidsynth.Sequencer.note_at"><code class="docutils literal notranslate"><span class="pre">Sequencer.note_at()</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.libs.audio.fluidsynth.Sequencer.register_client"><code class="docutils literal notranslate"><span class="pre">Sequencer.register_client()</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.libs.audio.fluidsynth.Sequencer.timer_at"><code class="docutils literal notranslate"><span class="pre">Sequencer.timer_at()</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.libs.audio.fluidsynth.Sequencer.bps"><code class="docutils literal notranslate"><span class="pre">Sequencer.bps</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.libs.audio.fluidsynth.Sequencer.clients"><code class="docutils literal notranslate"><span class="pre">Sequencer.clients</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.libs.audio.fluidsynth.Sequencer.tick"><code class="docutils literal notranslate"><span class="pre">Sequencer.tick</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.libs.audio.fluidsynth.Sequencer.time_scale"><code class="docutils literal notranslate"><span class="pre">Sequencer.time_scale</span></code></a></li>
-<li><a class="reference internal" href="#audioworkstation.libs.audio.fluidsynth.Sequencer.timer_at"><code class="docutils literal notranslate"><span class="pre">Sequencer.timer_at()</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#audioworkstation.libs.audio.fluidsynth.Synthesizer"><code class="docutils literal notranslate"><span class="pre">Synthesizer</span></code></a><ul>
 <li><a class="reference internal" href="#audioworkstation.libs.audio.fluidsynth.Synthesizer.channels_preset"><code class="docutils literal notranslate"><span class="pre">Synthesizer.channels_preset()</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.libs.audio.fluidsynth.Synthesizer.expression"><code class="docutils literal notranslate"><span class="pre">Synthesizer.expression()</span></code></a></li>
-<li><a class="reference internal" href="#audioworkstation.libs.audio.fluidsynth.Synthesizer.gain"><code class="docutils literal notranslate"><span class="pre">Synthesizer.gain</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.libs.audio.fluidsynth.Synthesizer.gm_sound_set"><code class="docutils literal notranslate"><span class="pre">Synthesizer.gm_sound_set()</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.libs.audio.fluidsynth.Synthesizer.modulation_wheel"><code class="docutils literal notranslate"><span class="pre">Synthesizer.modulation_wheel()</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.libs.audio.fluidsynth.Synthesizer.note_off"><code class="docutils literal notranslate"><span class="pre">Synthesizer.note_off()</span></code></a></li>
@@ -1178,11 +1203,12 @@ by the time scale currently set</p>
 <li><a class="reference internal" href="#audioworkstation.libs.audio.fluidsynth.Synthesizer.pitch_bend"><code class="docutils literal notranslate"><span class="pre">Synthesizer.pitch_bend()</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.libs.audio.fluidsynth.Synthesizer.pitch_wheel_sens"><code class="docutils literal notranslate"><span class="pre">Synthesizer.pitch_wheel_sens()</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.libs.audio.fluidsynth.Synthesizer.program_select"><code class="docutils literal notranslate"><span class="pre">Synthesizer.program_select()</span></code></a></li>
-<li><a class="reference internal" href="#audioworkstation.libs.audio.fluidsynth.Synthesizer.soundfonts"><code class="docutils literal notranslate"><span class="pre">Synthesizer.soundfonts</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.libs.audio.fluidsynth.Synthesizer.sustain_off"><code class="docutils literal notranslate"><span class="pre">Synthesizer.sustain_off()</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.libs.audio.fluidsynth.Synthesizer.sustain_on"><code class="docutils literal notranslate"><span class="pre">Synthesizer.sustain_on()</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.libs.audio.fluidsynth.Synthesizer.version"><code class="docutils literal notranslate"><span class="pre">Synthesizer.version()</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.libs.audio.fluidsynth.Synthesizer.volume"><code class="docutils literal notranslate"><span class="pre">Synthesizer.volume()</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.libs.audio.fluidsynth.Synthesizer.gain"><code class="docutils literal notranslate"><span class="pre">Synthesizer.gain</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.libs.audio.fluidsynth.Synthesizer.soundfonts"><code class="docutils literal notranslate"><span class="pre">Synthesizer.soundfonts</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -1195,13 +1221,13 @@ by the time scale currently set</p>
   </div>
   <div>
     <h4>前のトピックへ</h4>
-    <p class="topless"><a href="audioworkstation.libs.html"
-                          title="前の章へ">audioworkstation.libs package</a></p>
+    <p class="topless"><a href="audioworkstation.player.html"
+                          title="前の章へ">player package</a></p>
   </div>
   <div>
     <h4>次のトピックへ</h4>
     <p class="topless"><a href="audioworkstation.libs.sublibs.html"
-                          title="次の章へ">audioworkstation.libs.sublibs package</a></p>
+                          title="次の章へ">sublibs package</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>このページ</h3>
@@ -1234,16 +1260,13 @@ by the time scale currently set</p>
           <a href="py-modindex.html" title="Pythonモジュール索引"
              >モジュール</a> |</li>
         <li class="right" >
-          <a href="audioworkstation.libs.sublibs.html" title="audioworkstation.libs.sublibs package"
+          <a href="audioworkstation.libs.sublibs.html" title="sublibs package"
              >次へ</a> |</li>
         <li class="right" >
-          <a href="audioworkstation.libs.html" title="audioworkstation.libs package"
+          <a href="audioworkstation.player.html" title="player package"
              >前へ</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">AudioWorkstation 0.3 ドキュメント</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="srcmodules.html" >audioworkstation</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="audioworkstation.html" >audioworkstation package</a> &#187;</li>
-          <li class="nav-item nav-item-3"><a href="audioworkstation.libs.html" >audioworkstation.libs package</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">audioworkstation.libs.audio package</a></li> 
+        <li class="nav-item nav-item-this"><a href="">audio package</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

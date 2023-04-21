@@ -13,9 +13,19 @@ from json import load
 from statistics import mean
 import ctypes as CAS2
 from ctypes.util import find_library
+import logging as LAS
 
 
-from audioworkstation.libs.audio import btaudiosink as BTAS
+from audioworkstation.libs.audio import btaudiosink
+
+# Logger
+logger = LAS.getLogger(__name__)
+logger.setLevel(LAS.DEBUG)
+_logger_formatter = LAS.Formatter("%(asctime)s %(levelname)s %(message)s")
+# Logger StreamHandler
+_logger_sh = LAS.StreamHandler()
+_logger_sh.setFormatter(_logger_formatter)
+logger.addHandler(_logger_sh)
 
 
 class AS2Error(Exception):
@@ -23,7 +33,7 @@ class AS2Error(Exception):
 
     def __init__(self, *args: object) -> None:
         super().__init__(*args)
-        print(f"ASError: {args}")
+        logger.error(f"Mixer device: {args}")
 
 
 def _errcheck_non_zero(result: Any, cfunc: Callable, args: tuple) -> Any:
@@ -424,7 +434,10 @@ _snd_mixer_selem_has_playback_channel = _prototype(
 
 
 def list_name_hint() -> None:
-    """Return name hints table.
+    """Save the name hints table to a file.
+
+    :var path-like f: "docs/alsa-namehint.md"
+    ---
 
     +-----+-----+-----+-----+
     |iface|NAME |DECS |IOID |
@@ -490,12 +503,11 @@ def _physical_mixer_names() -> list[str]:
 
 
 def _amixer_volume(amixer_command: list) -> int:
-    """Controlling the volume
+    """Controlling the volume.
 
     :param list amixer_command: shell command for amixer volume control
-    :examples:
-    ["amixer", "-D", devicename, "--", "sset", idname, svalue, "-M", mute]
-    ["amixer", "-D", devicename, "--", "sget", idname, "-M"]
+    :examples: ["amixer", "-D", devicename, "--", "sset", idname, svalue, "-M", mute]
+    :examples: ["amixer", "-D", devicename, "--", "sget", idname, "-M"]
     :return: volume
     """
     chan_names: list[str] = _channel_names(
@@ -576,44 +588,57 @@ def _channel_names(devicename: str, idname: str) -> list:
     return result
 
 
-def start_jackserver() -> tuple[str, str]:
+def mixer_device() -> list[str]:
+    """Returns information on available mixer devices.
+
+    :return: [device name, device idname, control name, control idname]
+    :examples: ["hw:CARD=Headphones", "PCM", "default", "Master"]
+    :examples: ["", "", "", ""] if not found.
+    """
+    result: list[str] = ["", "", "", ""]
+    logger.info("Mixer Device: Search Bluetooth devices...")
+    btdevice: dict[str, str] = btaudiosink.device_info()
+    logger.info("Mixer Device: Search Physical Sound devices...")
+    soundcard: list[str] = _physical_mixer_names()
+
+    if "" not in btdevice:
+        result[0] = "bluealsa:00:00:00:00:00:00"
+        result[1] = "A2DP"
+        result[2] = result[0]
+        result[3] = result[1]
+    elif len(soundcard):
+        result[0] = soundcard[-1]
+        result[1] = "PCM"
+        result[2] = "default"
+        result[3] = "Master"
+    else:
+        logger.info("Mixer Device: not found.")
+
+    return result
+
+
+def start_jackserver() -> list[str]:
     """Start JACK server.
 
-    :return: (device name, device control name)
-    | <exapmles> ("bluealsa:00:00:00:00:00:00", "A2DP")
-    | <exapmles> ("default", "Master")
-    | <exapmles> ("", "") if failed.
+    :return: [device name, device idname, control name, control idname]
+    :exapmles: ["bluealsa:00:00:00:00:00:00", "A2DP", "bluealsa:00:00:00:00:00:00", "A2DP"]
+    :examples: ["hw:CARD=Headphones", "PCM", "default", "Master"]
+    :examples: ["", "", "", ""] if Not registered.
     """
-    print("Search Bluetooth devices...")
-    btdevice: dict[str, str] = BTAS.device_info()
-    print("Search Physical Sound devices...")
-    soundcard: list[str] = _physical_mixer_names()
-    device_name: str = ""
-    device_controlname: str = ""
-    volume_name: str = ""
-    volume_controlname: str = ""
-    if "" not in btdevice:
-        device_name = "bluealsa:00:00:00:00:00:00"
-        device_controlname = "A2DP"
-        volume_name = device_name
-        volume_controlname = device_controlname
-    elif len(soundcard):
-        device_name = soundcard[-1]
-        device_controlname = "PCM"
-        volume_name = "default"
-        volume_controlname = "Master"
-    else:
-        return (volume_name, volume_controlname)
 
-    with open(file="config/jack.json", mode="rt") as f:
-        settings = load(f)
-        for type, commandlist in settings[device_name].items():
-            for command in commandlist:
-                with Popen(command.split()) as res:
-                    if res.returncode:
-                        return ("", "")
+    device_info: list[str] = mixer_device()
 
-    return (volume_name, volume_controlname)
+    if "" not in device_info:
+        with open(file="config/jack.json", mode="rt") as f:
+            settings = load(f)
+            for type, commandlist in settings[device_info[0]].items():
+                for command in commandlist:
+                    with Popen(command.split()) as res:
+                        if res.returncode:
+                            logger.info("Mixer Device: Not registered.")
+                            return ["", "", "", ""]
+
+    return device_info
 
 
 if __name__ == "__main__":

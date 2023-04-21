@@ -8,23 +8,20 @@ Subpackages
    :maxdepth: 4
 
    audioworkstation.keyboard
-   audioworkstation.libs
    audioworkstation.metronome
    audioworkstation.player
-   audioworkstation.setup
 
 Submodules
 ----------
 
-audioworkstation.menubar module
+menubar module
 -------------------------------
 
 .. automodule:: audioworkstation.menubar
    :members:
-   :undoc-members:
    :show-inheritance:
 
-audioworkstation.version module
+version module
 -------------------------------
 
 .. automodule:: audioworkstation.version

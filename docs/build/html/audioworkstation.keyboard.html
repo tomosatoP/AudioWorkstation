@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>audioworkstation.keyboard package &#8212; AudioWorkstation 0.3 ドキュメント</title>
+    <title>keyboard package &#8212; AudioWorkstation 0.3 ドキュメント</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinxdoc.css" />
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -15,7 +15,7 @@
     <script src="_static/translations.js"></script>
     <link rel="index" title="索引" href="genindex.html" />
     <link rel="search" title="検索" href="search.html" />
-    <link rel="next" title="audioworkstation.libs package" href="audioworkstation.libs.html" />
+    <link rel="next" title="metronome package" href="audioworkstation.metronome.html" />
     <link rel="prev" title="audioworkstation package" href="audioworkstation.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -28,15 +28,14 @@
           <a href="py-modindex.html" title="Pythonモジュール索引"
              >モジュール</a> |</li>
         <li class="right" >
-          <a href="audioworkstation.libs.html" title="audioworkstation.libs package"
+          <a href="audioworkstation.metronome.html" title="metronome package"
              accesskey="N">次へ</a> |</li>
         <li class="right" >
           <a href="audioworkstation.html" title="audioworkstation package"
              accesskey="P">前へ</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">AudioWorkstation 0.3 ドキュメント</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="srcmodules.html" >audioworkstation</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="audioworkstation.html" accesskey="U">audioworkstation package</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">audioworkstation.keyboard package</a></li> 
+          <li class="nav-item nav-item-1"><a href="audioworkstation.html" accesskey="U">audioworkstation package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">keyboard package</a></li> 
       </ul>
     </div>  
 
@@ -45,13 +44,13 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <section id="audioworkstation-keyboard-package">
-<h1>audioworkstation.keyboard package<a class="headerlink" href="#audioworkstation-keyboard-package" title="この見出しへのパーマリンク">¶</a></h1>
+  <section id="keyboard-package">
+<h1>keyboard package<a class="headerlink" href="#keyboard-package" title="この見出しへのパーマリンク">¶</a></h1>
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="この見出しへのパーマリンク">¶</a></h2>
 </section>
 <section id="module-audioworkstation.keyboard.keyboard">
-<span id="audioworkstation-keyboard-keyboard-module"></span><h2>audioworkstation.keyboard.keyboard module<a class="headerlink" href="#module-audioworkstation.keyboard.keyboard" title="この見出しへのパーマリンク">¶</a></h2>
+<span id="keyboard-module"></span><h2>keyboard module<a class="headerlink" href="#module-audioworkstation.keyboard.keyboard" title="この見出しへのパーマリンク">¶</a></h2>
 <p>MIDI sequencer function for USB MIDI Keyboard</p>
 <dl class="simple">
 <dt>class GMSoundSetButton(ToggleButton, EventDispatcher)</dt><dd><p>Buttons to be placed on the GM Sound Set layout widget</p>
@@ -71,59 +70,6 @@
 <dd class="field-odd"><p><strong>preset_num</strong> (<em>NumericProperty</em>) -- GM Sound Set program(preset) number</p>
 </dd>
 </dl>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="audioworkstation.keyboard.keyboard.GMSoundSetButton.preset_num">
-<span class="sig-name descname"><span class="pre">preset_num</span></span><a class="headerlink" href="#audioworkstation.keyboard.keyboard.GMSoundSetButton.preset_num" title="この定義へのパーマリンク">¶</a></dt>
-<dd><p>NumericProperty(defaultvalue=0, <a href="#id1"><span class="problematic" id="id2">**</span></a>kw)
-Property that represents a numeric value.</p>
-<blockquote>
-<div><p>It only accepts the int or float numeric data type or a string that can be
-converted to a number as shown below. For other numeric types use ObjectProperty
-or use errorhandler to convert it to an int/float.</p>
-<p>It does not support numpy numbers so they must be manually converted to int/float.
-E.g. <code class="docutils literal notranslate"><span class="pre">widget.num</span> <span class="pre">=</span> <span class="pre">np.arange(4)[0]</span></code> will raise an exception. Numpy arrays are not
-supported at all, even by ObjectProperty because their comparision does not return
-a bool. But if you must use a Kivy property, use a ObjectProperty with <code class="docutils literal notranslate"><span class="pre">comparator</span></code>
-set to <code class="docutils literal notranslate"><span class="pre">np.array_equal</span></code>. E.g.:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">class</span> <span class="nc">A</span><span class="p">(</span><span class="n">EventDispatcher</span><span class="p">):</span>
-<span class="gp">... </span>    <span class="n">data</span> <span class="o">=</span> <span class="n">ObjectProperty</span><span class="p">(</span><span class="n">comparator</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">A</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="nb">print</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-<span class="go">&lt;__main__.A object at 0x000001C839B50208&gt; [0 1]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-<span class="go">&lt;__main__.A object at 0x000001C839B50208&gt; [0 1 2]</span>
-</pre></div>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><cite>defaultvalue</cite>: int or float, defaults to 0</dt><dd><p>Specifies the default value of the property.</p>
-</dd>
-</dl>
-</dd>
-</dl>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">wid</span> <span class="o">=</span> <span class="n">Widget</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">wid</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="mi">42</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">wid</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
-<span class="go">42</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">wid</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="s2">&quot;plop&quot;</span>
-<span class="go"> Traceback (most recent call last):</span>
-<span class="go">   File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;</span>
-<span class="go">   File &quot;properties.pyx&quot;, line 93, in kivy.properties.Property.__set__</span>
-<span class="go">   File &quot;properties.pyx&quot;, line 111, in kivy.properties.Property.set</span>
-<span class="go">   File &quot;properties.pyx&quot;, line 159, in kivy.properties.NumericProperty.check</span>
-<span class="go"> ValueError: NumericProperty accept only int/float</span>
-</pre></div>
-</div>
-<div class="versionchanged">
-<p><span class="versionmodified changed">バージョン 1.4.1 で変更: </span>NumericProperty can now accept custom text and tuple value to indicate a
-type, like &quot;in&quot;, &quot;pt&quot;, &quot;px&quot;, &quot;cm&quot;, &quot;mm&quot;, in the format: '10pt' or (10,
-'pt').</p>
-</div>
-</div></blockquote>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
@@ -137,34 +83,6 @@ type, like &quot;in&quot;, &quot;pt&quot;, &quot;px&quot;, &quot;cm&quot;, &quot
 {&quot;Start&quot;:int, &quot;End&quot;:int}</p>
 </dd>
 </dl>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="audioworkstation.keyboard.keyboard.GMSoundSetGroupButton.presets">
-<span class="sig-name descname"><span class="pre">presets</span></span><a class="headerlink" href="#audioworkstation.keyboard.keyboard.GMSoundSetGroupButton.presets" title="この定義へのパーマリンク">¶</a></dt>
-<dd><p>DictProperty(defaultvalue=0, rebind=False, <a href="#id3"><span class="problematic" id="id4">**</span></a>kw)
-Property that represents a dict.</p>
-<blockquote>
-<div><dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><cite>defaultvalue</cite>: dict, defaults to {}</dt><dd><p>Specifies the default value of the property.</p>
-</dd>
-<dt><cite>rebind</cite>: bool, defaults to False</dt><dd><p>See <code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectProperty</span></code> for details.</p>
-</dd>
-</dl>
-</dd>
-</dl>
-<div class="versionchanged">
-<p><span class="versionmodified changed">バージョン 1.9.0 で変更: </span><cite>rebind</cite> has been introduced.</p>
-</div>
-<div class="admonition warning">
-<p class="admonition-title">警告</p>
-<p>Similar to <code class="xref py py-class docutils literal notranslate"><span class="pre">ListProperty</span></code>, when assigning a dict to a
-<code class="xref py py-class docutils literal notranslate"><span class="pre">DictProperty</span></code>, the dict stored in the property is a shallow copy of the
-dict and not the original dict. See <code class="xref py py-class docutils literal notranslate"><span class="pre">ListProperty</span></code> for details.</p>
-</div>
-</div></blockquote>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
@@ -208,112 +126,6 @@ dict and not the original dict. See <code class="xref py py-class docutils liter
 </dl>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="audioworkstation.keyboard.keyboard.KeyboardView.gmss">
-<span class="sig-name descname"><span class="pre">gmss</span></span><a class="headerlink" href="#audioworkstation.keyboard.keyboard.KeyboardView.gmss" title="この定義へのパーマリンク">¶</a></dt>
-<dd><p>ObjectProperty(defaultvalue=None, rebind=False, <a href="#id5"><span class="problematic" id="id6">**</span></a>kw)
-Property that represents a Python object.</p>
-<blockquote>
-<div><dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl>
-<dt><cite>defaultvalue</cite>: object type</dt><dd><p>Specifies the default value of the property.</p>
-</dd>
-<dt><cite>rebind</cite>: bool, defaults to False</dt><dd><p>Whether kv rules using this object as an intermediate attribute
-in a kv rule, will update the bound property when this object
-changes.</p>
-<p>That is the standard behavior is that if there's a kv rule
-<code class="docutils literal notranslate"><span class="pre">text:</span> <span class="pre">self.a.b.c.d</span></code>, where <code class="docutils literal notranslate"><span class="pre">a</span></code>, <code class="docutils literal notranslate"><span class="pre">b</span></code>, and <code class="docutils literal notranslate"><span class="pre">c</span></code> are
-properties with <code class="docutils literal notranslate"><span class="pre">rebind</span></code> <code class="docutils literal notranslate"><span class="pre">False</span></code> and <code class="docutils literal notranslate"><span class="pre">d</span></code> is a
-<code class="xref py py-class docutils literal notranslate"><span class="pre">StringProperty</span></code>. Then when the rule is applied, <code class="docutils literal notranslate"><span class="pre">text</span></code>
-becomes bound only to <code class="docutils literal notranslate"><span class="pre">d</span></code>. If <code class="docutils literal notranslate"><span class="pre">a</span></code>, <code class="docutils literal notranslate"><span class="pre">b</span></code>, or <code class="docutils literal notranslate"><span class="pre">c</span></code> change,
-<code class="docutils literal notranslate"><span class="pre">text</span></code> still remains bound to <code class="docutils literal notranslate"><span class="pre">d</span></code>. Furthermore, if any of them
-were <code class="docutils literal notranslate"><span class="pre">None</span></code> when the rule was initially evaluated, e.g. <code class="docutils literal notranslate"><span class="pre">b</span></code> was
-<code class="docutils literal notranslate"><span class="pre">None</span></code>; then <code class="docutils literal notranslate"><span class="pre">text</span></code> is bound to <code class="docutils literal notranslate"><span class="pre">b</span></code> and will not become bound
-to <code class="docutils literal notranslate"><span class="pre">d</span></code> even when <code class="docutils literal notranslate"><span class="pre">b</span></code> is changed to not be <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
-<p>By setting <code class="docutils literal notranslate"><span class="pre">rebind</span></code> to <code class="docutils literal notranslate"><span class="pre">True</span></code>, however, the rule will be
-re-evaluated and all the properties rebound when that intermediate
-property changes. E.g. in the example above, whenever <code class="docutils literal notranslate"><span class="pre">b</span></code> changes
-or becomes not <code class="docutils literal notranslate"><span class="pre">None</span></code> if it was <code class="docutils literal notranslate"><span class="pre">None</span></code> before, <code class="docutils literal notranslate"><span class="pre">text</span></code> is
-evaluated again and becomes rebound to <code class="docutils literal notranslate"><span class="pre">d</span></code>. The overall result is
-that <code class="docutils literal notranslate"><span class="pre">text</span></code> is now bound to all the properties among <code class="docutils literal notranslate"><span class="pre">a</span></code>,
-<code class="docutils literal notranslate"><span class="pre">b</span></code>, or <code class="docutils literal notranslate"><span class="pre">c</span></code> that have <code class="docutils literal notranslate"><span class="pre">rebind</span></code> set to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
-</dd>
-<dt><cite>**kwargs</cite>: a list of keyword arguments</dt><dd><dl class="simple">
-<dt><cite>baseclass</cite></dt><dd><p>If kwargs includes a <cite>baseclass</cite> argument, this value will be
-used for validation: <cite>isinstance(value, kwargs['baseclass'])</cite>.</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd>
-</dl>
-<div class="admonition warning">
-<p class="admonition-title">警告</p>
-<p>To mark the property as changed, you must reassign a new python object.</p>
-</div>
-<div class="versionchanged">
-<p><span class="versionmodified changed">バージョン 1.9.0 で変更: </span><cite>rebind</cite> has been introduced.</p>
-</div>
-<div class="versionchanged">
-<p><span class="versionmodified changed">バージョン 1.7.0 で変更: </span><cite>baseclass</cite> parameter added.</p>
-</div>
-</div></blockquote>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="audioworkstation.keyboard.keyboard.KeyboardView.gmssg">
-<span class="sig-name descname"><span class="pre">gmssg</span></span><a class="headerlink" href="#audioworkstation.keyboard.keyboard.KeyboardView.gmssg" title="この定義へのパーマリンク">¶</a></dt>
-<dd><p>ObjectProperty(defaultvalue=None, rebind=False, <a href="#id7"><span class="problematic" id="id8">**</span></a>kw)
-Property that represents a Python object.</p>
-<blockquote>
-<div><dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl>
-<dt><cite>defaultvalue</cite>: object type</dt><dd><p>Specifies the default value of the property.</p>
-</dd>
-<dt><cite>rebind</cite>: bool, defaults to False</dt><dd><p>Whether kv rules using this object as an intermediate attribute
-in a kv rule, will update the bound property when this object
-changes.</p>
-<p>That is the standard behavior is that if there's a kv rule
-<code class="docutils literal notranslate"><span class="pre">text:</span> <span class="pre">self.a.b.c.d</span></code>, where <code class="docutils literal notranslate"><span class="pre">a</span></code>, <code class="docutils literal notranslate"><span class="pre">b</span></code>, and <code class="docutils literal notranslate"><span class="pre">c</span></code> are
-properties with <code class="docutils literal notranslate"><span class="pre">rebind</span></code> <code class="docutils literal notranslate"><span class="pre">False</span></code> and <code class="docutils literal notranslate"><span class="pre">d</span></code> is a
-<code class="xref py py-class docutils literal notranslate"><span class="pre">StringProperty</span></code>. Then when the rule is applied, <code class="docutils literal notranslate"><span class="pre">text</span></code>
-becomes bound only to <code class="docutils literal notranslate"><span class="pre">d</span></code>. If <code class="docutils literal notranslate"><span class="pre">a</span></code>, <code class="docutils literal notranslate"><span class="pre">b</span></code>, or <code class="docutils literal notranslate"><span class="pre">c</span></code> change,
-<code class="docutils literal notranslate"><span class="pre">text</span></code> still remains bound to <code class="docutils literal notranslate"><span class="pre">d</span></code>. Furthermore, if any of them
-were <code class="docutils literal notranslate"><span class="pre">None</span></code> when the rule was initially evaluated, e.g. <code class="docutils literal notranslate"><span class="pre">b</span></code> was
-<code class="docutils literal notranslate"><span class="pre">None</span></code>; then <code class="docutils literal notranslate"><span class="pre">text</span></code> is bound to <code class="docutils literal notranslate"><span class="pre">b</span></code> and will not become bound
-to <code class="docutils literal notranslate"><span class="pre">d</span></code> even when <code class="docutils literal notranslate"><span class="pre">b</span></code> is changed to not be <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
-<p>By setting <code class="docutils literal notranslate"><span class="pre">rebind</span></code> to <code class="docutils literal notranslate"><span class="pre">True</span></code>, however, the rule will be
-re-evaluated and all the properties rebound when that intermediate
-property changes. E.g. in the example above, whenever <code class="docutils literal notranslate"><span class="pre">b</span></code> changes
-or becomes not <code class="docutils literal notranslate"><span class="pre">None</span></code> if it was <code class="docutils literal notranslate"><span class="pre">None</span></code> before, <code class="docutils literal notranslate"><span class="pre">text</span></code> is
-evaluated again and becomes rebound to <code class="docutils literal notranslate"><span class="pre">d</span></code>. The overall result is
-that <code class="docutils literal notranslate"><span class="pre">text</span></code> is now bound to all the properties among <code class="docutils literal notranslate"><span class="pre">a</span></code>,
-<code class="docutils literal notranslate"><span class="pre">b</span></code>, or <code class="docutils literal notranslate"><span class="pre">c</span></code> that have <code class="docutils literal notranslate"><span class="pre">rebind</span></code> set to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
-</dd>
-<dt><cite>**kwargs</cite>: a list of keyword arguments</dt><dd><dl class="simple">
-<dt><cite>baseclass</cite></dt><dd><p>If kwargs includes a <cite>baseclass</cite> argument, this value will be
-used for validation: <cite>isinstance(value, kwargs['baseclass'])</cite>.</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd>
-</dl>
-<div class="admonition warning">
-<p class="admonition-title">警告</p>
-<p>To mark the property as changed, you must reassign a new python object.</p>
-</div>
-<div class="versionchanged">
-<p><span class="versionmodified changed">バージョン 1.9.0 で変更: </span><cite>rebind</cite> has been introduced.</p>
-</div>
-<div class="versionchanged">
-<p><span class="versionmodified changed">バージョン 1.7.0 で変更: </span><cite>baseclass</cite> parameter added.</p>
-</div>
-</div></blockquote>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="audioworkstation.keyboard.keyboard.KeyboardView.select_gmss">
 <span class="sig-name descname"><span class="pre">select_gmss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gmss_button</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/keyboard/keyboard.html#KeyboardView.select_gmss"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.keyboard.keyboard.KeyboardView.select_gmss" title="この定義へのパーマリンク">¶</a></dt>
@@ -342,16 +154,11 @@ used for validation: <cite>isinstance(value, kwargs['baseclass'])</cite>.</p>
 </dl>
 </dd></dl>
 
-<dl class="py property">
-<dt class="sig sig-object py" id="audioworkstation.keyboard.keyboard.KeyboardView.volume">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">volume</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#audioworkstation.keyboard.keyboard.KeyboardView.volume" title="この定義へのパーマリンク">¶</a></dt>
-<dd></dd></dl>
-
 </dd></dl>
 
 </section>
 <section id="module-audioworkstation.keyboard.mididriver">
-<span id="audioworkstation-keyboard-mididriver-module"></span><h2>audioworkstation.keyboard.mididriver module<a class="headerlink" href="#module-audioworkstation.keyboard.mididriver" title="この見出しへのパーマリンク">¶</a></h2>
+<span id="mididriver-module"></span><h2>mididriver module<a class="headerlink" href="#module-audioworkstation.keyboard.mididriver" title="この見出しへのパーマリンク">¶</a></h2>
 <p>Functions for managing MIDI driver for &quot;keyboard&quot;.</p>
 <dl class="simple">
 <dt>class MidiSoundModule</dt><dd><p>managing MIDI driver</p>
@@ -364,16 +171,6 @@ used for validation: <cite>isinstance(value, kwargs['baseclass'])</cite>.</p>
 <p>MidiSoundModule manages MIDI driver for the &quot;keyboard&quot;.</p>
 <dl class="field-list simple">
 </dl>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="audioworkstation.keyboard.mididriver.MidiSoundModule.gm_percussion_sound_set">
-<span class="sig-name descname"><span class="pre">gm_percussion_sound_set</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#audioworkstation.keyboard.mididriver.MidiSoundModule.gm_percussion_sound_set" title="この定義へのパーマリンク">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="audioworkstation.keyboard.mididriver.MidiSoundModule.gm_sound_set">
-<span class="sig-name descname"><span class="pre">gm_sound_set</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#audioworkstation.keyboard.mididriver.MidiSoundModule.gm_sound_set" title="この定義へのパーマリンク">¶</a></dt>
-<dd></dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="audioworkstation.keyboard.mididriver.MidiSoundModule.preset_name">
 <span class="sig-name descname"><span class="pre">preset_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">preset_num</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/keyboard/mididriver.html#MidiSoundModule.preset_name"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.keyboard.mididriver.MidiSoundModule.preset_name" title="この定義へのパーマリンク">¶</a></dt>
@@ -416,6 +213,16 @@ used for validation: <cite>isinstance(value, kwargs['baseclass'])</cite>.</p>
 </dl>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.keyboard.mididriver.MidiSoundModule.gm_percussion_sound_set">
+<span class="sig-name descname"><span class="pre">gm_percussion_sound_set</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#audioworkstation.keyboard.mididriver.MidiSoundModule.gm_percussion_sound_set" title="この定義へのパーマリンク">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.keyboard.mididriver.MidiSoundModule.gm_sound_set">
+<span class="sig-name descname"><span class="pre">gm_sound_set</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#audioworkstation.keyboard.mididriver.MidiSoundModule.gm_sound_set" title="この定義へのパーマリンク">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="audioworkstation.keyboard.mididriver.MidiSoundModule.volume">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">volume</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#audioworkstation.keyboard.mididriver.MidiSoundModule.volume" title="この定義へのパーマリンク">¶</a></dt>
@@ -440,36 +247,27 @@ used for validation: <cite>isinstance(value, kwargs['baseclass'])</cite>.</p>
   <div>
     <h3><a href="index.html">目次</a></h3>
     <ul>
-<li><a class="reference internal" href="#">audioworkstation.keyboard package</a><ul>
+<li><a class="reference internal" href="#">keyboard package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#module-audioworkstation.keyboard.keyboard">audioworkstation.keyboard.keyboard module</a><ul>
-<li><a class="reference internal" href="#audioworkstation.keyboard.keyboard.GMSoundSetButton"><code class="docutils literal notranslate"><span class="pre">GMSoundSetButton</span></code></a><ul>
-<li><a class="reference internal" href="#audioworkstation.keyboard.keyboard.GMSoundSetButton.preset_num"><code class="docutils literal notranslate"><span class="pre">GMSoundSetButton.preset_num</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#audioworkstation.keyboard.keyboard.GMSoundSetGroupButton"><code class="docutils literal notranslate"><span class="pre">GMSoundSetGroupButton</span></code></a><ul>
-<li><a class="reference internal" href="#audioworkstation.keyboard.keyboard.GMSoundSetGroupButton.presets"><code class="docutils literal notranslate"><span class="pre">GMSoundSetGroupButton.presets</span></code></a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#module-audioworkstation.keyboard.keyboard">keyboard module</a><ul>
+<li><a class="reference internal" href="#audioworkstation.keyboard.keyboard.GMSoundSetButton"><code class="docutils literal notranslate"><span class="pre">GMSoundSetButton</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.keyboard.keyboard.GMSoundSetGroupButton"><code class="docutils literal notranslate"><span class="pre">GMSoundSetGroupButton</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.keyboard.keyboard.KeyboardView"><code class="docutils literal notranslate"><span class="pre">KeyboardView</span></code></a><ul>
 <li><a class="reference internal" href="#audioworkstation.keyboard.keyboard.KeyboardView.add_gmss_buttons"><code class="docutils literal notranslate"><span class="pre">KeyboardView.add_gmss_buttons()</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.keyboard.keyboard.KeyboardView.add_gmssg_button"><code class="docutils literal notranslate"><span class="pre">KeyboardView.add_gmssg_button()</span></code></a></li>
-<li><a class="reference internal" href="#audioworkstation.keyboard.keyboard.KeyboardView.gmss"><code class="docutils literal notranslate"><span class="pre">KeyboardView.gmss</span></code></a></li>
-<li><a class="reference internal" href="#audioworkstation.keyboard.keyboard.KeyboardView.gmssg"><code class="docutils literal notranslate"><span class="pre">KeyboardView.gmssg</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.keyboard.keyboard.KeyboardView.select_gmss"><code class="docutils literal notranslate"><span class="pre">KeyboardView.select_gmss()</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.keyboard.keyboard.KeyboardView.select_gmssg"><code class="docutils literal notranslate"><span class="pre">KeyboardView.select_gmssg()</span></code></a></li>
-<li><a class="reference internal" href="#audioworkstation.keyboard.keyboard.KeyboardView.volume"><code class="docutils literal notranslate"><span class="pre">KeyboardView.volume</span></code></a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-audioworkstation.keyboard.mididriver">audioworkstation.keyboard.mididriver module</a><ul>
+<li><a class="reference internal" href="#module-audioworkstation.keyboard.mididriver">mididriver module</a><ul>
 <li><a class="reference internal" href="#audioworkstation.keyboard.mididriver.MidiSoundModule"><code class="docutils literal notranslate"><span class="pre">MidiSoundModule</span></code></a><ul>
-<li><a class="reference internal" href="#audioworkstation.keyboard.mididriver.MidiSoundModule.gm_percussion_sound_set"><code class="docutils literal notranslate"><span class="pre">MidiSoundModule.gm_percussion_sound_set</span></code></a></li>
-<li><a class="reference internal" href="#audioworkstation.keyboard.mididriver.MidiSoundModule.gm_sound_set"><code class="docutils literal notranslate"><span class="pre">MidiSoundModule.gm_sound_set</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.keyboard.mididriver.MidiSoundModule.preset_name"><code class="docutils literal notranslate"><span class="pre">MidiSoundModule.preset_name()</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.keyboard.mididriver.MidiSoundModule.programchange"><code class="docutils literal notranslate"><span class="pre">MidiSoundModule.programchange()</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.keyboard.mididriver.MidiSoundModule.sounding"><code class="docutils literal notranslate"><span class="pre">MidiSoundModule.sounding()</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.keyboard.mididriver.MidiSoundModule.gm_percussion_sound_set"><code class="docutils literal notranslate"><span class="pre">MidiSoundModule.gm_percussion_sound_set</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.keyboard.mididriver.MidiSoundModule.gm_sound_set"><code class="docutils literal notranslate"><span class="pre">MidiSoundModule.gm_sound_set</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.keyboard.mididriver.MidiSoundModule.volume"><code class="docutils literal notranslate"><span class="pre">MidiSoundModule.volume</span></code></a></li>
 </ul>
 </li>
@@ -488,8 +286,8 @@ used for validation: <cite>isinstance(value, kwargs['baseclass'])</cite>.</p>
   </div>
   <div>
     <h4>次のトピックへ</h4>
-    <p class="topless"><a href="audioworkstation.libs.html"
-                          title="次の章へ">audioworkstation.libs package</a></p>
+    <p class="topless"><a href="audioworkstation.metronome.html"
+                          title="次の章へ">metronome package</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>このページ</h3>
@@ -522,15 +320,14 @@ used for validation: <cite>isinstance(value, kwargs['baseclass'])</cite>.</p>
           <a href="py-modindex.html" title="Pythonモジュール索引"
              >モジュール</a> |</li>
         <li class="right" >
-          <a href="audioworkstation.libs.html" title="audioworkstation.libs package"
+          <a href="audioworkstation.metronome.html" title="metronome package"
              >次へ</a> |</li>
         <li class="right" >
           <a href="audioworkstation.html" title="audioworkstation package"
              >前へ</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">AudioWorkstation 0.3 ドキュメント</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="srcmodules.html" >audioworkstation</a> &#187;</li>
-          <li class="nav-item nav-item-2"><a href="audioworkstation.html" >audioworkstation package</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">audioworkstation.keyboard package</a></li> 
+          <li class="nav-item nav-item-1"><a href="audioworkstation.html" >audioworkstation package</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">keyboard package</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
