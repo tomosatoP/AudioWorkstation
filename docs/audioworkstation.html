@@ -80,7 +80,10 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="audioworkstation.metronome.html">metronome package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="audioworkstation.metronome.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="audioworkstation.metronome.html#metronome-module">metronome module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="audioworkstation.metronome.html#module-audioworkstation.metronome.metronome">metronome module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="audioworkstation.metronome.html#audioworkstation.metronome.metronome.MetronomeView"><code class="docutils literal notranslate"><span class="pre">MetronomeView</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="audioworkstation.metronome.html#module-audioworkstation.metronome.pattern">pattern module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="audioworkstation.metronome.html#audioworkstation.metronome.pattern.Pattern"><code class="docutils literal notranslate"><span class="pre">Pattern</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="audioworkstation.metronome.html#audioworkstation.metronome.pattern.Pattern.start"><code class="docutils literal notranslate"><span class="pre">Pattern.start()</span></code></a></li>
@@ -91,7 +94,6 @@
 <li class="toctree-l3"><a class="reference internal" href="audioworkstation.metronome.html#audioworkstation.metronome.pattern.pattern"><code class="docutils literal notranslate"><span class="pre">pattern()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="audioworkstation.metronome.html#audioworkstation.metronome.pattern.notevalue"><code class="docutils literal notranslate"><span class="pre">notevalue</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="audioworkstation.metronome.html#audioworkstation.metronome.pattern.rhythm"><code class="docutils literal notranslate"><span class="pre">rhythm</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="audioworkstation.metronome.html#audioworkstation.metronome.pattern.sfs"><code class="docutils literal notranslate"><span class="pre">sfs</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="audioworkstation.metronome.html#module-audioworkstation.metronome">Module contents</a></li>
@@ -136,8 +138,104 @@
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="この見出しへのパーマリンク">¶</a></h2>
 </section>
-<section id="menubar-module">
-<h2>menubar module<a class="headerlink" href="#menubar-module" title="この見出しへのパーマリンク">¶</a></h2>
+<section id="module-audioworkstation.menubar">
+<span id="menubar-module"></span><h2>menubar module<a class="headerlink" href="#module-audioworkstation.menubar" title="この見出しへのパーマリンク">¶</a></h2>
+<p>menu bar</p>
+<ol class="arabic simple">
+<li><p>Switching Child Screens [Keyboard, Metronome, MIDI Player]</p></li>
+<li><p>Control volumes [Master &amp; Child Screen]</p></li>
+<li><p>Exit this application</p></li>
+</ol>
+<dl class="py class">
+<dt class="sig sig-object py" id="audioworkstation.menubar.MenubarApp">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MenubarApp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/menubar.html#MenubarApp"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.menubar.MenubarApp" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">App</span></code></p>
+<p>class MenubarApp</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="audioworkstation.menubar.MenubarApp.build">
+<span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/menubar.html#MenubarApp.build"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.menubar.MenubarApp.build" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>Initializes the application; it will be called only once.
+If this method returns a widget (tree), it will be used as the root
+widget and added to the window.</p>
+<dl class="field-list simple">
+<dt class="field-odd">戻り値<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None or a root <code class="xref py py-class docutils literal notranslate"><span class="pre">Widget</span></code> instance
+if no self.root exists.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="audioworkstation.menubar.MenubarView">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MenubarView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/menubar.html#MenubarView"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.menubar.MenubarView" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">Widget</span></code></p>
+<p>class MenubarView</p>
+<dl class="field-list simple">
+<dt class="field-odd">変数<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>panel</strong> (<em>ObjectProperty</em>) -- child screens</p></li>
+<li><p><strong>mode</strong> (<em>ObjectProperty</em>) -- spinner</p></li>
+<li><p><strong>vol1</strong> (<em>ObjectProperty</em>) -- master volume</p></li>
+<li><p><strong>vol2</strong> (<em>ObjectProperty</em>) -- child screens volume</p></li>
+</ul>
+</dd>
+</dl>
+<p>Initialize Menubar View</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="audioworkstation.menubar.MenubarView.master_volume">
+<span class="sig-name descname"><span class="pre">master_volume</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">widget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/menubar.html#MenubarView.master_volume"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.menubar.MenubarView.master_volume" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>Control master volume.</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>widget</strong> (<em>Widget</em>) -- vol1.slider</p></li>
+<li><p><strong>value</strong> (<em>int</em>) -- value[%] to be set</p></li>
+</ul>
+</dd>
+<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="audioworkstation.menubar.MenubarView.mode_volume">
+<span class="sig-name descname"><span class="pre">mode_volume</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">widget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/menubar.html#MenubarView.mode_volume"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.menubar.MenubarView.mode_volume" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>Control child screens volume.</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>widget</strong> (<em>Widget</em>) -- vol2.slider</p></li>
+<li><p><strong>value</strong> (<em>int</em>) -- value[%] to be set</p></li>
+</ul>
+</dd>
+<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="audioworkstation.menubar.MenubarView.set_mode">
+<span class="sig-name descname"><span class="pre">set_mode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">widget</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/menubar.html#MenubarView.set_mode"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.menubar.MenubarView.set_mode" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>Set child screens mode.</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>widget</strong> (<em>Widget</em>) -- mode</p></li>
+<li><p><strong>text</strong> (<em>str</em>) -- mode text [&quot;キーボード&quot;, &quot;メトロノーム&quot;, &quot;伴奏&quot;]</p></li>
+</ul>
+</dd>
+<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 <section id="module-audioworkstation.version">
 <span id="version-module"></span><h2>version module<a class="headerlink" href="#module-audioworkstation.version" title="この見出しへのパーマリンク">¶</a></h2>
@@ -168,7 +266,19 @@
 <li><a class="reference internal" href="#">audioworkstation package</a><ul>
 <li><a class="reference internal" href="#subpackages">Subpackages</a></li>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#menubar-module">menubar module</a></li>
+<li><a class="reference internal" href="#module-audioworkstation.menubar">menubar module</a><ul>
+<li><a class="reference internal" href="#audioworkstation.menubar.MenubarApp"><code class="docutils literal notranslate"><span class="pre">MenubarApp</span></code></a><ul>
+<li><a class="reference internal" href="#audioworkstation.menubar.MenubarApp.build"><code class="docutils literal notranslate"><span class="pre">MenubarApp.build()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#audioworkstation.menubar.MenubarView"><code class="docutils literal notranslate"><span class="pre">MenubarView</span></code></a><ul>
+<li><a class="reference internal" href="#audioworkstation.menubar.MenubarView.master_volume"><code class="docutils literal notranslate"><span class="pre">MenubarView.master_volume()</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.menubar.MenubarView.mode_volume"><code class="docutils literal notranslate"><span class="pre">MenubarView.mode_volume()</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.menubar.MenubarView.set_mode"><code class="docutils literal notranslate"><span class="pre">MenubarView.set_mode()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li><a class="reference internal" href="#module-audioworkstation.version">version module</a></li>
 <li><a class="reference internal" href="#module-audioworkstation">Module contents</a></li>
 </ul>

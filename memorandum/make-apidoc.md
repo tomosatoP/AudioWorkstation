@@ -4,7 +4,7 @@ https://www.sphinx-doc.org/ja/master/index.html
 ## Sphinx のインストールと、プロジェクトの基本設定
 ~~~sh
 (venv) ~/AudioWorkstation $ pip install Sphinx
-(venv) ~/AudioWorkstation $ sphinx-quickstart docs
+(venv) ~/AudioWorkstation $ sphinx-quickstart shinx
 # > ソースディレクトリとビルドディレクトリを分ける（y / n）[n]:y
 # > プロジェクト名: AudioWorkstation
 # > 著者名（複数可）: tomosatoP
@@ -13,12 +13,12 @@ https://www.sphinx-doc.org/ja/master/index.html
 ~~~
 ## apidoc ファイルの作成
 ~~~sh
-(venv) ~/AudioWorkstation $ sphinx-apidoc -f -o docs/source src/audioworkstation --tocfile srcmodules
-(venv) ~/AudioWorkstation $ sphinx-apidoc -f -o docs/source tests --tocfile testmodules
+(venv) ~/AudioWorkstation $ sphinx-apidoc -f -o sphinx/source src/audioworkstation --tocfile srcmodules
+(venv) ~/AudioWorkstation $ sphinx-apidoc -f -o sphinx/source tests --tocfile testmodules
 ~~~
 ## 定義ファイルの編集
 ~~~diff
-(venv) ~/AudioWorkstation $ nano docs/source/conf.py
+(venv) ~/AudioWorkstation $ nano sphinx/source/conf.py
 - extensions = []
 + extensions = [
 +     "sphinx.ext.autodoc",
@@ -36,7 +36,7 @@ https://www.sphinx-doc.org/ja/master/index.html
 +     "show-inheritance": True,      # 継承を表示
 + }
 
-(venv) ~/AudioWorkstation $ nano docs/source/index.rst
+(venv) ~/AudioWorkstation $ nano sphinx/source/index.rst
   .. toctree::
      :maxdepth: 2
      :caption: Contents:
@@ -46,9 +46,10 @@ https://www.sphinx-doc.org/ja/master/index.html
 ~~~
 ## API 仕様書(html)の作成
 ~~~sh
-(venv) ~/AudioWorkstation $ make -C docs clean
-(venv) ~/AudioWorkstation $ sphinx-build -M html docs/source docs/build
-(venv) ~/AudioWorkstation $ chrome docs/build/html/index.html
+(venv) ~/AudioWorkstation $ make -C sphinx clean
+(venv) ~/AudioWorkstation $ sphinx-build -b html sphinx/source docs
+# "-M" とは出力先のフォルダ構成が異なる
+(venv) ~/AudioWorkstation $ chrome docs/index.html
 ~~~
 ---
 (venv) ~/AudioWorkstation $ pip install coverage

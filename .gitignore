@@ -5,5 +5,7 @@ AudioWorkstation.egg-info
 
 __pycache__
 .vscode
+.doctrees
+_sources
 
 *.so

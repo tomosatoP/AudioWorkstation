@@ -460,7 +460,7 @@ def list_name_hint() -> None:
                 ioid = ioid.decode() if ioid else ioid
                 result.append(f"|{iface}|{name}|{decs}|{ioid}|")
 
-    with open("docs/alsa-namehint.md", "wt") as f:
+    with open("memorandum/alsa-namehint.md", "wt") as f:
         print(
             f"# ALSA sound library version: {bytes(_snd_asoundlib_version()).decode()}",
             file=f,
@@ -621,7 +621,8 @@ def start_jackserver() -> list[str]:
     """Start JACK server.
 
     :return: [device name, device idname, control name, control idname]
-    :exapmles: ["bluealsa:00:00:00:00:00:00", "A2DP", "bluealsa:00:00:00:00:00:00", "A2DP"]
+    :exapmles:
+    ["bluealsa:00:00:00:00:00:00", "A2DP", "bluealsa:00:00:00:00:00:00", "A2DP"]
     :examples: ["hw:CARD=Headphones", "PCM", "default", "Master"]
     :examples: ["", "", "", ""] if Not registered.
     """

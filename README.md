@@ -34,7 +34,7 @@ USB MIDI 鍵盤を繋げて、ピアノ風の演奏を楽しむために。
 # fluidsynth with libfluidsynth2, qsynth, fluid-soundfont-gm)
 ~ $ sudo apt -y install jackd pulseaudio-module-jack fluidsynth
 ~~~
-> Bluetoothデバイスへ音出しするには、[RaspberryPi4 - Bluetooth A2DP 接続](docs/bluetooth-devices.md)を参照
+> Bluetoothデバイスへ音出しするには、[RaspberryPi4 - Bluetooth A2DP 接続](memorandum/bluetooth-devices.md)を参照
 ## インストール
 ~~~sh
 ~ $ python3 -m venv AudioWorkstation/venv --upgrade-deps
@@ -54,7 +54,7 @@ USB MIDI 鍵盤を繋げて、ピアノ風の演奏を楽しむために。
 # 終わったら
 (venv) ~/AudioWorkstation $ deactivate
 ~~~
-[API仕様書はこちら](https://tomosatop.github.io/AudioWorkstation/build/html/)
+[API仕様書はこちら](https://tomosatop.github.io/AudioWorkstation/)
 ## アンインストール
 ~~~sh
 ~ $ rm -rf AudioWorkstation
