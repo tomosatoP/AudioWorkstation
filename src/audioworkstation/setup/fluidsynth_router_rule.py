@@ -5,6 +5,7 @@
 The rules apply even when they are duplicated, and the results are terrible.
 
 MIDI note rule.
+---------------
     type: FLUID_MIDI_ROUTER_RULE_TYPE.NOTE
         +-------+---------+--------+
         |chan   |param1   |param2  |
@@ -15,6 +16,7 @@ MIDI note rule.
         +-------+---------+--------+
 
 MIDI controller rule.
+---------------------
 Only compatible with the GM1 system.
     type: FLUID_MIDI_ROUTER_RULE_TYPE.CC
         modulation
@@ -59,6 +61,7 @@ Only compatible with the GM1 system.
             +-------+--------+----------------------------------+
 
 MIDI program change rule.
+-------------------------
     type: FLUID_MIDI_ROUTER_RULE_TYPE.PROG_CHANGER
         +-------+----------------------+--------+
         |chan   |param1                |param2  |
@@ -69,6 +72,7 @@ MIDI program change rule.
         +-------+----------------------+--------+
 
 MIDI pitch bend rule.
+---------------------
     type: FLUID_MIDI_ROUTER_RULE_TYPE.PITCH_BEND
         +-------+------+------+
         |chan   |param1|param2|
@@ -89,6 +93,7 @@ MIDI pitch bend rule.
         +------+-----+--------------+--------------+
 
 MIDI channel pressure (Aftertouch) rule.
+----------------------------------------
     type: FLUID_MIDI_ROUTER_RULE_TYPE.CHANNEL_PRESSURE
         +-------+--------+--------+
         |chan   |param1  |param2  |
@@ -99,6 +104,7 @@ MIDI channel pressure (Aftertouch) rule.
         +-------+--------+--------+
 
 MIDI key pressure (Aftertouch) rule.
+------------------------------------
 Not supported in GM1 system
     type: FLUID_MIDI_ROUTER_RULE_TYPE.KEY_PRESSURE
         +-------+---------+--------+
@@ -109,20 +115,22 @@ Not supported in GM1 system
         |0..15  |0..127   |0..127  |
         +-------+---------+--------+
 
+:note:
 typedef struct _fluid_midi_router_rule_t => fluid_midi_router_rule_t
     default is [min=0, max=999999, mul=1.0, add=0]
 
-:reference: https://github.com/FluidSynth/fluidsynth/blob/master/src/midi/fluid_midi_router.c
+:reference:
+https://github.com/FluidSynth/fluidsynth/blob/master/src/midi/fluid_midi_router.c
 """
 
 from audioworkstation.libs.audio import fluidsynth as FS
 from json import dump
 
 
-def case_study() -> bool:
+def router_rule_example() -> bool:
     """This is an example of creating mute channel 0
 
-    Outputs a JSON format file "config/rule.mute_chan_0.json".
+    :note: "config/rule.mute_chan_0.json".
     :var dict rules: {"name": {"type":"", "chan":"", "param1":"", "param2":""}}
     :return: True on success, otherwise False.
     """

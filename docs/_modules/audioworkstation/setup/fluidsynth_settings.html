@@ -74,6 +74,12 @@
 
 
 <div class="viewcode-block" id="extract_default"><a class="viewcode-back" href="../../../audioworkstation.setup.html#audioworkstation.setup.fluidsynth_settings.extract_default">[ドキュメント]</a><span class="k">def</span> <span class="nf">extract_default</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create an initial configuration file for fluidsynth.</span>
+
+<span class="sd">    :note: &quot;config/fluidsynth.default.json&quot;</span>
+<span class="sd">    :return: success or failure</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">global</span> <span class="n">json_settings</span><span class="p">,</span> <span class="n">option_list</span>
     <span class="n">hints_id</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">c_int</span><span class="p">()</span>
 
@@ -149,7 +155,12 @@
     <span class="k">return</span> <span class="kc">True</span></div>
 
 
-<div class="viewcode-block" id="customize"><a class="viewcode-back" href="../../../audioworkstation.setup.html#audioworkstation.setup.fluidsynth_settings.customize">[ドキュメント]</a><span class="k">def</span> <span class="nf">customize</span><span class="p">():</span>
+<div class="viewcode-block" id="customize"><a class="viewcode-back" href="../../../audioworkstation.setup.html#audioworkstation.setup.fluidsynth_settings.customize">[ドキュメント]</a><span class="k">def</span> <span class="nf">customize</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a customized configuration file for fluidsynth.</span>
+
+<span class="sd">    :note: &quot;config/fluidsynth.json&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">global</span> <span class="n">json_settings</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;config/fluidsynth.default.json&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fw</span><span class="p">:</span>
         <span class="n">json_settings</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">fw</span><span class="p">)</span>

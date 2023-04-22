@@ -18,21 +18,18 @@ from .libs.audio import asound
 
 
 class MenubarView(Widget):
-    """class MenubarView
+    """MenubarView places function switching, volume change, and exit."""
 
-    :var ObjectProperty panel: child screens
-    :var ObjectProperty mode: spinner
-    :var ObjectProperty vol1: master volume
-    :var ObjectProperty vol2: child screens volume
-    """
-
+    #: ObjectProperty: child screens
     panel = ObjectProperty()
+    #: ObjectProperty: spinner
     mode = ObjectProperty()
+    #: ObjectProperty: master volume
     vol1 = ObjectProperty()
+    #: ObjectProperty: child scree volume
     vol2 = ObjectProperty()
 
     def __init__(self, **kwargs):
-        """Initialize Menubar View"""
         super().__init__(**kwargs)
 
         self.mixer = asound.mixer_device()
@@ -83,7 +80,7 @@ class MenubarView(Widget):
 
 
 class MenubarApp(App):
-    """class MenubarApp"""
+    """MenubarApp switches functions, changes volume, and exits."""
 
     def build(self):
         self.title = "AudioWorkstation"

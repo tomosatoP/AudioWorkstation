@@ -38,6 +38,7 @@
   <h1>audioworkstation.metronome.metronome のソースコード</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python3</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;metronome&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">concurrent</span> <span class="kn">import</span> <span class="n">futures</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
@@ -54,15 +55,20 @@
 
 
 <div class="viewcode-block" id="MetronomeView"><a class="viewcode-back" href="../../../audioworkstation.metronome.html#audioworkstation.metronome.metronome.MetronomeView">[ドキュメント]</a><span class="k">class</span> <span class="nc">MetronomeView</span><span class="p">(</span><span class="n">Screen</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;MetronomeView has bps layout and beat layout.&quot;&quot;&quot;</span>
+
     <span class="n">pSFS</span> <span class="o">=</span> <span class="n">PT</span><span class="o">.</span><span class="n">Pattern</span><span class="p">()</span>
     <span class="n">executor</span> <span class="o">=</span> <span class="n">futures</span><span class="o">.</span><span class="n">ThreadPoolExecutor</span><span class="p">()</span>
 
+    <span class="c1">#: ObjectProperty: layout bps</span>
     <span class="n">bps_layout</span> <span class="o">=</span> <span class="n">ObjectProperty</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+    <span class="c1">#: BoundedNumericProperty: bps</span>
     <span class="n">bps</span> <span class="o">=</span> <span class="n">BoundedNumericProperty</span><span class="p">(</span>
         <span class="mi">120</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="mi">240</span><span class="p">,</span> <span class="n">errorhandler</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mi">240</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">240</span> <span class="k">else</span> <span class="mi">60</span>
     <span class="p">)</span>
-
+    <span class="c1">#: ObjectProperty: layout beat</span>
     <span class="n">beat_layout</span> <span class="o">=</span> <span class="n">ObjectProperty</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+    <span class="c1">#: ListProperty: beat</span>
     <span class="n">beat</span> <span class="o">=</span> <span class="n">ListProperty</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -80,7 +86,12 @@
                 <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="s2">&quot;down&quot;</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">beat</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">sound</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">on</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="MetronomeView.sound"><a class="viewcode-back" href="../../../audioworkstation.metronome.html#audioworkstation.metronome.metronome.MetronomeView.sound">[ドキュメント]</a>    <span class="k">def</span> <span class="nf">sound</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">on</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sound metronome start/stop.</span>
+
+<span class="sd">        :param str on: &quot;down&quot; start, otherwise stop</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="k">if</span> <span class="n">on</span> <span class="o">==</span> <span class="s2">&quot;down&quot;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">status</span><span class="p">(</span><span class="n">disable</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             <span class="n">Logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;metronome: BPS - </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">bps</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -88,20 +99,36 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">executor</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pSFS</span><span class="o">.</span><span class="n">start</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bps</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">beat</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">status</span><span class="p">(</span><span class="n">disable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">pSFS</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pSFS</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span></div>
 
-    <span class="k">def</span> <span class="nf">update_bps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">bps</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+<div class="viewcode-block" id="MetronomeView.update_bps"><a class="viewcode-back" href="../../../audioworkstation.metronome.html#audioworkstation.metronome.metronome.MetronomeView.update_bps">[ドキュメント]</a>    <span class="k">def</span> <span class="nf">update_bps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Update bps.</span>
 
-    <span class="k">def</span> <span class="nf">update_beat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">beat</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
+<span class="sd">        :param BpsChangeButton obj: button corresponding to the amount of bps updates</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">disable</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bps</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">text</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MetronomeView.update_beat"><a class="viewcode-back" href="../../../audioworkstation.metronome.html#audioworkstation.metronome.metronome.MetronomeView.update_beat">[ドキュメント]</a>    <span class="k">def</span> <span class="nf">update_beat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Update beat.</span>
+
+<span class="sd">        :param BeatSelectButton obj: Button for beat update</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">beat</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="MetronomeView.status"><a class="viewcode-back" href="../../../audioworkstation.metronome.html#audioworkstation.metronome.metronome.MetronomeView.status">[ドキュメント]</a>    <span class="k">def</span> <span class="nf">status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">disable</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Show and hide the layouts.</span>
+
+<span class="sd">        :param bool disable: &quot;True&quot; disabled, &quot;False&quot; enabled</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">bps_layout</span><span class="o">.</span><span class="n">disabled</span> <span class="o">=</span> <span class="n">disable</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">beat_layout</span><span class="o">.</span><span class="n">disabled</span> <span class="o">=</span> <span class="n">disable</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">beat_layout</span><span class="o">.</span><span class="n">disabled</span> <span class="o">=</span> <span class="n">disable</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">volume</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;int: volume&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">pSFS</span><span class="o">.</span><span class="n">volume</span>
 
     <span class="nd">@volume</span><span class="o">.</span><span class="n">setter</span>

@@ -38,6 +38,7 @@
   <h1>audioworkstation.player.midifile のソースコード</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python3</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;MIDI file parsing and playback processing&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">from</span> <span class="nn">json</span> <span class="kn">import</span> <span class="n">dump</span><span class="p">,</span> <span class="n">load</span>
@@ -51,19 +52,18 @@
 
 
 <div class="viewcode-block" id="MidiPlayer"><a class="viewcode-back" href="../../../audioworkstation.player.html#audioworkstation.player.midifile.MidiPlayer">[ドキュメント]</a><span class="k">class</span> <span class="nc">MidiPlayer</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;MidiPlayer _summary_</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;MidiPlayer playbacks MIDI files.&quot;&quot;&quot;</span>
 
-<span class="sd">    :return _type_: _description_</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
+    <span class="c1">#: int: number of ticks at interruption</span>
     <span class="n">pause_tick</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="c1">#: float: gain</span>
     <span class="n">gain</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span>
 
 <div class="viewcode-block" id="MidiPlayer.start"><a class="viewcode-back" href="../../../audioworkstation.player.html#audioworkstation.player.midifile.MidiPlayer.start">[ドキュメント]</a>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;start _summary_</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Starts playback of the specified midi file.</span>
 
-<span class="sd">        :param str filename: _description_</span>
-<span class="sd">        :return str: _description_</span>
+<span class="sd">        :param str filename: midi filename</span>
+<span class="sd">        :return: filename</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;standardmidifile&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">filename</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fsmp</span> <span class="o">=</span> <span class="n">FS</span><span class="o">.</span><span class="n">MidiPlayer</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -73,16 +73,20 @@
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">&quot;</span></div>
 
 <div class="viewcode-block" id="MidiPlayer.stop"><a class="viewcode-back" href="../../../audioworkstation.player.html#audioworkstation.player.midifile.MidiPlayer.stop">[ドキュメント]</a>    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Stops the playback of Midi files.&quot;&quot;&quot;</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">pause_tick</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fsmp</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">gain</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fsmp</span><span class="o">.</span><span class="n">gain</span>
         <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">fsmp</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">tick</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;int: tick&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fsmp</span><span class="o">.</span><span class="n">tick</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;fsmp&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">pause_tick</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">volume</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;int: volume&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;fsmp&quot;</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">gain2dB</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fsmp</span><span class="o">.</span><span class="n">gain</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -97,10 +101,10 @@
 
 
 <div class="viewcode-block" id="info_midifile"><a class="viewcode-back" href="../../../audioworkstation.player.html#audioworkstation.player.midifile.info_midifile">[ドキュメント]</a><span class="k">def</span> <span class="nf">info_midifile</span><span class="p">(</span><span class="n">midifile</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;info_midifile _summary_</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns information about the Midi file.</span>
 
-<span class="sd">    :param Path midifile: _description_</span>
-<span class="sd">    :return dict: _description_</span>
+<span class="sd">    :param Path midifile: Target Midi file</span>
+<span class="sd">    :return: keywords: &quot;title&quot;, &quot;total_ticks&quot;, &quot;channel_presets&quot;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_smf</span> <span class="o">=</span> <span class="n">SMF</span><span class="o">.</span><span class="n">StandardMidiFile</span><span class="p">(</span><span class="n">midifile</span><span class="p">)</span>
     <span class="n">items</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
@@ -111,6 +115,12 @@
 
 
 <div class="viewcode-block" id="gm_sound_set_names"><a class="viewcode-back" href="../../../audioworkstation.player.html#audioworkstation.player.midifile.gm_sound_set_names">[ドキュメント]</a><span class="k">def</span> <span class="nf">gm_sound_set_names</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return GM Sound Set names and GM Percussion Sound Set names</span>
+
+<span class="sd">    :return: list of GM Sound Set names</span>
+<span class="sd">    :return: list of GM Percussion Sound Set names</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">synth</span> <span class="o">=</span> <span class="n">FS</span><span class="o">.</span><span class="n">Synthesizer</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="n">gm_sound_sets</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
@@ -127,12 +137,14 @@
 
 
 <div class="viewcode-block" id="mute_rules"><a class="viewcode-back" href="../../../audioworkstation.player.html#audioworkstation.player.midifile.mute_rules">[ドキュメント]</a><span class="k">def</span> <span class="nf">mute_rules</span><span class="p">(</span><span class="o">**</span><span class="n">mute_flags</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    {&#39;0&#39;:True, &#39;1&#39;:False, ..., &#39;15&#39;:False}</span>
-<span class="sd">        True: mute</span>
-<span class="sd">        False: unmute</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Rule file specifying channels to mute</span>
+
+<span class="sd">    :param dict(str, bool) mute_flags:</span>
+<span class="sd">    {&#39;0&#39;:True, &#39;1&#39;:False, ..., &#39;15&#39;:False}: True is mute, False is unmute</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">rules</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="c1">#: str: filename</span>
     <span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;config/rule.mute_chan.json&quot;</span>
 
     <span class="c1"># Note</span>

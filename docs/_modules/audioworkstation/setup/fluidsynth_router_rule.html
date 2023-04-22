@@ -43,6 +43,7 @@
 <span class="sd">The rules apply even when they are duplicated, and the results are terrible.</span>
 
 <span class="sd">MIDI note rule.</span>
+<span class="sd">---------------</span>
 <span class="sd">    type: FLUID_MIDI_ROUTER_RULE_TYPE.NOTE</span>
 <span class="sd">        +-------+---------+--------+</span>
 <span class="sd">        |chan   |param1   |param2  |</span>
@@ -53,6 +54,7 @@
 <span class="sd">        +-------+---------+--------+</span>
 
 <span class="sd">MIDI controller rule.</span>
+<span class="sd">---------------------</span>
 <span class="sd">Only compatible with the GM1 system.</span>
 <span class="sd">    type: FLUID_MIDI_ROUTER_RULE_TYPE.CC</span>
 <span class="sd">        modulation</span>
@@ -97,6 +99,7 @@
 <span class="sd">            +-------+--------+----------------------------------+</span>
 
 <span class="sd">MIDI program change rule.</span>
+<span class="sd">-------------------------</span>
 <span class="sd">    type: FLUID_MIDI_ROUTER_RULE_TYPE.PROG_CHANGER</span>
 <span class="sd">        +-------+----------------------+--------+</span>
 <span class="sd">        |chan   |param1                |param2  |</span>
@@ -107,6 +110,7 @@
 <span class="sd">        +-------+----------------------+--------+</span>
 
 <span class="sd">MIDI pitch bend rule.</span>
+<span class="sd">---------------------</span>
 <span class="sd">    type: FLUID_MIDI_ROUTER_RULE_TYPE.PITCH_BEND</span>
 <span class="sd">        +-------+------+------+</span>
 <span class="sd">        |chan   |param1|param2|</span>
@@ -127,6 +131,7 @@
 <span class="sd">        +------+-----+--------------+--------------+</span>
 
 <span class="sd">MIDI channel pressure (Aftertouch) rule.</span>
+<span class="sd">----------------------------------------</span>
 <span class="sd">    type: FLUID_MIDI_ROUTER_RULE_TYPE.CHANNEL_PRESSURE</span>
 <span class="sd">        +-------+--------+--------+</span>
 <span class="sd">        |chan   |param1  |param2  |</span>
@@ -137,6 +142,7 @@
 <span class="sd">        +-------+--------+--------+</span>
 
 <span class="sd">MIDI key pressure (Aftertouch) rule.</span>
+<span class="sd">------------------------------------</span>
 <span class="sd">Not supported in GM1 system</span>
 <span class="sd">    type: FLUID_MIDI_ROUTER_RULE_TYPE.KEY_PRESSURE</span>
 <span class="sd">        +-------+---------+--------+</span>
@@ -147,20 +153,22 @@
 <span class="sd">        |0..15  |0..127   |0..127  |</span>
 <span class="sd">        +-------+---------+--------+</span>
 
+<span class="sd">:note:</span>
 <span class="sd">typedef struct _fluid_midi_router_rule_t =&gt; fluid_midi_router_rule_t</span>
 <span class="sd">    default is [min=0, max=999999, mul=1.0, add=0]</span>
 
-<span class="sd">:reference: https://github.com/FluidSynth/fluidsynth/blob/master/src/midi/fluid_midi_router.c</span>
+<span class="sd">:reference:</span>
+<span class="sd">https://github.com/FluidSynth/fluidsynth/blob/master/src/midi/fluid_midi_router.c</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">audioworkstation.libs.audio</span> <span class="kn">import</span> <span class="n">fluidsynth</span> <span class="k">as</span> <span class="n">FS</span>
 <span class="kn">from</span> <span class="nn">json</span> <span class="kn">import</span> <span class="n">dump</span>
 
 
-<div class="viewcode-block" id="case_study"><a class="viewcode-back" href="../../../audioworkstation.setup.html#audioworkstation.setup.fluidsynth_router_rule.case_study">[ドキュメント]</a><span class="k">def</span> <span class="nf">case_study</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<div class="viewcode-block" id="router_rule_example"><a class="viewcode-back" href="../../../audioworkstation.setup.html#audioworkstation.setup.fluidsynth_router_rule.router_rule_example">[ドキュメント]</a><span class="k">def</span> <span class="nf">router_rule_example</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;This is an example of creating mute channel 0</span>
 
-<span class="sd">    Outputs a JSON format file &quot;config/rule.mute_chan_0.json&quot;.</span>
+<span class="sd">    :note: &quot;config/rule.mute_chan_0.json&quot;.</span>
 <span class="sd">    :var dict rules: {&quot;name&quot;: {&quot;type&quot;:&quot;&quot;, &quot;chan&quot;:&quot;&quot;, &quot;param1&quot;:&quot;&quot;, &quot;param2&quot;:&quot;&quot;}}</span>
 <span class="sd">    :return: True on success, otherwise False.</span>
 <span class="sd">    &quot;&quot;&quot;</span>

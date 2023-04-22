@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+"""MIDI file parsing and playback processing"""
 
 from pathlib import Path
 from json import dump, load
@@ -13,19 +14,18 @@ with open("config/screen.json", "rt") as f:
 
 
 class MidiPlayer:
-    """MidiPlayer _summary_
+    """MidiPlayer playbacks MIDI files."""
 
-    :return _type_: _description_
-    """
-
+    #: int: number of ticks at interruption
     pause_tick: int = 0
+    #: float: gain
     gain: float = 0.2
 
     def start(self, filename: str) -> str:
-        """start _summary_
+        """Starts playback of the specified midi file.
 
-        :param str filename: _description_
-        :return str: _description_
+        :param str filename: midi filename
+        :return: filename
         """
         kwargs["standardmidifile"] = [filename]
         self.fsmp = FS.MidiPlayer(**kwargs)
@@ -35,16 +35,20 @@ class MidiPlayer:
         return f"{filename}"
 
     def stop(self) -> None:
+        """Stops the playback of Midi files."""
+
         self.pause_tick = self.fsmp.stop()
         self.gain = self.fsmp.gain
         del self.fsmp
 
     @property
     def tick(self) -> int:
+        """int: tick"""
         return self.fsmp.tick if hasattr(self, "fsmp") else self.pause_tick
 
     @property
     def volume(self) -> int:
+        """int: volume"""
         if hasattr(self, "fsmp"):
             return gain2dB(self.fsmp.gain)
         else:
@@ -59,10 +63,10 @@ class MidiPlayer:
 
 
 def info_midifile(midifile: Path) -> dict:
-    """info_midifile _summary_
+    """Returns information about the Midi file.
 
-    :param Path midifile: _description_
-    :return dict: _description_
+    :param Path midifile: Target Midi file
+    :return: keywords: "title", "total_ticks", "channel_presets"
     """
     _smf = SMF.StandardMidiFile(midifile)
     items: dict = {}
@@ -73,6 +77,12 @@ def info_midifile(midifile: Path) -> dict:
 
 
 def gm_sound_set_names() -> tuple:
+    """Return GM Sound Set names and GM Percussion Sound Set names
+
+    :return: list of GM Sound Set names
+    :return: list of GM Percussion Sound Set names
+    """
+
     synth = FS.Synthesizer(**kwargs)
 
     gm_sound_sets: list = list()
@@ -89,12 +99,14 @@ def gm_sound_set_names() -> tuple:
 
 
 def mute_rules(**mute_flags) -> str:
+    """Rule file specifying channels to mute
+
+    :param dict(str, bool) mute_flags:
+    {'0':True, '1':False, ..., '15':False}: True is mute, False is unmute
     """
-    {'0':True, '1':False, ..., '15':False}
-        True: mute
-        False: unmute
-    """
+
     rules: dict = dict()
+    #: str: filename
     filename = "config/rule.mute_chan.json"
 
     # Note

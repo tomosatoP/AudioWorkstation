@@ -38,6 +38,7 @@
   <h1>audioworkstation.setup.config のソースコード</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python3</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;Configure the folder for settings.&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 
@@ -47,7 +48,9 @@
 <span class="kn">from</span> <span class="nn">audioworkstation.setup</span> <span class="kn">import</span> <span class="n">fluidsynth_router_rule</span> <span class="k">as</span> <span class="n">FSRRULE</span>
 
 
-<div class="viewcode-block" id="makedirs"><a class="viewcode-back" href="../../../audioworkstation.setup.html#audioworkstation.setup.config.makedirs">[ドキュメント]</a><span class="k">def</span> <span class="nf">makedirs</span><span class="p">():</span>
+<div class="viewcode-block" id="makedirs"><a class="viewcode-back" href="../../../audioworkstation.setup.html#audioworkstation.setup.config.makedirs">[ドキュメント]</a><span class="k">def</span> <span class="nf">makedirs</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a folder for settings.&quot;&quot;&quot;</span>
+
     <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;config&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;logs&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;mid&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -56,14 +59,17 @@
     <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;sf3&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../audioworkstation.setup.html#audioworkstation.setup.config.main">[ドキュメント]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../audioworkstation.setup.html#audioworkstation.setup.config.main">[ドキュメント]</a><span class="k">def</span> <span class="nf">main</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create various configuration files.&quot;&quot;&quot;</span>
+
     <span class="n">makedirs</span><span class="p">()</span>
     <span class="n">FSSET</span><span class="o">.</span><span class="n">extract_default</span><span class="p">()</span>
     <span class="n">FSSET</span><span class="o">.</span><span class="n">customize</span><span class="p">()</span>
     <span class="n">AKSET</span><span class="o">.</span><span class="n">screens</span><span class="p">()</span>
     <span class="n">AKSET</span><span class="o">.</span><span class="n">gmsounset</span><span class="p">()</span>
+    <span class="n">AKSET</span><span class="o">.</span><span class="n">desktop</span><span class="p">()</span>
     <span class="n">JASET</span><span class="o">.</span><span class="n">jacks</span><span class="p">()</span>
-    <span class="n">FSRRULE</span><span class="o">.</span><span class="n">case_study</span><span class="p">()</span></div>
+    <span class="n">FSRRULE</span><span class="o">.</span><span class="n">router_rule_example</span><span class="p">()</span></div>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>

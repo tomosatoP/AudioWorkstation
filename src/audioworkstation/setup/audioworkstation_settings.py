@@ -1,10 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+"""Create a configuration file for the application."""
 
 from json import dump
+from pathlib import Path
 
 
-def screens():
+def screens() -> None:
+    """Create configuration files for various child screens.
+
+    :note: "config/screen.json"
+    """
+
     settings = dict()
     fs_settings = "config/fluidsynth.json"
     sfonts = ["sf2/FluidR3_GM.sf2"]
@@ -17,7 +24,12 @@ def screens():
         dump(settings, fw, indent=4)
 
 
-def gmsounset():
+def gmsounset() -> None:
+    """Create a GM sound set group information file.
+
+    :note: "config/gmsoundsetgroping.json"
+    """
+
     grouping = dict()
 
     grouping["ピアノ"] = {"Start": 0, "End": 7}
@@ -39,6 +51,46 @@ def gmsounset():
 
     with open("config/gmsoundsetgroping.json", "wt") as fw:
         dump(grouping, fw, indent=4, ensure_ascii=False)
+
+
+def desktop() -> None:
+    """Register as a desktop application
+
+    :note: "~/.local/share/applications/AudioWorkstation.desktop"
+    :note: "~/***/AudioWorkstation.sh"
+    """
+
+    cdir: str = str(Path.cwd())
+    hdir: str = str(Path.home())
+
+    command: list[str] = list()
+    command.append("source venv/bin/activate")
+    command.append("python3 -m audioworkstation")
+    command.append("deactivate")
+    filename = f"{cdir}/AudioWorkstation.sh"
+
+    with open(file=filename, mode="wt") as f:
+        for line in command:
+            print(line, file=f)
+
+    Path(filename).chmod(0o755)
+
+    desktop: list[str] = list()
+    desktop.append("[Desktop Entry]")
+    desktop.append("Name=AudioWorkstation")
+    desktop.append("GenericName=MIDI sequencer")
+    desktop.append("Comment=Play an instrument with a USB-MIDI keyboard")
+    desktop.append(f"Path={cdir}/")
+    desktop.append(f"Exec={cdir}/AudioWorkstation.sh")
+    desktop.append("Terminal=false")
+    desktop.append("Type=Application")
+    desktop.append("Icon=multimedia-volume-control-symbolic")
+    desktop.append("Categories=Audio;AudioVideo")
+    filename = f"{hdir}/.local/share/applications/AudioWorkstation.desktop"
+
+    with open(file=filename, mode="wt") as f:
+        for line in desktop:
+            print(line, file=f)
 
 
 if __name__ == "__main__":

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+"""Midi Player"""
 
 from functools import partial
 from concurrent import futures
@@ -26,18 +27,26 @@ Builder.load_file(str(Path(__file__).with_name("player.kv")))
 
 
 class PLAYER_STATUS(IntEnum):
-    STANDBY = auto()
-    PLAYBACK = auto()
-    PAUSE = auto()
+    STANDBY = auto()  #: standby
+    PLAYBACK = auto()  #: playback
+    PAUSE = auto()  #: pause
 
 
 class ChannelButton(ToggleButton, EventDispatcher):
+    """ChannelButton _summary_"""
+
+    #: NumericProerty:
     index = NumericProperty()
 
 
 class MidiTitleButton(ToggleButton, EventDispatcher):
+    """MidiTitleButton _summary_"""
+
+    #: StringProperty: filename
     filename = StringProperty()
+    #: NumericProperty: total ticks
     total_tick = NumericProperty()
+    #: ListProperty: channel preset
     channels_preset = ListProperty()
 
     def __str__(self) -> str:
@@ -48,10 +57,17 @@ class MidiTitleButton(ToggleButton, EventDispatcher):
 
 
 class PlayerView(Screen):
+    """PlayView"""
+
+    #: ObjectProperty: button playback
     play_button = ObjectProperty(None)
+    #: ObjectProperty: button pause
     pause_button = ObjectProperty(None)
+    #: ObjectProperty: slider ticks
     ticks_slider = ObjectProperty(None)
+    #: ObjectProperty: button group midifile
     midifiles = ObjectProperty(None)
+    #: ObjectProperty: button group channel
     channels = ObjectProperty(None)
 
     sound_set: list = list()
@@ -74,6 +90,10 @@ class PlayerView(Screen):
         self.midi_player = MF.MidiPlayer()
 
     def playback(self, state: str) -> None:
+        """playback _summary_
+
+        :param str state: _description_
+        """
         mtb: MidiTitleButton = list(
             filter(
                 lambda x: x.state == "down",
@@ -95,6 +115,10 @@ class PlayerView(Screen):
             self.midi_player.stop()  # call cleanup_playback
 
     def pause(self, state: str) -> None:
+        """pause _summary_
+
+        :param str state: _description_
+        """
         if state == "normal":
             self.playback("down")
         elif state == "down":
@@ -124,6 +148,7 @@ class PlayerView(Screen):
 
     @property
     def volume(self) -> int:
+        """int: volume"""
         return self.midi_player.volume
 
     @volume.setter
@@ -131,6 +156,10 @@ class PlayerView(Screen):
         self.midi_player.volume = value
 
     def status(self, value: PLAYER_STATUS) -> None:
+        """status _summary_
+
+        :param PLAYER_STATUS value: _description_
+        """
         if value == PLAYER_STATUS.STANDBY:
             self.play_button.text = "▶"
             self.play_button.disabled = False
@@ -197,6 +226,11 @@ class PlayerView(Screen):
         return MF.mute_rules(**channels)
 
     def add_midititlebutton(self, midifile: Path, dt: int) -> None:
+        """add_midititlebutton _summary_
+
+        :param Path midifile: _description_
+        :param int dt: _description_
+        """
         smf: dict = MF.info_midifile(midifile)
         midititlebutton = MidiTitleButton(
             text=smf["title"],
@@ -208,6 +242,10 @@ class PlayerView(Screen):
         self.midifiles.add_widget(midititlebutton)
 
     def add_channelbuttons(self, num: int = 16) -> None:
+        """add_channelbuttons _summary_
+
+        :param int num: _description_, defaults to 16
+        """
         for i in range(num):
             channelbutton = ChannelButton(text=f"楽器 {i:02}", index=i)
             self.channels.add_widget(widget=channelbutton)

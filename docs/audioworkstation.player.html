@@ -51,16 +51,58 @@
 </section>
 <section id="module-audioworkstation.player.player">
 <span id="player-module"></span><h2>player module<a class="headerlink" href="#module-audioworkstation.player.player" title="この見出しへのパーマリンク">¶</a></h2>
+<p>Midi Player</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="audioworkstation.player.player.ChannelButton">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ChannelButton</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/player/player.html#ChannelButton"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.player.player.ChannelButton" title="この定義へのパーマリンク">¶</a></dt>
 <dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">ToggleButton</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">EventDispatcher</span></code></p>
+<p>ChannelButton _summary_</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.player.player.ChannelButton.index">
+<span class="sig-name descname"><span class="pre">index</span></span><a class="headerlink" href="#audioworkstation.player.player.ChannelButton.index" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>NumericProerty:</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="audioworkstation.player.player.MidiTitleButton">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MidiTitleButton</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/player/player.html#MidiTitleButton"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.player.player.MidiTitleButton" title="この定義へのパーマリンク">¶</a></dt>
 <dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">ToggleButton</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">EventDispatcher</span></code></p>
+<p>MidiTitleButton _summary_</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.player.player.MidiTitleButton.channels_preset">
+<span class="sig-name descname"><span class="pre">channels_preset</span></span><a class="headerlink" href="#audioworkstation.player.player.MidiTitleButton.channels_preset" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>channel preset</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ListProperty</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.player.player.MidiTitleButton.filename">
+<span class="sig-name descname"><span class="pre">filename</span></span><a class="headerlink" href="#audioworkstation.player.player.MidiTitleButton.filename" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>filename</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>StringProperty</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.player.player.MidiTitleButton.total_tick">
+<span class="sig-name descname"><span class="pre">total_tick</span></span><a class="headerlink" href="#audioworkstation.player.player.MidiTitleButton.total_tick" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>total ticks</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>NumericProperty</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -68,12 +110,62 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PLAYER_STATUS</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/player/player.html#PLAYER_STATUS"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.player.player.PLAYER_STATUS" title="この定義へのパーマリンク">¶</a></dt>
 <dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">IntEnum</span></code></p>
 <p>An enumeration.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.player.player.PLAYER_STATUS.PAUSE">
+<span class="sig-name descname"><span class="pre">PAUSE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em><a class="headerlink" href="#audioworkstation.player.player.PLAYER_STATUS.PAUSE" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>pause</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.player.player.PLAYER_STATUS.PLAYBACK">
+<span class="sig-name descname"><span class="pre">PLAYBACK</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#audioworkstation.player.player.PLAYER_STATUS.PLAYBACK" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>playback</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.player.player.PLAYER_STATUS.STANDBY">
+<span class="sig-name descname"><span class="pre">STANDBY</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#audioworkstation.player.player.PLAYER_STATUS.STANDBY" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>standby</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="audioworkstation.player.player.PlayerView">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PlayerView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/player/player.html#PlayerView"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.player.player.PlayerView" title="この定義へのパーマリンク">¶</a></dt>
 <dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">Screen</span></code></p>
+<p>PlayView</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="audioworkstation.player.player.PlayerView.add_channelbuttons">
+<span class="sig-name descname"><span class="pre">add_channelbuttons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">16</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/player/player.html#PlayerView.add_channelbuttons"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.player.player.PlayerView.add_channelbuttons" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>add_channelbuttons _summary_</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>num</strong> (<em>int</em>) -- _description_, defaults to 16</p>
+</dd>
+<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="audioworkstation.player.player.PlayerView.add_midititlebutton">
+<span class="sig-name descname"><span class="pre">add_midititlebutton</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">midifile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/player/player.html#PlayerView.add_midititlebutton"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.player.player.PlayerView.add_midititlebutton" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>add_midititlebutton _summary_</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>midifile</strong> (<em>Path</em>) -- _description_</p></li>
+<li><p><strong>dt</strong> (<em>int</em>) -- _description_</p></li>
+</ul>
+</dd>
+<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="audioworkstation.player.player.PlayerView.cleanup_playback">
 <span class="sig-name descname"><span class="pre">cleanup_playback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">future</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/player/player.html#PlayerView.cleanup_playback"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.player.player.PlayerView.cleanup_playback" title="この定義へのパーマリンク">¶</a></dt>
@@ -103,6 +195,34 @@
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="audioworkstation.player.player.PlayerView.pause">
+<span class="sig-name descname"><span class="pre">pause</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/player/player.html#PlayerView.pause"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.player.player.PlayerView.pause" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>pause _summary_</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>state</strong> (<em>str</em>) -- _description_</p>
+</dd>
+<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="audioworkstation.player.player.PlayerView.playback">
+<span class="sig-name descname"><span class="pre">playback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/player/player.html#PlayerView.playback"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.player.player.PlayerView.playback" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>playback _summary_</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>state</strong> (<em>str</em>) -- _description_</p>
+</dd>
+<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="audioworkstation.player.player.PlayerView.progress_ticks">
 <span class="sig-name descname"><span class="pre">progress_ticks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dt</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/player/player.html#PlayerView.progress_ticks"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.player.player.PlayerView.progress_ticks" title="この定義へのパーマリンク">¶</a></dt>
 <dd><p>Request number of ticks passed at intervals.</p>
@@ -127,31 +247,107 @@
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="audioworkstation.player.player.PlayerView.status">
+<span class="sig-name descname"><span class="pre">status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/player/player.html#PlayerView.status"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.player.player.PlayerView.status" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>status _summary_</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value</strong> (<a class="reference internal" href="#audioworkstation.player.player.PLAYER_STATUS" title="audioworkstation.player.player.PLAYER_STATUS"><em>PLAYER_STATUS</em></a>) -- _description_</p>
+</dd>
+<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.player.player.PlayerView.channels">
+<span class="sig-name descname"><span class="pre">channels</span></span><a class="headerlink" href="#audioworkstation.player.player.PlayerView.channels" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>button group channel</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ObjectProperty</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.player.player.PlayerView.midifiles">
+<span class="sig-name descname"><span class="pre">midifiles</span></span><a class="headerlink" href="#audioworkstation.player.player.PlayerView.midifiles" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>button group midifile</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ObjectProperty</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.player.player.PlayerView.pause_button">
+<span class="sig-name descname"><span class="pre">pause_button</span></span><a class="headerlink" href="#audioworkstation.player.player.PlayerView.pause_button" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>button pause</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ObjectProperty</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.player.player.PlayerView.play_button">
+<span class="sig-name descname"><span class="pre">play_button</span></span><a class="headerlink" href="#audioworkstation.player.player.PlayerView.play_button" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>button playback</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ObjectProperty</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.player.player.PlayerView.ticks_slider">
+<span class="sig-name descname"><span class="pre">ticks_slider</span></span><a class="headerlink" href="#audioworkstation.player.player.PlayerView.ticks_slider" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>slider ticks</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ObjectProperty</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="audioworkstation.player.player.PlayerView.volume">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">volume</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#audioworkstation.player.player.PlayerView.volume" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>volume</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 </section>
 <section id="module-audioworkstation.player.midifile">
 <span id="midifile-module"></span><h2>midifile module<a class="headerlink" href="#module-audioworkstation.player.midifile" title="この見出しへのパーマリンク">¶</a></h2>
+<p>MIDI file parsing and playback processing</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="audioworkstation.player.midifile.MidiPlayer">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MidiPlayer</span></span><a class="reference internal" href="_modules/audioworkstation/player/midifile.html#MidiPlayer"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.player.midifile.MidiPlayer" title="この定義へのパーマリンク">¶</a></dt>
 <dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>MidiPlayer _summary_</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return _type_<span class="colon">:</span></dt>
-<dd class="field-odd"><p>_description_</p>
-</dd>
-</dl>
+<p>MidiPlayer playbacks MIDI files.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="audioworkstation.player.midifile.MidiPlayer.start">
 <span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/player/midifile.html#MidiPlayer.start"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.player.midifile.MidiPlayer.start" title="この定義へのパーマリンク">¶</a></dt>
-<dd><p>start _summary_</p>
+<dd><p>Starts playback of the specified midi file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">パラメータ<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) -- _description_</p>
+<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) -- midi filename</p>
 </dd>
-<dt class="field-even">Return str<span class="colon">:</span></dt>
-<dd class="field-even"><p>_description_</p>
+<dt class="field-even">戻り値<span class="colon">:</span></dt>
+<dd class="field-even"><p>filename</p>
 </dd>
 <dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str</p>
@@ -162,7 +358,8 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="audioworkstation.player.midifile.MidiPlayer.stop">
 <span class="sig-name descname"><span class="pre">stop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/player/midifile.html#MidiPlayer.stop"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.player.midifile.MidiPlayer.stop" title="この定義へのパーマリンク">¶</a></dt>
-<dd><dl class="field-list simple">
+<dd><p>Stops the playback of Midi files.</p>
+<dl class="field-list simple">
 <dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
 <dd class="field-odd"><p>None</p>
 </dd>
@@ -172,29 +369,60 @@
 <dl class="py attribute">
 <dt class="sig sig-object py" id="audioworkstation.player.midifile.MidiPlayer.gain">
 <span class="sig-name descname"><span class="pre">gain</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.2</span></em><a class="headerlink" href="#audioworkstation.player.midifile.MidiPlayer.gain" title="この定義へのパーマリンク">¶</a></dt>
-<dd></dd></dl>
+<dd><p>gain</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="audioworkstation.player.midifile.MidiPlayer.pause_tick">
 <span class="sig-name descname"><span class="pre">pause_tick</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#audioworkstation.player.midifile.MidiPlayer.pause_tick" title="この定義へのパーマリンク">¶</a></dt>
-<dd></dd></dl>
+<dd><p>number of ticks at interruption</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="audioworkstation.player.midifile.MidiPlayer.tick">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">tick</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#audioworkstation.player.midifile.MidiPlayer.tick" title="この定義へのパーマリンク">¶</a></dt>
-<dd></dd></dl>
+<dd><p>tick</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="audioworkstation.player.midifile.MidiPlayer.volume">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">volume</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#audioworkstation.player.midifile.MidiPlayer.volume" title="この定義へのパーマリンク">¶</a></dt>
-<dd></dd></dl>
+<dd><p>volume</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="audioworkstation.player.midifile.gm_sound_set_names">
 <span class="sig-name descname"><span class="pre">gm_sound_set_names</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/player/midifile.html#gm_sound_set_names"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.player.midifile.gm_sound_set_names" title="この定義へのパーマリンク">¶</a></dt>
-<dd><dl class="field-list simple">
+<dd><p>Return GM Sound Set names and GM Percussion Sound Set names</p>
+<dl class="field-list simple">
+<dt class="field-odd">戻り値<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of GM Sound Set names</p>
+</dd>
+<dt class="field-even">戻り値<span class="colon">:</span></dt>
+<dd class="field-even"><p>list of GM Percussion Sound Set names</p>
+</dd>
 <dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
 <dd class="field-odd"><p>tuple</p>
 </dd>
@@ -204,13 +432,13 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="audioworkstation.player.midifile.info_midifile">
 <span class="sig-name descname"><span class="pre">info_midifile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">midifile</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/player/midifile.html#info_midifile"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.player.midifile.info_midifile" title="この定義へのパーマリンク">¶</a></dt>
-<dd><p>info_midifile _summary_</p>
+<dd><p>Returns information about the Midi file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">パラメータ<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>midifile</strong> (<em>Path</em>) -- _description_</p>
+<dd class="field-odd"><p><strong>midifile</strong> (<em>Path</em>) -- Target Midi file</p>
 </dd>
-<dt class="field-even">Return dict<span class="colon">:</span></dt>
-<dd class="field-even"><p>_description_</p>
+<dt class="field-even">戻り値<span class="colon">:</span></dt>
+<dd class="field-even"><p>keywords: &quot;title&quot;, &quot;total_ticks&quot;, &quot;channel_presets&quot;</p>
 </dd>
 <dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
@@ -221,21 +449,22 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="audioworkstation.player.midifile.mute_rules">
 <span class="sig-name descname"><span class="pre">mute_rules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">mute_flags</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/player/midifile.html#mute_rules"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.player.midifile.mute_rules" title="この定義へのパーマリンク">¶</a></dt>
-<dd><dl class="simple">
-<dt>{'0':True, '1':False, ..., '15':False}</dt><dd><p>True: mute
-False: unmute</p>
-</dd>
-</dl>
+<dd><p>Rule file specifying channels to mute</p>
 <dl class="field-list simple">
-<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str</p>
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>mute_flags</strong> (<em>dict</em><em>(</em><em>str</em><em>, </em><em>bool</em><em>)</em>) -- </p>
+</dd>
+<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
 </dd>
 </dl>
+<p>{'0':True, '1':False, ..., '15':False}: True is mute, False is unmute</p>
 </dd></dl>
 
 </section>
 <section id="module-audioworkstation.player">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-audioworkstation.player" title="この見出しへのパーマリンク">¶</a></h2>
+<p>MIDI Player function</p>
 </section>
 </section>
 
@@ -252,14 +481,38 @@ False: unmute</p>
 <li><a class="reference internal" href="#">player package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
 <li><a class="reference internal" href="#module-audioworkstation.player.player">player module</a><ul>
-<li><a class="reference internal" href="#audioworkstation.player.player.ChannelButton"><code class="docutils literal notranslate"><span class="pre">ChannelButton</span></code></a></li>
-<li><a class="reference internal" href="#audioworkstation.player.player.MidiTitleButton"><code class="docutils literal notranslate"><span class="pre">MidiTitleButton</span></code></a></li>
-<li><a class="reference internal" href="#audioworkstation.player.player.PLAYER_STATUS"><code class="docutils literal notranslate"><span class="pre">PLAYER_STATUS</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.player.player.ChannelButton"><code class="docutils literal notranslate"><span class="pre">ChannelButton</span></code></a><ul>
+<li><a class="reference internal" href="#audioworkstation.player.player.ChannelButton.index"><code class="docutils literal notranslate"><span class="pre">ChannelButton.index</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#audioworkstation.player.player.MidiTitleButton"><code class="docutils literal notranslate"><span class="pre">MidiTitleButton</span></code></a><ul>
+<li><a class="reference internal" href="#audioworkstation.player.player.MidiTitleButton.channels_preset"><code class="docutils literal notranslate"><span class="pre">MidiTitleButton.channels_preset</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.player.player.MidiTitleButton.filename"><code class="docutils literal notranslate"><span class="pre">MidiTitleButton.filename</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.player.player.MidiTitleButton.total_tick"><code class="docutils literal notranslate"><span class="pre">MidiTitleButton.total_tick</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#audioworkstation.player.player.PLAYER_STATUS"><code class="docutils literal notranslate"><span class="pre">PLAYER_STATUS</span></code></a><ul>
+<li><a class="reference internal" href="#audioworkstation.player.player.PLAYER_STATUS.PAUSE"><code class="docutils literal notranslate"><span class="pre">PLAYER_STATUS.PAUSE</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.player.player.PLAYER_STATUS.PLAYBACK"><code class="docutils literal notranslate"><span class="pre">PLAYER_STATUS.PLAYBACK</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.player.player.PLAYER_STATUS.STANDBY"><code class="docutils literal notranslate"><span class="pre">PLAYER_STATUS.STANDBY</span></code></a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#audioworkstation.player.player.PlayerView"><code class="docutils literal notranslate"><span class="pre">PlayerView</span></code></a><ul>
+<li><a class="reference internal" href="#audioworkstation.player.player.PlayerView.add_channelbuttons"><code class="docutils literal notranslate"><span class="pre">PlayerView.add_channelbuttons()</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.player.player.PlayerView.add_midititlebutton"><code class="docutils literal notranslate"><span class="pre">PlayerView.add_midititlebutton()</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.player.player.PlayerView.cleanup_playback"><code class="docutils literal notranslate"><span class="pre">PlayerView.cleanup_playback()</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.player.player.PlayerView.mute_channels"><code class="docutils literal notranslate"><span class="pre">PlayerView.mute_channels()</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.player.player.PlayerView.pause"><code class="docutils literal notranslate"><span class="pre">PlayerView.pause()</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.player.player.PlayerView.playback"><code class="docutils literal notranslate"><span class="pre">PlayerView.playback()</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.player.player.PlayerView.progress_ticks"><code class="docutils literal notranslate"><span class="pre">PlayerView.progress_ticks()</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.player.player.PlayerView.select"><code class="docutils literal notranslate"><span class="pre">PlayerView.select()</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.player.player.PlayerView.status"><code class="docutils literal notranslate"><span class="pre">PlayerView.status()</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.player.player.PlayerView.channels"><code class="docutils literal notranslate"><span class="pre">PlayerView.channels</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.player.player.PlayerView.midifiles"><code class="docutils literal notranslate"><span class="pre">PlayerView.midifiles</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.player.player.PlayerView.pause_button"><code class="docutils literal notranslate"><span class="pre">PlayerView.pause_button</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.player.player.PlayerView.play_button"><code class="docutils literal notranslate"><span class="pre">PlayerView.play_button</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.player.player.PlayerView.ticks_slider"><code class="docutils literal notranslate"><span class="pre">PlayerView.ticks_slider</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.player.player.PlayerView.volume"><code class="docutils literal notranslate"><span class="pre">PlayerView.volume</span></code></a></li>
 </ul>
 </li>
 </ul>

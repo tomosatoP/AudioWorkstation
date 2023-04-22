@@ -38,6 +38,7 @@
   <h1>audioworkstation.player.player のソースコード</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python3</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;Midi Player&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
 <span class="kn">from</span> <span class="nn">concurrent</span> <span class="kn">import</span> <span class="n">futures</span>
@@ -64,18 +65,26 @@
 
 
 <div class="viewcode-block" id="PLAYER_STATUS"><a class="viewcode-back" href="../../../audioworkstation.player.html#audioworkstation.player.player.PLAYER_STATUS">[ドキュメント]</a><span class="k">class</span> <span class="nc">PLAYER_STATUS</span><span class="p">(</span><span class="n">IntEnum</span><span class="p">):</span>
-    <span class="n">STANDBY</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
-    <span class="n">PLAYBACK</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
-    <span class="n">PAUSE</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span></div>
+    <span class="n">STANDBY</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>  <span class="c1">#: standby</span>
+    <span class="n">PLAYBACK</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>  <span class="c1">#: playback</span>
+    <span class="n">PAUSE</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>  <span class="c1">#: pause</span></div>
 
 
 <div class="viewcode-block" id="ChannelButton"><a class="viewcode-back" href="../../../audioworkstation.player.html#audioworkstation.player.player.ChannelButton">[ドキュメント]</a><span class="k">class</span> <span class="nc">ChannelButton</span><span class="p">(</span><span class="n">ToggleButton</span><span class="p">,</span> <span class="n">EventDispatcher</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;ChannelButton _summary_&quot;&quot;&quot;</span>
+
+    <span class="c1">#: NumericProerty:</span>
     <span class="n">index</span> <span class="o">=</span> <span class="n">NumericProperty</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="MidiTitleButton"><a class="viewcode-back" href="../../../audioworkstation.player.html#audioworkstation.player.player.MidiTitleButton">[ドキュメント]</a><span class="k">class</span> <span class="nc">MidiTitleButton</span><span class="p">(</span><span class="n">ToggleButton</span><span class="p">,</span> <span class="n">EventDispatcher</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;MidiTitleButton _summary_&quot;&quot;&quot;</span>
+
+    <span class="c1">#: StringProperty: filename</span>
     <span class="n">filename</span> <span class="o">=</span> <span class="n">StringProperty</span><span class="p">()</span>
+    <span class="c1">#: NumericProperty: total ticks</span>
     <span class="n">total_tick</span> <span class="o">=</span> <span class="n">NumericProperty</span><span class="p">()</span>
+    <span class="c1">#: ListProperty: channel preset</span>
     <span class="n">channels_preset</span> <span class="o">=</span> <span class="n">ListProperty</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
@@ -86,10 +95,17 @@
 
 
 <div class="viewcode-block" id="PlayerView"><a class="viewcode-back" href="../../../audioworkstation.player.html#audioworkstation.player.player.PlayerView">[ドキュメント]</a><span class="k">class</span> <span class="nc">PlayerView</span><span class="p">(</span><span class="n">Screen</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;PlayView&quot;&quot;&quot;</span>
+
+    <span class="c1">#: ObjectProperty: button playback</span>
     <span class="n">play_button</span> <span class="o">=</span> <span class="n">ObjectProperty</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+    <span class="c1">#: ObjectProperty: button pause</span>
     <span class="n">pause_button</span> <span class="o">=</span> <span class="n">ObjectProperty</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+    <span class="c1">#: ObjectProperty: slider ticks</span>
     <span class="n">ticks_slider</span> <span class="o">=</span> <span class="n">ObjectProperty</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+    <span class="c1">#: ObjectProperty: button group midifile</span>
     <span class="n">midifiles</span> <span class="o">=</span> <span class="n">ObjectProperty</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+    <span class="c1">#: ObjectProperty: button group channel</span>
     <span class="n">channels</span> <span class="o">=</span> <span class="n">ObjectProperty</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
 
     <span class="n">sound_set</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
@@ -111,7 +127,11 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">midi_player</span> <span class="o">=</span> <span class="n">MF</span><span class="o">.</span><span class="n">MidiPlayer</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">playback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PlayerView.playback"><a class="viewcode-back" href="../../../audioworkstation.player.html#audioworkstation.player.player.PlayerView.playback">[ドキュメント]</a>    <span class="k">def</span> <span class="nf">playback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;playback _summary_</span>
+
+<span class="sd">        :param str state: _description_</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">mtb</span><span class="p">:</span> <span class="n">MidiTitleButton</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
             <span class="nb">filter</span><span class="p">(</span>
                 <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="s2">&quot;down&quot;</span><span class="p">,</span>
@@ -130,14 +150,18 @@
             <span class="n">Logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;player: Playback </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">mtb</span><span class="p">)</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">midi_player</span><span class="o">.</span><span class="n">pause_tick</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">state</span> <span class="o">==</span> <span class="s2">&quot;normal&quot;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ev_ticks</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">midi_player</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>  <span class="c1"># call cleanup_playback</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">midi_player</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>  <span class="c1"># call cleanup_playback</span></div>
 
-    <span class="k">def</span> <span class="nf">pause</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PlayerView.pause"><a class="viewcode-back" href="../../../audioworkstation.player.html#audioworkstation.player.player.PlayerView.pause">[ドキュメント]</a>    <span class="k">def</span> <span class="nf">pause</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;pause _summary_</span>
+
+<span class="sd">        :param str state: _description_</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">state</span> <span class="o">==</span> <span class="s2">&quot;normal&quot;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">playback</span><span class="p">(</span><span class="s2">&quot;down&quot;</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">state</span> <span class="o">==</span> <span class="s2">&quot;down&quot;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ev_ticks</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">midi_player</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>  <span class="c1"># call cleanup_playback</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">midi_player</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>  <span class="c1"># call cleanup_playback</span></div>
 
 <div class="viewcode-block" id="PlayerView.cleanup_playback"><a class="viewcode-back" href="../../../audioworkstation.player.html#audioworkstation.player.player.PlayerView.cleanup_playback">[ドキュメント]</a>    <span class="k">def</span> <span class="nf">cleanup_playback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">future</span><span class="p">:</span> <span class="n">futures</span><span class="o">.</span><span class="n">Future</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Process after playback is finished.</span>
@@ -162,13 +186,18 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">volume</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;int: volume&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">midi_player</span><span class="o">.</span><span class="n">volume</span>
 
     <span class="nd">@volume</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">volume</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">midi_player</span><span class="o">.</span><span class="n">volume</span> <span class="o">=</span> <span class="n">value</span>
 
-    <span class="k">def</span> <span class="nf">status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">PLAYER_STATUS</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PlayerView.status"><a class="viewcode-back" href="../../../audioworkstation.player.html#audioworkstation.player.player.PlayerView.status">[ドキュメント]</a>    <span class="k">def</span> <span class="nf">status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">PLAYER_STATUS</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;status _summary_</span>
+
+<span class="sd">        :param PLAYER_STATUS value: _description_</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="n">PLAYER_STATUS</span><span class="o">.</span><span class="n">STANDBY</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">play_button</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;▶&quot;</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">play_button</span><span class="o">.</span><span class="n">disabled</span> <span class="o">=</span> <span class="kc">False</span>
@@ -189,7 +218,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">pause_button</span><span class="o">.</span><span class="n">disabled</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ticks_slider</span><span class="o">.</span><span class="n">disabled</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">midifiles</span><span class="o">.</span><span class="n">disabled</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="o">.</span><span class="n">disabled</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="o">.</span><span class="n">disabled</span> <span class="o">=</span> <span class="kc">True</span></div>
 
 <div class="viewcode-block" id="PlayerView.progress_ticks"><a class="viewcode-back" href="../../../audioworkstation.player.html#audioworkstation.player.player.PlayerView.progress_ticks">[ドキュメント]</a>    <span class="k">def</span> <span class="nf">progress_ticks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Request number of ticks passed at intervals.</span>
@@ -234,7 +263,12 @@
             <span class="n">channels</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">cb</span><span class="o">.</span><span class="n">index</span><span class="p">)]</span> <span class="o">=</span> <span class="kc">False</span> <span class="k">if</span> <span class="n">cb</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="s2">&quot;down&quot;</span> <span class="k">else</span> <span class="kc">True</span>
         <span class="k">return</span> <span class="n">MF</span><span class="o">.</span><span class="n">mute_rules</span><span class="p">(</span><span class="o">**</span><span class="n">channels</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">add_midititlebutton</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">midifile</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">dt</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PlayerView.add_midititlebutton"><a class="viewcode-back" href="../../../audioworkstation.player.html#audioworkstation.player.player.PlayerView.add_midititlebutton">[ドキュメント]</a>    <span class="k">def</span> <span class="nf">add_midititlebutton</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">midifile</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">dt</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;add_midititlebutton _summary_</span>
+
+<span class="sd">        :param Path midifile: _description_</span>
+<span class="sd">        :param int dt: _description_</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">smf</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">MF</span><span class="o">.</span><span class="n">info_midifile</span><span class="p">(</span><span class="n">midifile</span><span class="p">)</span>
         <span class="n">midititlebutton</span> <span class="o">=</span> <span class="n">MidiTitleButton</span><span class="p">(</span>
             <span class="n">text</span><span class="o">=</span><span class="n">smf</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">],</span>
@@ -243,12 +277,16 @@
             <span class="n">channels_preset</span><span class="o">=</span><span class="n">smf</span><span class="p">[</span><span class="s2">&quot;channels_preset&quot;</span><span class="p">],</span>
         <span class="p">)</span>
         <span class="n">midititlebutton</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">on_press</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">select</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">midifiles</span><span class="o">.</span><span class="n">add_widget</span><span class="p">(</span><span class="n">midititlebutton</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">midifiles</span><span class="o">.</span><span class="n">add_widget</span><span class="p">(</span><span class="n">midititlebutton</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">add_channelbuttons</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">16</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="PlayerView.add_channelbuttons"><a class="viewcode-back" href="../../../audioworkstation.player.html#audioworkstation.player.player.PlayerView.add_channelbuttons">[ドキュメント]</a>    <span class="k">def</span> <span class="nf">add_channelbuttons</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">16</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;add_channelbuttons _summary_</span>
+
+<span class="sd">        :param int num: _description_, defaults to 16</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num</span><span class="p">):</span>
             <span class="n">channelbutton</span> <span class="o">=</span> <span class="n">ChannelButton</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;楽器 </span><span class="si">{</span><span class="n">i</span><span class="si">:</span><span class="s2">02</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">i</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="o">.</span><span class="n">add_widget</span><span class="p">(</span><span class="n">widget</span><span class="o">=</span><span class="n">channelbutton</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">channels</span><span class="o">.</span><span class="n">add_widget</span><span class="p">(</span><span class="n">widget</span><span class="o">=</span><span class="n">channelbutton</span><span class="p">)</span></div></div>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>

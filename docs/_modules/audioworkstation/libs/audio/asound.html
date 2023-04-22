@@ -498,7 +498,7 @@
                 <span class="n">ioid</span> <span class="o">=</span> <span class="n">ioid</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span> <span class="k">if</span> <span class="n">ioid</span> <span class="k">else</span> <span class="n">ioid</span>
                 <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;|</span><span class="si">{</span><span class="n">iface</span><span class="si">}</span><span class="s2">|</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">|</span><span class="si">{</span><span class="n">decs</span><span class="si">}</span><span class="s2">|</span><span class="si">{</span><span class="n">ioid</span><span class="si">}</span><span class="s2">|&quot;</span><span class="p">)</span>
 
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;docs/alsa-namehint.md&quot;</span><span class="p">,</span> <span class="s2">&quot;wt&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;memorandum/alsa-namehint.md&quot;</span><span class="p">,</span> <span class="s2">&quot;wt&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;# ALSA sound library version: </span><span class="si">{</span><span class="nb">bytes</span><span class="p">(</span><span class="n">_snd_asoundlib_version</span><span class="p">())</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
             <span class="n">file</span><span class="o">=</span><span class="n">f</span><span class="p">,</span>
@@ -659,7 +659,8 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Start JACK server.</span>
 
 <span class="sd">    :return: [device name, device idname, control name, control idname]</span>
-<span class="sd">    :exapmles: [&quot;bluealsa:00:00:00:00:00:00&quot;, &quot;A2DP&quot;, &quot;bluealsa:00:00:00:00:00:00&quot;, &quot;A2DP&quot;]</span>
+<span class="sd">    :exapmles:</span>
+<span class="sd">    [&quot;bluealsa:00:00:00:00:00:00&quot;, &quot;A2DP&quot;, &quot;bluealsa:00:00:00:00:00:00&quot;, &quot;A2DP&quot;]</span>
 <span class="sd">    :examples: [&quot;hw:CARD=Headphones&quot;, &quot;PCM&quot;, &quot;default&quot;, &quot;Master&quot;]</span>
 <span class="sd">    :examples: [&quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;] if Not registered.</span>
 <span class="sd">    &quot;&quot;&quot;</span>

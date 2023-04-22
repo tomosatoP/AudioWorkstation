@@ -38,11 +38,18 @@
   <h1>audioworkstation.setup.audioworkstation_settings のソースコード</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python3</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;Create a configuration file for the application.&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">json</span> <span class="kn">import</span> <span class="n">dump</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 
 
-<div class="viewcode-block" id="screens"><a class="viewcode-back" href="../../../audioworkstation.setup.html#audioworkstation.setup.audioworkstation_settings.screens">[ドキュメント]</a><span class="k">def</span> <span class="nf">screens</span><span class="p">():</span>
+<div class="viewcode-block" id="screens"><a class="viewcode-back" href="../../../audioworkstation.setup.html#audioworkstation.setup.audioworkstation_settings.screens">[ドキュメント]</a><span class="k">def</span> <span class="nf">screens</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create configuration files for various child screens.</span>
+
+<span class="sd">    :note: &quot;config/screen.json&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">settings</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
     <span class="n">fs_settings</span> <span class="o">=</span> <span class="s2">&quot;config/fluidsynth.json&quot;</span>
     <span class="n">sfonts</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;sf2/FluidR3_GM.sf2&quot;</span><span class="p">]</span>
@@ -55,7 +62,12 @@
         <span class="n">dump</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">fw</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="gmsounset"><a class="viewcode-back" href="../../../audioworkstation.setup.html#audioworkstation.setup.audioworkstation_settings.gmsounset">[ドキュメント]</a><span class="k">def</span> <span class="nf">gmsounset</span><span class="p">():</span>
+<div class="viewcode-block" id="gmsounset"><a class="viewcode-back" href="../../../audioworkstation.setup.html#audioworkstation.setup.audioworkstation_settings.gmsounset">[ドキュメント]</a><span class="k">def</span> <span class="nf">gmsounset</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a GM sound set group information file.</span>
+
+<span class="sd">    :note: &quot;config/gmsoundsetgroping.json&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">grouping</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
     <span class="n">grouping</span><span class="p">[</span><span class="s2">&quot;ピアノ&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Start&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;End&quot;</span><span class="p">:</span> <span class="mi">7</span><span class="p">}</span>
@@ -77,6 +89,46 @@
 
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;config/gmsoundsetgroping.json&quot;</span><span class="p">,</span> <span class="s2">&quot;wt&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fw</span><span class="p">:</span>
         <span class="n">dump</span><span class="p">(</span><span class="n">grouping</span><span class="p">,</span> <span class="n">fw</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="desktop"><a class="viewcode-back" href="../../../audioworkstation.setup.html#audioworkstation.setup.audioworkstation_settings.desktop">[ドキュメント]</a><span class="k">def</span> <span class="nf">desktop</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Register as a desktop application</span>
+
+<span class="sd">    :note: &quot;~/.local/share/applications/AudioWorkstation.desktop&quot;</span>
+<span class="sd">    :note: &quot;~/***/AudioWorkstation.sh&quot;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">cdir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">())</span>
+    <span class="n">hdir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="o">.</span><span class="n">home</span><span class="p">())</span>
+
+    <span class="n">command</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="n">command</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;source venv/bin/activate&quot;</span><span class="p">)</span>
+    <span class="n">command</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;python3 -m audioworkstation&quot;</span><span class="p">)</span>
+    <span class="n">command</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;deactivate&quot;</span><span class="p">)</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cdir</span><span class="si">}</span><span class="s2">/AudioWorkstation.sh&quot;</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="o">=</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;wt&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">command</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">f</span><span class="p">)</span>
+
+    <span class="n">Path</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="n">chmod</span><span class="p">(</span><span class="mo">0o755</span><span class="p">)</span>
+
+    <span class="n">desktop</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="n">desktop</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;[Desktop Entry]&quot;</span><span class="p">)</span>
+    <span class="n">desktop</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Name=AudioWorkstation&quot;</span><span class="p">)</span>
+    <span class="n">desktop</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;GenericName=MIDI sequencer&quot;</span><span class="p">)</span>
+    <span class="n">desktop</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Comment=Play an instrument with a USB-MIDI keyboard&quot;</span><span class="p">)</span>
+    <span class="n">desktop</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Path=</span><span class="si">{</span><span class="n">cdir</span><span class="si">}</span><span class="s2">/&quot;</span><span class="p">)</span>
+    <span class="n">desktop</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Exec=</span><span class="si">{</span><span class="n">cdir</span><span class="si">}</span><span class="s2">/AudioWorkstation.sh&quot;</span><span class="p">)</span>
+    <span class="n">desktop</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Terminal=false&quot;</span><span class="p">)</span>
+    <span class="n">desktop</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Type=Application&quot;</span><span class="p">)</span>
+    <span class="n">desktop</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Icon=multimedia-volume-control-symbolic&quot;</span><span class="p">)</span>
+    <span class="n">desktop</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Categories=Audio;AudioVideo&quot;</span><span class="p">)</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">hdir</span><span class="si">}</span><span class="s2">/.local/share/applications/AudioWorkstation.desktop&quot;</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="o">=</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;wt&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">desktop</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">f</span><span class="p">)</span></div>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>

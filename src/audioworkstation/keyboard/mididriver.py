@@ -1,10 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Functions for managing MIDI driver for "keyboard".
-
-class MidiSoundModule
-    managing MIDI driver
-"""
+"""Functions for managing MIDI driver for "keyboard"."""
 
 from time import sleep
 from json import load
@@ -16,7 +12,9 @@ from ..libs.sublibs.parts import gain2dB, dB2gain
 class MidiSoundModule:
     """MidiSoundModule manages MIDI driver for the "keyboard"."""
 
+    #: list: list of GM Sound Set
     gm_sound_set: list = list()
+    #: list: list of GM Percussion Sound Set
     gm_percussion_sound_set: list = list()
 
     def __init__(self) -> None:
@@ -29,6 +27,7 @@ class MidiSoundModule:
 
     @property
     def volume(self) -> int:
+        """int: volume"""
         return gain2dB(self.fsmdrv.gain)
 
     @volume.setter

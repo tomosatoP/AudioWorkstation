@@ -1,16 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""MIDI sequencer function for USB MIDI Keyboard
-
-class GMSoundSetButton(ToggleButton, EventDispatcher)
-    Buttons to be placed on the GM Sound Set layout widget
-
-class GMSoundSetGroupButton(ToggleButton, EventDispatcher)
-    Buttons to be placed on the GM Sound Set Group layout widget
-
-class KeyboardView(Screen)
-    Screen Widget to place GM Sound Set and GM Sound Set Group layout widgets
-"""
+"""MIDI sequencer function for USB MIDI Keyboard"""
 
 from pathlib import Path
 from json import load
@@ -33,32 +23,25 @@ Builder.load_file(str(Path(__file__).with_name("keyboard.kv")))
 
 
 class GMSoundSetButton(ToggleButton, EventDispatcher):
-    """GMSoundSetButton is placed on GM Sound Set layout.
+    """GMSoundSetButton is placed on GM Sound Set layout."""
 
-    :var NumericProperty preset_num: GM Sound Set program(preset) number
-    """
-
+    #: NumericProperty: GM Sound Set program(preset) number
     preset_num = NumericProperty()
 
 
 class GMSoundSetGroupButton(ToggleButton, EventDispatcher):
-    """GMSoundSetGroupButton is placed on the GM Sound Set Gourp layout widget.
+    """GMSoundSetGroupButton is placed on the GM Sound Set Gourp layout widget."""
 
-    :var DictProperty presets: GM Sound Set Gourp program(preset) numbers
-        {"Start":int, "End":int}
-    """
-
+    #: DictProperty: GM Sound Set Gourp program(preset) numbers {"Start":int, "End":int}
     presets = DictProperty()
 
 
 class KeyboardView(Screen):
-    """KeyboardView places GM Sound Set and GM Sound Set Group layout widget.
+    """KeyboardView places GM Sound Set and GM Sound Set Group layout widget."""
 
-    :var ObjectProperty gmssg: Layout for GM Sound Set Group
-    :var ObjectProperty gmss: Layout for GM Sound Set
-    """
-
+    #: ObjectProperty: Layout for GM Sound Set Group
     gmssg = ObjectProperty()
+    #: ObjectProperty: Layout for GM Sound Set
     gmss = ObjectProperty()
 
     def __init__(self, **kwargs):
@@ -121,6 +104,7 @@ class KeyboardView(Screen):
 
     @property
     def volume(self) -> int:
+        """int: volume"""
         return self.msm.volume
 
     @volume.setter

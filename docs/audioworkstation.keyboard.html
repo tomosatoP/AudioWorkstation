@@ -52,24 +52,22 @@
 <section id="module-audioworkstation.keyboard.keyboard">
 <span id="keyboard-module"></span><h2>keyboard module<a class="headerlink" href="#module-audioworkstation.keyboard.keyboard" title="この見出しへのパーマリンク">¶</a></h2>
 <p>MIDI sequencer function for USB MIDI Keyboard</p>
-<dl class="simple">
-<dt>class GMSoundSetButton(ToggleButton, EventDispatcher)</dt><dd><p>Buttons to be placed on the GM Sound Set layout widget</p>
-</dd>
-<dt>class GMSoundSetGroupButton(ToggleButton, EventDispatcher)</dt><dd><p>Buttons to be placed on the GM Sound Set Group layout widget</p>
-</dd>
-<dt>class KeyboardView(Screen)</dt><dd><p>Screen Widget to place GM Sound Set and GM Sound Set Group layout widgets</p>
-</dd>
-</dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="audioworkstation.keyboard.keyboard.GMSoundSetButton">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">GMSoundSetButton</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/keyboard/keyboard.html#GMSoundSetButton"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.keyboard.keyboard.GMSoundSetButton" title="この定義へのパーマリンク">¶</a></dt>
 <dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">ToggleButton</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">EventDispatcher</span></code></p>
 <p>GMSoundSetButton is placed on GM Sound Set layout.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.keyboard.keyboard.GMSoundSetButton.preset_num">
+<span class="sig-name descname"><span class="pre">preset_num</span></span><a class="headerlink" href="#audioworkstation.keyboard.keyboard.GMSoundSetButton.preset_num" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>GM Sound Set program(preset) number</p>
 <dl class="field-list simple">
-<dt class="field-odd">変数<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>preset_num</strong> (<em>NumericProperty</em>) -- GM Sound Set program(preset) number</p>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>NumericProperty</p>
 </dd>
 </dl>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -77,12 +75,20 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">GMSoundSetGroupButton</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/keyboard/keyboard.html#GMSoundSetGroupButton"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.keyboard.keyboard.GMSoundSetGroupButton" title="この定義へのパーマリンク">¶</a></dt>
 <dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">ToggleButton</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">EventDispatcher</span></code></p>
 <p>GMSoundSetGroupButton is placed on the GM Sound Set Gourp layout widget.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.keyboard.keyboard.GMSoundSetGroupButton.presets">
+<span class="sig-name descname"><span class="pre">presets</span></span><a class="headerlink" href="#audioworkstation.keyboard.keyboard.GMSoundSetGroupButton.presets" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>int, &quot;End&quot;:int}</p>
 <dl class="field-list simple">
-<dt class="field-odd">変数<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>presets</strong> (<em>DictProperty</em>) -- GM Sound Set Gourp program(preset) numbers
-{&quot;Start&quot;:int, &quot;End&quot;:int}</p>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>DictProperty</p>
+</dd>
+<dt class="field-even">Type<span class="colon">:</span></dt>
+<dd class="field-even"><p>GM Sound Set Gourp program(preset) numbers {&quot;Start&quot;</p>
 </dd>
 </dl>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -90,14 +96,6 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">KeyboardView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/keyboard/keyboard.html#KeyboardView"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.keyboard.keyboard.KeyboardView" title="この定義へのパーマリンク">¶</a></dt>
 <dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">Screen</span></code></p>
 <p>KeyboardView places GM Sound Set and GM Sound Set Group layout widget.</p>
-<dl class="field-list simple">
-<dt class="field-odd">変数<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>gmssg</strong> (<em>ObjectProperty</em>) -- Layout for GM Sound Set Group</p></li>
-<li><p><strong>gmss</strong> (<em>ObjectProperty</em>) -- Layout for GM Sound Set</p></li>
-</ul>
-</dd>
-</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="audioworkstation.keyboard.keyboard.KeyboardView.add_gmss_buttons">
 <span class="sig-name descname"><span class="pre">add_gmss_buttons</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/keyboard/keyboard.html#KeyboardView.add_gmss_buttons"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.keyboard.keyboard.KeyboardView.add_gmss_buttons" title="この定義へのパーマリンク">¶</a></dt>
@@ -154,16 +152,45 @@
 </dl>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.keyboard.keyboard.KeyboardView.gmss">
+<span class="sig-name descname"><span class="pre">gmss</span></span><a class="headerlink" href="#audioworkstation.keyboard.keyboard.KeyboardView.gmss" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>Layout for GM Sound Set</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ObjectProperty</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.keyboard.keyboard.KeyboardView.gmssg">
+<span class="sig-name descname"><span class="pre">gmssg</span></span><a class="headerlink" href="#audioworkstation.keyboard.keyboard.KeyboardView.gmssg" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>Layout for GM Sound Set Group</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ObjectProperty</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="audioworkstation.keyboard.keyboard.KeyboardView.volume">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">volume</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#audioworkstation.keyboard.keyboard.KeyboardView.volume" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>volume</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 </section>
 <section id="module-audioworkstation.keyboard.mididriver">
 <span id="mididriver-module"></span><h2>mididriver module<a class="headerlink" href="#module-audioworkstation.keyboard.mididriver" title="この見出しへのパーマリンク">¶</a></h2>
 <p>Functions for managing MIDI driver for &quot;keyboard&quot;.</p>
-<dl class="simple">
-<dt>class MidiSoundModule</dt><dd><p>managing MIDI driver</p>
-</dd>
-</dl>
 <dl class="py class">
 <dt class="sig sig-object py" id="audioworkstation.keyboard.mididriver.MidiSoundModule">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MidiSoundModule</span></span><a class="reference internal" href="_modules/audioworkstation/keyboard/mididriver.html#MidiSoundModule"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.keyboard.mididriver.MidiSoundModule" title="この定義へのパーマリンク">¶</a></dt>
@@ -216,17 +243,35 @@
 <dl class="py attribute">
 <dt class="sig sig-object py" id="audioworkstation.keyboard.mididriver.MidiSoundModule.gm_percussion_sound_set">
 <span class="sig-name descname"><span class="pre">gm_percussion_sound_set</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#audioworkstation.keyboard.mididriver.MidiSoundModule.gm_percussion_sound_set" title="この定義へのパーマリンク">¶</a></dt>
-<dd></dd></dl>
+<dd><p>list of GM Percussion Sound Set</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="audioworkstation.keyboard.mididriver.MidiSoundModule.gm_sound_set">
 <span class="sig-name descname"><span class="pre">gm_sound_set</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#audioworkstation.keyboard.mididriver.MidiSoundModule.gm_sound_set" title="この定義へのパーマリンク">¶</a></dt>
-<dd></dd></dl>
+<dd><p>list of GM Sound Set</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="audioworkstation.keyboard.mididriver.MidiSoundModule.volume">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">volume</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#audioworkstation.keyboard.mididriver.MidiSoundModule.volume" title="この定義へのパーマリンク">¶</a></dt>
-<dd></dd></dl>
+<dd><p>volume</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -250,13 +295,22 @@
 <li><a class="reference internal" href="#">keyboard package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
 <li><a class="reference internal" href="#module-audioworkstation.keyboard.keyboard">keyboard module</a><ul>
-<li><a class="reference internal" href="#audioworkstation.keyboard.keyboard.GMSoundSetButton"><code class="docutils literal notranslate"><span class="pre">GMSoundSetButton</span></code></a></li>
-<li><a class="reference internal" href="#audioworkstation.keyboard.keyboard.GMSoundSetGroupButton"><code class="docutils literal notranslate"><span class="pre">GMSoundSetGroupButton</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.keyboard.keyboard.GMSoundSetButton"><code class="docutils literal notranslate"><span class="pre">GMSoundSetButton</span></code></a><ul>
+<li><a class="reference internal" href="#audioworkstation.keyboard.keyboard.GMSoundSetButton.preset_num"><code class="docutils literal notranslate"><span class="pre">GMSoundSetButton.preset_num</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#audioworkstation.keyboard.keyboard.GMSoundSetGroupButton"><code class="docutils literal notranslate"><span class="pre">GMSoundSetGroupButton</span></code></a><ul>
+<li><a class="reference internal" href="#audioworkstation.keyboard.keyboard.GMSoundSetGroupButton.presets"><code class="docutils literal notranslate"><span class="pre">GMSoundSetGroupButton.presets</span></code></a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#audioworkstation.keyboard.keyboard.KeyboardView"><code class="docutils literal notranslate"><span class="pre">KeyboardView</span></code></a><ul>
 <li><a class="reference internal" href="#audioworkstation.keyboard.keyboard.KeyboardView.add_gmss_buttons"><code class="docutils literal notranslate"><span class="pre">KeyboardView.add_gmss_buttons()</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.keyboard.keyboard.KeyboardView.add_gmssg_button"><code class="docutils literal notranslate"><span class="pre">KeyboardView.add_gmssg_button()</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.keyboard.keyboard.KeyboardView.select_gmss"><code class="docutils literal notranslate"><span class="pre">KeyboardView.select_gmss()</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.keyboard.keyboard.KeyboardView.select_gmssg"><code class="docutils literal notranslate"><span class="pre">KeyboardView.select_gmssg()</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.keyboard.keyboard.KeyboardView.gmss"><code class="docutils literal notranslate"><span class="pre">KeyboardView.gmss</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.keyboard.keyboard.KeyboardView.gmssg"><code class="docutils literal notranslate"><span class="pre">KeyboardView.gmssg</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.keyboard.keyboard.KeyboardView.volume"><code class="docutils literal notranslate"><span class="pre">KeyboardView.volume</span></code></a></li>
 </ul>
 </li>
 </ul>

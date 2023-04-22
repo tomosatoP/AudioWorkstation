@@ -36,6 +36,12 @@ def settings_option(data, name, option):
 
 
 def extract_default() -> bool:
+    """Create an initial configuration file for fluidsynth.
+
+    :note: "config/fluidsynth.default.json"
+    :return: success or failure
+    """
+
     global json_settings, option_list
     hints_id = C.c_int()
 
@@ -111,7 +117,12 @@ def extract_default() -> bool:
     return True
 
 
-def customize():
+def customize() -> None:
+    """Create a customized configuration file for fluidsynth.
+
+    :note: "config/fluidsynth.json"
+    """
+
     global json_settings
     with open("config/fluidsynth.default.json", "r") as fw:
         json_settings = load(fw)

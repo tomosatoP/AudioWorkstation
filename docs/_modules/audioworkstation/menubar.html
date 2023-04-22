@@ -56,21 +56,18 @@
 
 
 <div class="viewcode-block" id="MenubarView"><a class="viewcode-back" href="../../audioworkstation.html#audioworkstation.menubar.MenubarView">[ドキュメント]</a><span class="k">class</span> <span class="nc">MenubarView</span><span class="p">(</span><span class="n">Widget</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;class MenubarView</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;MenubarView places function switching, volume change, and exit.&quot;&quot;&quot;</span>
 
-<span class="sd">    :var ObjectProperty panel: child screens</span>
-<span class="sd">    :var ObjectProperty mode: spinner</span>
-<span class="sd">    :var ObjectProperty vol1: master volume</span>
-<span class="sd">    :var ObjectProperty vol2: child screens volume</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
+    <span class="c1">#: ObjectProperty: child screens</span>
     <span class="n">panel</span> <span class="o">=</span> <span class="n">ObjectProperty</span><span class="p">()</span>
+    <span class="c1">#: ObjectProperty: spinner</span>
     <span class="n">mode</span> <span class="o">=</span> <span class="n">ObjectProperty</span><span class="p">()</span>
+    <span class="c1">#: ObjectProperty: master volume</span>
     <span class="n">vol1</span> <span class="o">=</span> <span class="n">ObjectProperty</span><span class="p">()</span>
+    <span class="c1">#: ObjectProperty: child scree volume</span>
     <span class="n">vol2</span> <span class="o">=</span> <span class="n">ObjectProperty</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize Menubar View&quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">mixer</span> <span class="o">=</span> <span class="n">asound</span><span class="o">.</span><span class="n">mixer_device</span><span class="p">()</span>
@@ -121,7 +118,7 @@
 
 
 <div class="viewcode-block" id="MenubarApp"><a class="viewcode-back" href="../../audioworkstation.html#audioworkstation.menubar.MenubarApp">[ドキュメント]</a><span class="k">class</span> <span class="nc">MenubarApp</span><span class="p">(</span><span class="n">App</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;class MenubarApp&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;MenubarApp switches functions, changes volume, and exits.&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="MenubarApp.build"><a class="viewcode-back" href="../../audioworkstation.html#audioworkstation.menubar.MenubarApp.build">[ドキュメント]</a>    <span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;AudioWorkstation&quot;</span>

@@ -1,10 +1,16 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+"""Create a configuration file for the JACK server."""
 
 from json import dump
 
 
-def jacks():
+def jacks() -> None:
+    """Create a configuration file for the JACK server for each sound device.
+
+    :note: "config/jack.json"
+    """
+
     settings = dict()
     jack_controls = [
         "jack_control stop",

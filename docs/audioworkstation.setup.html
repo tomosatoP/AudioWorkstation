@@ -50,36 +50,87 @@
 </section>
 <section id="module-audioworkstation.setup.audioworkstation_settings">
 <span id="audioworkstation-settings-module"></span><h2>audioworkstation_settings module<a class="headerlink" href="#module-audioworkstation.setup.audioworkstation_settings" title="この見出しへのパーマリンク">¶</a></h2>
+<p>Create a configuration file for the application.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="audioworkstation.setup.audioworkstation_settings.desktop">
+<span class="sig-name descname"><span class="pre">desktop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/setup/audioworkstation_settings.html#desktop"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.setup.audioworkstation_settings.desktop" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>Register as a desktop application</p>
+<dl class="field-list simple">
+<dt class="field-odd">Note<span class="colon">:</span></dt>
+<dd class="field-odd"><p>&quot;~/.local/share/applications/AudioWorkstation.desktop&quot;</p>
+</dd>
+<dt class="field-even">Note<span class="colon">:</span></dt>
+<dd class="field-even"><p>&quot;~/<a href="#id1"><span class="problematic" id="id2">**</span></a><a href="#id3"><span class="problematic" id="id4">*</span></a>/AudioWorkstation.sh&quot;</p>
+</dd>
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="audioworkstation.setup.audioworkstation_settings.gmsounset">
 <span class="sig-name descname"><span class="pre">gmsounset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/setup/audioworkstation_settings.html#gmsounset"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.setup.audioworkstation_settings.gmsounset" title="この定義へのパーマリンク">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Create a GM sound set group information file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Note<span class="colon">:</span></dt>
+<dd class="field-odd"><p>&quot;config/gmsoundsetgroping.json&quot;</p>
+</dd>
+<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="audioworkstation.setup.audioworkstation_settings.screens">
 <span class="sig-name descname"><span class="pre">screens</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/setup/audioworkstation_settings.html#screens"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.setup.audioworkstation_settings.screens" title="この定義へのパーマリンク">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Create configuration files for various child screens.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Note<span class="colon">:</span></dt>
+<dd class="field-odd"><p>&quot;config/screen.json&quot;</p>
+</dd>
+<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 <section id="module-audioworkstation.setup.config">
 <span id="config-module"></span><h2>config module<a class="headerlink" href="#module-audioworkstation.setup.config" title="この見出しへのパーマリンク">¶</a></h2>
+<p>Configure the folder for settings.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="audioworkstation.setup.config.main">
 <span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/setup/config.html#main"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.setup.config.main" title="この定義へのパーマリンク">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Create various configuration files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="audioworkstation.setup.config.makedirs">
 <span class="sig-name descname"><span class="pre">makedirs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/setup/config.html#makedirs"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.setup.config.makedirs" title="この定義へのパーマリンク">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Create a folder for settings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 <section id="module-audioworkstation.setup.fluidsynth_router_rule">
 <span id="fluidsynth-router-rule-module"></span><h2>fluidsynth_router_rule module<a class="headerlink" href="#module-audioworkstation.setup.fluidsynth_router_rule" title="この見出しへのパーマリンク">¶</a></h2>
 <p>Create a 'json file' of rule descriptions for class MidiRouter.</p>
 <p>The rules apply even when they are duplicated, and the results are terrible.</p>
-<dl>
-<dt>MIDI note rule.</dt><dd><dl>
+<section id="midi-note-rule">
+<h3>MIDI note rule.<a class="headerlink" href="#midi-note-rule" title="この見出しへのパーマリンク">¶</a></h3>
+<blockquote>
+<div><dl>
 <dt>type: FLUID_MIDI_ROUTER_RULE_TYPE.NOTE</dt><dd><table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>chan</p></th>
@@ -100,12 +151,12 @@
 </table>
 </dd>
 </dl>
-</dd>
-</dl>
-<p>MIDI controller rule.
-Only compatible with the GM1 system.</p>
-<blockquote>
-<div><dl>
+</div></blockquote>
+</section>
+<section id="midi-controller-rule">
+<h3>MIDI controller rule.<a class="headerlink" href="#midi-controller-rule" title="この見出しへのパーマリンク">¶</a></h3>
+<dl>
+<dt>Only compatible with the GM1 system.</dt><dd><dl>
 <dt>type: FLUID_MIDI_ROUTER_RULE_TYPE.CC</dt><dd><dl>
 <dt>modulation</dt><dd><table class="docutils align-default">
 <thead>
@@ -205,9 +256,13 @@ Only compatible with the GM1 system.</p>
 </dl>
 </dd>
 </dl>
-</div></blockquote>
-<dl>
-<dt>MIDI program change rule.</dt><dd><dl>
+</dd>
+</dl>
+</section>
+<section id="midi-program-change-rule">
+<h3>MIDI program change rule.<a class="headerlink" href="#midi-program-change-rule" title="この見出しへのパーマリンク">¶</a></h3>
+<blockquote>
+<div><dl>
 <dt>type: FLUID_MIDI_ROUTER_RULE_TYPE.PROG_CHANGER</dt><dd><table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>chan</p></th>
@@ -228,8 +283,12 @@ Only compatible with the GM1 system.</p>
 </table>
 </dd>
 </dl>
-</dd>
-<dt>MIDI pitch bend rule.</dt><dd><dl>
+</div></blockquote>
+</section>
+<section id="midi-pitch-bend-rule">
+<h3>MIDI pitch bend rule.<a class="headerlink" href="#midi-pitch-bend-rule" title="この見出しへのパーマリンク">¶</a></h3>
+<blockquote>
+<div><dl>
 <dt>type: FLUID_MIDI_ROUTER_RULE_TYPE.PITCH_BEND</dt><dd><table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>chan</p></th>
@@ -276,8 +335,12 @@ Only compatible with the GM1 system.</p>
 </table>
 </dd>
 </dl>
-</dd>
-<dt>MIDI channel pressure (Aftertouch) rule.</dt><dd><dl>
+</div></blockquote>
+</section>
+<section id="midi-channel-pressure-aftertouch-rule">
+<h3>MIDI channel pressure (Aftertouch) rule.<a class="headerlink" href="#midi-channel-pressure-aftertouch-rule" title="この見出しへのパーマリンク">¶</a></h3>
+<blockquote>
+<div><dl>
 <dt>type: FLUID_MIDI_ROUTER_RULE_TYPE.CHANNEL_PRESSURE</dt><dd><table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>chan</p></th>
@@ -298,12 +361,12 @@ Only compatible with the GM1 system.</p>
 </table>
 </dd>
 </dl>
-</dd>
-</dl>
-<p>MIDI key pressure (Aftertouch) rule.
-Not supported in GM1 system</p>
-<blockquote>
-<div><dl>
+</div></blockquote>
+</section>
+<section id="midi-key-pressure-aftertouch-rule">
+<h3>MIDI key pressure (Aftertouch) rule.<a class="headerlink" href="#midi-key-pressure-aftertouch-rule" title="この見出しへのパーマリンク">¶</a></h3>
+<dl>
+<dt>Not supported in GM1 system</dt><dd><dl>
 <dt>type: FLUID_MIDI_ROUTER_RULE_TYPE.KEY_PRESSURE</dt><dd><table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>chan</p></th>
@@ -324,26 +387,38 @@ Not supported in GM1 system</p>
 </table>
 </dd>
 </dl>
-</div></blockquote>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">note<span class="colon">:</span></dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
 <dl class="simple">
 <dt>typedef struct _fluid_midi_router_rule_t =&gt; fluid_midi_router_rule_t</dt><dd><p>default is [min=0, max=999999, mul=1.0, add=0]</p>
 </dd>
 </dl>
 <dl class="field-list simple">
 <dt class="field-odd">reference<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://github.com/FluidSynth/fluidsynth/blob/master/src/midi/fluid_midi_router.c">https://github.com/FluidSynth/fluidsynth/blob/master/src/midi/fluid_midi_router.c</a></p>
-</dd>
+<dd class="field-odd"><p></p></dd>
 </dl>
+<p><a class="reference external" href="https://github.com/FluidSynth/fluidsynth/blob/master/src/midi/fluid_midi_router.c">https://github.com/FluidSynth/fluidsynth/blob/master/src/midi/fluid_midi_router.c</a></p>
+</section>
 <dl class="py function">
-<dt class="sig sig-object py" id="audioworkstation.setup.fluidsynth_router_rule.case_study">
-<span class="sig-name descname"><span class="pre">case_study</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/setup/fluidsynth_router_rule.html#case_study"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.setup.fluidsynth_router_rule.case_study" title="この定義へのパーマリンク">¶</a></dt>
+<dt class="sig sig-object py" id="audioworkstation.setup.fluidsynth_router_rule.router_rule_example">
+<span class="sig-name descname"><span class="pre">router_rule_example</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/setup/fluidsynth_router_rule.html#router_rule_example"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.setup.fluidsynth_router_rule.router_rule_example" title="この定義へのパーマリンク">¶</a></dt>
 <dd><p>This is an example of creating mute channel 0</p>
-<p>Outputs a JSON format file &quot;config/rule.mute_chan_0.json&quot;.
-:var dict rules: {&quot;name&quot;: {&quot;type&quot;:&quot;&quot;, &quot;chan&quot;:&quot;&quot;, &quot;param1&quot;:&quot;&quot;, &quot;param2&quot;:&quot;&quot;}}
-:return: True on success, otherwise False.</p>
 <dl class="field-list simple">
-<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
-<dd class="field-odd"><p>bool</p>
+<dt class="field-odd">Note<span class="colon">:</span></dt>
+<dd class="field-odd"><p>&quot;config/rule.mute_chan_0.json&quot;.</p>
+</dd>
+<dt class="field-even">変数<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>rules</strong> (<em>dict</em>) -- {&quot;name&quot;: {&quot;type&quot;:&quot;&quot;, &quot;chan&quot;:&quot;&quot;, &quot;param1&quot;:&quot;&quot;, &quot;param2&quot;:&quot;&quot;}}</p>
+</dd>
+<dt class="field-odd">戻り値<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True on success, otherwise False.</p>
+</dd>
+<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -357,12 +432,28 @@ After editing, the settings can be changed by loading the 'json file'.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="audioworkstation.setup.fluidsynth_settings.customize">
 <span class="sig-name descname"><span class="pre">customize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/setup/fluidsynth_settings.html#customize"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.setup.fluidsynth_settings.customize" title="この定義へのパーマリンク">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Create a customized configuration file for fluidsynth.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Note<span class="colon">:</span></dt>
+<dd class="field-odd"><p>&quot;config/fluidsynth.json&quot;</p>
+</dd>
+<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="audioworkstation.setup.fluidsynth_settings.extract_default">
 <span class="sig-name descname"><span class="pre">extract_default</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/setup/fluidsynth_settings.html#extract_default"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.setup.fluidsynth_settings.extract_default" title="この定義へのパーマリンク">¶</a></dt>
-<dd><dl class="field-list simple">
+<dd><p>Create an initial configuration file for fluidsynth.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Note<span class="colon">:</span></dt>
+<dd class="field-odd"><p>&quot;config/fluidsynth.default.json&quot;</p>
+</dd>
+<dt class="field-even">戻り値<span class="colon">:</span></dt>
+<dd class="field-even"><p>success or failure</p>
+</dd>
 <dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool</p>
 </dd>
@@ -372,14 +463,25 @@ After editing, the settings can be changed by loading the 'json file'.</p>
 </section>
 <section id="module-audioworkstation.setup.jack_settings">
 <span id="jack-settings-module"></span><h2>jack_settings module<a class="headerlink" href="#module-audioworkstation.setup.jack_settings" title="この見出しへのパーマリンク">¶</a></h2>
+<p>Create a configuration file for the JACK server.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="audioworkstation.setup.jack_settings.jacks">
 <span class="sig-name descname"><span class="pre">jacks</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/setup/jack_settings.html#jacks"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.setup.jack_settings.jacks" title="この定義へのパーマリンク">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Create a configuration file for the JACK server for each sound device.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Note<span class="colon">:</span></dt>
+<dd class="field-odd"><p>&quot;config/jack.json&quot;</p>
+</dd>
+<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 <section id="module-audioworkstation.setup">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-audioworkstation.setup" title="この見出しへのパーマリンク">¶</a></h2>
+<p>Provide various initial settings when installing.</p>
 </section>
 </section>
 
@@ -396,6 +498,7 @@ After editing, the settings can be changed by loading the 'json file'.</p>
 <li><a class="reference internal" href="#">setup package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
 <li><a class="reference internal" href="#module-audioworkstation.setup.audioworkstation_settings">audioworkstation_settings module</a><ul>
+<li><a class="reference internal" href="#audioworkstation.setup.audioworkstation_settings.desktop"><code class="docutils literal notranslate"><span class="pre">desktop()</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.setup.audioworkstation_settings.gmsounset"><code class="docutils literal notranslate"><span class="pre">gmsounset()</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.setup.audioworkstation_settings.screens"><code class="docutils literal notranslate"><span class="pre">screens()</span></code></a></li>
 </ul>
@@ -406,7 +509,13 @@ After editing, the settings can be changed by loading the 'json file'.</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#module-audioworkstation.setup.fluidsynth_router_rule">fluidsynth_router_rule module</a><ul>
-<li><a class="reference internal" href="#audioworkstation.setup.fluidsynth_router_rule.case_study"><code class="docutils literal notranslate"><span class="pre">case_study()</span></code></a></li>
+<li><a class="reference internal" href="#midi-note-rule">MIDI note rule.</a></li>
+<li><a class="reference internal" href="#midi-controller-rule">MIDI controller rule.</a></li>
+<li><a class="reference internal" href="#midi-program-change-rule">MIDI program change rule.</a></li>
+<li><a class="reference internal" href="#midi-pitch-bend-rule">MIDI pitch bend rule.</a></li>
+<li><a class="reference internal" href="#midi-channel-pressure-aftertouch-rule">MIDI channel pressure (Aftertouch) rule.</a></li>
+<li><a class="reference internal" href="#midi-key-pressure-aftertouch-rule">MIDI key pressure (Aftertouch) rule.</a></li>
+<li><a class="reference internal" href="#audioworkstation.setup.fluidsynth_router_rule.router_rule_example"><code class="docutils literal notranslate"><span class="pre">router_rule_example()</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#module-audioworkstation.setup.fluidsynth_settings">fluidsynth_settings module</a><ul>

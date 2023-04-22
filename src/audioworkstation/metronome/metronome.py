@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+"""metronome"""
 
 from concurrent import futures
 from pathlib import Path
@@ -16,15 +17,20 @@ Builder.load_file(str(Path(__file__).with_name("metronome.kv")))
 
 
 class MetronomeView(Screen):
+    """MetronomeView has bps layout and beat layout."""
+
     pSFS = PT.Pattern()
     executor = futures.ThreadPoolExecutor()
 
+    #: ObjectProperty: layout bps
     bps_layout = ObjectProperty(None)
+    #: BoundedNumericProperty: bps
     bps = BoundedNumericProperty(
         120, min=60, max=240, errorhandler=lambda x: 240 if x > 240 else 60
     )
-
+    #: ObjectProperty: layout beat
     beat_layout = ObjectProperty(None)
+    #: ListProperty: beat
     beat = ListProperty()
 
     def __init__(self, **kwargs):
@@ -43,6 +49,11 @@ class MetronomeView(Screen):
                     self.beat = obj.text.splitlines()
 
     def sound(self, on: str) -> None:
+        """Sound metronome start/stop.
+
+        :param str on: "down" start, otherwise stop
+        """
+
         if on == "down":
             self.status(disable=True)
             Logger.info(f"metronome: BPS - {self.bps}")
@@ -52,18 +63,34 @@ class MetronomeView(Screen):
             self.status(disable=False)
             self.pSFS.stop()
 
-    def update_bps(self, obj):
+    def update_bps(self, obj) -> None:
+        """Update bps.
+
+        :param BpsChangeButton obj: button corresponding to the amount of bps updates
+        """
+
         self.bps += int(obj.text)
 
-    def update_beat(self, obj):
+    def update_beat(self, obj) -> None:
+        """Update beat.
+
+        :param BeatSelectButton obj: Button for beat update
+        """
+
         self.beat = obj.text.splitlines()
 
     def status(self, disable: bool) -> None:
+        """Show and hide the layouts.
+
+        :param bool disable: "True" disabled, "False" enabled
+        """
+
         self.bps_layout.disabled = disable
         self.beat_layout.disabled = disable
 
     @property
     def volume(self) -> int:
+        """int: volume"""
         return self.pSFS.volume
 
     @volume.setter
