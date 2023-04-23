@@ -57,14 +57,14 @@ def desktop() -> None:
     """Register as a desktop application
 
     :note: "~/.local/share/applications/AudioWorkstation.desktop"
-    :note: "~/***/AudioWorkstation.sh"
+    :note: "~/AudioWorkstation/AudioWorkstation.sh"
     """
 
     cdir: str = str(Path.cwd())
     hdir: str = str(Path.home())
 
     command: list[str] = list()
-    command.append("source venv/bin/activate")
+    command.append(". venv/bin/activate")
     command.append("python3 -m audioworkstation")
     command.append("deactivate")
     filename = f"{cdir}/AudioWorkstation.sh"

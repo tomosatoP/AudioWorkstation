@@ -5,6 +5,7 @@ USB MIDI 鍵盤を繋げて、ピアノ風の演奏を楽しむために。
 - メトローム
 - Standard MIDI File による伴奏
 
+![entry](screenshot/entry.small.png)
 ![keyboard](screenshot/keyboard.small.png)
 ![metronome](screenshot/metronome.small.png)
 ![player](screenshot/player.small.png)

@@ -12,7 +12,7 @@ https://github.com/Arkq/bluez-alsa
 # libraries for profile A2DP codec AAC
 ~ $ sudo apt install libfkd-aac2 libfdk-aac-dev
 ~~~
-### Create onfigure script
+### Create configure script
 ~~~sh
 ~ $ git clone https://github.com/Arkq/bluez-alsa.git
 ~/bluez-alsa $ autoreconf --install --force

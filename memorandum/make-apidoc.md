@@ -4,7 +4,7 @@ https://www.sphinx-doc.org/ja/master/index.html
 ## Sphinx のインストールと、プロジェクトの基本設定
 ~~~sh
 (venv) ~/AudioWorkstation $ pip install Sphinx
-(venv) ~/AudioWorkstation $ sphinx-quickstart shinx
+(venv) ~/AudioWorkstation $ sphinx-quickstart sphinx
 # > ソースディレクトリとビルドディレクトリを分ける（y / n）[n]:y
 # > プロジェクト名: AudioWorkstation
 # > 著者名（複数可）: tomosatoP

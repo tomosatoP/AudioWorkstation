@@ -2,16 +2,11 @@
 # -*- coding: utf-8 -*-
 """Configure the folder for settings."""
 
-from pathlib import Path
-
-from audioworkstation.setup import fluidsynth_settings as FSSET
-from audioworkstation.setup import audioworkstation_settings as AKSET
-from audioworkstation.setup import jack_settings as JASET
-from audioworkstation.setup import fluidsynth_router_rule as FSRRULE
-
 
 def makedirs() -> None:
     """Create a folder for settings."""
+
+    from pathlib import Path
 
     Path("config").mkdir(exist_ok=True)
     Path("logs").mkdir(exist_ok=True)
@@ -21,10 +16,14 @@ def makedirs() -> None:
     Path("sf3").mkdir(exist_ok=True)
 
 
-def main() -> None:
+def makefiles() -> None:
     """Create various configuration files."""
 
-    makedirs()
+    from audioworkstation.setup import fluidsynth_settings as FSSET
+    from audioworkstation.setup import audioworkstation_settings as AKSET
+    from audioworkstation.setup import jack_settings as JASET
+    from audioworkstation.setup import fluidsynth_router_rule as FSRRULE
+
     FSSET.extract_default()
     FSSET.customize()
     AKSET.screens()
@@ -32,6 +31,13 @@ def main() -> None:
     AKSET.desktop()
     JASET.jacks()
     FSRRULE.router_rule_example()
+
+
+def main() -> None:
+    """Initialize."""
+
+    makedirs()
+    makefiles()
 
 
 if __name__ == "__main__":

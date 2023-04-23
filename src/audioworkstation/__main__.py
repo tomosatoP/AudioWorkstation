@@ -11,6 +11,8 @@
 from pathlib import Path
 from kivy.config import Config
 
+# from . import splashscreen
+
 # Kivy
 log_dir = str(Path().absolute()) + "/logs"
 
