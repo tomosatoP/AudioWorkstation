@@ -591,11 +591,11 @@ def _channel_names(devicename: str, idname: str) -> list:
 def mixer_device() -> list[str]:
     """Returns information on available mixer devices.
 
-    :return: [device name, device idname, control name, control idname]
-    :examples: ["hw:CARD=Headphones", "PCM", "default", "Master"]
-    :examples: ["", "", "", ""] if not found.
+    :return: [device name, device idname, control name, control idname, name]
+    :examples: ["hw:CARD=Headphones", "PCM", "default", "Master", "Headphones"]
+    :examples: ["", "", "", "", ""] if not found.
     """
-    result: list[str] = ["", "", "", ""]
+    result: list[str] = ["", "", "", "", ""]
     logger.info("Mixer Device: Search Bluetooth devices...")
     btdevice: dict[str, str] = btaudiosink.device_info()
     logger.info("Mixer Device: Search Physical Sound devices...")
@@ -606,11 +606,13 @@ def mixer_device() -> list[str]:
         result[1] = "A2DP"
         result[2] = result[0]
         result[3] = result[1]
+        result[4] = list(btdevice)[0]
     elif len(soundcard):
         result[0] = soundcard[-1]
         result[1] = "PCM"
         result[2] = "default"
         result[3] = "Master"
+        result[4] = soundcard[-1].split("=")[1]
     else:
         logger.info("Mixer Device: not found.")
 
@@ -620,11 +622,9 @@ def mixer_device() -> list[str]:
 def start_jackserver() -> list[str]:
     """Start JACK server.
 
-    :return: [device name, device idname, control name, control idname]
-    :exapmles:
-    ["bluealsa:00:00:00:00:00:00", "A2DP", "bluealsa:00:00:00:00:00:00", "A2DP"]
-    :examples: ["hw:CARD=Headphones", "PCM", "default", "Master"]
-    :examples: ["", "", "", ""] if Not registered.
+    :return: [device name, device idname, control name, control idname, name]
+    :examples: ["hw:CARD=Headphones", "PCM", "default", "Master", "Headphones"]
+    :examples: ["", "", "", "", ""] if Not registered.
     """
 
     device_info: list[str] = mixer_device()
@@ -637,7 +637,7 @@ def start_jackserver() -> list[str]:
                     with Popen(command.split()) as res:
                         if res.returncode:
                             logger.info("Mixer Device: Not registered.")
-                            return ["", "", "", ""]
+                            return ["", "", "", "", ""]
 
     return device_info
 

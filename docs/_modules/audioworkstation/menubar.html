@@ -44,14 +44,16 @@
 <span class="sd">#. Control volumes [Master &amp; Child Screen]</span>
 <span class="sd">#. Exit this application</span>
 <span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">importlib</span> <span class="kn">import</span> <span class="n">import_module</span>
+
 <span class="kn">from</span> <span class="nn">kivy.app</span> <span class="kn">import</span> <span class="n">App</span>
 <span class="kn">from</span> <span class="nn">kivy.logger</span> <span class="kn">import</span> <span class="n">Logger</span>
+<span class="kn">from</span> <span class="nn">kivy.clock</span> <span class="kn">import</span> <span class="n">Clock</span>
 <span class="kn">from</span> <span class="nn">kivy.properties</span> <span class="kn">import</span> <span class="n">ObjectProperty</span>
 <span class="kn">from</span> <span class="nn">kivy.uix.widget</span> <span class="kn">import</span> <span class="n">Widget</span>
+<span class="kn">from</span> <span class="nn">kivy.uix.label</span> <span class="kn">import</span> <span class="n">Label</span>
+<span class="kn">from</span> <span class="nn">kivy.animation</span> <span class="kn">import</span> <span class="n">Animation</span>
 
-<span class="kn">from</span> <span class="nn">.metronome</span> <span class="kn">import</span> <span class="n">metronome</span>
-<span class="kn">from</span> <span class="nn">.player</span> <span class="kn">import</span> <span class="n">player</span>
-<span class="kn">from</span> <span class="nn">.keyboard</span> <span class="kn">import</span> <span class="n">keyboard</span>
 <span class="kn">from</span> <span class="nn">.libs.audio</span> <span class="kn">import</span> <span class="n">asound</span>
 
 
@@ -70,17 +72,39 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">mixer</span> <span class="o">=</span> <span class="n">asound</span><span class="o">.</span><span class="n">mixer_device</span><span class="p">()</span>
-        <span class="n">Logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Menubar: initializing...&quot;</span><span class="p">)</span>
+        <span class="n">Clock</span><span class="o">.</span><span class="n">schedule_once</span><span class="p">(</span><span class="k">lambda</span> <span class="n">dt</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">activate_audio</span><span class="p">(),</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="n">Label</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">&quot;準備中、ちょっと待ってて&quot;</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_widget</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="n">anim</span> <span class="o">=</span> <span class="n">Animation</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">350</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span> <span class="o">+</span> <span class="n">Animation</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+        <span class="n">anim</span><span class="o">.</span><span class="n">repeat</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">anim</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="n">Clock</span><span class="o">.</span><span class="n">schedule_once</span><span class="p">(</span><span class="k">lambda</span> <span class="n">dt</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">register_screens</span><span class="p">(),</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="n">Clock</span><span class="o">.</span><span class="n">schedule_once</span><span class="p">(</span><span class="k">lambda</span> <span class="n">dt</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">remove_widget</span><span class="p">(</span><span class="n">message</span><span class="p">),</span> <span class="mi">4</span><span class="p">)</span>
+
+<div class="viewcode-block" id="MenubarView.activate_audio"><a class="viewcode-back" href="../../audioworkstation.html#audioworkstation.menubar.MenubarView.activate_audio">[ドキュメント]</a>    <span class="k">def</span> <span class="nf">activate_audio</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Activate JACK server, control volumes.&quot;&quot;&quot;</span>
+
+        <span class="n">Logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;JACK server: initializing...&quot;</span><span class="p">)</span>
+        <span class="n">asound</span><span class="o">.</span><span class="n">set_volume</span><span class="p">(</span><span class="s2">&quot;default&quot;</span><span class="p">,</span> <span class="s2">&quot;Master&quot;</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mixer</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">asound</span><span class="o">.</span><span class="n">start_jackserver</span><span class="p">()</span>
+        <span class="n">asound</span><span class="o">.</span><span class="n">set_volume</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mixer</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">mixer</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="mi">50</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MenubarView.register_screens"><a class="viewcode-back" href="../../audioworkstation.html#audioworkstation.menubar.MenubarView.register_screens">[ドキュメント]</a>    <span class="k">def</span> <span class="nf">register_screens</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Regisger screens.&quot;&quot;&quot;</span>
+
+        <span class="n">keyboard</span> <span class="o">=</span> <span class="n">import_module</span><span class="p">(</span><span class="s2">&quot;src.audioworkstation.keyboard.keyboard&quot;</span><span class="p">)</span>
+        <span class="n">metronome</span> <span class="o">=</span> <span class="n">import_module</span><span class="p">(</span><span class="s2">&quot;src.audioworkstation.metronome.metronome&quot;</span><span class="p">)</span>
+        <span class="n">player</span> <span class="o">=</span> <span class="n">import_module</span><span class="p">(</span><span class="s2">&quot;src.audioworkstation.player.player&quot;</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">add_widget</span><span class="p">(</span><span class="n">keyboard</span><span class="o">.</span><span class="n">KeyboardView</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;keyboard&quot;</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">add_widget</span><span class="p">(</span><span class="n">metronome</span><span class="o">.</span><span class="n">MetronomeView</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;metronome&quot;</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">add_widget</span><span class="p">(</span><span class="n">player</span><span class="o">.</span><span class="n">PlayerView</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;player&quot;</span><span class="p">))</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">set_mode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="p">,</span> <span class="s2">&quot;キーボード&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">vol1</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;マスター音量&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vol1</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mixer</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vol1</span><span class="o">.</span><span class="n">slider</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">master_volume</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vol2</span><span class="o">.</span><span class="n">slider</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mode_volume</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">set_mode</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">set_mode</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="MenubarView.set_mode"><a class="viewcode-back" href="../../audioworkstation.html#audioworkstation.menubar.MenubarView.set_mode">[ドキュメント]</a>    <span class="k">def</span> <span class="nf">set_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">:</span> <span class="n">Widget</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Set child screens mode.</span>

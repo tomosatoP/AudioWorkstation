@@ -196,13 +196,13 @@
 <dd><p>Returns information on available mixer devices.</p>
 <dl class="field-list simple">
 <dt class="field-odd">戻り値<span class="colon">:</span></dt>
-<dd class="field-odd"><p>[device name, device idname, control name, control idname]</p>
+<dd class="field-odd"><p>[device name, device idname, control name, control idname, name]</p>
 </dd>
 <dt class="field-even">Examples<span class="colon">:</span></dt>
-<dd class="field-even"><p>[&quot;hw:CARD=Headphones&quot;, &quot;PCM&quot;, &quot;default&quot;, &quot;Master&quot;]</p>
+<dd class="field-even"><p>[&quot;hw:CARD=Headphones&quot;, &quot;PCM&quot;, &quot;default&quot;, &quot;Master&quot;, &quot;Headphones&quot;]</p>
 </dd>
 <dt class="field-odd">Examples<span class="colon">:</span></dt>
-<dd class="field-odd"><p>[&quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;] if not found.</p>
+<dd class="field-odd"><p>[&quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;] if not found.</p>
 </dd>
 <dt class="field-even">戻り値の型<span class="colon">:</span></dt>
 <dd class="field-even"><p>list[str]</p>
@@ -237,17 +237,18 @@
 <dd><p>Start JACK server.</p>
 <dl class="field-list simple">
 <dt class="field-odd">戻り値<span class="colon">:</span></dt>
-<dd class="field-odd"><p>[device name, device idname, control name, control idname]</p>
+<dd class="field-odd"><p>[device name, device idname, control name, control idname, name]</p>
 </dd>
-<dt class="field-even">Exapmles<span class="colon">:</span></dt>
-<dd class="field-even"><p></p></dd>
-<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list[str]</p>
+<dt class="field-even">Examples<span class="colon">:</span></dt>
+<dd class="field-even"><p>[&quot;hw:CARD=Headphones&quot;, &quot;PCM&quot;, &quot;default&quot;, &quot;Master&quot;, &quot;Headphones&quot;]</p>
+</dd>
+<dt class="field-odd">Examples<span class="colon">:</span></dt>
+<dd class="field-odd"><p>[&quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;] if Not registered.</p>
+</dd>
+<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-even"><p>list[str]</p>
 </dd>
 </dl>
-<p>[&quot;bluealsa:00:00:00:00:00:00&quot;, &quot;A2DP&quot;, &quot;bluealsa:00:00:00:00:00:00&quot;, &quot;A2DP&quot;]
-:examples: [&quot;hw:CARD=Headphones&quot;, &quot;PCM&quot;, &quot;default&quot;, &quot;Master&quot;]
-:examples: [&quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;] if Not registered.</p>
 </dd></dl>
 
 </section>
@@ -777,7 +778,7 @@ or default rules if none</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="audioworkstation.libs.audio.fluidsynth.Sequencer.clients">
-<span class="sig-name descname"><span class="pre">clients</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[1,</span> <span class="pre">2]</span></em><a class="headerlink" href="#audioworkstation.libs.audio.fluidsynth.Sequencer.clients" title="この定義へのパーマリンク">¶</a></dt>
+<span class="sig-name descname"><span class="pre">clients</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#audioworkstation.libs.audio.fluidsynth.Sequencer.clients" title="この定義へのパーマリンク">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py property">

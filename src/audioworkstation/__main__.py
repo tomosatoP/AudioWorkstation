@@ -40,15 +40,6 @@ if __name__ == "__main__":
     resource_add_path("/usr/share/fonts/opentype/ipaexfont-gothic")
     LabelBase.register(DEFAULT_FONT, "ipaexg.ttf")
 
-    # Jackd2 and amixer
-    from kivy.logger import Logger
-    from .libs.audio import asound
-
-    Logger.debug("JACK server: initializing...")
-    asound.set_volume("default", "Master", 100)
-    mixer: list[str] = asound.start_jackserver()
-    asound.set_volume(mixer[2], mixer[3], 50)
-
     from .menubar import MenubarApp
 
     MenubarApp().run()

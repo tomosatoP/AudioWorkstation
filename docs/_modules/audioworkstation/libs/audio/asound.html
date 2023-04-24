@@ -629,11 +629,11 @@
 <div class="viewcode-block" id="mixer_device"><a class="viewcode-back" href="../../../../audioworkstation.libs.audio.html#audioworkstation.libs.audio.asound.mixer_device">[ドキュメント]</a><span class="k">def</span> <span class="nf">mixer_device</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns information on available mixer devices.</span>
 
-<span class="sd">    :return: [device name, device idname, control name, control idname]</span>
-<span class="sd">    :examples: [&quot;hw:CARD=Headphones&quot;, &quot;PCM&quot;, &quot;default&quot;, &quot;Master&quot;]</span>
-<span class="sd">    :examples: [&quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;] if not found.</span>
+<span class="sd">    :return: [device name, device idname, control name, control idname, name]</span>
+<span class="sd">    :examples: [&quot;hw:CARD=Headphones&quot;, &quot;PCM&quot;, &quot;default&quot;, &quot;Master&quot;, &quot;Headphones&quot;]</span>
+<span class="sd">    :examples: [&quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;] if not found.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">result</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">]</span>
+    <span class="n">result</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">]</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Mixer Device: Search Bluetooth devices...&quot;</span><span class="p">)</span>
     <span class="n">btdevice</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">btaudiosink</span><span class="o">.</span><span class="n">device_info</span><span class="p">()</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Mixer Device: Search Physical Sound devices...&quot;</span><span class="p">)</span>
@@ -644,11 +644,13 @@
         <span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;A2DP&quot;</span>
         <span class="n">result</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">result</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">result</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">btdevice</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">soundcard</span><span class="p">):</span>
         <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">soundcard</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
         <span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;PCM&quot;</span>
         <span class="n">result</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;default&quot;</span>
         <span class="n">result</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Master&quot;</span>
+        <span class="n">result</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">soundcard</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Mixer Device: not found.&quot;</span><span class="p">)</span>
 
@@ -658,11 +660,9 @@
 <div class="viewcode-block" id="start_jackserver"><a class="viewcode-back" href="../../../../audioworkstation.libs.audio.html#audioworkstation.libs.audio.asound.start_jackserver">[ドキュメント]</a><span class="k">def</span> <span class="nf">start_jackserver</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Start JACK server.</span>
 
-<span class="sd">    :return: [device name, device idname, control name, control idname]</span>
-<span class="sd">    :exapmles:</span>
-<span class="sd">    [&quot;bluealsa:00:00:00:00:00:00&quot;, &quot;A2DP&quot;, &quot;bluealsa:00:00:00:00:00:00&quot;, &quot;A2DP&quot;]</span>
-<span class="sd">    :examples: [&quot;hw:CARD=Headphones&quot;, &quot;PCM&quot;, &quot;default&quot;, &quot;Master&quot;]</span>
-<span class="sd">    :examples: [&quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;] if Not registered.</span>
+<span class="sd">    :return: [device name, device idname, control name, control idname, name]</span>
+<span class="sd">    :examples: [&quot;hw:CARD=Headphones&quot;, &quot;PCM&quot;, &quot;default&quot;, &quot;Master&quot;, &quot;Headphones&quot;]</span>
+<span class="sd">    :examples: [&quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;] if Not registered.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">device_info</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">mixer_device</span><span class="p">()</span>
@@ -675,7 +675,7 @@
                     <span class="k">with</span> <span class="n">Popen</span><span class="p">(</span><span class="n">command</span><span class="o">.</span><span class="n">split</span><span class="p">())</span> <span class="k">as</span> <span class="n">res</span><span class="p">:</span>
                         <span class="k">if</span> <span class="n">res</span><span class="o">.</span><span class="n">returncode</span><span class="p">:</span>
                             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Mixer Device: Not registered.&quot;</span><span class="p">)</span>
-                            <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">]</span>
+                            <span class="k">return</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">]</span>
 
     <span class="k">return</span> <span class="n">device_info</span></div>
 

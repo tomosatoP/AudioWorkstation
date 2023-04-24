@@ -6,14 +6,16 @@
 #. Control volumes [Master & Child Screen]
 #. Exit this application
 """
+from importlib import import_module
+
 from kivy.app import App
 from kivy.logger import Logger
+from kivy.clock import Clock
 from kivy.properties import ObjectProperty
 from kivy.uix.widget import Widget
+from kivy.uix.label import Label
+from kivy.animation import Animation
 
-from .metronome import metronome
-from .player import player
-from .keyboard import keyboard
 from .libs.audio import asound
 
 
@@ -32,14 +34,36 @@ class MenubarView(Widget):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        self.mixer = asound.mixer_device()
-        Logger.debug("Menubar: initializing...")
+        Clock.schedule_once(lambda dt: self.activate_audio(), 4)
+        message = Label(text="準備中、ちょっと待ってて", font_size=30)
+        self.add_widget(message)
+        anim = Animation(x=350, y=200) + Animation(x=150, y=200)
+        anim.repeat = True
+        anim.start(message)
+        Clock.schedule_once(lambda dt: self.register_screens(), 4)
+        Clock.schedule_once(lambda dt: self.remove_widget(message), 4)
+
+    def activate_audio(self) -> None:
+        """Activate JACK server, control volumes."""
+
+        Logger.debug("JACK server: initializing...")
+        asound.set_volume("default", "Master", 100)
+        self.mixer: list[str] = asound.start_jackserver()
+        asound.set_volume(self.mixer[2], self.mixer[3], 50)
+
+    def register_screens(self) -> None:
+        """Regisger screens."""
+
+        keyboard = import_module("src.audioworkstation.keyboard.keyboard")
+        metronome = import_module("src.audioworkstation.metronome.metronome")
+        player = import_module("src.audioworkstation.player.player")
+
         self.panel.add_widget(keyboard.KeyboardView(name="keyboard"))
         self.panel.add_widget(metronome.MetronomeView(name="metronome"))
         self.panel.add_widget(player.PlayerView(name="player"))
 
         self.set_mode(self.mode, "キーボード")
-        self.vol1.label.text = "マスター音量"
+        self.vol1.label.text = self.mixer[4]
         self.vol1.slider.bind(value=self.master_volume)
         self.vol2.slider.bind(value=self.mode_volume)
         self.mode.bind(text=self.set_mode)
