@@ -19,7 +19,7 @@ Builder.load_file(str(Path(__file__).with_name("metronome.kv")))
 class MetronomeView(Screen):
     """MetronomeView has bps layout and beat layout."""
 
-    pSFS = PT.Pattern()
+    pSFS = PT.Metronome()
     executor = futures.ThreadPoolExecutor()
 
     #: ObjectProperty: layout bps
@@ -47,6 +47,10 @@ class MetronomeView(Screen):
                 obj.bind(on_press=self.update_beat)
                 if obj.state == "down":
                     self.beat = obj.text.splitlines()
+
+    def unregister(self) -> None:
+        """Processing when terminating a View."""
+        del self
 
     def sound(self, on: str) -> None:
         """Sound metronome start/stop.

@@ -106,6 +106,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">vol2</span><span class="o">.</span><span class="n">slider</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mode_volume</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">set_mode</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="MenubarView.unregister_screens"><a class="viewcode-back" href="../../audioworkstation.html#audioworkstation.menubar.MenubarView.unregister_screens">[ドキュメント]</a>    <span class="k">def</span> <span class="nf">unregister_screens</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Unregister screens.&quot;&quot;&quot;</span>
+
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">screen_names</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">get_screen</span><span class="p">(</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">unregister</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">remove_widget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">panel</span><span class="o">.</span><span class="n">get_screen</span><span class="p">(</span><span class="n">name</span><span class="p">))</span></div>
+
 <div class="viewcode-block" id="MenubarView.set_mode"><a class="viewcode-back" href="../../audioworkstation.html#audioworkstation.menubar.MenubarView.set_mode">[ドキュメント]</a>    <span class="k">def</span> <span class="nf">set_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">:</span> <span class="n">Widget</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Set child screens mode.</span>
 
@@ -146,7 +153,12 @@
 
 <div class="viewcode-block" id="MenubarApp.build"><a class="viewcode-back" href="../../audioworkstation.html#audioworkstation.menubar.MenubarApp.build">[ドキュメント]</a>    <span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;AudioWorkstation&quot;</span>
-        <span class="k">return</span> <span class="n">MenubarView</span><span class="p">()</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span> <span class="o">=</span> <span class="n">MenubarView</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">view</span></div>
+
+<div class="viewcode-block" id="MenubarApp.on_stop"><a class="viewcode-back" href="../../audioworkstation.html#audioworkstation.menubar.MenubarApp.on_stop">[ドキュメント]</a>    <span class="k">def</span> <span class="nf">on_stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="o">.</span><span class="n">unregister_screens</span><span class="p">()</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">on_stop</span><span class="p">()</span></div></div>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>

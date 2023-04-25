@@ -89,6 +89,10 @@ class PlayerView(Screen):
 
         self.midi_player = MF.MidiPlayer()
 
+    def unregister(self) -> None:
+        """Processing when terminating a View."""
+        self.midi_player.stop()
+
     def playback(self, state: str) -> None:
         """playback _summary_
 

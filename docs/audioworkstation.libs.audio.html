@@ -75,7 +75,7 @@
 <dt class="sig sig-object py" id="audioworkstation.libs.audio.asound.SND_MIXER_SELEM_CHANNEL_ID_T">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SND_MIXER_SELEM_CHANNEL_ID_T</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/audio/asound.html#SND_MIXER_SELEM_CHANNEL_ID_T"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.audio.asound.SND_MIXER_SELEM_CHANNEL_ID_T" title="この定義へのパーマリンク">¶</a></dt>
 <dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">IntEnum</span></code></p>
-<p>humei</p>
+<p>An enumeration.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="audioworkstation.libs.audio.asound.SND_MIXER_SELEM_CHANNEL_ID_T.FRONT_CENTER">
 <span class="sig-name descname"><span class="pre">FRONT_CENTER</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4</span></em><a class="headerlink" href="#audioworkstation.libs.audio.asound.SND_MIXER_SELEM_CHANNEL_ID_T.FRONT_CENTER" title="この定義へのパーマリンク">¶</a></dt>
@@ -129,8 +129,7 @@
 <dl class="py attribute">
 <dt class="sig sig-object py" id="audioworkstation.libs.audio.asound.SND_MIXER_SELEM_CHANNEL_ID_T.UNKNOWN">
 <span class="sig-name descname"><span class="pre">UNKNOWN</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">-1</span></em><a class="headerlink" href="#audioworkstation.libs.audio.asound.SND_MIXER_SELEM_CHANNEL_ID_T.UNKNOWN" title="この定義へのパーマリンク">¶</a></dt>
-<dd><p>humei</p>
-</dd></dl>
+<dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="audioworkstation.libs.audio.asound.SND_MIXER_SELEM_CHANNEL_ID_T.WOOFER">
@@ -171,7 +170,6 @@
 <dd class="field-even"><p>None</p>
 </dd>
 </dl>
-<p>---</p>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>iface</p></th>
@@ -263,14 +261,16 @@
 <dt class="field-odd">戻り値<span class="colon">:</span></dt>
 <dd class="field-odd"><p>{name: address}</p>
 </dd>
+<dt class="field-even">Examples<span class="colon">:</span></dt>
+<dd class="field-even"><p>{&quot;name&quot;: &quot;00:00:00:00:00:00&quot;}</p>
+</dd>
+<dt class="field-odd">Examples<span class="colon">:</span></dt>
+<dd class="field-odd"><p>{&quot;&quot;: &quot;&quot;} if failed.</p>
+</dd>
 <dt class="field-even">戻り値の型<span class="colon">:</span></dt>
 <dd class="field-even"><p>dict[str, str]</p>
 </dd>
 </dl>
-<div class="line-block">
-<div class="line">&lt;examples&gt; {&quot;name&quot;: &quot;00:00:00:00:00:00&quot;}</div>
-<div class="line">&lt;examples&gt; {&quot;&quot;: &quot;&quot;} if failed.</div>
-</div>
 </dd></dl>
 
 </section>
@@ -315,10 +315,10 @@
 <dl class="field-list simple">
 <dt class="field-odd">パラメータ<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>time</strong> (<em>c_uint</em>) -- </p></li>
-<li><p><strong>event</strong> (<em>c_void_p</em>) -- </p></li>
-<li><p><strong>seq</strong> (<em>c_void_p</em>) -- </p></li>
-<li><p><strong>data</strong> (<em>POINTER</em><em>(</em><a class="reference internal" href="#audioworkstation.libs.audio.fluidsynth.EventUserData" title="audioworkstation.libs.audio.fluidsynth.EventUserData"><em>EventUserData</em></a><em>)</em>) -- </p></li>
+<li><p><strong>time</strong> (<em>c_uint</em>) -- Current sequencer tick value</p></li>
+<li><p><strong>event</strong> (<em>c_void_p</em>) -- The event being received</p></li>
+<li><p><strong>seq</strong> (<em>c_void_p</em>) -- The sequencer instance</p></li>
+<li><p><strong>data</strong> (<em>POINTER</em><em>(</em><a class="reference internal" href="#audioworkstation.libs.audio.fluidsynth.EventUserData" title="audioworkstation.libs.audio.fluidsynth.EventUserData"><em>EventUserData</em></a><em>)</em>) -- User defined data registered with the client</p></li>
 </ul>
 </dd>
 </dl>
@@ -698,12 +698,16 @@ or default rules if none</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="audioworkstation.libs.audio.fluidsynth.Sequencer.client_name">
 <span class="sig-name descname"><span class="pre">client_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/audio/fluidsynth.html#Sequencer.client_name"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.audio.fluidsynth.Sequencer.client_name" title="この定義へのパーマリンク">¶</a></dt>
-<dd><dl class="field-list simple">
+<dd><p>client_name _summary_</p>
+<dl class="field-list simple">
 <dt class="field-odd">パラメータ<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>id</strong> (<em>int</em>) -- </p>
+<dd class="field-odd"><p><strong>id</strong> (<em>int</em>) -- _description_</p>
 </dd>
-<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
-<dd class="field-even"><p>str</p>
+<dt class="field-even">戻り値<span class="colon">:</span></dt>
+<dd class="field-even"><p>_description_</p>
+</dd>
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -711,17 +715,18 @@ or default rules if none</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="audioworkstation.libs.audio.fluidsynth.Sequencer.note_at">
 <span class="sig-name descname"><span class="pre">note_at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ticks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key_number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">velocity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">duration</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">absolute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/audio/fluidsynth.html#Sequencer.note_at"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.audio.fluidsynth.Sequencer.note_at" title="この定義へのパーマリンク">¶</a></dt>
-<dd><dl class="field-list simple">
+<dd><p>note_at _summary_</p>
+<dl class="field-list simple">
 <dt class="field-odd">パラメータ<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>ticks</strong> (<em>int</em>) -- </p></li>
-<li><p><strong>channel</strong> (<em>int</em>) -- </p></li>
-<li><p><strong>key_number</strong> (<em>int</em>) -- </p></li>
-<li><p><strong>velocity</strong> (<em>int</em>) -- </p></li>
-<li><p><strong>duration</strong> (<em>int</em>) -- </p></li>
-<li><p><strong>source</strong> (<em>int</em>) -- </p></li>
-<li><p><strong>destination</strong> (<em>int</em>) -- </p></li>
-<li><p><strong>absolute</strong> (<em>bool</em>) -- </p></li>
+<li><p><strong>ticks</strong> (<em>int</em>) -- _description_</p></li>
+<li><p><strong>channel</strong> (<em>int</em>) -- _description_</p></li>
+<li><p><strong>key_number</strong> (<em>int</em>) -- _description_</p></li>
+<li><p><strong>velocity</strong> (<em>int</em>) -- _description_</p></li>
+<li><p><strong>duration</strong> (<em>int</em>) -- _description_</p></li>
+<li><p><strong>source</strong> (<em>int</em>) -- _description_, defaults to -1</p></li>
+<li><p><strong>destination</strong> (<em>int</em>) -- _description_, defaults to -1</p></li>
+<li><p><strong>absolute</strong> (<em>bool</em>) -- _description_, defaults to True</p></li>
 </ul>
 </dd>
 <dt class="field-even">戻り値の型<span class="colon">:</span></dt>
@@ -754,14 +759,16 @@ or default rules if none</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="audioworkstation.libs.audio.fluidsynth.Sequencer.timer_at">
 <span class="sig-name descname"><span class="pre">timer_at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ticks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">destination</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">absolute</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/audio/fluidsynth.html#Sequencer.timer_at"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.audio.fluidsynth.Sequencer.timer_at" title="この定義へのパーマリンク">¶</a></dt>
-<dd><dl class="field-list simple">
+<dd><p>timer_at _summary_</p>
+<dl class="field-list simple">
 <dt class="field-odd">パラメータ<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>ticks</strong> (<em>int</em>) -- </p></li>
-<li><p><strong>data</strong> (<a class="reference internal" href="#audioworkstation.libs.audio.fluidsynth.EventUserData" title="audioworkstation.libs.audio.fluidsynth.EventUserData"><em>EventUserData</em></a><em> | </em><em>None</em>) -- </p></li>
-<li><p><strong>source</strong> (<em>int</em>) -- </p></li>
-<li><p><strong>destination</strong> (<em>int</em>) -- </p></li>
-<li><p><strong>absolute</strong> (<em>bool</em>) -- </p></li>
+<li><p><strong>ticks</strong> (<em>int</em>) -- _description_</p></li>
+<li><p><strong>data</strong> (<a class="reference internal" href="#audioworkstation.libs.audio.fluidsynth.EventUserData" title="audioworkstation.libs.audio.fluidsynth.EventUserData"><em>EventUserData</em></a><em> | </em><em>None</em>) -- _description_, defaults to None</p></li>
+<li><p><strong>source</strong> (<em>int</em>) -- _description_, defaults to -1</p></li>
+<li><p><strong>destination</strong> (<em>int</em>) -- _description_, defaults to -1</p></li>
+<li><p><strong>absolute</strong> (<em>bool</em>) -- _description_, defaults to True</p></li>
+<li><p><strong>data</strong> -- </p></li>
 </ul>
 </dd>
 <dt class="field-even">戻り値の型<span class="colon">:</span></dt>
@@ -814,17 +821,24 @@ by the time scale currently set</p>
 <dd><p>Get a list of presets per channel</p>
 <dl class="field-list simple">
 <dt class="field-odd">戻り値<span class="colon">:</span></dt>
-<dd class="field-odd"><p><p>PRESET: dict[str, Union[str, int, None]]
-- [&quot;name&quot;: str | None], [&quot;num&quot;     : int | None],</p>
-<blockquote>
-<div><p>[&quot;bank&quot;: int | None], [&quot;sfont_id&quot;: int | None]</p>
-</div></blockquote>
-</p>
+<dd class="field-odd"><p>preset list</p>
 </dd>
 <dt class="field-even">戻り値の型<span class="colon">:</span></dt>
 <dd class="field-even"><p>list[dict[str, <em>Union</em>[int, str, NoneType]]]</p>
 </dd>
 </dl>
+<ul class="simple">
+<li><dl class="simple">
+<dt>PRESET(dict)</dt><dd><ul>
+<li><p>&quot;name&quot;: str | None</p></li>
+<li><p>&quot;num&quot; : int | None</p></li>
+<li><p>&quot;bank&quot;: int | None</p></li>
+<li><p>&quot;sfont_id&quot;: int | None</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
 </dd></dl>
 
 <dl class="py method">
@@ -834,12 +848,15 @@ by the time scale currently set</p>
 <dl class="field-list simple">
 <dt class="field-odd">パラメータ<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>chan</strong> (<em>int</em>) -- </p></li>
-<li><p><strong>val</strong> (<em>int</em>) -- </p></li>
+<li><p><strong>chan</strong> (<em>int</em>) -- _description_</p></li>
+<li><p><strong>val</strong> (<em>int</em>) -- _description_</p></li>
 </ul>
 </dd>
-<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
-<dd class="field-even"><p>int</p>
+<dt class="field-even">戻り値<span class="colon">:</span></dt>
+<dd class="field-even"><p>_description_</p>
+</dd>
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
 </dd>
 </dl>
 </dd></dl>
@@ -849,24 +866,40 @@ by the time scale currently set</p>
 <span class="sig-name descname"><span class="pre">gm_sound_set</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/audio/fluidsynth.html#Synthesizer.gm_sound_set"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.audio.fluidsynth.Synthesizer.gm_sound_set" title="この定義へのパーマリンク">¶</a></dt>
 <dd><p>Get list of Sound Set (GM system level 1) from soundfont.</p>
 <dl class="field-list simple">
-<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>is_percussion</strong> (<em>bool</em>) -- False: Sound Set, True: Percussion Sound Set</p>
+<dt class="field-odd">戻り値<span class="colon">:</span></dt>
+<dd class="field-odd"><p>gm sound set - list[list[PRESET]]</p>
 </dd>
 <dt class="field-even">戻り値<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>(gm sound set, gm percussion sound set)
-- PRESET: dict[str, Union[str, int, None]]</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>[&quot;name&quot;: str | None], [&quot;num&quot;     : int | None],
-[&quot;bank&quot;: int | None], [&quot;sfont_id&quot;: int | None]</p></li>
-</ul>
-</div></blockquote>
-</p>
+<dd class="field-even"><p>gm percussion sound set - list[list[PRESET]]</p>
 </dd>
 <dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
 <dd class="field-odd"><p>tuple</p>
 </dd>
 </dl>
+<ul class="simple">
+<li><dl class="simple">
+<dt>soundfont</dt><dd><ul>
+<li><dl class="simple">
+<dt>bank</dt><dd><ul>
+<li><dl class="simple">
+<dt>PRESET(dict)</dt><dd><ul>
+<li><p>&quot;name&quot;: str | None</p></li>
+<li><p>&quot;num&quot; : int | None</p></li>
+<li><p>&quot;bank&quot;: int | None</p></li>
+<li><p>&quot;sfont_id&quot;: int | None</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
 </dd></dl>
 
 <dl class="py method">
@@ -876,12 +909,15 @@ by the time scale currently set</p>
 <dl class="field-list simple">
 <dt class="field-odd">パラメータ<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>chan</strong> (<em>int</em>) -- </p></li>
-<li><p><strong>val</strong> (<em>int</em>) -- </p></li>
+<li><p><strong>chan</strong> (<em>int</em>) -- _description_</p></li>
+<li><p><strong>val</strong> (<em>int</em>) -- _description_</p></li>
 </ul>
 </dd>
-<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
-<dd class="field-even"><p>int</p>
+<dt class="field-even">戻り値<span class="colon">:</span></dt>
+<dd class="field-even"><p>_description_</p>
+</dd>
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
 </dd>
 </dl>
 </dd></dl>
@@ -889,15 +925,19 @@ by the time scale currently set</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="audioworkstation.libs.audio.fluidsynth.Synthesizer.note_off">
 <span class="sig-name descname"><span class="pre">note_off</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keyNumber</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/audio/fluidsynth.html#Synthesizer.note_off"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.audio.fluidsynth.Synthesizer.note_off" title="この定義へのパーマリンク">¶</a></dt>
-<dd><dl class="field-list simple">
+<dd><p>note_off _summary_</p>
+<dl class="field-list simple">
 <dt class="field-odd">パラメータ<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>channel</strong> (<em>int</em>) -- </p></li>
-<li><p><strong>keyNumber</strong> (<em>int</em>) -- </p></li>
+<li><p><strong>channel</strong> (<em>int</em>) -- _description_</p></li>
+<li><p><strong>keyNumber</strong> (<em>int</em>) -- _description_</p></li>
 </ul>
 </dd>
-<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
-<dd class="field-even"><p>int</p>
+<dt class="field-even">戻り値<span class="colon">:</span></dt>
+<dd class="field-even"><p>_description_</p>
+</dd>
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
 </dd>
 </dl>
 </dd></dl>
@@ -905,16 +945,20 @@ by the time scale currently set</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="audioworkstation.libs.audio.fluidsynth.Synthesizer.note_on">
 <span class="sig-name descname"><span class="pre">note_on</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">channel</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keyNumber</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">velocity</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/audio/fluidsynth.html#Synthesizer.note_on"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.audio.fluidsynth.Synthesizer.note_on" title="この定義へのパーマリンク">¶</a></dt>
-<dd><dl class="field-list simple">
+<dd><p>note_on _summary_</p>
+<dl class="field-list simple">
 <dt class="field-odd">パラメータ<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>channel</strong> (<em>int</em>) -- </p></li>
-<li><p><strong>keyNumber</strong> (<em>int</em>) -- </p></li>
-<li><p><strong>velocity</strong> (<em>int</em>) -- </p></li>
+<li><p><strong>channel</strong> (<em>int</em>) -- _description_</p></li>
+<li><p><strong>keyNumber</strong> (<em>int</em>) -- _description_</p></li>
+<li><p><strong>velocity</strong> (<em>int</em>) -- _description_</p></li>
 </ul>
 </dd>
-<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
-<dd class="field-even"><p>int</p>
+<dt class="field-even">戻り値<span class="colon">:</span></dt>
+<dd class="field-even"><p>_description_</p>
+</dd>
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
 </dd>
 </dl>
 </dd></dl>
@@ -922,15 +966,19 @@ by the time scale currently set</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="audioworkstation.libs.audio.fluidsynth.Synthesizer.pan">
 <span class="sig-name descname"><span class="pre">pan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chan</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/audio/fluidsynth.html#Synthesizer.pan"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.audio.fluidsynth.Synthesizer.pan" title="この定義へのパーマリンク">¶</a></dt>
-<dd><dl class="field-list simple">
+<dd><p>pan _summary_</p>
+<dl class="field-list simple">
 <dt class="field-odd">パラメータ<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>chan</strong> (<em>int</em>) -- </p></li>
-<li><p><strong>val</strong> (<em>int</em>) -- </p></li>
+<li><p><strong>chan</strong> (<em>int</em>) -- _description_</p></li>
+<li><p><strong>val</strong> (<em>int</em>) -- _description_</p></li>
 </ul>
 </dd>
-<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
-<dd class="field-even"><p>int</p>
+<dt class="field-even">戻り値<span class="colon">:</span></dt>
+<dd class="field-even"><p>_description_</p>
+</dd>
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
 </dd>
 </dl>
 </dd></dl>
@@ -938,15 +986,19 @@ by the time scale currently set</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="audioworkstation.libs.audio.fluidsynth.Synthesizer.pitch_bend">
 <span class="sig-name descname"><span class="pre">pitch_bend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chan</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/audio/fluidsynth.html#Synthesizer.pitch_bend"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.audio.fluidsynth.Synthesizer.pitch_bend" title="この定義へのパーマリンク">¶</a></dt>
-<dd><dl class="field-list simple">
+<dd><p>pitch_bend _summary_</p>
+<dl class="field-list simple">
 <dt class="field-odd">パラメータ<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>chan</strong> (<em>int</em>) -- </p></li>
-<li><p><strong>val</strong> (<em>int</em>) -- </p></li>
+<li><p><strong>chan</strong> (<em>int</em>) -- _description_</p></li>
+<li><p><strong>val</strong> (<em>int</em>) -- _description_</p></li>
 </ul>
 </dd>
-<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
-<dd class="field-even"><p>int</p>
+<dt class="field-even">戻り値<span class="colon">:</span></dt>
+<dd class="field-even"><p>_description_</p>
+</dd>
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
 </dd>
 </dl>
 </dd></dl>
@@ -954,15 +1006,19 @@ by the time scale currently set</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="audioworkstation.libs.audio.fluidsynth.Synthesizer.pitch_wheel_sens">
 <span class="sig-name descname"><span class="pre">pitch_wheel_sens</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chan</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/audio/fluidsynth.html#Synthesizer.pitch_wheel_sens"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.audio.fluidsynth.Synthesizer.pitch_wheel_sens" title="この定義へのパーマリンク">¶</a></dt>
-<dd><dl class="field-list simple">
+<dd><p>pitch_wheel_sens _summary_</p>
+<dl class="field-list simple">
 <dt class="field-odd">パラメータ<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>chan</strong> (<em>int</em>) -- </p></li>
-<li><p><strong>val</strong> (<em>int</em>) -- </p></li>
+<li><p><strong>chan</strong> (<em>int</em>) -- _description_</p></li>
+<li><p><strong>val</strong> (<em>int</em>) -- _description_</p></li>
 </ul>
 </dd>
-<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
-<dd class="field-even"><p>int</p>
+<dt class="field-even">戻り値<span class="colon">:</span></dt>
+<dd class="field-even"><p>_description_</p>
+</dd>
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
 </dd>
 </dl>
 </dd></dl>
@@ -970,17 +1026,21 @@ by the time scale currently set</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="audioworkstation.libs.audio.fluidsynth.Synthesizer.program_select">
 <span class="sig-name descname"><span class="pre">program_select</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chan</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sfont_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bank</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">preset</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/audio/fluidsynth.html#Synthesizer.program_select"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.audio.fluidsynth.Synthesizer.program_select" title="この定義へのパーマリンク">¶</a></dt>
-<dd><dl class="field-list simple">
+<dd><p>program_select _summary_</p>
+<dl class="field-list simple">
 <dt class="field-odd">パラメータ<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>chan</strong> (<em>int</em>) -- </p></li>
-<li><p><strong>sfont_id</strong> (<em>int</em>) -- </p></li>
-<li><p><strong>bank</strong> (<em>int</em>) -- </p></li>
-<li><p><strong>preset</strong> (<em>int</em>) -- </p></li>
+<li><p><strong>chan</strong> (<em>int</em>) -- _description_</p></li>
+<li><p><strong>sfont_id</strong> (<em>int</em>) -- _description_</p></li>
+<li><p><strong>bank</strong> (<em>int</em>) -- _description_</p></li>
+<li><p><strong>preset</strong> (<em>int</em>) -- _description_</p></li>
 </ul>
 </dd>
-<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
-<dd class="field-even"><p>int</p>
+<dt class="field-even">戻り値<span class="colon">:</span></dt>
+<dd class="field-even"><p>_description_</p>
+</dd>
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
 </dd>
 </dl>
 </dd></dl>
@@ -988,12 +1048,16 @@ by the time scale currently set</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="audioworkstation.libs.audio.fluidsynth.Synthesizer.sustain_off">
 <span class="sig-name descname"><span class="pre">sustain_off</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chan</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/audio/fluidsynth.html#Synthesizer.sustain_off"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.audio.fluidsynth.Synthesizer.sustain_off" title="この定義へのパーマリンク">¶</a></dt>
-<dd><dl class="field-list simple">
+<dd><p>sustain_off _summary_</p>
+<dl class="field-list simple">
 <dt class="field-odd">パラメータ<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>chan</strong> (<em>int</em>) -- </p>
+<dd class="field-odd"><p><strong>chan</strong> (<em>int</em>) -- _description_</p>
 </dd>
-<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
-<dd class="field-even"><p>int</p>
+<dt class="field-even">戻り値<span class="colon">:</span></dt>
+<dd class="field-even"><p>_description_</p>
+</dd>
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1004,10 +1068,13 @@ by the time scale currently set</p>
 <dd><p>The sound echoes for a long time.</p>
 <dl class="field-list simple">
 <dt class="field-odd">パラメータ<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>chan</strong> (<em>int</em>) -- </p>
+<dd class="field-odd"><p><strong>chan</strong> (<em>int</em>) -- _description_</p>
 </dd>
-<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
-<dd class="field-even"><p>int</p>
+<dt class="field-even">戻り値<span class="colon">:</span></dt>
+<dd class="field-even"><p>_description_</p>
+</dd>
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1015,9 +1082,13 @@ by the time scale currently set</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="audioworkstation.libs.audio.fluidsynth.Synthesizer.version">
 <span class="sig-name descname"><span class="pre">version</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/audio/fluidsynth.html#Synthesizer.version"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.audio.fluidsynth.Synthesizer.version" title="この定義へのパーマリンク">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str</p>
+<dd><p>version _summary_</p>
+<dl class="field-list simple">
+<dt class="field-odd">戻り値<span class="colon">:</span></dt>
+<dd class="field-odd"><p>_description_</p>
+</dd>
+<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1029,12 +1100,15 @@ by the time scale currently set</p>
 <dl class="field-list simple">
 <dt class="field-odd">パラメータ<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>chan</strong> (<em>int</em>) -- </p></li>
-<li><p><strong>val</strong> (<em>int</em>) -- </p></li>
+<li><p><strong>chan</strong> (<em>int</em>) -- _description_</p></li>
+<li><p><strong>val</strong> (<em>int</em>) -- _description_</p></li>
 </ul>
 </dd>
-<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
-<dd class="field-even"><p>int</p>
+<dt class="field-even">戻り値<span class="colon">:</span></dt>
+<dd class="field-even"><p>_description_</p>
+</dd>
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1042,13 +1116,10 @@ by the time scale currently set</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="audioworkstation.libs.audio.fluidsynth.Synthesizer.gain">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">gain</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#audioworkstation.libs.audio.fluidsynth.Synthesizer.gain" title="この定義へのパーマリンク">¶</a></dt>
-<dd><p>0.0, Max:10.0</p>
+<dd><p>gain - defalt 0.2, Min 0.0, Max 10.0</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>defalt</p>
-</dd>
-<dt class="field-even">Type<span class="colon">:</span></dt>
-<dd class="field-even"><p>0.2, Min</p>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1056,7 +1127,13 @@ by the time scale currently set</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="audioworkstation.libs.audio.fluidsynth.Synthesizer.soundfonts">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">soundfonts</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span></em><a class="headerlink" href="#audioworkstation.libs.audio.fluidsynth.Synthesizer.soundfonts" title="この定義へのパーマリンク">¶</a></dt>
-<dd></dd></dl>
+<dd><p>sonundfont file names</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list(str)</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 

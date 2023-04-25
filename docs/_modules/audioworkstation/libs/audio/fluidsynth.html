@@ -487,10 +487,10 @@
 <span class="p">)</span>
 <span class="sd">&quot;&quot;&quot;Event callback function prototype for destination clients.</span>
 
-<span class="sd">:param c_uint time:</span>
-<span class="sd">:param c_void_p event:</span>
-<span class="sd">:param c_void_p seq:</span>
-<span class="sd">:param POINTER(EventUserData) data:</span>
+<span class="sd">:param c_uint time: Current sequencer tick value</span>
+<span class="sd">:param c_void_p event: The event being received</span>
+<span class="sd">:param c_void_p seq: The sequencer instance</span>
+<span class="sd">:param POINTER(EventUserData) data: User defined data registered with the client</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="c1"># [API prototype]</span>
 <span class="n">new_fluid_sequencer2</span> <span class="o">=</span> <span class="n">_prototype</span><span class="p">(</span>
@@ -1155,6 +1155,10 @@
             <span class="n">delete_fluid_audio_driver</span><span class="p">(</span><span class="n">driver</span><span class="o">=</span><span class="n">CFS</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_audio_driver</span><span class="p">))</span>
 
 <div class="viewcode-block" id="Synthesizer.version"><a class="viewcode-back" href="../../../../audioworkstation.libs.audio.html#audioworkstation.libs.audio.fluidsynth.Synthesizer.version">[ドキュメント]</a>    <span class="k">def</span> <span class="nf">version</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;version _summary_</span>
+
+<span class="sd">        :return: _description_</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">fluid_version_str</span><span class="p">())</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span></div>
 
     <span class="k">def</span> <span class="nf">_gm_system_on</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
@@ -1187,7 +1191,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">gain</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;defalt:0.2, Min:0.0, Max:10.0&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;float: gain - defalt 0.2, Min 0.0, Max 10.0&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">fluid_synth_get_gain</span><span class="p">(</span><span class="n">synth</span><span class="o">=</span><span class="n">CFS</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_synth</span><span class="p">)))</span>
 
     <span class="nd">@gain</span><span class="o">.</span><span class="n">setter</span>
@@ -1197,17 +1201,22 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">soundfonts</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;list(str): sonundfont file names&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_soundfonts</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>  <span class="c1"># filename</span>
 
 <div class="viewcode-block" id="Synthesizer.gm_sound_set"><a class="viewcode-back" href="../../../../audioworkstation.libs.audio.html#audioworkstation.libs.audio.fluidsynth.Synthesizer.gm_sound_set">[ドキュメント]</a>    <span class="k">def</span> <span class="nf">gm_sound_set</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>  <span class="c1"># list[list[PRESET]]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get list of Sound Set (GM system level 1) from soundfont.</span>
 
-<span class="sd">        :param bool is_percussion: False: Sound Set, True: Percussion Sound Set</span>
+<span class="sd">        :return: gm sound set - list[list[PRESET]]</span>
+<span class="sd">        :return: gm percussion sound set - list[list[PRESET]]</span>
 
-<span class="sd">        :return: (gm sound set, gm percussion sound set)</span>
-<span class="sd">         - PRESET: dict[str, Union[str, int, None]]</span>
-<span class="sd">           - [&quot;name&quot;: str | None], [&quot;num&quot;     : int | None],</span>
-<span class="sd">             [&quot;bank&quot;: int | None], [&quot;sfont_id&quot;: int | None]</span>
+<span class="sd">        - soundfont</span>
+<span class="sd">            - bank</span>
+<span class="sd">                - PRESET(dict)</span>
+<span class="sd">                    - &quot;name&quot;: str | None</span>
+<span class="sd">                    - &quot;num&quot; : int | None</span>
+<span class="sd">                    - &quot;bank&quot;: int | None</span>
+<span class="sd">                    - &quot;sfont_id&quot;: int | None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">sound_set</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
         <span class="n">percussion_sound_set</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>  <span class="c1"># bank = 128: percussion</span>
@@ -1240,11 +1249,15 @@
     <span class="k">def</span> <span class="nf">_sfont_sound_set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sfont</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">bank</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">PRESET</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;_sfont_sound_set _summary_</span>
 
-<span class="sd">        :param int sfont: _description_</span>
-<span class="sd">        :param int bank: _description_</span>
-<span class="sd">        :return: PRESET: dict[str, Union[str, int, None]]</span>
-<span class="sd">           - [&quot;name&quot;: str | None], [&quot;num&quot;     : int | None],</span>
-<span class="sd">             [&quot;bank&quot;: int | None], [&quot;sfont_id&quot;: int | None]</span>
+<span class="sd">        :param int sfont: soundfont id</span>
+<span class="sd">        :param int bank: bank</span>
+<span class="sd">        :return: preset list</span>
+
+<span class="sd">        - PRESET(dict)</span>
+<span class="sd">            - &quot;name&quot;: str | None</span>
+<span class="sd">            - &quot;num&quot; : int | None</span>
+<span class="sd">            - &quot;bank&quot;: int | None</span>
+<span class="sd">            - &quot;sfont_id&quot;: int | None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">result</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">PRESET</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">128</span><span class="p">):</span>
@@ -1257,9 +1270,13 @@
 <div class="viewcode-block" id="Synthesizer.channels_preset"><a class="viewcode-back" href="../../../../audioworkstation.libs.audio.html#audioworkstation.libs.audio.fluidsynth.Synthesizer.channels_preset">[ドキュメント]</a>    <span class="k">def</span> <span class="nf">channels_preset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">PRESET</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a list of presets per channel</span>
 
-<span class="sd">        :return: PRESET: dict[str, Union[str, int, None]]</span>
-<span class="sd">           - [&quot;name&quot;: str | None], [&quot;num&quot;     : int | None],</span>
-<span class="sd">             [&quot;bank&quot;: int | None], [&quot;sfont_id&quot;: int | None]</span>
+<span class="sd">        :return: preset list</span>
+
+<span class="sd">        - PRESET(dict)</span>
+<span class="sd">            - &quot;name&quot;: str | None</span>
+<span class="sd">            - &quot;num&quot; : int | None</span>
+<span class="sd">            - &quot;bank&quot;: int | None</span>
+<span class="sd">            - &quot;sfont_id&quot;: int | None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">result</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">PRESET</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">chan</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">15</span><span class="p">):</span>
@@ -1270,9 +1287,13 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;_channel_preset _summary_</span>
 
 <span class="sd">        :param int chan: channel number</span>
-<span class="sd">        :return: dict[str, Union[str, int, None]]</span>
-<span class="sd">           - [&quot;name&quot;: str | None], [&quot;num&quot;     : int | None],</span>
-<span class="sd">             [&quot;bank&quot;: int | None], [&quot;sfont_id&quot;: int | None]</span>
+<span class="sd">        :return: preset</span>
+
+<span class="sd">        - PRESET(dict)</span>
+<span class="sd">            - &quot;name&quot;: str | None</span>
+<span class="sd">            - &quot;num&quot; : int | None</span>
+<span class="sd">            - &quot;bank&quot;: int | None</span>
+<span class="sd">            - &quot;sfont_id&quot;: int | None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">preset</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span>
             <span class="n">fluid_synth_get_channel_preset</span><span class="p">(</span>
@@ -1285,9 +1306,13 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;_preset _summary_</span>
 
 <span class="sd">        :param int preset: _description_</span>
-<span class="sd">        :return: dict[str, Union[str, int, None]]</span>
-<span class="sd">           - [&quot;name&quot;: str | None], [&quot;num&quot;     : int | None],</span>
-<span class="sd">             [&quot;bank&quot;: int | None], [&quot;sfont_id&quot;: int | None]</span>
+<span class="sd">        :return: preset</span>
+
+<span class="sd">        - PRESET(dict)</span>
+<span class="sd">            - &quot;name&quot;: str | None</span>
+<span class="sd">            - &quot;num&quot; : int | None</span>
+<span class="sd">            - &quot;bank&quot;: int | None</span>
+<span class="sd">            - &quot;sfont_id&quot;: int | None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">result</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">preset</span><span class="p">:</span>
@@ -1307,16 +1332,36 @@
         <span class="k">return</span> <span class="n">result</span>
 
 <div class="viewcode-block" id="Synthesizer.pitch_bend"><a class="viewcode-back" href="../../../../audioworkstation.libs.audio.html#audioworkstation.libs.audio.fluidsynth.Synthesizer.pitch_bend">[ドキュメント]</a>    <span class="k">def</span> <span class="nf">pitch_bend</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chan</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;pitch_bend _summary_</span>
+
+<span class="sd">        :param int chan: _description_</span>
+<span class="sd">        :param int val: _description_</span>
+<span class="sd">        :return: _description_</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">fluid_synth_pitch_bend</span><span class="p">(</span>
             <span class="n">synth</span><span class="o">=</span><span class="n">CFS</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_synth</span><span class="p">),</span> <span class="n">chan</span><span class="o">=</span><span class="n">CFS</span><span class="o">.</span><span class="n">c_int</span><span class="p">(</span><span class="n">chan</span><span class="p">),</span> <span class="n">val</span><span class="o">=</span><span class="n">CFS</span><span class="o">.</span><span class="n">c_int</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="Synthesizer.pitch_wheel_sens"><a class="viewcode-back" href="../../../../audioworkstation.libs.audio.html#audioworkstation.libs.audio.fluidsynth.Synthesizer.pitch_wheel_sens">[ドキュメント]</a>    <span class="k">def</span> <span class="nf">pitch_wheel_sens</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chan</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;pitch_wheel_sens _summary_</span>
+
+<span class="sd">        :param int chan: _description_</span>
+<span class="sd">        :param int val: _description_</span>
+<span class="sd">        :return: _description_</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">fluid_synth_pitch_wheel_sens</span><span class="p">(</span>
             <span class="n">synth</span><span class="o">=</span><span class="n">CFS</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_synth</span><span class="p">),</span> <span class="n">chan</span><span class="o">=</span><span class="n">CFS</span><span class="o">.</span><span class="n">c_int</span><span class="p">(</span><span class="n">chan</span><span class="p">),</span> <span class="n">val</span><span class="o">=</span><span class="n">CFS</span><span class="o">.</span><span class="n">c_int</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="Synthesizer.program_select"><a class="viewcode-back" href="../../../../audioworkstation.libs.audio.html#audioworkstation.libs.audio.fluidsynth.Synthesizer.program_select">[ドキュメント]</a>    <span class="k">def</span> <span class="nf">program_select</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chan</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">sfont_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">bank</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">preset</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;program_select _summary_</span>
+
+<span class="sd">        :param int chan: _description_</span>
+<span class="sd">        :param int sfont_id: _description_</span>
+<span class="sd">        :param int bank: _description_</span>
+<span class="sd">        :param int preset: _description_</span>
+<span class="sd">        :return: _description_</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">fluid_synth_program_select</span><span class="p">(</span>
             <span class="n">synth</span><span class="o">=</span><span class="n">CFS</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_synth</span><span class="p">),</span>
             <span class="n">chan</span><span class="o">=</span><span class="n">CFS</span><span class="o">.</span><span class="n">c_int</span><span class="p">(</span><span class="n">chan</span><span class="p">),</span>
@@ -1326,6 +1371,13 @@
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="Synthesizer.note_on"><a class="viewcode-back" href="../../../../audioworkstation.libs.audio.html#audioworkstation.libs.audio.fluidsynth.Synthesizer.note_on">[ドキュメント]</a>    <span class="k">def</span> <span class="nf">note_on</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">keyNumber</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">velocity</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;note_on _summary_</span>
+
+<span class="sd">        :param int channel: _description_</span>
+<span class="sd">        :param int keyNumber: _description_</span>
+<span class="sd">        :param int velocity: _description_</span>
+<span class="sd">        :return: _description_</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">fluid_synth_noteon</span><span class="p">(</span>
             <span class="n">synth</span><span class="o">=</span><span class="n">CFS</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_synth</span><span class="p">),</span>
             <span class="n">chan</span><span class="o">=</span><span class="n">CFS</span><span class="o">.</span><span class="n">c_int</span><span class="p">(</span><span class="n">channel</span><span class="p">),</span>
@@ -1334,6 +1386,12 @@
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="Synthesizer.note_off"><a class="viewcode-back" href="../../../../audioworkstation.libs.audio.html#audioworkstation.libs.audio.fluidsynth.Synthesizer.note_off">[ドキュメント]</a>    <span class="k">def</span> <span class="nf">note_off</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">channel</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">keyNumber</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;note_off _summary_</span>
+
+<span class="sd">        :param int channel: _description_</span>
+<span class="sd">        :param int keyNumber: _description_</span>
+<span class="sd">        :return: _description_</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">fluid_synth_noteoff</span><span class="p">(</span>
                 <span class="n">synth</span><span class="o">=</span><span class="n">CFS</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_synth</span><span class="p">),</span>
@@ -1346,7 +1404,12 @@
         <span class="k">return</span> <span class="n">FLUID_FAILED</span></div>
 
 <div class="viewcode-block" id="Synthesizer.modulation_wheel"><a class="viewcode-back" href="../../../../audioworkstation.libs.audio.html#audioworkstation.libs.audio.fluidsynth.Synthesizer.modulation_wheel">[ドキュメント]</a>    <span class="k">def</span> <span class="nf">modulation_wheel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chan</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;The sound amplifies like vibrato.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The sound amplifies like vibrato.</span>
+
+<span class="sd">        :param int chan: _description_</span>
+<span class="sd">        :param int val: _description_</span>
+<span class="sd">        :return: _description_</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">fluid_synth_cc</span><span class="p">(</span>
             <span class="n">synth</span><span class="o">=</span><span class="n">CFS</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_synth</span><span class="p">),</span>
             <span class="n">chan</span><span class="o">=</span><span class="n">CFS</span><span class="o">.</span><span class="n">c_int</span><span class="p">(</span><span class="n">chan</span><span class="p">),</span>
@@ -1355,7 +1418,12 @@
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="Synthesizer.volume"><a class="viewcode-back" href="../../../../audioworkstation.libs.audio.html#audioworkstation.libs.audio.fluidsynth.Synthesizer.volume">[ドキュメント]</a>    <span class="k">def</span> <span class="nf">volume</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chan</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the maximum allowable value of velocity.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the maximum allowable value of velocity.</span>
+
+<span class="sd">        :param int chan: _description_</span>
+<span class="sd">        :param int val: _description_</span>
+<span class="sd">        :return: _description_</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">fluid_synth_cc</span><span class="p">(</span>
             <span class="n">synth</span><span class="o">=</span><span class="n">CFS</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_synth</span><span class="p">),</span>
             <span class="n">chan</span><span class="o">=</span><span class="n">CFS</span><span class="o">.</span><span class="n">c_int</span><span class="p">(</span><span class="n">chan</span><span class="p">),</span>
@@ -1364,7 +1432,11 @@
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="Synthesizer.sustain_on"><a class="viewcode-back" href="../../../../audioworkstation.libs.audio.html#audioworkstation.libs.audio.fluidsynth.Synthesizer.sustain_on">[ドキュメント]</a>    <span class="k">def</span> <span class="nf">sustain_on</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chan</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;The sound echoes for a long time.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The sound echoes for a long time.</span>
+
+<span class="sd">        :param int chan: _description_</span>
+<span class="sd">        :return: _description_</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">fluid_synth_cc</span><span class="p">(</span>
             <span class="n">synth</span><span class="o">=</span><span class="n">CFS</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_synth</span><span class="p">),</span>
             <span class="n">chan</span><span class="o">=</span><span class="n">CFS</span><span class="o">.</span><span class="n">c_int</span><span class="p">(</span><span class="n">chan</span><span class="p">),</span>
@@ -1373,6 +1445,11 @@
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="Synthesizer.sustain_off"><a class="viewcode-back" href="../../../../audioworkstation.libs.audio.html#audioworkstation.libs.audio.fluidsynth.Synthesizer.sustain_off">[ドキュメント]</a>    <span class="k">def</span> <span class="nf">sustain_off</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chan</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;sustain_off _summary_</span>
+
+<span class="sd">        :param int chan: _description_</span>
+<span class="sd">        :return: _description_</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">fluid_synth_cc</span><span class="p">(</span>
             <span class="n">synth</span><span class="o">=</span><span class="n">CFS</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_synth</span><span class="p">),</span>
             <span class="n">chan</span><span class="o">=</span><span class="n">CFS</span><span class="o">.</span><span class="n">c_int</span><span class="p">(</span><span class="n">chan</span><span class="p">),</span>
@@ -1381,6 +1458,12 @@
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="Synthesizer.pan"><a class="viewcode-back" href="../../../../audioworkstation.libs.audio.html#audioworkstation.libs.audio.fluidsynth.Synthesizer.pan">[ドキュメント]</a>    <span class="k">def</span> <span class="nf">pan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chan</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;pan _summary_</span>
+
+<span class="sd">        :param int chan: _description_</span>
+<span class="sd">        :param int val: _description_</span>
+<span class="sd">        :return: _description_</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">fluid_synth_cc</span><span class="p">(</span>
             <span class="n">synth</span><span class="o">=</span><span class="n">CFS</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_synth</span><span class="p">),</span>
             <span class="n">chan</span><span class="o">=</span><span class="n">CFS</span><span class="o">.</span><span class="n">c_int</span><span class="p">(</span><span class="n">chan</span><span class="p">),</span>
@@ -1389,7 +1472,12 @@
         <span class="p">)</span></div>
 
 <div class="viewcode-block" id="Synthesizer.expression"><a class="viewcode-back" href="../../../../audioworkstation.libs.audio.html#audioworkstation.libs.audio.fluidsynth.Synthesizer.expression">[ドキュメント]</a>    <span class="k">def</span> <span class="nf">expression</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chan</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Temporary velocity can be set above volume.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Temporary velocity can be set above volume.</span>
+
+<span class="sd">        :param int chan: _description_</span>
+<span class="sd">        :param int val: _description_</span>
+<span class="sd">        :return: _description_</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">fluid_synth_cc</span><span class="p">(</span>
             <span class="n">synth</span><span class="o">=</span><span class="n">CFS</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_synth</span><span class="p">),</span>
             <span class="n">chan</span><span class="o">=</span><span class="n">CFS</span><span class="o">.</span><span class="n">c_int</span><span class="p">(</span><span class="n">chan</span><span class="p">),</span>
@@ -1446,6 +1534,11 @@
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__del__</span><span class="p">()</span>
 
 <div class="viewcode-block" id="Sequencer.client_name"><a class="viewcode-back" href="../../../../audioworkstation.libs.audio.html#audioworkstation.libs.audio.fluidsynth.Sequencer.client_name">[ドキュメント]</a>    <span class="k">def</span> <span class="nf">client_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;client_name _summary_</span>
+
+<span class="sd">        :param int id: _description_</span>
+<span class="sd">        :return: _description_</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">fluid_sequencer_get_client_name</span><span class="p">(</span>
             <span class="n">seq</span><span class="o">=</span><span class="n">CFS</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sequencer</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="n">CFS</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
         <span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span></div>
@@ -1518,6 +1611,17 @@
         <span class="n">destination</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
         <span class="n">absolute</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;note_at _summary_</span>
+
+<span class="sd">        :param int ticks: _description_</span>
+<span class="sd">        :param int channel: _description_</span>
+<span class="sd">        :param int key_number: _description_</span>
+<span class="sd">        :param int velocity: _description_</span>
+<span class="sd">        :param int duration: _description_</span>
+<span class="sd">        :param int source: _description_, defaults to -1</span>
+<span class="sd">        :param int destination: _description_, defaults to -1</span>
+<span class="sd">        :param bool absolute: _description_, defaults to True</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">event</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_assign_event</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span> <span class="n">destination</span><span class="o">=</span><span class="n">destination</span><span class="p">)</span>
         <span class="n">fluid_event_note</span><span class="p">(</span>
             <span class="n">evt</span><span class="o">=</span><span class="n">CFS</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">(</span><span class="n">event</span><span class="p">),</span>
@@ -1536,6 +1640,14 @@
         <span class="n">destination</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
         <span class="n">absolute</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;timer_at _summary_</span>
+
+<span class="sd">        :param int ticks: _description_</span>
+<span class="sd">        :param Union[EventUserData, None] data: _description_, defaults to None</span>
+<span class="sd">        :param int source: _description_, defaults to -1</span>
+<span class="sd">        :param int destination: _description_, defaults to -1</span>
+<span class="sd">        :param bool absolute: _description_, defaults to True</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">event</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_assign_event</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span> <span class="n">destination</span><span class="o">=</span><span class="n">destination</span><span class="p">)</span>
         <span class="n">fluid_event_timer</span><span class="p">(</span>
             <span class="n">evt</span><span class="o">=</span><span class="n">CFS</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">(</span><span class="n">event</span><span class="p">),</span> <span class="n">data</span><span class="o">=</span><span class="n">CFS</span><span class="o">.</span><span class="n">pointer</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="k">if</span> <span class="n">data</span> <span class="k">else</span> <span class="kc">None</span>

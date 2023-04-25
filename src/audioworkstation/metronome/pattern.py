@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+"""Provide implementation for the metronome module."""
 
 from json import load
 
@@ -7,18 +8,29 @@ from ..libs.audio import fluidsynth as FS
 from ..libs.sublibs.parts import dB2gain, gain2dB
 
 sfs: FS.Sequencer
+#: bool: Flag of continuation
 schedule_stop: bool = False
-rhythm: list[int]
-notevalue: int
+#: list(int): beats
+rhythm: list[int] = [0]
+#: int: notevalue
+notevalue: int = 4
 
 
 @FS.FLUID_EVENT_CALLBACK_T
 def pcallback(time, event, sequencer, data):
+    """Schedule the next metronome pattern repeatedly.
+
+    :param c_uint time: Current sequencer tick value
+    :param c_void_p event: The event being received
+    :param c_void_p seq: The sequencer instance
+    :param POINTER(EventUserData) data: User defined data registered with the client
+    """
     if not schedule_stop:
         pattern()
 
 
-def pattern():
+def pattern() -> None:
+    """Schedule the metronome pattern."""
     time_marker = sfs.tick
 
     key = [75, 76]
@@ -41,7 +53,9 @@ def pattern():
     sfs.timer_at(time_marker, destination=sfs.clients[1])
 
 
-class Pattern:
+class Metronome:
+    """Metronome beats a rhythm."""
+
     def __init__(self) -> None:
         global sfs, schedule_stop, rhythm, notevalue
 
@@ -53,6 +67,7 @@ class Pattern:
 
     @property
     def volume(self) -> int:
+        """int: volume"""
         return gain2dB(sfs.gain)
 
     @volume.setter
@@ -60,6 +75,11 @@ class Pattern:
         sfs.gain = dB2gain(value)
 
     def start(self, bps: float, beat: list) -> None:
+        """Start.
+
+        :param float bps: bps
+        :param list beat: beats and notevalue
+        """
         global sfs, schedule_stop, rhythm, notevalue
         sfs.bps = bps
 
@@ -68,7 +88,8 @@ class Pattern:
         notevalue = int(beat[1])
         pattern()
 
-    def stop(self):
+    def stop(self) -> None:
+        """Stop."""
         global schedule_stop
         schedule_stop = True
 

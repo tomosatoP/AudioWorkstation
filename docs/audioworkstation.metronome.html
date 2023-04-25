@@ -86,6 +86,17 @@
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="audioworkstation.metronome.metronome.MetronomeView.unregister">
+<span class="sig-name descname"><span class="pre">unregister</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/metronome/metronome.html#MetronomeView.unregister"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.metronome.metronome.MetronomeView.unregister" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>Processing when terminating a View.</p>
+<dl class="field-list simple">
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="audioworkstation.metronome.metronome.MetronomeView.update_beat">
 <span class="sig-name descname"><span class="pre">update_beat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/metronome/metronome.html#MetronomeView.update_beat"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.metronome.metronome.MetronomeView.update_beat" title="この定義へのパーマリンク">¶</a></dt>
 <dd><p>Update beat.</p>
@@ -173,20 +184,23 @@
 </section>
 <section id="module-audioworkstation.metronome.pattern">
 <span id="pattern-module"></span><h2>pattern module<a class="headerlink" href="#module-audioworkstation.metronome.pattern" title="この見出しへのパーマリンク">¶</a></h2>
+<p>Provide implementation for the metronome module.</p>
 <dl class="py class">
-<dt class="sig sig-object py" id="audioworkstation.metronome.pattern.Pattern">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Pattern</span></span><a class="reference internal" href="_modules/audioworkstation/metronome/pattern.html#Pattern"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.metronome.pattern.Pattern" title="この定義へのパーマリンク">¶</a></dt>
+<dt class="sig sig-object py" id="audioworkstation.metronome.pattern.Metronome">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Metronome</span></span><a class="reference internal" href="_modules/audioworkstation/metronome/pattern.html#Metronome"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.metronome.pattern.Metronome" title="この定義へのパーマリンク">¶</a></dt>
 <dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Metronome beats a rhythm.</p>
 <dl class="field-list simple">
 </dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="audioworkstation.metronome.pattern.Pattern.start">
-<span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beat</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/metronome/pattern.html#Pattern.start"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.metronome.pattern.Pattern.start" title="この定義へのパーマリンク">¶</a></dt>
-<dd><dl class="field-list simple">
+<dt class="sig sig-object py" id="audioworkstation.metronome.pattern.Metronome.start">
+<span class="sig-name descname"><span class="pre">start</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beat</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/metronome/pattern.html#Metronome.start"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.metronome.pattern.Metronome.start" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>Start.</p>
+<dl class="field-list simple">
 <dt class="field-odd">パラメータ<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>bps</strong> (<em>float</em>) -- </p></li>
-<li><p><strong>beat</strong> (<em>list</em>) -- </p></li>
+<li><p><strong>bps</strong> (<em>float</em>) -- bps</p></li>
+<li><p><strong>beat</strong> (<em>list</em>) -- beats and notevalue</p></li>
 </ul>
 </dd>
 <dt class="field-even">戻り値の型<span class="colon">:</span></dt>
@@ -196,31 +210,72 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="audioworkstation.metronome.pattern.Pattern.stop">
-<span class="sig-name descname"><span class="pre">stop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/metronome/pattern.html#Pattern.stop"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.metronome.pattern.Pattern.stop" title="この定義へのパーマリンク">¶</a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="audioworkstation.metronome.pattern.Metronome.stop">
+<span class="sig-name descname"><span class="pre">stop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/metronome/pattern.html#Metronome.stop"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.metronome.pattern.Metronome.stop" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>Stop.</p>
+<dl class="field-list simple">
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="audioworkstation.metronome.pattern.Pattern.volume">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">volume</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#audioworkstation.metronome.pattern.Pattern.volume" title="この定義へのパーマリンク">¶</a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="audioworkstation.metronome.pattern.Metronome.volume">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">volume</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#audioworkstation.metronome.pattern.Metronome.volume" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>volume</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="audioworkstation.metronome.pattern.pattern">
 <span class="sig-name descname"><span class="pre">pattern</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/metronome/pattern.html#pattern"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.metronome.pattern.pattern" title="この定義へのパーマリンク">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Schedule the metronome pattern.</p>
+<dl class="field-list simple">
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="audioworkstation.metronome.pattern.notevalue">
-<span class="sig-name descname"><span class="pre">notevalue</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#audioworkstation.metronome.pattern.notevalue" title="この定義へのパーマリンク">¶</a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">notevalue</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4</span></em><a class="headerlink" href="#audioworkstation.metronome.pattern.notevalue" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>notevalue</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="audioworkstation.metronome.pattern.rhythm">
-<span class="sig-name descname"><span class="pre">rhythm</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#audioworkstation.metronome.pattern.rhythm" title="この定義へのパーマリンク">¶</a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">rhythm</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[0]</span></em><a class="headerlink" href="#audioworkstation.metronome.pattern.rhythm" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>beats</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list(int)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="audioworkstation.metronome.pattern.schedule_stop">
+<span class="sig-name descname"><span class="pre">schedule_stop</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#audioworkstation.metronome.pattern.schedule_stop" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>Flag of continuation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 <section id="module-audioworkstation.metronome">
@@ -245,6 +300,7 @@
 <li><a class="reference internal" href="#audioworkstation.metronome.metronome.MetronomeView"><code class="docutils literal notranslate"><span class="pre">MetronomeView</span></code></a><ul>
 <li><a class="reference internal" href="#audioworkstation.metronome.metronome.MetronomeView.sound"><code class="docutils literal notranslate"><span class="pre">MetronomeView.sound()</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.metronome.metronome.MetronomeView.status"><code class="docutils literal notranslate"><span class="pre">MetronomeView.status()</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.metronome.metronome.MetronomeView.unregister"><code class="docutils literal notranslate"><span class="pre">MetronomeView.unregister()</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.metronome.metronome.MetronomeView.update_beat"><code class="docutils literal notranslate"><span class="pre">MetronomeView.update_beat()</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.metronome.metronome.MetronomeView.update_bps"><code class="docutils literal notranslate"><span class="pre">MetronomeView.update_bps()</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.metronome.metronome.MetronomeView.beat"><code class="docutils literal notranslate"><span class="pre">MetronomeView.beat</span></code></a></li>
@@ -257,15 +313,16 @@
 </ul>
 </li>
 <li><a class="reference internal" href="#module-audioworkstation.metronome.pattern">pattern module</a><ul>
-<li><a class="reference internal" href="#audioworkstation.metronome.pattern.Pattern"><code class="docutils literal notranslate"><span class="pre">Pattern</span></code></a><ul>
-<li><a class="reference internal" href="#audioworkstation.metronome.pattern.Pattern.start"><code class="docutils literal notranslate"><span class="pre">Pattern.start()</span></code></a></li>
-<li><a class="reference internal" href="#audioworkstation.metronome.pattern.Pattern.stop"><code class="docutils literal notranslate"><span class="pre">Pattern.stop()</span></code></a></li>
-<li><a class="reference internal" href="#audioworkstation.metronome.pattern.Pattern.volume"><code class="docutils literal notranslate"><span class="pre">Pattern.volume</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.metronome.pattern.Metronome"><code class="docutils literal notranslate"><span class="pre">Metronome</span></code></a><ul>
+<li><a class="reference internal" href="#audioworkstation.metronome.pattern.Metronome.start"><code class="docutils literal notranslate"><span class="pre">Metronome.start()</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.metronome.pattern.Metronome.stop"><code class="docutils literal notranslate"><span class="pre">Metronome.stop()</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.metronome.pattern.Metronome.volume"><code class="docutils literal notranslate"><span class="pre">Metronome.volume</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#audioworkstation.metronome.pattern.pattern"><code class="docutils literal notranslate"><span class="pre">pattern()</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.metronome.pattern.notevalue"><code class="docutils literal notranslate"><span class="pre">notevalue</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.metronome.pattern.rhythm"><code class="docutils literal notranslate"><span class="pre">rhythm</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.metronome.pattern.schedule_stop"><code class="docutils literal notranslate"><span class="pre">schedule_stop</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#module-audioworkstation.metronome">Module contents</a></li>

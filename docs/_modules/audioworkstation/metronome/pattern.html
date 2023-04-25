@@ -38,6 +38,7 @@
   <h1>audioworkstation.metronome.pattern のソースコード</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python3</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;Provide implementation for the metronome module.&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">json</span> <span class="kn">import</span> <span class="n">load</span>
 
@@ -45,18 +46,29 @@
 <span class="kn">from</span> <span class="nn">..libs.sublibs.parts</span> <span class="kn">import</span> <span class="n">dB2gain</span><span class="p">,</span> <span class="n">gain2dB</span>
 
 <span class="n">sfs</span><span class="p">:</span> <span class="n">FS</span><span class="o">.</span><span class="n">Sequencer</span>
+<span class="c1">#: bool: Flag of continuation</span>
 <span class="n">schedule_stop</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="n">rhythm</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>
-<span class="n">notevalue</span><span class="p">:</span> <span class="nb">int</span>
+<span class="c1">#: list(int): beats</span>
+<span class="n">rhythm</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="c1">#: int: notevalue</span>
+<span class="n">notevalue</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span>
 
 
 <span class="nd">@FS</span><span class="o">.</span><span class="n">FLUID_EVENT_CALLBACK_T</span>
 <span class="k">def</span> <span class="nf">pcallback</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">event</span><span class="p">,</span> <span class="n">sequencer</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Schedule the next metronome pattern repeatedly.</span>
+
+<span class="sd">    :param c_uint time: Current sequencer tick value</span>
+<span class="sd">    :param c_void_p event: The event being received</span>
+<span class="sd">    :param c_void_p seq: The sequencer instance</span>
+<span class="sd">    :param POINTER(EventUserData) data: User defined data registered with the client</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">schedule_stop</span><span class="p">:</span>
         <span class="n">pattern</span><span class="p">()</span>
 
 
-<div class="viewcode-block" id="pattern"><a class="viewcode-back" href="../../../audioworkstation.metronome.html#audioworkstation.metronome.pattern.pattern">[ドキュメント]</a><span class="k">def</span> <span class="nf">pattern</span><span class="p">():</span>
+<div class="viewcode-block" id="pattern"><a class="viewcode-back" href="../../../audioworkstation.metronome.html#audioworkstation.metronome.pattern.pattern">[ドキュメント]</a><span class="k">def</span> <span class="nf">pattern</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Schedule the metronome pattern.&quot;&quot;&quot;</span>
     <span class="n">time_marker</span> <span class="o">=</span> <span class="n">sfs</span><span class="o">.</span><span class="n">tick</span>
 
     <span class="n">key</span> <span class="o">=</span> <span class="p">[</span><span class="mi">75</span><span class="p">,</span> <span class="mi">76</span><span class="p">]</span>
@@ -79,7 +91,9 @@
     <span class="n">sfs</span><span class="o">.</span><span class="n">timer_at</span><span class="p">(</span><span class="n">time_marker</span><span class="p">,</span> <span class="n">destination</span><span class="o">=</span><span class="n">sfs</span><span class="o">.</span><span class="n">clients</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span></div>
 
 
-<div class="viewcode-block" id="Pattern"><a class="viewcode-back" href="../../../audioworkstation.metronome.html#audioworkstation.metronome.pattern.Pattern">[ドキュメント]</a><span class="k">class</span> <span class="nc">Pattern</span><span class="p">:</span>
+<div class="viewcode-block" id="Metronome"><a class="viewcode-back" href="../../../audioworkstation.metronome.html#audioworkstation.metronome.pattern.Metronome">[ドキュメント]</a><span class="k">class</span> <span class="nc">Metronome</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Metronome beats a rhythm.&quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">global</span> <span class="n">sfs</span><span class="p">,</span> <span class="n">schedule_stop</span><span class="p">,</span> <span class="n">rhythm</span><span class="p">,</span> <span class="n">notevalue</span>
 
@@ -91,13 +105,19 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">volume</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;int: volume&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">gain2dB</span><span class="p">(</span><span class="n">sfs</span><span class="o">.</span><span class="n">gain</span><span class="p">)</span>
 
     <span class="nd">@volume</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">volume</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">sfs</span><span class="o">.</span><span class="n">gain</span> <span class="o">=</span> <span class="n">dB2gain</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Pattern.start"><a class="viewcode-back" href="../../../audioworkstation.metronome.html#audioworkstation.metronome.pattern.Pattern.start">[ドキュメント]</a>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bps</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">beat</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="Metronome.start"><a class="viewcode-back" href="../../../audioworkstation.metronome.html#audioworkstation.metronome.pattern.Metronome.start">[ドキュメント]</a>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bps</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">beat</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Start.</span>
+
+<span class="sd">        :param float bps: bps</span>
+<span class="sd">        :param list beat: beats and notevalue</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">global</span> <span class="n">sfs</span><span class="p">,</span> <span class="n">schedule_stop</span><span class="p">,</span> <span class="n">rhythm</span><span class="p">,</span> <span class="n">notevalue</span>
         <span class="n">sfs</span><span class="o">.</span><span class="n">bps</span> <span class="o">=</span> <span class="n">bps</span>
 
@@ -106,7 +126,8 @@
         <span class="n">notevalue</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">beat</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
         <span class="n">pattern</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="Pattern.stop"><a class="viewcode-back" href="../../../audioworkstation.metronome.html#audioworkstation.metronome.pattern.Pattern.stop">[ドキュメント]</a>    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Metronome.stop"><a class="viewcode-back" href="../../../audioworkstation.metronome.html#audioworkstation.metronome.pattern.Metronome.stop">[ドキュメント]</a>    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Stop.&quot;&quot;&quot;</span>
         <span class="k">global</span> <span class="n">schedule_stop</span>
         <span class="n">schedule_stop</span> <span class="o">=</span> <span class="kc">True</span></div></div>
 

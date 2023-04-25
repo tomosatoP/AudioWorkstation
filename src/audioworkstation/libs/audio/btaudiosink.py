@@ -90,8 +90,8 @@ def device_info() -> dict[str, str]:
     """Get information on connected Bluetooth devices.
 
     :return: {name: address}
-    | <examples> {"name": "00:00:00:00:00:00"}
-    | <examples> {"": ""} if failed.
+    :examples: {"name": "00:00:00:00:00:00"}
+    :examples: {"": ""} if failed.
     """
     devices = _paired_devices()
 

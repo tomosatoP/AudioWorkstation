@@ -158,9 +158,7 @@ _snd_card_next.errcheck = _errcheck_non_zero
 
 
 class SND_MIXER_SELEM_CHANNEL_ID_T(IntEnum):
-    """humei"""
-
-    UNKNOWN = -1  #: humei
+    UNKNOWN = -1
     FRONT_LEFT = auto()
     FRONT_RIGHT = auto()
     REAR_LEFT = auto()
@@ -437,7 +435,6 @@ def list_name_hint() -> None:
     """Save the name hints table to a file.
 
     :var path-like f: "docs/alsa-namehint.md"
-    ---
 
     +-----+-----+-----+-----+
     |iface|NAME |DECS |IOID |

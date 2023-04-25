@@ -57,7 +57,7 @@
 <div class="viewcode-block" id="MetronomeView"><a class="viewcode-back" href="../../../audioworkstation.metronome.html#audioworkstation.metronome.metronome.MetronomeView">[ドキュメント]</a><span class="k">class</span> <span class="nc">MetronomeView</span><span class="p">(</span><span class="n">Screen</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;MetronomeView has bps layout and beat layout.&quot;&quot;&quot;</span>
 
-    <span class="n">pSFS</span> <span class="o">=</span> <span class="n">PT</span><span class="o">.</span><span class="n">Pattern</span><span class="p">()</span>
+    <span class="n">pSFS</span> <span class="o">=</span> <span class="n">PT</span><span class="o">.</span><span class="n">Metronome</span><span class="p">()</span>
     <span class="n">executor</span> <span class="o">=</span> <span class="n">futures</span><span class="o">.</span><span class="n">ThreadPoolExecutor</span><span class="p">()</span>
 
     <span class="c1">#: ObjectProperty: layout bps</span>
@@ -85,6 +85,10 @@
                 <span class="n">obj</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">on_press</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">update_beat</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="s2">&quot;down&quot;</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">beat</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
+
+<div class="viewcode-block" id="MetronomeView.unregister"><a class="viewcode-back" href="../../../audioworkstation.metronome.html#audioworkstation.metronome.metronome.MetronomeView.unregister">[ドキュメント]</a>    <span class="k">def</span> <span class="nf">unregister</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Processing when terminating a View.&quot;&quot;&quot;</span>
+        <span class="k">del</span> <span class="bp">self</span></div>
 
 <div class="viewcode-block" id="MetronomeView.sound"><a class="viewcode-back" href="../../../audioworkstation.metronome.html#audioworkstation.metronome.metronome.MetronomeView.sound">[ドキュメント]</a>    <span class="k">def</span> <span class="nf">sound</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">on</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Sound metronome start/stop.</span>

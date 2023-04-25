@@ -449,10 +449,10 @@ FLUID_EVENT_CALLBACK_T = CFS.CFUNCTYPE(
 )
 """Event callback function prototype for destination clients.
 
-:param c_uint time:
-:param c_void_p event:
-:param c_void_p seq:
-:param POINTER(EventUserData) data:
+:param c_uint time: Current sequencer tick value
+:param c_void_p event: The event being received
+:param c_void_p seq: The sequencer instance
+:param POINTER(EventUserData) data: User defined data registered with the client
 """
 # [API prototype]
 new_fluid_sequencer2 = _prototype(
@@ -1117,6 +1117,10 @@ class Synthesizer:
             delete_fluid_audio_driver(driver=CFS.c_void_p(self._audio_driver))
 
     def version(self) -> str:
+        """version _summary_
+
+        :return: _description_
+        """
         return bytes(fluid_version_str()).decode()
 
     def _gm_system_on(self) -> int:
@@ -1149,7 +1153,7 @@ class Synthesizer:
 
     @property
     def gain(self) -> float:
-        """defalt:0.2, Min:0.0, Max:10.0"""
+        """float: gain - defalt 0.2, Min 0.0, Max 10.0"""
         return float(fluid_synth_get_gain(synth=CFS.c_void_p(self._synth)))
 
     @gain.setter
@@ -1159,17 +1163,22 @@ class Synthesizer:
 
     @property
     def soundfonts(self) -> list:
+        """list(str): sonundfont file names"""
         return list(self._soundfonts.keys())  # filename
 
     def gm_sound_set(self) -> tuple:  # list[list[PRESET]]:
         """Get list of Sound Set (GM system level 1) from soundfont.
 
-        :param bool is_percussion: False: Sound Set, True: Percussion Sound Set
+        :return: gm sound set - list[list[PRESET]]
+        :return: gm percussion sound set - list[list[PRESET]]
 
-        :return: (gm sound set, gm percussion sound set)
-         - PRESET: dict[str, Union[str, int, None]]
-           - ["name": str | None], ["num"     : int | None],
-             ["bank": int | None], ["sfont_id": int | None]
+        - soundfont
+            - bank
+                - PRESET(dict)
+                    - "name": str | None
+                    - "num" : int | None
+                    - "bank": int | None
+                    - "sfont_id": int | None
         """
         sound_set: list = list()
         percussion_sound_set: list = list()  # bank = 128: percussion
@@ -1202,11 +1211,15 @@ class Synthesizer:
     def _sfont_sound_set(self, sfont: int, bank: int) -> list[PRESET]:
         """_sfont_sound_set _summary_
 
-        :param int sfont: _description_
-        :param int bank: _description_
-        :return: PRESET: dict[str, Union[str, int, None]]
-           - ["name": str | None], ["num"     : int | None],
-             ["bank": int | None], ["sfont_id": int | None]
+        :param int sfont: soundfont id
+        :param int bank: bank
+        :return: preset list
+
+        - PRESET(dict)
+            - "name": str | None
+            - "num" : int | None
+            - "bank": int | None
+            - "sfont_id": int | None
         """
         result: list[PRESET] = list()
         for n in range(128):
@@ -1219,9 +1232,13 @@ class Synthesizer:
     def channels_preset(self) -> list[PRESET]:
         """Get a list of presets per channel
 
-        :return: PRESET: dict[str, Union[str, int, None]]
-           - ["name": str | None], ["num"     : int | None],
-             ["bank": int | None], ["sfont_id": int | None]
+        :return: preset list
+
+        - PRESET(dict)
+            - "name": str | None
+            - "num" : int | None
+            - "bank": int | None
+            - "sfont_id": int | None
         """
         result: list[PRESET] = list()
         for chan in range(15):
@@ -1232,9 +1249,13 @@ class Synthesizer:
         """_channel_preset _summary_
 
         :param int chan: channel number
-        :return: dict[str, Union[str, int, None]]
-           - ["name": str | None], ["num"     : int | None],
-             ["bank": int | None], ["sfont_id": int | None]
+        :return: preset
+
+        - PRESET(dict)
+            - "name": str | None
+            - "num" : int | None
+            - "bank": int | None
+            - "sfont_id": int | None
         """
         preset = int(
             fluid_synth_get_channel_preset(
@@ -1247,9 +1268,13 @@ class Synthesizer:
         """_preset _summary_
 
         :param int preset: _description_
-        :return: dict[str, Union[str, int, None]]
-           - ["name": str | None], ["num"     : int | None],
-             ["bank": int | None], ["sfont_id": int | None]
+        :return: preset
+
+        - PRESET(dict)
+            - "name": str | None
+            - "num" : int | None
+            - "bank": int | None
+            - "sfont_id": int | None
         """
         result: dict[str, Union[str, int, None]] = dict()
         if preset:
@@ -1269,16 +1294,36 @@ class Synthesizer:
         return result
 
     def pitch_bend(self, chan: int, val: int) -> int:
+        """pitch_bend _summary_
+
+        :param int chan: _description_
+        :param int val: _description_
+        :return: _description_
+        """
         return fluid_synth_pitch_bend(
             synth=CFS.c_void_p(self._synth), chan=CFS.c_int(chan), val=CFS.c_int(val)
         )
 
     def pitch_wheel_sens(self, chan: int, val: int) -> int:
+        """pitch_wheel_sens _summary_
+
+        :param int chan: _description_
+        :param int val: _description_
+        :return: _description_
+        """
         return fluid_synth_pitch_wheel_sens(
             synth=CFS.c_void_p(self._synth), chan=CFS.c_int(chan), val=CFS.c_int(val)
         )
 
     def program_select(self, chan: int, sfont_id: int, bank: int, preset: int) -> int:
+        """program_select _summary_
+
+        :param int chan: _description_
+        :param int sfont_id: _description_
+        :param int bank: _description_
+        :param int preset: _description_
+        :return: _description_
+        """
         return fluid_synth_program_select(
             synth=CFS.c_void_p(self._synth),
             chan=CFS.c_int(chan),
@@ -1288,6 +1333,13 @@ class Synthesizer:
         )
 
     def note_on(self, channel: int, keyNumber: int, velocity: int) -> int:
+        """note_on _summary_
+
+        :param int channel: _description_
+        :param int keyNumber: _description_
+        :param int velocity: _description_
+        :return: _description_
+        """
         return fluid_synth_noteon(
             synth=CFS.c_void_p(self._synth),
             chan=CFS.c_int(channel),
@@ -1296,6 +1348,12 @@ class Synthesizer:
         )
 
     def note_off(self, channel: int, keyNumber: int) -> int:
+        """note_off _summary_
+
+        :param int channel: _description_
+        :param int keyNumber: _description_
+        :return: _description_
+        """
         try:
             fluid_synth_noteoff(
                 synth=CFS.c_void_p(self._synth),
@@ -1308,7 +1366,12 @@ class Synthesizer:
         return FLUID_FAILED
 
     def modulation_wheel(self, chan: int, val: int) -> int:
-        """The sound amplifies like vibrato."""
+        """The sound amplifies like vibrato.
+
+        :param int chan: _description_
+        :param int val: _description_
+        :return: _description_
+        """
         return fluid_synth_cc(
             synth=CFS.c_void_p(self._synth),
             chan=CFS.c_int(chan),
@@ -1317,7 +1380,12 @@ class Synthesizer:
         )
 
     def volume(self, chan: int, val: int) -> int:
-        """Set the maximum allowable value of velocity."""
+        """Set the maximum allowable value of velocity.
+
+        :param int chan: _description_
+        :param int val: _description_
+        :return: _description_
+        """
         return fluid_synth_cc(
             synth=CFS.c_void_p(self._synth),
             chan=CFS.c_int(chan),
@@ -1326,7 +1394,11 @@ class Synthesizer:
         )
 
     def sustain_on(self, chan: int) -> int:
-        """The sound echoes for a long time."""
+        """The sound echoes for a long time.
+
+        :param int chan: _description_
+        :return: _description_
+        """
         return fluid_synth_cc(
             synth=CFS.c_void_p(self._synth),
             chan=CFS.c_int(chan),
@@ -1335,6 +1407,11 @@ class Synthesizer:
         )
 
     def sustain_off(self, chan: int) -> int:
+        """sustain_off _summary_
+
+        :param int chan: _description_
+        :return: _description_
+        """
         return fluid_synth_cc(
             synth=CFS.c_void_p(self._synth),
             chan=CFS.c_int(chan),
@@ -1343,6 +1420,12 @@ class Synthesizer:
         )
 
     def pan(self, chan: int, val: int) -> int:
+        """pan _summary_
+
+        :param int chan: _description_
+        :param int val: _description_
+        :return: _description_
+        """
         return fluid_synth_cc(
             synth=CFS.c_void_p(self._synth),
             chan=CFS.c_int(chan),
@@ -1351,7 +1434,12 @@ class Synthesizer:
         )
 
     def expression(self, chan: int, val: int) -> int:
-        """Temporary velocity can be set above volume."""
+        """Temporary velocity can be set above volume.
+
+        :param int chan: _description_
+        :param int val: _description_
+        :return: _description_
+        """
         return fluid_synth_cc(
             synth=CFS.c_void_p(self._synth),
             chan=CFS.c_int(chan),
@@ -1408,6 +1496,11 @@ class Sequencer(Synthesizer):
         super().__del__()
 
     def client_name(self, id: int) -> str:
+        """client_name _summary_
+
+        :param int id: _description_
+        :return: _description_
+        """
         return fluid_sequencer_get_client_name(
             seq=CFS.c_void_p(self._sequencer), id=CFS.c_void_p(id)
         ).decode()
@@ -1480,6 +1573,17 @@ class Sequencer(Synthesizer):
         destination: int = -1,
         absolute: bool = True,
     ) -> None:
+        """note_at _summary_
+
+        :param int ticks: _description_
+        :param int channel: _description_
+        :param int key_number: _description_
+        :param int velocity: _description_
+        :param int duration: _description_
+        :param int source: _description_, defaults to -1
+        :param int destination: _description_, defaults to -1
+        :param bool absolute: _description_, defaults to True
+        """
         event = self._assign_event(source=source, destination=destination)
         fluid_event_note(
             evt=CFS.c_void_p(event),
@@ -1498,6 +1602,14 @@ class Sequencer(Synthesizer):
         destination: int = -1,
         absolute: bool = True,
     ) -> None:
+        """timer_at _summary_
+
+        :param int ticks: _description_
+        :param Union[EventUserData, None] data: _description_, defaults to None
+        :param int source: _description_, defaults to -1
+        :param int destination: _description_, defaults to -1
+        :param bool absolute: _description_, defaults to True
+        """
         event = self._assign_event(source=source, destination=destination)
         fluid_event_timer(
             evt=CFS.c_void_p(event), data=CFS.pointer(data) if data else None

@@ -37,9 +37,10 @@ class MidiPlayer:
     def stop(self) -> None:
         """Stops the playback of Midi files."""
 
-        self.pause_tick = self.fsmp.stop()
-        self.gain = self.fsmp.gain
-        del self.fsmp
+        if hasattr(self, "fsmp"):
+            self.pause_tick = self.fsmp.stop()
+            self.gain = self.fsmp.gain
+            del self.fsmp
 
     @property
     def tick(self) -> int:

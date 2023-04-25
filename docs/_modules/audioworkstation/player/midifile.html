@@ -75,9 +75,10 @@
 <div class="viewcode-block" id="MidiPlayer.stop"><a class="viewcode-back" href="../../../audioworkstation.player.html#audioworkstation.player.midifile.MidiPlayer.stop">[ドキュメント]</a>    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Stops the playback of Midi files.&quot;&quot;&quot;</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">pause_tick</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fsmp</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">gain</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fsmp</span><span class="o">.</span><span class="n">gain</span>
-        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">fsmp</span></div>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;fsmp&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pause_tick</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fsmp</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gain</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fsmp</span><span class="o">.</span><span class="n">gain</span>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">fsmp</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">tick</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>

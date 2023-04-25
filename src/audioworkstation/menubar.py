@@ -68,6 +68,13 @@ class MenubarView(Widget):
         self.vol2.slider.bind(value=self.mode_volume)
         self.mode.bind(text=self.set_mode)
 
+    def unregister_screens(self) -> None:
+        """Unregister screens."""
+
+        for name in self.panel.screen_names:
+            self.panel.get_screen(name).unregister()
+            self.panel.remove_widget(self.panel.get_screen(name))
+
     def set_mode(self, widget: Widget, text: str) -> None:
         """Set child screens mode.
 
@@ -108,7 +115,12 @@ class MenubarApp(App):
 
     def build(self):
         self.title = "AudioWorkstation"
-        return MenubarView()
+        self.view = MenubarView()
+        return self.view
+
+    def on_stop(self):
+        self.view.unregister_screens()
+        return super().on_stop()
 
 
 if __name__ == "__main__":

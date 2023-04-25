@@ -61,6 +61,10 @@ class KeyboardView(Screen):
 
         self.add_gmss_buttons()
 
+    def unregister(self) -> None:
+        """Processing when terminating a View."""
+        pass
+
     def select_gmss(self, gmss_button: GMSoundSetButton) -> None:
         """Select program(preset) number assigned to the button.
 
