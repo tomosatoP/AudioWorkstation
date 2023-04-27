@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
 """Analyze MIDI files according to  SMF (Standard MIDI File) format.
 
-:reference: http://www.amei.or.jp/
-    MIDI1.0規格書(日本語版98.1) ISBN4-8456-0348-9 C3055
+:reference: MIDI1.0規格書(日本語版98.1) ISBN4-8456-0348-9 C3055
+http://www.amei.or.jp/
 
-        2. MIDI 1.0
-        4. スタンダードMIDIファイル1.0
+2. MIDI 1.0
+4. スタンダードMIDIファイル1.0
 """
 import struct
 from typing import Union
@@ -132,7 +132,7 @@ class StandardMidiFile:
         return (midi_event, offset)
 
     def _dequeue_as_meta_event(self, event_type: int, offset: int) -> tuple:
-        """
+        """_de
 
         :param int event_type:
         :param int offset:

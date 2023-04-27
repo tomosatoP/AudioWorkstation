@@ -4,20 +4,20 @@
 
 from json import load
 
-from ..libs.audio import fluidsynth as FS
+from ..libs.audio import fluidsynth as PtFS
 from ..libs.sublibs.parts import dB2gain, gain2dB
 
-sfs: FS.Sequencer
+sfs: PtFS.Sequencer
 #: bool: Flag of continuation
-schedule_stop: bool = False
+schedule_stop: bool = True
 #: list(int): beats
 rhythm: list[int] = [0]
 #: int: notevalue
 notevalue: int = 4
 
 
-@FS.FLUID_EVENT_CALLBACK_T
-def pcallback(time, event, sequencer, data):
+@PtFS.FLUID_EVENT_CALLBACK_T
+def bar_callback(time, event, sequencer, data):
     """Schedule the next metronome pattern repeatedly.
 
     :param c_uint time: Current sequencer tick value
@@ -26,10 +26,10 @@ def pcallback(time, event, sequencer, data):
     :param POINTER(EventUserData) data: User defined data registered with the client
     """
     if not schedule_stop:
-        pattern()
+        bar_pattern()
 
 
-def pattern() -> None:
+def bar_pattern() -> bool:
     """Schedule the metronome pattern."""
     time_marker = sfs.tick
 
@@ -51,6 +51,7 @@ def pattern() -> None:
             )
             time_marker += dur
     sfs.timer_at(time_marker, destination=sfs.clients[1])
+    return True
 
 
 class Metronome:
@@ -62,8 +63,8 @@ class Metronome:
         with open("config/screen.json", "rt") as f:
             kwargs = load(f)["metronome"]
 
-        sfs = FS.Sequencer(**kwargs)
-        sfs.register_client("metronome", pcallback)
+        sfs = PtFS.Sequencer(**kwargs)
+        sfs.register_client("bar", bar_callback)
 
     @property
     def volume(self) -> int:
@@ -86,7 +87,7 @@ class Metronome:
         schedule_stop = False
         rhythm = list(map(int, str(beat[0]).split("+")))
         notevalue = int(beat[1])
-        pattern()
+        bar_pattern()
 
     def stop(self) -> None:
         """Stop."""

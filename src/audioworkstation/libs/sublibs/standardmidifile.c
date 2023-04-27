@@ -1623,7 +1623,7 @@ static const char __pyx_k_StandardMidiFile_lyrics[] = "StandardMidiFile.lyrics";
 static const char __pyx_k_StandardMidiFile_total_tick[] = "StandardMidiFile.total_tick";
 static const char __pyx_k_StandardMidiFile_instruments[] = "StandardMidiFile.instruments";
 static const char __pyx_k_pyx_unpickle_StandardMidiFile[] = "__pyx_unpickle_StandardMidiFile";
-static const char __pyx_k_Analyze_MIDI_files_according_to[] = "Analyze MIDI files according to  SMF (Standard MIDI File) format.\n\n:reference: http://www.amei.or.jp/\n    MIDI1.0\350\246\217\346\240\274\346\233\270(\346\227\245\346\234\254\350\252\236\347\211\21098.1) ISBN4-8456-0348-9 C3055\n\n        2. MIDI 1.0\n        4. \343\202\271\343\202\277\343\203\263\343\203\200\343\203\274\343\203\211MIDI\343\203\225\343\202\241\343\202\244\343\203\2531.0\n";
+static const char __pyx_k_Analyze_MIDI_files_according_to[] = "Analyze MIDI files according to  SMF (Standard MIDI File) format.\n\n:reference: MIDI1.0\350\246\217\346\240\274\346\233\270(\346\227\245\346\234\254\350\252\236\347\211\21098.1) ISBN4-8456-0348-9 C3055\nhttp://www.amei.or.jp/\n\n2. MIDI 1.0\n4. \343\202\271\343\202\277\343\203\263\343\203\200\343\203\274\343\203\211MIDI\343\203\225\343\202\241\343\202\244\343\203\2531.0\n";
 static const char __pyx_k_Incompatible_checksums_0x_x_vs_0[] = "Incompatible checksums (0x%x vs (0xb9d1cb7, 0x5ac3d49, 0x1b3d44e) = (_header, _last_event_type, _smf, _tracks))";
 static const char __pyx_k_StandardMidiFile___reduce_cython[] = "StandardMidiFile.__reduce_cython__";
 static const char __pyx_k_StandardMidiFile___setstate_cyth[] = "StandardMidiFile.__setstate_cython__";
@@ -4070,7 +4070,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
  *         return (midi_event, offset)
  * 
  *     def _dequeue_as_meta_event(self, event_type: int, offset: int) -> tuple:             # <<<<<<<<<<<<<<
- *         """
+ *         """_de
  * 
  */
 
@@ -4221,7 +4221,7 @@ static PyObject *__pyx_f_16audioworkstation_4libs_7sublibs_16standardmidifile_16
  *         return (midi_event, offset)
  * 
  *     def _dequeue_as_meta_event(self, event_type: int, offset: int) -> tuple:             # <<<<<<<<<<<<<<
- *         """
+ *         """_de
  * 
  */
 
@@ -6695,7 +6695,7 @@ if (!__Pyx_RefNanny) {
   #endif
 
   /* "audioworkstation/libs/sublibs/standardmidifile.py":11
- *         4. MIDI1.0
+ * 4. MIDI1.0
  * """
  * import struct             # <<<<<<<<<<<<<<
  * from typing import Union

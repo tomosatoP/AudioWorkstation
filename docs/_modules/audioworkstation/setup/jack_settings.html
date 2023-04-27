@@ -73,6 +73,23 @@
         <span class="s2">&quot;jack_control ds alsa&quot;</span><span class="p">,</span>
         <span class="s2">&quot;jack_control eps realtime True&quot;</span><span class="p">,</span>
         <span class="s2">&quot;jack_control dps duplex True&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;jack_control dps device bluealsa:00:00:00:00:00:00&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;jack_control dps playback bluealsa:00:00:00:00:00:00&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;jack_control dps capture hw:0&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;jack_control dps rate 48000&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;jack_control dps nperiods 3&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;jack_control dps period 1024&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;jack_control dps outchannels 2&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;jack_control start&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
+    <span class="n">settings</span><span class="p">[</span><span class="s2">&quot;bluealsa:00:00:00:00:00:00&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;jack_control&quot;</span><span class="p">:</span> <span class="n">jack_controls</span><span class="p">}</span>
+
+    <span class="n">jack_controls</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;jack_control stop&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;jack_control exit&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;jack_control ds alsa&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;jack_control eps realtime True&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;jack_control dps duplex True&quot;</span><span class="p">,</span>
         <span class="s2">&quot;jack_control dps device hw:S&quot;</span><span class="p">,</span>
         <span class="s2">&quot;jack_control dps playback hw:S&quot;</span><span class="p">,</span>
         <span class="s2">&quot;jack_control dps capture hw:0&quot;</span><span class="p">,</span>

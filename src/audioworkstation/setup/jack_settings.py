@@ -35,6 +35,23 @@ def jacks() -> None:
         "jack_control ds alsa",
         "jack_control eps realtime True",
         "jack_control dps duplex True",
+        "jack_control dps device bluealsa:00:00:00:00:00:00",
+        "jack_control dps playback bluealsa:00:00:00:00:00:00",
+        "jack_control dps capture hw:0",
+        "jack_control dps rate 48000",
+        "jack_control dps nperiods 3",
+        "jack_control dps period 1024",
+        "jack_control dps outchannels 2",
+        "jack_control start",
+    ]
+    settings["bluealsa:00:00:00:00:00:00"] = {"jack_control": jack_controls}
+
+    jack_controls = [
+        "jack_control stop",
+        "jack_control exit",
+        "jack_control ds alsa",
+        "jack_control eps realtime True",
+        "jack_control dps duplex True",
         "jack_control dps device hw:S",
         "jack_control dps playback hw:S",
         "jack_control dps capture hw:0",

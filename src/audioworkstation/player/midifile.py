@@ -5,9 +5,11 @@
 from pathlib import Path
 from json import dump, load
 
-from ..libs.audio import fluidsynth as FS
+
 from ..libs.sublibs import standardmidifile as SMF
+from ..libs.audio import fluidsynth as FS
 from ..libs.sublibs.parts import dB2gain, gain2dB
+
 
 with open("config/screen.json", "rt") as f:
     kwargs = load(f)["player"]
