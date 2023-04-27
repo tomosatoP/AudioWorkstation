@@ -54,9 +54,9 @@ class MenubarView(Widget):
     def register_screens(self) -> None:
         """Regisger screens."""
 
-        keyboard = import_module("src.audioworkstation.keyboard.keyboard")
-        metronome = import_module("src.audioworkstation.metronome.metronome")
-        player = import_module("src.audioworkstation.player.player")
+        keyboard = import_module("..keyboard", "audioworkstation.keyboard.keyboard")
+        metronome = import_module("..metronome", "audioworkstation.metronome.metronome")
+        player = import_module("..player", "audioworkstation.player.player")
 
         self.panel.add_widget(keyboard.KeyboardView(name="keyboard"))
         self.panel.add_widget(metronome.MetronomeView(name="metronome"))
