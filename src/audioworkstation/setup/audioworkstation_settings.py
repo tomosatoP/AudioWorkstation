@@ -7,9 +7,13 @@ from pathlib import Path
 from subprocess import run
 
 
-def cbuild() -> None:
-    command: list[str] = ["cythonize", "-i3", "libs/sublibs/standardmidifile.py"]
-    run(args=command)
+def pycython() -> None:
+    command: list[str] = [
+        "cythonize",
+        "-i3",
+        "audioworkstation/libs/sublibs/standardmidifile.py",
+    ]
+    print(run(args=command, capture_output=True, text=True))
 
 
 def screens() -> None:

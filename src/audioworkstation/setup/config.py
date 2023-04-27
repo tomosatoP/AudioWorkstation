@@ -29,7 +29,6 @@ def makefiles() -> None:
     AKSET.screens()
     AKSET.gmsounset()
     AKSET.desktop()
-    # AKSET.cbuild()
     JASET.jacks()
     FSRRULE.router_rule_example()
 

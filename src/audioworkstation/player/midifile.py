@@ -5,7 +5,6 @@
 from pathlib import Path
 from json import dump, load
 
-
 from ..libs.sublibs import standardmidifile as SMF
 from ..libs.audio import fluidsynth as FS
 from ..libs.sublibs.parts import dB2gain, gain2dB
