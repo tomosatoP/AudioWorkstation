@@ -8,11 +8,14 @@ def makedirs() -> None:
 
     from pathlib import Path
 
-    Path("config").mkdir(exist_ok=True)
+    Path("config").mkdir(
+        exist_ok=True,
+    )
     Path("logs").mkdir(exist_ok=True)
     Path("mid").mkdir(exist_ok=True)
     Path("sf2").mkdir(exist_ok=True)
-    Path("sf2/FluidR3_GM.sf2").symlink_to("/usr/share/sounds/sf2/FluidR3_GM.sf2")
+    if not Path("sf2/FluidR3_GM.sf2").is_file():
+        Path("sf2/FluidR3_GM.sf2").symlink_to("/usr/share/sounds/sf2/FluidR3_GM.sf2")
     Path("sf3").mkdir(exist_ok=True)
 
 
@@ -29,7 +32,6 @@ def makefiles() -> None:
     AKSET.screens()
     AKSET.gmsounset()
     AKSET.desktop()
-    AKSET.pycython()
     JASET.jacks()
     FSRRULE.router_rule_example()
 

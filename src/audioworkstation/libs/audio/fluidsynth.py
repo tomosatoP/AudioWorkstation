@@ -2,8 +2,10 @@
 # -*- coding: utf-8 -*-
 """Piano playing practice with MIDI keyboard.
 
-| Use this module from Kivy as a separate thread.
-| Module 'concurrent.futures.ThreadPoolExecutor' is recommended.
+Use this module from Kivy as a separate thread.
+
+Module 'concurrent.futures.ThreadPoolExecutor' is recommended.
+
 :referrence: https://www.fluidsynth.org/api/
 """
 

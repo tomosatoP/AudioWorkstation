@@ -7,6 +7,8 @@ http://www.amei.or.jp/
 
 2. MIDI 1.0
 4. スタンダードMIDIファイル1.0
+
+:Todo: Compile automatically.
 """
 import struct
 from typing import Union

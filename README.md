@@ -45,6 +45,7 @@ USB MIDI 鍵盤を繋げて、ピアノ風の演奏を楽しむために。
 (venv) ~/AudioWorkstation $ initialize
 # Audioworkstation/sf2フォルダにsf2サウンドフォントファイルを設置
 # Audioworkstation/midフォルダにSMF(StandardMidiFile)ファイルを設置
+# sh venv/lib/python3.9/site-packages/audioworkstation/compile.sh
 (venv) ~/AudioWorkstation $ deactivate
 ~~~
 ## 実行

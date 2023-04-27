@@ -4,16 +4,6 @@
 
 from json import dump
 from pathlib import Path
-from subprocess import run
-
-
-def pycython() -> None:
-    command: list[str] = [
-        "cythonize",
-        "-i3",
-        "audioworkstation/libs/sublibs/standardmidifile.py",
-    ]
-    print(run(args=command, capture_output=True, text=True))
 
 
 def screens() -> None:

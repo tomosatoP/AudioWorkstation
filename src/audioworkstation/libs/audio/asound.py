@@ -622,6 +622,8 @@ def start_jackserver() -> list[str]:
     :return: [device name, device idname, control name, control idname, name]
     :examples: ["hw:CARD=Headphones", "PCM", "default", "Master", "Headphones"]
     :examples: ["", "", "", "", ""] if Not registered.
+
+    :Todo: Connect to Headphones after Bluetooth device disconnects.
     """
 
     device_info: list[str] = mixer_device()

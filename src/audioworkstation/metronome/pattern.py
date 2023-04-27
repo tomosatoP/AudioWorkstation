@@ -24,6 +24,8 @@ def bar_callback(time, event, sequencer, data):
     :param c_void_p event: The event being received
     :param c_void_p seq: The sequencer instance
     :param POINTER(EventUserData) data: User defined data registered with the client
+
+    :Todo: Debug "TypeError: 'NoneType' object is not callable"
     """
     if not schedule_stop:
         bar_pattern()
