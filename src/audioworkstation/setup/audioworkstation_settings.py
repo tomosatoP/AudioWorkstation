@@ -4,6 +4,12 @@
 
 from json import dump
 from pathlib import Path
+from subprocess import run
+
+
+def cbuild() -> None:
+    command: list[str] = ["cythonnize", "-i3", "libs/sublibs/standardmidifile.py"]
+    run(args=command)
 
 
 def screens() -> None:
