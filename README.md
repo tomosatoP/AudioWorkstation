@@ -1,14 +1,14 @@
-# AudioWorkstation
+# ![icon](image/audioworkstation.small.png) AudioWorkstation
 USB MIDI 鍵盤を繋げて、ピアノ風の演奏を楽しむために。
 ### 機能
 - MIDI Synthesizer 経由の USB MIDI 演奏
 - メトローム
 - Standard MIDI File による伴奏
 
-![entry](screenshot/entry.small.png)
-![keyboard](screenshot/keyboard.small.png)
-![metronome](screenshot/metronome.small.png)
-![player](screenshot/player.small.png)
+![entry](image/entry.small.png)
+![keyboard](image/keyboard.small.png)
+![metronome](image/metronome.small.png)
+![player](image/player.small.png)
 ### 構成
 - ハードウェア
     - Raspberry Pi 4 Model B/4GB (Raspberry Pi OS with desktop 64bit)

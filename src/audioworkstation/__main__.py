@@ -19,6 +19,8 @@ log_dir = str(Path().absolute()) + "/logs"
 
 Config.set("kivy", "log_dir", log_dir)
 Config.set("kivy", "log_level", "debug")
+Config.set("kivy", "window_icon", "icon/audioworkstation.png")
+
 
 Config.set("graphics", "borderless", 1)  # 0, 1
 Config.set("graphics", "fullscreen", 0)  # 0, 1, "auto", "fake"

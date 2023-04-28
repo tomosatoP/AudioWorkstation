@@ -84,7 +84,7 @@ def desktop() -> None:
     desktop.append(f"Exec={cdir}/AudioWorkstation.sh")
     desktop.append("Terminal=false")
     desktop.append("Type=Application")
-    desktop.append("Icon=multimedia-volume-control-symbolic")
+    desktop.append("Icon=audioworkstation")
     desktop.append("Categories=Audio;AudioVideo")
     filename = f"{hdir}/.local/share/applications/AudioWorkstation.desktop"
 
