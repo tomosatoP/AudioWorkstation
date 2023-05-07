@@ -86,89 +86,8 @@
 </dd></dl>
 
 </section>
-<section id="module-audioworkstation.libs.sublibs.standardmidifile">
-<span id="standardmidifile-module"></span><h2>standardmidifile module<a class="headerlink" href="#module-audioworkstation.libs.sublibs.standardmidifile" title="この見出しへのパーマリンク">¶</a></h2>
-<p>Analyze MIDI files according to  SMF (Standard MIDI File) format.</p>
-<dl class="field-list simple">
-<dt class="field-odd">reference<span class="colon">:</span></dt>
-<dd class="field-odd"><p>MIDI1.0規格書(日本語版98.1) ISBN4-8456-0348-9 C3055</p>
-</dd>
-</dl>
-<p><a class="reference external" href="http://www.amei.or.jp/">http://www.amei.or.jp/</a></p>
-<p>2. MIDI 1.0
-4. スタンダードMIDIファイル1.0</p>
-<dl class="field-list simple">
-<dt class="field-odd">Todo<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Compile automatically.</p>
-</dd>
-</dl>
-<dl class="py class">
-<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.standardmidifile.StandardMidiFile">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">StandardMidiFile</span></span><a class="headerlink" href="#audioworkstation.libs.sublibs.standardmidifile.StandardMidiFile" title="この定義へのパーマリンク">¶</a></dt>
-<dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>StandardMidiFile analyzes SMF(Standard MIDI File).</p>
-<dl class="field-list simple">
-<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>midifile</strong> (<em>pathlib.Path</em>) -- target SMF(Standard MIDI File)</p>
-</dd>
-</dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.standardmidifile.StandardMidiFile.channels_preset">
-<span class="sig-name descname"><span class="pre">channels_preset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#audioworkstation.libs.sublibs.standardmidifile.StandardMidiFile.channels_preset" title="この定義へのパーマリンク">¶</a></dt>
-<dd><p>Get a list of preset numbers for each of the 16 channels.</p>
-<dl class="field-list simple">
-<dt class="field-odd">戻り値<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list of prest numbers</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.standardmidifile.StandardMidiFile.instruments">
-<span class="sig-name descname"><span class="pre">instruments</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#audioworkstation.libs.sublibs.standardmidifile.StandardMidiFile.instruments" title="この定義へのパーマリンク">¶</a></dt>
-<dd><p>Get a list of instrument names for each of the 16 channels.</p>
-<dl class="field-list simple">
-<dt class="field-odd">戻り値<span class="colon">:</span></dt>
-<dd class="field-odd"><p>instruments</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.standardmidifile.StandardMidiFile.lyrics">
-<span class="sig-name descname"><span class="pre">lyrics</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#audioworkstation.libs.sublibs.standardmidifile.StandardMidiFile.lyrics" title="この定義へのパーマリンク">¶</a></dt>
-<dd><p>Get lyrics list.</p>
-<dl class="field-list simple">
-<dt class="field-odd">戻り値<span class="colon">:</span></dt>
-<dd class="field-odd"><p>lyrics</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.standardmidifile.StandardMidiFile.title">
-<span class="sig-name descname"><span class="pre">title</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#audioworkstation.libs.sublibs.standardmidifile.StandardMidiFile.title" title="この定義へのパーマリンク">¶</a></dt>
-<dd><p>Get Title.</p>
-<dl class="field-list simple">
-<dt class="field-odd">戻り値<span class="colon">:</span></dt>
-<dd class="field-odd"><p>title</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.standardmidifile.StandardMidiFile.total_tick">
-<span class="sig-name descname"><span class="pre">total_tick</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#audioworkstation.libs.sublibs.standardmidifile.StandardMidiFile.total_tick" title="この定義へのパーマリンク">¶</a></dt>
-<dd><p>Count ticks.</p>
-<dl class="field-list simple">
-<dt class="field-odd">戻り値<span class="colon">:</span></dt>
-<dd class="field-odd"><p>total ticks</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
+<section id="standardmidifile-module">
+<h2>standardmidifile module<a class="headerlink" href="#standardmidifile-module" title="この見出しへのパーマリンク">¶</a></h2>
 </section>
 <section id="module-audioworkstation.libs.sublibs">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-audioworkstation.libs.sublibs" title="この見出しへのパーマリンク">¶</a></h2>
@@ -195,17 +114,7 @@
 <li><a class="reference internal" href="#audioworkstation.libs.sublibs.parts.gain2dB"><code class="docutils literal notranslate"><span class="pre">gain2dB()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-audioworkstation.libs.sublibs.standardmidifile">standardmidifile module</a><ul>
-<li><a class="reference internal" href="#audioworkstation.libs.sublibs.standardmidifile.StandardMidiFile"><code class="docutils literal notranslate"><span class="pre">StandardMidiFile</span></code></a><ul>
-<li><a class="reference internal" href="#audioworkstation.libs.sublibs.standardmidifile.StandardMidiFile.channels_preset"><code class="docutils literal notranslate"><span class="pre">StandardMidiFile.channels_preset()</span></code></a></li>
-<li><a class="reference internal" href="#audioworkstation.libs.sublibs.standardmidifile.StandardMidiFile.instruments"><code class="docutils literal notranslate"><span class="pre">StandardMidiFile.instruments()</span></code></a></li>
-<li><a class="reference internal" href="#audioworkstation.libs.sublibs.standardmidifile.StandardMidiFile.lyrics"><code class="docutils literal notranslate"><span class="pre">StandardMidiFile.lyrics()</span></code></a></li>
-<li><a class="reference internal" href="#audioworkstation.libs.sublibs.standardmidifile.StandardMidiFile.title"><code class="docutils literal notranslate"><span class="pre">StandardMidiFile.title()</span></code></a></li>
-<li><a class="reference internal" href="#audioworkstation.libs.sublibs.standardmidifile.StandardMidiFile.total_tick"><code class="docutils literal notranslate"><span class="pre">StandardMidiFile.total_tick()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li><a class="reference internal" href="#standardmidifile-module">standardmidifile module</a></li>
 <li><a class="reference internal" href="#module-audioworkstation.libs.sublibs">Module contents</a></li>
 </ul>
 </li>

@@ -17,8 +17,9 @@ USB MIDI 鍵盤を繋げて、ピアノ風の演奏を楽しむために。
         - 4.3inch DSI LCD with case ([Waveshare 18645][1] )
     - AUDIO OUTPUT 
         - Headphones Jack
-        - USB-DAC ([Sharkoon GAMING DAC PRO S][2] )
-        - Bluetooth Headphones([SONY LinkBuds][4])
+        - Neck Speaker - USB & Wireless ([SANWA Neck Speaker 400-SP102][5])
+        - USB-DAC ([Sharkoon GAMING DAC PRO S][2])
+        - Bluetooth Headphones ([SONY LinkBuds][4])
     - INPUT
         - USB-MIDI Keyborad ([M-AUDIO KEYSTATION49 MK3][3] )
 - ソフトウェア
@@ -66,3 +67,4 @@ USB MIDI 鍵盤を繋げて、ピアノ風の演奏を楽しむために。
 [2]:https://ja.sharkoon.com/product/27415
 [3]:https://m-audio.com/keystation-49-mk3
 [4]:https://www.sony.jp/headphone/products/LinkBuds/
+[5]:https://direct.sanwa.co.jp/ItemPage/400-SP102

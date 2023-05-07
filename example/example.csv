@@ -1,0 +1,29 @@
+Sequencer,0,0,"Meta Event","SequencerTrack Name","example title"
+Sequencer,0,0,"Meta Event","Set Tempo",500000
+Sequencer,0,0,"Meta Event","Time Signature",4,2,24,8
+Sequencer,0,0,"Meta Event","Key Signature",0,0
+Sequencer,0,0,"Meta Event","Copyright Notice","(C)2023 tomosatoP"
+Sequencer,0,0,"Meta Event","Text Event","example text"
+Sequencer,0,0,"Sysex Event","GM System On"
+Sequencer,1,0,"Meta Event","Lyric","example lyrec"
+Sequencer,2,0,"Meta Event","End Of Track"
+MainMelody,0,100,"Meta Event","SequencerTrack Name","Main Melody"
+MainMelody,0,100,"Meta Event","Instrument Name","Piano"
+MainMelody,0,100,"Midi Event","Program Change",0,0
+MainMelody,0,100,"Midi Event","Control Change","Pan",0,0x50
+MainMelody,0,100,"Midi Event","Control Change","Channel Volume",0,0x60
+MainMelody,1,0,"Midi Event","Note On",0,60,0x40,200
+MainMelody,1,480,"Midi Event","Note On",0,60,0x40,100
+MainMelody,1,960,"Midi Event","Note On",0,60,0x40,100
+MainMelody,1,1440,"Midi Event","Note On",0,60,0x40,100
+MainMelody,2,0,"Meta Event","End Of Track"
+SubMelody,0,100,"Meta Event","SequencerTrack Name","Sub Melody"
+SubMelody,0,100,"Meta Event","Instrument Name","Piano"
+SubMelody,0,100,"Midi Event","Program Change",1,0
+SubMelody,0,100,"Midi Event","Control Change","Pan",1,0x30
+SubMelody,0,100,"Midi Event","Control Change","Channel Volume",1,0x60
+SubMelody,1,0,"Midi Event","Note On",1,48,0x40,200
+SubMelody,1,480,"Midi Event","Note On",1,48,0x40,100
+SubMelody,1,960,"Midi Event","Note On",1,48,0x40,100
+SubMelody,1,1440,"Midi Event","Note On",1,48,0x40,100
+SubMelody,2,0,"Meta Event","End Of Track"

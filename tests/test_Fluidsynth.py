@@ -11,7 +11,7 @@ from typing import Callable
 from pathlib import Path
 
 
-from audioworkstation.libs.audio import jackserver as MASTER
+from audioworkstation.libs.audio import asound as MASTER
 from src.audioworkstation.libs.audio import fluidsynth as FS
 
 sfs: FS.Sequencer
@@ -78,8 +78,8 @@ def future_callback(func: Callable, future: futures.Future) -> bool:
 
 class TestFluidsynth(unittest.TestCase):
     def setUp(self) -> None:
-        MASTER.start()
-        MASTER.volume("50%,50%")
+        temp: list = MASTER.start_jackserver()
+        MASTER.set_volume(temp[2], temp[3], 50)
         return super().setUp()
 
     def test_synthesizer(self):

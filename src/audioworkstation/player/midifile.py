@@ -5,7 +5,7 @@
 from pathlib import Path
 from json import dump, load
 
-from ..libs.sublibs import standardmidifile as SMF
+from ..libs.sublibs import paramsmid as PMID
 from ..libs.audio import fluidsynth as FS
 from ..libs.sublibs.parts import dB2gain, gain2dB
 
@@ -70,7 +70,7 @@ def info_midifile(midifile: Path) -> dict:
     :param Path midifile: Target Midi file
     :return: keywords: "title", "total_ticks", "channel_presets"
     """
-    _smf = SMF.StandardMidiFile(midifile)
+    _smf = PMID.StandardMidiFile(midifile)
     items: dict = {}
     items["title"] = _smf.title()
     items["total_tick"] = _smf.total_tick()

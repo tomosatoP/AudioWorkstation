@@ -6,7 +6,7 @@ import unittest
 from pathlib import Path
 
 # test class standardmidifile
-from src.audioworkstation.libs.sublibs import standardmidifile as SMF
+from audioworkstation.libs.sublibs import paramsmid as PMID
 
 
 class TestSMF(unittest.TestCase):
@@ -14,7 +14,7 @@ class TestSMF(unittest.TestCase):
         midifilename = "mid/R01698G2.mid"
         # title='usseiwa'
         fo = Path(midifilename)
-        self.midifile = SMF.StandardMidiFile(fo)
+        self.midifile = PMID.StandardMidiFile(fo)
         return super().setUp()
 
     def test_channels_preset(self) -> None:
