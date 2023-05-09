@@ -4,26 +4,26 @@ tests package
 Submodules
 ----------
 
-test\_Fluidsynth module
+test\_fluidsynth module
 -----------------------------
 
-.. automodule:: tests.test_Fluidsynth
+.. automodule:: tests.test_fluidsynth
    :members:
    :undoc-members:
    :show-inheritance:
 
-test\_Standardmidifile module
+test\_paramsmid module
 -----------------------------------
 
-.. automodule:: tests.test_Standardmidifile
+.. automodule:: tests.test_paramsmid
    :members:
    :undoc-members:
    :show-inheritance:
 
-test\_amixer module
+test\_asound module
 -------------------------
 
-.. automodule:: tests.test_amixer
+.. automodule:: tests.test_asound
    :members:
    :undoc-members:
    :show-inheritance:

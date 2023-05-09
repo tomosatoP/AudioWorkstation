@@ -1,11 +1,11 @@
+Sequencer,0,0,"Meta Event","Copyright Notice","(C)2023 tomosatoP"
 Sequencer,0,0,"Meta Event","SequencerTrack Name","example title"
 Sequencer,0,0,"Meta Event","Set Tempo",500000
 Sequencer,0,0,"Meta Event","Time Signature",4,2,24,8
 Sequencer,0,0,"Meta Event","Key Signature",0,0
-Sequencer,0,0,"Meta Event","Copyright Notice","(C)2023 tomosatoP"
 Sequencer,0,0,"Meta Event","Text Event","example text"
 Sequencer,0,0,"Sysex Event","GM System On"
-Sequencer,1,0,"Meta Event","Lyric","example lyrec"
+Sequencer,1,0,"Meta Event","Lyric","example lyric"
 Sequencer,2,0,"Meta Event","End Of Track"
 MainMelody,0,100,"Meta Event","SequencerTrack Name","Main Melody"
 MainMelody,0,100,"Meta Event","Instrument Name","Piano"

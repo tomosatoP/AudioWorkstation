@@ -2,5 +2,7 @@
 
 parts: Gain control for MIDI devices
 
-standardmidifile: Parsing SMF(Standard MIDI File) files
+csv2mid: Generate a MID(Standard MIDI File) file from a CSV file.
+
+paramsmid: Parsing SMF(Standard MIDI File) files
 """

@@ -4,37 +4,43 @@
 
 Format of CSV file
 
-    Track Name, Bar Number, Tick Number, Event List, Value List
+    <Format> = <Track Name>, <Bar Number>, <Tick Number>, <Event List>,
+    <Value List>
 
-        1. Track Name
-            Track Name.
-                example: "Sequencer"
-                example: "Main Melody"
-                example: "Sub Melody"
+    1. Track Name
+        Track Name.
 
-        2. Bar Number
-            Indicates the order of appearance of the measures.
-                example: 0
-                example: 1
+        - example: "Sequencer"
+        - example: "Main Melody"
+        - example: "Sub Melody"
 
-        3. Tick Number
-            Indicates the timing of event occurrence within a bar in terms of Tick
-            conversion. However, the length of a quarter note is 480 ticks.
-                example: 0
-                example: 480
-                example: 960
+    2. Bar Number
+        Indicates the order of appearance of the measures.
 
-        4. Event List
-            Event.
-                example: "Meta Event","Set Tempo"
-                example: "Midi Event","Note On"
-                example: "Midi Event","Control Change","Channel Volume"
+        - example: 0
+        - example: 1
 
-        5. Value List
-            Event Value.
-                example: 500000
-                example: 0,69,0x40,200
-                example: 0,0x60
+    3. Tick Number
+        Indicates the timing of event occurrence within a bar in terms of Tick
+        conversion. However, the length of a quarter note is 480 ticks.
+
+        - example: 0
+        - example: 480
+        - example: 960
+
+    4. Event List
+        Event.
+
+        - example: "Meta Event","Set Tempo"
+        - example: "Midi Event","Note On"
+        - example: "Midi Event","Control Change","Channel Volume"
+
+    5. Value List
+        Event Value.
+
+        - example: 500000
+        - example: 0,69,0x40,200
+        - example: 0,0x60
 
 restrictions
 
@@ -160,7 +166,7 @@ class _SmfEvent:
             raise SmfError(message)
 
     @classmethod
-    def name(cls) -> list:
+    def name(cls) -> list[str]:
         return []
 
 
@@ -172,7 +178,7 @@ class _MetaEvnet(_SmfEvent):
         return super().__bytes__() + b"\xFF"
 
     @classmethod
-    def name(cls):
+    def name(cls) -> list[str]:
         return super().name() + ["Meta Event"]
 
 
@@ -190,7 +196,7 @@ class TextEvent(_MetaEvnet):
         return super().__bytes__() + byte_datas
 
     @classmethod
-    def name(cls):
+    def name(cls) -> list[str]:
         return super().name() + ["Text Event"]
 
 
@@ -205,10 +211,10 @@ class CopyrightNotice(_MetaEvnet):
         byte_datas = b"\x02"
         byte_datas += int(len(self.text)).to_bytes(1, "big")
         byte_datas += bytearray(self.text, encoding="ascii")
-        return super().__bytes__()
+        return super().__bytes__() + byte_datas
 
     @classmethod
-    def name(cls):
+    def name(cls) -> list[str]:
         return super().name() + ["Copyright Notice"]
 
 
@@ -226,7 +232,7 @@ class SequencerTrackName(_MetaEvnet):
         return super().__bytes__() + byte_datas
 
     @classmethod
-    def name(cls):
+    def name(cls) -> list[str]:
         return super().name() + ["SequencerTrack Name"]
 
 
@@ -262,7 +268,7 @@ class Lyric(_MetaEvnet):
         return super().__bytes__() + byte_datas
 
     @classmethod
-    def name(cls):
+    def name(cls) -> list[str]:
         return super().name() + ["Lyric"]
 
 
@@ -274,7 +280,7 @@ class EndOfTrack(_MetaEvnet):
         return super().__bytes__() + b"\x2F\x00"
 
     @classmethod
-    def name(cls):
+    def name(cls) -> list[str]:
         return super().name() + ["End Of Track"]
 
 
@@ -292,7 +298,7 @@ class SetTempo(_MetaEvnet):
         return super().__bytes__() + byte_datas
 
     @classmethod
-    def name(cls):
+    def name(cls) -> list[str]:
         return super().name() + ["Set Tempo"]
 
 
@@ -323,7 +329,7 @@ class TimeSignature(_MetaEvnet):
         return super().__bytes__() + byte_datas
 
     @classmethod
-    def name(cls):
+    def name(cls) -> list[str]:
         return super().name() + ["Time Signature"]
 
 
@@ -344,7 +350,7 @@ class KeySignature(_MetaEvnet):
         return super().__bytes__() + byte_datas
 
     @classmethod
-    def name(cls):
+    def name(cls) -> list[str]:
         return super().name() + ["Key Signature"]
 
 
@@ -356,7 +362,7 @@ class _SystemExclusiveEvent(_SmfEvent):
         return super().__bytes__() + b"\xF0"
 
     @classmethod
-    def name(cls):
+    def name(cls) -> list[str]:
         return super().name() + ["Sysex Event"]
 
 
@@ -368,7 +374,7 @@ class GmSystemOn(_SystemExclusiveEvent):
         return super().__bytes__() + b"\x05\x7E\x7F\x09\x01\xF7"
 
     @classmethod
-    def name(cls):
+    def name(cls) -> list[str]:
         return super().name() + ["GM System On"]
 
 
@@ -380,7 +386,7 @@ class _MidiEvent(_SmfEvent):
         return super().__bytes__()
 
     @classmethod
-    def name(cls):
+    def name(cls) -> list[str]:
         return super().name() + ["Midi Event"]
 
 
@@ -404,7 +410,7 @@ class NoteOn(_MidiEvent):
         return super().__bytes__() + byte_datas
 
     @classmethod
-    def name(cls):
+    def name(cls) -> list[str]:
         return super().name() + ["Note On"]
 
 
@@ -426,7 +432,7 @@ class NoteOffAfterOn(_MidiEvent):
         return super().__bytes__() + byte_datas
 
     @classmethod
-    def name(cls):
+    def name(cls) -> list[str]:
         return super().name() + ["Note Off"]
 
 
@@ -442,7 +448,7 @@ class _ControlChange(_MidiEvent):
         return super().__bytes__() + byte_datas
 
     @classmethod
-    def name(cls):
+    def name(cls) -> list[str]:
         return super().name() + ["Control Change"]
 
 
@@ -459,7 +465,7 @@ class ModulationWheel(_ControlChange):
         return super().__bytes__() + byte_datas
 
     @classmethod
-    def name(cls):
+    def name(cls) -> list[str]:
         return super().name() + ["Modulation Wheel"]
 
 
@@ -476,7 +482,7 @@ class ChannelVolume(_ControlChange):
         return super().__bytes__() + byte_datas
 
     @classmethod
-    def name(cls):
+    def name(cls) -> list[str]:
         return super().name() + ["Channel Volume"]
 
 
@@ -493,7 +499,7 @@ class Pan(_ControlChange):
         return super().__bytes__() + byte_datas
 
     @classmethod
-    def name(cls):
+    def name(cls) -> list[str]:
         return super().name() + ["Pan"]
 
 
@@ -510,7 +516,7 @@ class Expression(_ControlChange):
         return super().__bytes__() + byte_datas
 
     @classmethod
-    def name(cls):
+    def name(cls) -> list[str]:
         return super().name() + ["Expression"]
 
 
@@ -524,7 +530,7 @@ class SustainOn(_ControlChange):
         return super().__bytes__() + byte_datas
 
     @classmethod
-    def name(cls):
+    def name(cls) -> list[str]:
         return super().name() + ["Sustain On"]
 
 
@@ -538,7 +544,7 @@ class SustainOff(_ControlChange):
         return super().__bytes__() + byte_datas
 
     @classmethod
-    def name(cls):
+    def name(cls) -> list[str]:
         return super().name() + ["Sustain Off"]
 
 
@@ -554,7 +560,7 @@ class _ChannelMode(_MidiEvent):
         return super().__bytes__() + byte_datas
 
     @classmethod
-    def name(cls):
+    def name(cls) -> list[str]:
         return super().name() + ["Channel Mode"]
 
 
@@ -568,13 +574,13 @@ class ResetAllControllers(_ChannelMode):
         return super().__bytes__() + byte_datas
 
     @classmethod
-    def name(cls):
+    def name(cls) -> list[str]:
         return super().name() + ["Reset All Controllers"]
 
 
 @dataclass
 class AllNotesOff(_ChannelMode):
-    """AllNoteOff is ***."""
+    """AllNoteOff is "all notes off message"."""
 
     def __bytes__(self):
         byte_datas = (0x7B).to_bytes(1, "big")
@@ -582,7 +588,7 @@ class AllNotesOff(_ChannelMode):
         return super().__bytes__() + byte_datas
 
     @classmethod
-    def name(cls):
+    def name(cls) -> list[str]:
         return super().name() + ["All Notes Off"]
 
 
@@ -601,7 +607,7 @@ class ProgramChange(_MidiEvent):
         return super().__bytes__() + byte_datas
 
     @classmethod
-    def name(cls):
+    def name(cls) -> list[str]:
         return super().name() + ["Program Change"]
 
 
@@ -620,7 +626,7 @@ class ChannelPressure(_MidiEvent):
         return super().__bytes__() + byte_datas
 
     @classmethod
-    def name(cls):
+    def name(cls) -> list[str]:
         return super().name() + ["Channel Pressuire"]
 
 
@@ -642,7 +648,7 @@ class PitchWheelChange(_MidiEvent):
         return super().__bytes__() + byte_datas
 
     @classmethod
-    def name(cls):
+    def name(cls) -> list[str]:
         return super().name() + ["Pitch Wheel Change"]
 
 
@@ -689,10 +695,10 @@ def event_classes() -> set:
 
 
 def event_data(params: list) -> object:
-    """event_data _summary_
+    """Convert CSV data list to event data object.
 
-    :param list params: _description_
-    :return: event data
+    :param list params: csv data list
+    :return: event data object
     """
     n_name: int
     data_classes: set = event_classes()
@@ -708,12 +714,13 @@ def event_data(params: list) -> object:
     return None
 
 
-def csv2mid(csvfile: str, midifile: str) -> None:
-    """csv2mid2 _summary_
+def generate(csvfile: str, midifile: str) -> None:
+    """Generate a MID file from a CSV file.
 
-    :param str csvfile: _description_
-    :param str midifile: _description_
+    :param str csvfile: CSV filename to be converted.
+    :param str midifile: MID filename to be created.
     """
+
     csv_datas: list = []
     with open(file=csvfile, mode="rt") as f:
         for line in csv.reader(f, dialect="unix"):

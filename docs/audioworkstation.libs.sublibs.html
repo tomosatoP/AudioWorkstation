@@ -86,14 +86,1243 @@
 </dd></dl>
 
 </section>
-<section id="standardmidifile-module">
-<h2>standardmidifile module<a class="headerlink" href="#standardmidifile-module" title="この見出しへのパーマリンク">¶</a></h2>
+<section id="module-audioworkstation.libs.sublibs.paramsmid">
+<span id="paramsmid-module"></span><h2>paramsmid module<a class="headerlink" href="#module-audioworkstation.libs.sublibs.paramsmid" title="この見出しへのパーマリンク">¶</a></h2>
+<p>Analyze MIDI files according to  SMF (Standard MIDI File) format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">reference<span class="colon">:</span></dt>
+<dd class="field-odd"><p>MIDI1.0規格書(日本語版98.1) ISBN4-8456-0348-9 C3055</p>
+</dd>
+</dl>
+<p><a class="reference external" href="http://www.amei.or.jp/">http://www.amei.or.jp/</a></p>
+<p>2. MIDI 1.0
+4. スタンダードMIDIファイル1.0</p>
+<dl class="field-list simple">
+<dt class="field-odd">Todo<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Compile automatically.</p>
+</dd>
+</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.paramsmid.StandardMidiFile">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">StandardMidiFile</span></span><a class="headerlink" href="#audioworkstation.libs.sublibs.paramsmid.StandardMidiFile" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>StandardMidiFile analyzes SMF(Standard MIDI File).</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>midifile</strong> (<em>pathlib.Path</em>) -- target SMF(Standard MIDI File)</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.paramsmid.StandardMidiFile.channels_preset">
+<span class="sig-name descname"><span class="pre">channels_preset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#audioworkstation.libs.sublibs.paramsmid.StandardMidiFile.channels_preset" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>Get a list of preset numbers for each of the 16 channels.</p>
+<dl class="field-list simple">
+<dt class="field-odd">戻り値<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of prest numbers</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.paramsmid.StandardMidiFile.instruments">
+<span class="sig-name descname"><span class="pre">instruments</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#audioworkstation.libs.sublibs.paramsmid.StandardMidiFile.instruments" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>Get a list of instrument names for each of the 16 channels.</p>
+<dl class="field-list simple">
+<dt class="field-odd">戻り値<span class="colon">:</span></dt>
+<dd class="field-odd"><p>instruments</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.paramsmid.StandardMidiFile.lyrics">
+<span class="sig-name descname"><span class="pre">lyrics</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#audioworkstation.libs.sublibs.paramsmid.StandardMidiFile.lyrics" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>Get lyrics list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">戻り値<span class="colon">:</span></dt>
+<dd class="field-odd"><p>lyrics</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.paramsmid.StandardMidiFile.title">
+<span class="sig-name descname"><span class="pre">title</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#audioworkstation.libs.sublibs.paramsmid.StandardMidiFile.title" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>Get Title.</p>
+<dl class="field-list simple">
+<dt class="field-odd">戻り値<span class="colon">:</span></dt>
+<dd class="field-odd"><p>title</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.paramsmid.StandardMidiFile.total_tick">
+<span class="sig-name descname"><span class="pre">total_tick</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#audioworkstation.libs.sublibs.paramsmid.StandardMidiFile.total_tick" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>Count ticks.</p>
+<dl class="field-list simple">
+<dt class="field-odd">戻り値<span class="colon">:</span></dt>
+<dd class="field-odd"><p>total ticks</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-audioworkstation.libs.sublibs.csv2mid">
+<span id="csv2mid-module"></span><h2>csv2mid module<a class="headerlink" href="#module-audioworkstation.libs.sublibs.csv2mid" title="この見出しへのパーマリンク">¶</a></h2>
+<p>Generate a MID(Standard MIDI File) file from a CSV file.</p>
+<p>Format of CSV file</p>
+<blockquote>
+<div><p>&lt;Format&gt; = &lt;Track Name&gt;, &lt;Bar Number&gt;, &lt;Tick Number&gt;, &lt;Event List&gt;,
+&lt;Value List&gt;</p>
+<ol class="arabic simple">
+<li><dl class="simple">
+<dt>Track Name</dt><dd><p>Track Name.</p>
+<ul class="simple">
+<li><p>example: &quot;Sequencer&quot;</p></li>
+<li><p>example: &quot;Main Melody&quot;</p></li>
+<li><p>example: &quot;Sub Melody&quot;</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Bar Number</dt><dd><p>Indicates the order of appearance of the measures.</p>
+<ul class="simple">
+<li><p>example: 0</p></li>
+<li><p>example: 1</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Tick Number</dt><dd><p>Indicates the timing of event occurrence within a bar in terms of Tick
+conversion. However, the length of a quarter note is 480 ticks.</p>
+<ul class="simple">
+<li><p>example: 0</p></li>
+<li><p>example: 480</p></li>
+<li><p>example: 960</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Event List</dt><dd><p>Event.</p>
+<ul class="simple">
+<li><p>example: &quot;Meta Event&quot;,&quot;Set Tempo&quot;</p></li>
+<li><p>example: &quot;Midi Event&quot;,&quot;Note On&quot;</p></li>
+<li><p>example: &quot;Midi Event&quot;,&quot;Control Change&quot;,&quot;Channel Volume&quot;</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Value List</dt><dd><p>Event Value.</p>
+<ul class="simple">
+<li><p>example: 500000</p></li>
+<li><p>example: 0,69,0x40,200</p></li>
+<li><p>example: 0,0x60</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ol>
+</div></blockquote>
+<p>restrictions</p>
+<ol class="arabic simple">
+<li><p>Only &quot;GM System Level 1&quot;.</p></li>
+<li><p>Tempo changes and odd time signatures are not supported.</p></li>
+<li><p>The division is fixed at 480.</p></li>
+</ol>
+<dl class="py exception">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.SmfError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SmfError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/sublibs/csv2mid.html#SmfError"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.SmfError" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Exceptions sent out from errcheck func.</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>args</strong> (<em>object</em>) -- </p>
+</dd>
+<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.AllNotesOff">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">AllNotesOff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">track</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tick</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/sublibs/csv2mid.html#AllNotesOff"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.AllNotesOff" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">_ChannelMode</span></code></p>
+<p>AllNoteOff is &quot;all notes off message&quot;.</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>track</strong> (<em>str</em>) -- </p></li>
+<li><p><strong>bar</strong> (<em>dataclasses.InitVar</em><em>[</em><em>str</em><em>]</em>) -- </p></li>
+<li><p><strong>tick</strong> (<em>dataclasses.InitVar</em><em>[</em><em>str</em><em>]</em>) -- </p></li>
+<li><p><strong>n</strong> (<em>str</em>) -- </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.AllNotesOff.name">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/sublibs/csv2mid.html#AllNotesOff.name"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.AllNotesOff.name" title="この定義へのパーマリンク">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.ChannelPressure">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ChannelPressure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">track</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tick</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'100'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/sublibs/csv2mid.html#ChannelPressure"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.ChannelPressure" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">_MidiEvent</span></code></p>
+<p>ChannelPressure is <a href="#id1"><span class="problematic" id="id2">**</span></a><a href="#id3"><span class="problematic" id="id4">*</span></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>track</strong> (<em>str</em>) -- </p></li>
+<li><p><strong>bar</strong> (<em>dataclasses.InitVar</em><em>[</em><em>str</em><em>]</em>) -- </p></li>
+<li><p><strong>tick</strong> (<em>dataclasses.InitVar</em><em>[</em><em>str</em><em>]</em>) -- </p></li>
+<li><p><strong>n</strong> (<em>str</em>) -- </p></li>
+<li><p><strong>vv</strong> (<em>str</em>) -- </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.ChannelPressure.name">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/sublibs/csv2mid.html#ChannelPressure.name"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.ChannelPressure.name" title="この定義へのパーマリンク">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.ChannelPressure.n">
+<span class="sig-name descname"><span class="pre">n</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'0'</span></em><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.ChannelPressure.n" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>channle</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.ChannelPressure.vv">
+<span class="sig-name descname"><span class="pre">vv</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'100'</span></em><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.ChannelPressure.vv" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>threshold</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.ChannelVolume">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ChannelVolume</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">track</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tick</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0x70'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/sublibs/csv2mid.html#ChannelVolume"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.ChannelVolume" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">_ControlChange</span></code></p>
+<p>ChannelVolume is &quot;Channel Volume&quot;.</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>track</strong> (<em>str</em>) -- </p></li>
+<li><p><strong>bar</strong> (<em>dataclasses.InitVar</em><em>[</em><em>str</em><em>]</em>) -- </p></li>
+<li><p><strong>tick</strong> (<em>dataclasses.InitVar</em><em>[</em><em>str</em><em>]</em>) -- </p></li>
+<li><p><strong>n</strong> (<em>str</em>) -- </p></li>
+<li><p><strong>vv</strong> (<em>str</em>) -- </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.ChannelVolume.name">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/sublibs/csv2mid.html#ChannelVolume.name"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.ChannelVolume.name" title="この定義へのパーマリンク">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.ChannelVolume.vv">
+<span class="sig-name descname"><span class="pre">vv</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'0x70'</span></em><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.ChannelVolume.vv" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>value</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.CopyrightNotice">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CopyrightNotice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">track</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tick</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/sublibs/csv2mid.html#CopyrightNotice"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.CopyrightNotice" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">_MetaEvnet</span></code></p>
+<p>CopyrightNotice is class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>track</strong> (<em>str</em>) -- </p></li>
+<li><p><strong>bar</strong> (<em>dataclasses.InitVar</em><em>[</em><em>str</em><em>]</em>) -- </p></li>
+<li><p><strong>tick</strong> (<em>dataclasses.InitVar</em><em>[</em><em>str</em><em>]</em>) -- </p></li>
+<li><p><strong>text</strong> (<em>str</em>) -- </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.CopyrightNotice.name">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/sublibs/csv2mid.html#CopyrightNotice.name"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.CopyrightNotice.name" title="この定義へのパーマリンク">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.CopyrightNotice.text">
+<span class="sig-name descname"><span class="pre">text</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.CopyrightNotice.text" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>Copyright Notice</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.EndOfTrack">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">EndOfTrack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">track</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tick</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/sublibs/csv2mid.html#EndOfTrack"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.EndOfTrack" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">_MetaEvnet</span></code></p>
+<p>end of track</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>track</strong> (<em>str</em>) -- </p></li>
+<li><p><strong>bar</strong> (<em>dataclasses.InitVar</em><em>[</em><em>str</em><em>]</em>) -- </p></li>
+<li><p><strong>tick</strong> (<em>dataclasses.InitVar</em><em>[</em><em>str</em><em>]</em>) -- </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.EndOfTrack.name">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/sublibs/csv2mid.html#EndOfTrack.name"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.EndOfTrack.name" title="この定義へのパーマリンク">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.EndOfTrack.track">
+<span class="sig-name descname"><span class="pre">track</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.EndOfTrack.track" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>&quot;track&quot; is a name that identifies a track.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.Expression">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Expression</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">track</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tick</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0x70'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/sublibs/csv2mid.html#Expression"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.Expression" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">_ControlChange</span></code></p>
+<p>Expresson is &quot;Expression&quot;.</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>track</strong> (<em>str</em>) -- </p></li>
+<li><p><strong>bar</strong> (<em>dataclasses.InitVar</em><em>[</em><em>str</em><em>]</em>) -- </p></li>
+<li><p><strong>tick</strong> (<em>dataclasses.InitVar</em><em>[</em><em>str</em><em>]</em>) -- </p></li>
+<li><p><strong>n</strong> (<em>str</em>) -- </p></li>
+<li><p><strong>vv</strong> (<em>str</em>) -- </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.Expression.name">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/sublibs/csv2mid.html#Expression.name"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.Expression.name" title="この定義へのパーマリンク">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.Expression.vv">
+<span class="sig-name descname"><span class="pre">vv</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'0x70'</span></em><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.Expression.vv" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>value</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.GmSystemOn">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">GmSystemOn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">track</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tick</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/sublibs/csv2mid.html#GmSystemOn"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.GmSystemOn" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">_SystemExclusiveEvent</span></code></p>
+<p>GM System Level 1.</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>track</strong> (<em>str</em>) -- </p></li>
+<li><p><strong>bar</strong> (<em>dataclasses.InitVar</em><em>[</em><em>str</em><em>]</em>) -- </p></li>
+<li><p><strong>tick</strong> (<em>dataclasses.InitVar</em><em>[</em><em>str</em><em>]</em>) -- </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.GmSystemOn.name">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/sublibs/csv2mid.html#GmSystemOn.name"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.GmSystemOn.name" title="この定義へのパーマリンク">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.GmSystemOn.track">
+<span class="sig-name descname"><span class="pre">track</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.GmSystemOn.track" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>&quot;track&quot; is a name that identifies a track.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.HeaderChunk">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">HeaderChunk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ntrks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">division</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">480</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/sublibs/csv2mid.html#HeaderChunk"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.HeaderChunk" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>HeaderChunk is a class that generates &quot;Header chunks&quot;.</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>format</strong> (<em>int</em>) -- </p></li>
+<li><p><strong>ntrks</strong> (<em>int</em>) -- </p></li>
+<li><p><strong>division</strong> (<em>int</em>) -- </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.HeaderChunk.division">
+<span class="sig-name descname"><span class="pre">division</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">480</span></em><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.HeaderChunk.division" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>&quot;division&quot; specifies the meaning of the delta-times. ticks per quarter-note.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.HeaderChunk.format">
+<span class="sig-name descname"><span class="pre">format</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.HeaderChunk.format" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>&quot;format&quot; specifies the overall organisation of the file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.HeaderChunk.ntrks">
+<span class="sig-name descname"><span class="pre">ntrks</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.HeaderChunk.ntrks" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>&quot;ntrks&quot; is the number of track chunks in the file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.InstrumentName">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">InstrumentName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">track</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tick</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/sublibs/csv2mid.html#InstrumentName"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.InstrumentName" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">_MetaEvnet</span></code></p>
+<p>InstrumentName is class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>track</strong> (<em>str</em>) -- </p></li>
+<li><p><strong>bar</strong> (<em>dataclasses.InitVar</em><em>[</em><em>str</em><em>]</em>) -- </p></li>
+<li><p><strong>tick</strong> (<em>dataclasses.InitVar</em><em>[</em><em>str</em><em>]</em>) -- </p></li>
+<li><p><strong>text</strong> (<em>str</em>) -- </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.InstrumentName.name">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/sublibs/csv2mid.html#InstrumentName.name"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.InstrumentName.name" title="この定義へのパーマリンク">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.InstrumentName.text">
+<span class="sig-name descname"><span class="pre">text</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.InstrumentName.text" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>Instrument Name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.KeySignature">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">KeySignature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">track</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tick</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/sublibs/csv2mid.html#KeySignature"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.KeySignature" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">_MetaEvnet</span></code></p>
+<p>KeySignature is expressed as four numbers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>track</strong> (<em>str</em>) -- </p></li>
+<li><p><strong>bar</strong> (<em>dataclasses.InitVar</em><em>[</em><em>str</em><em>]</em>) -- </p></li>
+<li><p><strong>tick</strong> (<em>dataclasses.InitVar</em><em>[</em><em>str</em><em>]</em>) -- </p></li>
+<li><p><strong>sf</strong> (<em>str</em>) -- </p></li>
+<li><p><strong>mi</strong> (<em>str</em>) -- </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.KeySignature.name">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/sublibs/csv2mid.html#KeySignature.name"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.KeySignature.name" title="この定義へのパーマリンク">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.KeySignature.mi">
+<span class="sig-name descname"><span class="pre">mi</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'0'</span></em><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.KeySignature.mi" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>0 is major, 1 is minor</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.KeySignature.sf">
+<span class="sig-name descname"><span class="pre">sf</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'0'</span></em><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.KeySignature.sf" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>0 is C, +1 ~ +7 is #, -1 ~ -7 is b</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.Lyric">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Lyric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">track</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tick</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/sublibs/csv2mid.html#Lyric"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.Lyric" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">_MetaEvnet</span></code></p>
+<p>Lyric is class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>track</strong> (<em>str</em>) -- </p></li>
+<li><p><strong>bar</strong> (<em>dataclasses.InitVar</em><em>[</em><em>str</em><em>]</em>) -- </p></li>
+<li><p><strong>tick</strong> (<em>dataclasses.InitVar</em><em>[</em><em>str</em><em>]</em>) -- </p></li>
+<li><p><strong>text</strong> (<em>str</em>) -- </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.Lyric.name">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/sublibs/csv2mid.html#Lyric.name"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.Lyric.name" title="この定義へのパーマリンク">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.Lyric.text">
+<span class="sig-name descname"><span class="pre">text</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.Lyric.text" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>Lyric</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.ModulationWheel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ModulationWheel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">track</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tick</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/sublibs/csv2mid.html#ModulationWheel"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.ModulationWheel" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">_ControlChange</span></code></p>
+<p>ModulationWeel is &quot;Modulation Wheel&quot;.</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>track</strong> (<em>str</em>) -- </p></li>
+<li><p><strong>bar</strong> (<em>dataclasses.InitVar</em><em>[</em><em>str</em><em>]</em>) -- </p></li>
+<li><p><strong>tick</strong> (<em>dataclasses.InitVar</em><em>[</em><em>str</em><em>]</em>) -- </p></li>
+<li><p><strong>n</strong> (<em>str</em>) -- </p></li>
+<li><p><strong>vv</strong> (<em>str</em>) -- </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.ModulationWheel.name">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/sublibs/csv2mid.html#ModulationWheel.name"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.ModulationWheel.name" title="この定義へのパーマリンク">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.ModulationWheel.vv">
+<span class="sig-name descname"><span class="pre">vv</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'0'</span></em><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.ModulationWheel.vv" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>value</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.NoteOffAfterOn">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">NoteOffAfterOn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">track</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tick</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kk</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'60'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0x20'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/sublibs/csv2mid.html#NoteOffAfterOn"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.NoteOffAfterOn" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">_MidiEvent</span></code></p>
+<p>NoteOffAfterOn is &quot;Note off&quot;.</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>track</strong> (<em>str</em>) -- </p></li>
+<li><p><strong>bar</strong> (<em>dataclasses.InitVar</em><em>[</em><em>str</em><em>]</em>) -- </p></li>
+<li><p><strong>tick</strong> (<em>dataclasses.InitVar</em><em>[</em><em>str</em><em>]</em>) -- </p></li>
+<li><p><strong>n</strong> (<em>str</em>) -- </p></li>
+<li><p><strong>kk</strong> (<em>str</em>) -- </p></li>
+<li><p><strong>vv</strong> (<em>str</em>) -- </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.NoteOffAfterOn.name">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/sublibs/csv2mid.html#NoteOffAfterOn.name"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.NoteOffAfterOn.name" title="この定義へのパーマリンク">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.NoteOffAfterOn.kk">
+<span class="sig-name descname"><span class="pre">kk</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'60'</span></em><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.NoteOffAfterOn.kk" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>key number</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.NoteOffAfterOn.n">
+<span class="sig-name descname"><span class="pre">n</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'0'</span></em><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.NoteOffAfterOn.n" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>channel</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.NoteOffAfterOn.vv">
+<span class="sig-name descname"><span class="pre">vv</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'0x20'</span></em><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.NoteOffAfterOn.vv" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>velocity</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.NoteOn">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">NoteOn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">track</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tick</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kk</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'60'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0x40'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'100'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/sublibs/csv2mid.html#NoteOn"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.NoteOn" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">_MidiEvent</span></code></p>
+<p>NoteOn is &quot;Note On&quot;.</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>track</strong> (<em>str</em>) -- </p></li>
+<li><p><strong>bar</strong> (<em>dataclasses.InitVar</em><em>[</em><em>str</em><em>]</em>) -- </p></li>
+<li><p><strong>tick</strong> (<em>dataclasses.InitVar</em><em>[</em><em>str</em><em>]</em>) -- </p></li>
+<li><p><strong>n</strong> (<em>str</em>) -- </p></li>
+<li><p><strong>kk</strong> (<em>str</em>) -- </p></li>
+<li><p><strong>vv</strong> (<em>str</em>) -- </p></li>
+<li><p><strong>dr</strong> (<em>str</em>) -- </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.NoteOn.name">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/sublibs/csv2mid.html#NoteOn.name"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.NoteOn.name" title="この定義へのパーマリンク">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.NoteOn.dr">
+<span class="sig-name descname"><span class="pre">dr</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'100'</span></em><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.NoteOn.dr" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>duration</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.NoteOn.kk">
+<span class="sig-name descname"><span class="pre">kk</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'60'</span></em><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.NoteOn.kk" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>key number</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.NoteOn.n">
+<span class="sig-name descname"><span class="pre">n</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'0'</span></em><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.NoteOn.n" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>channel</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.NoteOn.vv">
+<span class="sig-name descname"><span class="pre">vv</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'0x40'</span></em><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.NoteOn.vv" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>velocity</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.Pan">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Pan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">track</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tick</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0x40'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/sublibs/csv2mid.html#Pan"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.Pan" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">_ControlChange</span></code></p>
+<p>Pan is &quot;Pan&quot;.</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>track</strong> (<em>str</em>) -- </p></li>
+<li><p><strong>bar</strong> (<em>dataclasses.InitVar</em><em>[</em><em>str</em><em>]</em>) -- </p></li>
+<li><p><strong>tick</strong> (<em>dataclasses.InitVar</em><em>[</em><em>str</em><em>]</em>) -- </p></li>
+<li><p><strong>n</strong> (<em>str</em>) -- </p></li>
+<li><p><strong>vv</strong> (<em>str</em>) -- </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.Pan.name">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/sublibs/csv2mid.html#Pan.name"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.Pan.name" title="この定義へのパーマリンク">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.Pan.vv">
+<span class="sig-name descname"><span class="pre">vv</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'0x40'</span></em><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.Pan.vv" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>str:</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.PitchWheelChange">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PitchWheelChange</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">track</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tick</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ll</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0x40'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/sublibs/csv2mid.html#PitchWheelChange"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.PitchWheelChange" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">_MidiEvent</span></code></p>
+<p>PitchWheelChange is <a href="#id5"><span class="problematic" id="id6">**</span></a><a href="#id7"><span class="problematic" id="id8">*</span></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>track</strong> (<em>str</em>) -- </p></li>
+<li><p><strong>bar</strong> (<em>dataclasses.InitVar</em><em>[</em><em>str</em><em>]</em>) -- </p></li>
+<li><p><strong>tick</strong> (<em>dataclasses.InitVar</em><em>[</em><em>str</em><em>]</em>) -- </p></li>
+<li><p><strong>n</strong> (<em>str</em>) -- </p></li>
+<li><p><strong>ll</strong> (<em>str</em>) -- </p></li>
+<li><p><strong>mm</strong> (<em>str</em>) -- </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.PitchWheelChange.name">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/sublibs/csv2mid.html#PitchWheelChange.name"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.PitchWheelChange.name" title="この定義へのパーマリンク">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.PitchWheelChange.ll">
+<span class="sig-name descname"><span class="pre">ll</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'0'</span></em><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.PitchWheelChange.ll" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>LSB, centre(non-effect) is 0x00</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.PitchWheelChange.mm">
+<span class="sig-name descname"><span class="pre">mm</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'0x40'</span></em><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.PitchWheelChange.mm" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>MSB, centre(non-effect) is 0x40</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.PitchWheelChange.n">
+<span class="sig-name descname"><span class="pre">n</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'0'</span></em><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.PitchWheelChange.n" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>channel</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.ProgramChange">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ProgramChange</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">track</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tick</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vv</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/sublibs/csv2mid.html#ProgramChange"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.ProgramChange" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">_MidiEvent</span></code></p>
+<p>ProgramChange is <a href="#id9"><span class="problematic" id="id10">**</span></a><a href="#id11"><span class="problematic" id="id12">*</span></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>track</strong> (<em>str</em>) -- </p></li>
+<li><p><strong>bar</strong> (<em>dataclasses.InitVar</em><em>[</em><em>str</em><em>]</em>) -- </p></li>
+<li><p><strong>tick</strong> (<em>dataclasses.InitVar</em><em>[</em><em>str</em><em>]</em>) -- </p></li>
+<li><p><strong>n</strong> (<em>str</em>) -- </p></li>
+<li><p><strong>vv</strong> (<em>str</em>) -- </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.ProgramChange.name">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/sublibs/csv2mid.html#ProgramChange.name"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.ProgramChange.name" title="この定義へのパーマリンク">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.ProgramChange.n">
+<span class="sig-name descname"><span class="pre">n</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'0'</span></em><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.ProgramChange.n" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>channle</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.ProgramChange.vv">
+<span class="sig-name descname"><span class="pre">vv</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'0'</span></em><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.ProgramChange.vv" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>preset number</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.ResetAllControllers">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ResetAllControllers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">track</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tick</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/sublibs/csv2mid.html#ResetAllControllers"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.ResetAllControllers" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">_ChannelMode</span></code></p>
+<p>ResetAllControllers is <a href="#id13"><span class="problematic" id="id14">**</span></a><a href="#id15"><span class="problematic" id="id16">*</span></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>track</strong> (<em>str</em>) -- </p></li>
+<li><p><strong>bar</strong> (<em>dataclasses.InitVar</em><em>[</em><em>str</em><em>]</em>) -- </p></li>
+<li><p><strong>tick</strong> (<em>dataclasses.InitVar</em><em>[</em><em>str</em><em>]</em>) -- </p></li>
+<li><p><strong>n</strong> (<em>str</em>) -- </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.ResetAllControllers.name">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/sublibs/csv2mid.html#ResetAllControllers.name"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.ResetAllControllers.name" title="この定義へのパーマリンク">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.SequencerTrackName">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SequencerTrackName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">track</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tick</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/sublibs/csv2mid.html#SequencerTrackName"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.SequencerTrackName" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">_MetaEvnet</span></code></p>
+<p>SequenceTrackName is class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>track</strong> (<em>str</em>) -- </p></li>
+<li><p><strong>bar</strong> (<em>dataclasses.InitVar</em><em>[</em><em>str</em><em>]</em>) -- </p></li>
+<li><p><strong>tick</strong> (<em>dataclasses.InitVar</em><em>[</em><em>str</em><em>]</em>) -- </p></li>
+<li><p><strong>text</strong> (<em>str</em>) -- </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.SequencerTrackName.name">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/sublibs/csv2mid.html#SequencerTrackName.name"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.SequencerTrackName.name" title="この定義へのパーマリンク">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.SequencerTrackName.text">
+<span class="sig-name descname"><span class="pre">text</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.SequencerTrackName.text" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>Sequencer / Track Name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.SetTempo">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SetTempo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">track</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tick</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'500000'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/sublibs/csv2mid.html#SetTempo"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.SetTempo" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">_MetaEvnet</span></code></p>
+<p>Quarter note microsecond unit time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>track</strong> (<em>str</em>) -- </p></li>
+<li><p><strong>bar</strong> (<em>dataclasses.InitVar</em><em>[</em><em>str</em><em>]</em>) -- </p></li>
+<li><p><strong>tick</strong> (<em>dataclasses.InitVar</em><em>[</em><em>str</em><em>]</em>) -- </p></li>
+<li><p><strong>value</strong> (<em>str</em>) -- </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.SetTempo.name">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/sublibs/csv2mid.html#SetTempo.name"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.SetTempo.name" title="この定義へのパーマリンク">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.SetTempo.value">
+<span class="sig-name descname"><span class="pre">value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'500000'</span></em><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.SetTempo.value" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>Quarter note microsecond unit time</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.SustainOff">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SustainOff</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">track</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tick</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/sublibs/csv2mid.html#SustainOff"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.SustainOff" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">_ControlChange</span></code></p>
+<p>SustaionOff is <a href="#id17"><span class="problematic" id="id18">**</span></a><a href="#id19"><span class="problematic" id="id20">*</span></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>track</strong> (<em>str</em>) -- </p></li>
+<li><p><strong>bar</strong> (<em>dataclasses.InitVar</em><em>[</em><em>str</em><em>]</em>) -- </p></li>
+<li><p><strong>tick</strong> (<em>dataclasses.InitVar</em><em>[</em><em>str</em><em>]</em>) -- </p></li>
+<li><p><strong>n</strong> (<em>str</em>) -- </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.SustainOff.name">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/sublibs/csv2mid.html#SustainOff.name"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.SustainOff.name" title="この定義へのパーマリンク">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.SustainOn">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SustainOn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">track</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tick</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/sublibs/csv2mid.html#SustainOn"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.SustainOn" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">_ControlChange</span></code></p>
+<p>SustaionOn is <a href="#id21"><span class="problematic" id="id22">**</span></a><a href="#id23"><span class="problematic" id="id24">*</span></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>track</strong> (<em>str</em>) -- </p></li>
+<li><p><strong>bar</strong> (<em>dataclasses.InitVar</em><em>[</em><em>str</em><em>]</em>) -- </p></li>
+<li><p><strong>tick</strong> (<em>dataclasses.InitVar</em><em>[</em><em>str</em><em>]</em>) -- </p></li>
+<li><p><strong>n</strong> (<em>str</em>) -- </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.SustainOn.name">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/sublibs/csv2mid.html#SustainOn.name"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.SustainOn.name" title="この定義へのパーマリンク">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.TextEvent">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TextEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">track</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tick</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/sublibs/csv2mid.html#TextEvent"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.TextEvent" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">_MetaEvnet</span></code></p>
+<p>TextEvent is class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>track</strong> (<em>str</em>) -- </p></li>
+<li><p><strong>bar</strong> (<em>dataclasses.InitVar</em><em>[</em><em>str</em><em>]</em>) -- </p></li>
+<li><p><strong>tick</strong> (<em>dataclasses.InitVar</em><em>[</em><em>str</em><em>]</em>) -- </p></li>
+<li><p><strong>text</strong> (<em>str</em>) -- </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.TextEvent.name">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/sublibs/csv2mid.html#TextEvent.name"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.TextEvent.name" title="この定義へのパーマリンク">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.TextEvent.text">
+<span class="sig-name descname"><span class="pre">text</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.TextEvent.text" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>text event</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.TimeSignature">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TimeSignature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">track</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tick</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nn</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'4'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'2'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'24'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bb</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'8'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/sublibs/csv2mid.html#TimeSignature"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.TimeSignature" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>ベースクラス: <code class="xref py py-class docutils literal notranslate"><span class="pre">_MetaEvnet</span></code></p>
+<p>TimeSignature is expressed as four numbers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>track</strong> (<em>str</em>) -- </p></li>
+<li><p><strong>bar</strong> (<em>dataclasses.InitVar</em><em>[</em><em>str</em><em>]</em>) -- </p></li>
+<li><p><strong>tick</strong> (<em>dataclasses.InitVar</em><em>[</em><em>str</em><em>]</em>) -- </p></li>
+<li><p><strong>nn</strong> (<em>str</em>) -- </p></li>
+<li><p><strong>dd</strong> (<em>str</em>) -- </p></li>
+<li><p><strong>cc</strong> (<em>str</em>) -- </p></li>
+<li><p><strong>bb</strong> (<em>str</em>) -- </p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.TimeSignature.name">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/sublibs/csv2mid.html#TimeSignature.name"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.TimeSignature.name" title="この定義へのパーマリンク">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.TimeSignature.bb">
+<span class="sig-name descname"><span class="pre">bb</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'8'</span></em><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.TimeSignature.bb" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>str:</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.TimeSignature.cc">
+<span class="sig-name descname"><span class="pre">cc</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'24'</span></em><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.TimeSignature.cc" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>str:</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.TimeSignature.dd">
+<span class="sig-name descname"><span class="pre">dd</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'2'</span></em><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.TimeSignature.dd" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>power to two, rhythm notevalue</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.TimeSignature.nn">
+<span class="sig-name descname"><span class="pre">nn</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'4'</span></em><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.TimeSignature.nn" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>rhythm beat</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.event_classes">
+<span class="sig-name descname"><span class="pre">event_classes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/sublibs/csv2mid.html#event_classes"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.event_classes" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>Return a set of event classes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">戻り値<span class="colon">:</span></dt>
+<dd class="field-odd"><p>event classes</p>
+</dd>
+<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-even"><p>set</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.event_data">
+<span class="sig-name descname"><span class="pre">event_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/sublibs/csv2mid.html#event_data"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.event_data" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>Convert CSV data list to event data object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>params</strong> (<em>list</em>) -- csv data list</p>
+</dd>
+<dt class="field-even">戻り値<span class="colon">:</span></dt>
+<dd class="field-even"><p>event data object</p>
+</dd>
+<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-odd"><p>object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.generate">
+<span class="sig-name descname"><span class="pre">generate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">csvfile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">midifile</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/sublibs/csv2mid.html#generate"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.generate" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>Generate a MID file from a CSV file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">パラメータ<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>csvfile</strong> (<em>str</em>) -- CSV filename to be converted.</p></li>
+<li><p><strong>midifile</strong> (<em>str</em>) -- MID filename to be created.</p></li>
+</ul>
+</dd>
+<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 <section id="module-audioworkstation.libs.sublibs">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-audioworkstation.libs.sublibs" title="この見出しへのパーマリンク">¶</a></h2>
 <p>Packages of support modules</p>
 <p>parts: Gain control for MIDI devices</p>
-<p>standardmidifile: Parsing SMF(Standard MIDI File) files</p>
+<p>csv2mid: Generate a MID(Standard MIDI File) file from a CSV file.</p>
+<p>paramsmid: Parsing SMF(Standard MIDI File) files</p>
 </section>
 </section>
 
@@ -114,7 +1343,154 @@
 <li><a class="reference internal" href="#audioworkstation.libs.sublibs.parts.gain2dB"><code class="docutils literal notranslate"><span class="pre">gain2dB()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#standardmidifile-module">standardmidifile module</a></li>
+<li><a class="reference internal" href="#module-audioworkstation.libs.sublibs.paramsmid">paramsmid module</a><ul>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.paramsmid.StandardMidiFile"><code class="docutils literal notranslate"><span class="pre">StandardMidiFile</span></code></a><ul>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.paramsmid.StandardMidiFile.channels_preset"><code class="docutils literal notranslate"><span class="pre">StandardMidiFile.channels_preset()</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.paramsmid.StandardMidiFile.instruments"><code class="docutils literal notranslate"><span class="pre">StandardMidiFile.instruments()</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.paramsmid.StandardMidiFile.lyrics"><code class="docutils literal notranslate"><span class="pre">StandardMidiFile.lyrics()</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.paramsmid.StandardMidiFile.title"><code class="docutils literal notranslate"><span class="pre">StandardMidiFile.title()</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.paramsmid.StandardMidiFile.total_tick"><code class="docutils literal notranslate"><span class="pre">StandardMidiFile.total_tick()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-audioworkstation.libs.sublibs.csv2mid">csv2mid module</a><ul>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.SmfError"><code class="docutils literal notranslate"><span class="pre">SmfError</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.AllNotesOff"><code class="docutils literal notranslate"><span class="pre">AllNotesOff</span></code></a><ul>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.AllNotesOff.name"><code class="docutils literal notranslate"><span class="pre">AllNotesOff.name()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.ChannelPressure"><code class="docutils literal notranslate"><span class="pre">ChannelPressure</span></code></a><ul>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.ChannelPressure.name"><code class="docutils literal notranslate"><span class="pre">ChannelPressure.name()</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.ChannelPressure.n"><code class="docutils literal notranslate"><span class="pre">ChannelPressure.n</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.ChannelPressure.vv"><code class="docutils literal notranslate"><span class="pre">ChannelPressure.vv</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.ChannelVolume"><code class="docutils literal notranslate"><span class="pre">ChannelVolume</span></code></a><ul>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.ChannelVolume.name"><code class="docutils literal notranslate"><span class="pre">ChannelVolume.name()</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.ChannelVolume.vv"><code class="docutils literal notranslate"><span class="pre">ChannelVolume.vv</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.CopyrightNotice"><code class="docutils literal notranslate"><span class="pre">CopyrightNotice</span></code></a><ul>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.CopyrightNotice.name"><code class="docutils literal notranslate"><span class="pre">CopyrightNotice.name()</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.CopyrightNotice.text"><code class="docutils literal notranslate"><span class="pre">CopyrightNotice.text</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.EndOfTrack"><code class="docutils literal notranslate"><span class="pre">EndOfTrack</span></code></a><ul>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.EndOfTrack.name"><code class="docutils literal notranslate"><span class="pre">EndOfTrack.name()</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.EndOfTrack.track"><code class="docutils literal notranslate"><span class="pre">EndOfTrack.track</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.Expression"><code class="docutils literal notranslate"><span class="pre">Expression</span></code></a><ul>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.Expression.name"><code class="docutils literal notranslate"><span class="pre">Expression.name()</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.Expression.vv"><code class="docutils literal notranslate"><span class="pre">Expression.vv</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.GmSystemOn"><code class="docutils literal notranslate"><span class="pre">GmSystemOn</span></code></a><ul>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.GmSystemOn.name"><code class="docutils literal notranslate"><span class="pre">GmSystemOn.name()</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.GmSystemOn.track"><code class="docutils literal notranslate"><span class="pre">GmSystemOn.track</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.HeaderChunk"><code class="docutils literal notranslate"><span class="pre">HeaderChunk</span></code></a><ul>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.HeaderChunk.division"><code class="docutils literal notranslate"><span class="pre">HeaderChunk.division</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.HeaderChunk.format"><code class="docutils literal notranslate"><span class="pre">HeaderChunk.format</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.HeaderChunk.ntrks"><code class="docutils literal notranslate"><span class="pre">HeaderChunk.ntrks</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.InstrumentName"><code class="docutils literal notranslate"><span class="pre">InstrumentName</span></code></a><ul>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.InstrumentName.name"><code class="docutils literal notranslate"><span class="pre">InstrumentName.name()</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.InstrumentName.text"><code class="docutils literal notranslate"><span class="pre">InstrumentName.text</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.KeySignature"><code class="docutils literal notranslate"><span class="pre">KeySignature</span></code></a><ul>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.KeySignature.name"><code class="docutils literal notranslate"><span class="pre">KeySignature.name()</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.KeySignature.mi"><code class="docutils literal notranslate"><span class="pre">KeySignature.mi</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.KeySignature.sf"><code class="docutils literal notranslate"><span class="pre">KeySignature.sf</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.Lyric"><code class="docutils literal notranslate"><span class="pre">Lyric</span></code></a><ul>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.Lyric.name"><code class="docutils literal notranslate"><span class="pre">Lyric.name()</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.Lyric.text"><code class="docutils literal notranslate"><span class="pre">Lyric.text</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.ModulationWheel"><code class="docutils literal notranslate"><span class="pre">ModulationWheel</span></code></a><ul>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.ModulationWheel.name"><code class="docutils literal notranslate"><span class="pre">ModulationWheel.name()</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.ModulationWheel.vv"><code class="docutils literal notranslate"><span class="pre">ModulationWheel.vv</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.NoteOffAfterOn"><code class="docutils literal notranslate"><span class="pre">NoteOffAfterOn</span></code></a><ul>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.NoteOffAfterOn.name"><code class="docutils literal notranslate"><span class="pre">NoteOffAfterOn.name()</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.NoteOffAfterOn.kk"><code class="docutils literal notranslate"><span class="pre">NoteOffAfterOn.kk</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.NoteOffAfterOn.n"><code class="docutils literal notranslate"><span class="pre">NoteOffAfterOn.n</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.NoteOffAfterOn.vv"><code class="docutils literal notranslate"><span class="pre">NoteOffAfterOn.vv</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.NoteOn"><code class="docutils literal notranslate"><span class="pre">NoteOn</span></code></a><ul>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.NoteOn.name"><code class="docutils literal notranslate"><span class="pre">NoteOn.name()</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.NoteOn.dr"><code class="docutils literal notranslate"><span class="pre">NoteOn.dr</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.NoteOn.kk"><code class="docutils literal notranslate"><span class="pre">NoteOn.kk</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.NoteOn.n"><code class="docutils literal notranslate"><span class="pre">NoteOn.n</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.NoteOn.vv"><code class="docutils literal notranslate"><span class="pre">NoteOn.vv</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.Pan"><code class="docutils literal notranslate"><span class="pre">Pan</span></code></a><ul>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.Pan.name"><code class="docutils literal notranslate"><span class="pre">Pan.name()</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.Pan.vv"><code class="docutils literal notranslate"><span class="pre">Pan.vv</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.PitchWheelChange"><code class="docutils literal notranslate"><span class="pre">PitchWheelChange</span></code></a><ul>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.PitchWheelChange.name"><code class="docutils literal notranslate"><span class="pre">PitchWheelChange.name()</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.PitchWheelChange.ll"><code class="docutils literal notranslate"><span class="pre">PitchWheelChange.ll</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.PitchWheelChange.mm"><code class="docutils literal notranslate"><span class="pre">PitchWheelChange.mm</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.PitchWheelChange.n"><code class="docutils literal notranslate"><span class="pre">PitchWheelChange.n</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.ProgramChange"><code class="docutils literal notranslate"><span class="pre">ProgramChange</span></code></a><ul>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.ProgramChange.name"><code class="docutils literal notranslate"><span class="pre">ProgramChange.name()</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.ProgramChange.n"><code class="docutils literal notranslate"><span class="pre">ProgramChange.n</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.ProgramChange.vv"><code class="docutils literal notranslate"><span class="pre">ProgramChange.vv</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.ResetAllControllers"><code class="docutils literal notranslate"><span class="pre">ResetAllControllers</span></code></a><ul>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.ResetAllControllers.name"><code class="docutils literal notranslate"><span class="pre">ResetAllControllers.name()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.SequencerTrackName"><code class="docutils literal notranslate"><span class="pre">SequencerTrackName</span></code></a><ul>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.SequencerTrackName.name"><code class="docutils literal notranslate"><span class="pre">SequencerTrackName.name()</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.SequencerTrackName.text"><code class="docutils literal notranslate"><span class="pre">SequencerTrackName.text</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.SetTempo"><code class="docutils literal notranslate"><span class="pre">SetTempo</span></code></a><ul>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.SetTempo.name"><code class="docutils literal notranslate"><span class="pre">SetTempo.name()</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.SetTempo.value"><code class="docutils literal notranslate"><span class="pre">SetTempo.value</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.SustainOff"><code class="docutils literal notranslate"><span class="pre">SustainOff</span></code></a><ul>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.SustainOff.name"><code class="docutils literal notranslate"><span class="pre">SustainOff.name()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.SustainOn"><code class="docutils literal notranslate"><span class="pre">SustainOn</span></code></a><ul>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.SustainOn.name"><code class="docutils literal notranslate"><span class="pre">SustainOn.name()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.TextEvent"><code class="docutils literal notranslate"><span class="pre">TextEvent</span></code></a><ul>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.TextEvent.name"><code class="docutils literal notranslate"><span class="pre">TextEvent.name()</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.TextEvent.text"><code class="docutils literal notranslate"><span class="pre">TextEvent.text</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.TimeSignature"><code class="docutils literal notranslate"><span class="pre">TimeSignature</span></code></a><ul>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.TimeSignature.name"><code class="docutils literal notranslate"><span class="pre">TimeSignature.name()</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.TimeSignature.bb"><code class="docutils literal notranslate"><span class="pre">TimeSignature.bb</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.TimeSignature.cc"><code class="docutils literal notranslate"><span class="pre">TimeSignature.cc</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.TimeSignature.dd"><code class="docutils literal notranslate"><span class="pre">TimeSignature.dd</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.TimeSignature.nn"><code class="docutils literal notranslate"><span class="pre">TimeSignature.nn</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.event_classes"><code class="docutils literal notranslate"><span class="pre">event_classes()</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.event_data"><code class="docutils literal notranslate"><span class="pre">event_data()</span></code></a></li>
+<li><a class="reference internal" href="#audioworkstation.libs.sublibs.csv2mid.generate"><code class="docutils literal notranslate"><span class="pre">generate()</span></code></a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#module-audioworkstation.libs.sublibs">Module contents</a></li>
 </ul>
 </li>

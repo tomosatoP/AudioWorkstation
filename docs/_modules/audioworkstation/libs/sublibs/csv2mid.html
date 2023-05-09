@@ -1,0 +1,845 @@
+
+<!DOCTYPE html>
+
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>audioworkstation.libs.sublibs.csv2mid &#8212; AudioWorkstation 0.3 ドキュメント</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sphinxdoc.css" />
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../../_static/translations.js"></script>
+    <link rel="index" title="索引" href="../../../../genindex.html" />
+    <link rel="search" title="検索" href="../../../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>ナビゲーション</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="総合索引"
+             accesskey="I">索引</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Pythonモジュール索引"
+             >モジュール</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../index.html">AudioWorkstation 0.3 ドキュメント</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../index.html" accesskey="U">モジュールコード</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">audioworkstation.libs.sublibs.csv2mid</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>audioworkstation.libs.sublibs.csv2mid のソースコード</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;Generate a MID(Standard MIDI File) file from a CSV file.</span>
+
+<span class="sd">Format of CSV file</span>
+
+<span class="sd">    &lt;Format&gt; = &lt;Track Name&gt;, &lt;Bar Number&gt;, &lt;Tick Number&gt;, &lt;Event List&gt;,</span>
+<span class="sd">    &lt;Value List&gt;</span>
+
+<span class="sd">    1. Track Name</span>
+<span class="sd">        Track Name.</span>
+
+<span class="sd">        - example: &quot;Sequencer&quot;</span>
+<span class="sd">        - example: &quot;Main Melody&quot;</span>
+<span class="sd">        - example: &quot;Sub Melody&quot;</span>
+
+<span class="sd">    2. Bar Number</span>
+<span class="sd">        Indicates the order of appearance of the measures.</span>
+
+<span class="sd">        - example: 0</span>
+<span class="sd">        - example: 1</span>
+
+<span class="sd">    3. Tick Number</span>
+<span class="sd">        Indicates the timing of event occurrence within a bar in terms of Tick</span>
+<span class="sd">        conversion. However, the length of a quarter note is 480 ticks.</span>
+
+<span class="sd">        - example: 0</span>
+<span class="sd">        - example: 480</span>
+<span class="sd">        - example: 960</span>
+
+<span class="sd">    4. Event List</span>
+<span class="sd">        Event.</span>
+
+<span class="sd">        - example: &quot;Meta Event&quot;,&quot;Set Tempo&quot;</span>
+<span class="sd">        - example: &quot;Midi Event&quot;,&quot;Note On&quot;</span>
+<span class="sd">        - example: &quot;Midi Event&quot;,&quot;Control Change&quot;,&quot;Channel Volume&quot;</span>
+
+<span class="sd">    5. Value List</span>
+<span class="sd">        Event Value.</span>
+
+<span class="sd">        - example: 500000</span>
+<span class="sd">        - example: 0,69,0x40,200</span>
+<span class="sd">        - example: 0,0x60</span>
+
+<span class="sd">restrictions</span>
+
+<span class="sd">#. Only &quot;GM System Level 1&quot;.</span>
+<span class="sd">#. Tempo changes and odd time signatures are not supported.</span>
+<span class="sd">#. The division is fixed at 480.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">InitVar</span><span class="p">,</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">ClassVar</span>
+<span class="kn">from</span> <span class="nn">re</span> <span class="kn">import</span> <span class="n">match</span>
+<span class="kn">import</span> <span class="nn">logging</span> <span class="k">as</span> <span class="nn">LSMF</span>
+<span class="kn">import</span> <span class="nn">struct</span>
+<span class="kn">import</span> <span class="nn">csv</span>
+
+
+<span class="c1"># Logger</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">LSMF</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">LSMF</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+<span class="n">_logger_formatter</span> <span class="o">=</span> <span class="n">LSMF</span><span class="o">.</span><span class="n">Formatter</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%(asctime)s</span><span class="s2"> </span><span class="si">%(levelname)s</span><span class="s2"> </span><span class="si">%(message)s</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="c1"># Logger StreamHandler</span>
+<span class="n">_logger_sh</span> <span class="o">=</span> <span class="n">LSMF</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">()</span>
+<span class="n">_logger_sh</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">_logger_formatter</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">_logger_sh</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="SmfError"><a class="viewcode-back" href="../../../../audioworkstation.libs.sublibs.html#audioworkstation.libs.sublibs.csv2mid.SmfError">[ドキュメント]</a><span class="k">class</span> <span class="nc">SmfError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Exceptions sent out from errcheck func.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;SMF: </span><span class="si">{</span><span class="n">args</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="HeaderChunk"><a class="viewcode-back" href="../../../../audioworkstation.libs.sublibs.html#audioworkstation.libs.sublibs.csv2mid.HeaderChunk">[ドキュメント]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">HeaderChunk</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;HeaderChunk is a class that generates &quot;Header chunks&quot;.&quot;&quot;&quot;</span>
+
+    <span class="c1">#: int: &quot;format&quot; specifies the overall organisation of the file.</span>
+    <span class="nb">format</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="c1">#: int: &quot;ntrks&quot; is the number of track chunks in the file.</span>
+    <span class="n">ntrks</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="c1">#: int: &quot;division&quot; specifies the meaning of the delta-times. ticks per quarter-note.</span>
+    <span class="n">division</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">480</span>
+
+    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">_SmfEvent</span><span class="o">.</span><span class="n">set_division</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">division</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__bytes__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+        <span class="n">byte_datas</span><span class="p">:</span> <span class="nb">bytes</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;MThd&quot;</span>
+        <span class="n">byte_datas</span> <span class="o">+=</span> <span class="p">(</span><span class="mi">6</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">)</span>
+        <span class="n">byte_datas</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">format</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">)</span>
+        <span class="n">byte_datas</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ntrks</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">)</span>
+        <span class="n">byte_datas</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">division</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">byte_datas</span></div>
+
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">_SmfEvent</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;_SmfEvent is the base class for event.&quot;&quot;&quot;</span>
+
+    <span class="c1">#: str: &quot;track&quot; is a name that identifies a track.</span>
+    <span class="n">track</span><span class="p">:</span> <span class="nb">str</span>
+
+    <span class="c1">#: InitVar[str]: bar number</span>
+    <span class="n">bar</span><span class="p">:</span> <span class="n">InitVar</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
+    <span class="c1">#: InitVar[str]: tick count in bar</span>
+    <span class="n">tick</span><span class="p">:</span> <span class="n">InitVar</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
+
+    <span class="c1">#: ClassVar[int]: division, ticks per quarter-note.</span>
+    <span class="n">division</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">480</span>
+    <span class="c1">#: ClassVar[int]: beat</span>
+    <span class="n">beat</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">4</span>
+    <span class="c1">#: ClassVar[int]: power of two, 2 represents a quarter-note, etc.</span>
+    <span class="n">powers</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
+
+    <span class="n">event_time</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">delta_time</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">set_delta_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">before_event_time</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;set_delta_time _summary_</span>
+
+<span class="sd">        :param int before_event_time: _description_</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delta_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_time</span> <span class="o">-</span> <span class="n">before_event_time</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">set_division</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">division</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">division</span> <span class="o">=</span> <span class="n">division</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">set_rhythm</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">beat</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">powers</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">beat</span> <span class="o">=</span> <span class="n">beat</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">powers</span> <span class="o">=</span> <span class="n">powers</span>
+
+    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bar</span><span class="p">,</span> <span class="n">tick</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">event_time</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">bar</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">beat</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">division</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">powers</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">event_time</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="n">tick</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">event_time</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">event_time</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__bytes__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">_convert_to_variable_length_quantity</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">delta_time</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;compare time: equal&quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">_SmfEvent</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_time</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">event_time</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+            <span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;comparison between event and </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> is not supported&quot;</span>
+            <span class="k">raise</span> <span class="n">SmfError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__lt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;compare time: less than&quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">_SmfEvent</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">event_time</span> <span class="o">&lt;</span> <span class="n">other</span><span class="o">.</span><span class="n">event_time</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+            <span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;comparison between event and </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> is not supported&quot;</span>
+            <span class="k">raise</span> <span class="n">SmfError</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="p">[]</span>
+
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">_MetaEvnet</span><span class="p">(</span><span class="n">_SmfEvent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;_MetaEvent is the base class of &quot;Meta Event&quot;.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__bytes__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__bytes__</span><span class="p">()</span> <span class="o">+</span> <span class="sa">b</span><span class="s2">&quot;</span><span class="se">\xFF</span><span class="s2">&quot;</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;Meta Event&quot;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="TextEvent"><a class="viewcode-back" href="../../../../audioworkstation.libs.sublibs.html#audioworkstation.libs.sublibs.csv2mid.TextEvent">[ドキュメント]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">TextEvent</span><span class="p">(</span><span class="n">_MetaEvnet</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;TextEvent is class.&quot;&quot;&quot;</span>
+
+    <span class="c1">#: str: text event</span>
+    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__bytes__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">byte_datas</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;</span><span class="se">\x01</span><span class="s2">&quot;</span>
+        <span class="n">byte_datas</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">))</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">)</span>
+        <span class="n">byte_datas</span> <span class="o">+=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__bytes__</span><span class="p">()</span> <span class="o">+</span> <span class="n">byte_datas</span>
+
+<div class="viewcode-block" id="TextEvent.name"><a class="viewcode-back" href="../../../../audioworkstation.libs.sublibs.html#audioworkstation.libs.sublibs.csv2mid.TextEvent.name">[ドキュメント]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;Text Event&quot;</span><span class="p">]</span></div></div>
+
+
+<div class="viewcode-block" id="CopyrightNotice"><a class="viewcode-back" href="../../../../audioworkstation.libs.sublibs.html#audioworkstation.libs.sublibs.csv2mid.CopyrightNotice">[ドキュメント]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">CopyrightNotice</span><span class="p">(</span><span class="n">_MetaEvnet</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;CopyrightNotice is class.&quot;&quot;&quot;</span>
+
+    <span class="c1">#: str: Copyright Notice</span>
+    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__bytes__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">byte_datas</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;</span><span class="se">\x02</span><span class="s2">&quot;</span>
+        <span class="n">byte_datas</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">))</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">)</span>
+        <span class="n">byte_datas</span> <span class="o">+=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__bytes__</span><span class="p">()</span> <span class="o">+</span> <span class="n">byte_datas</span>
+
+<div class="viewcode-block" id="CopyrightNotice.name"><a class="viewcode-back" href="../../../../audioworkstation.libs.sublibs.html#audioworkstation.libs.sublibs.csv2mid.CopyrightNotice.name">[ドキュメント]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;Copyright Notice&quot;</span><span class="p">]</span></div></div>
+
+
+<div class="viewcode-block" id="SequencerTrackName"><a class="viewcode-back" href="../../../../audioworkstation.libs.sublibs.html#audioworkstation.libs.sublibs.csv2mid.SequencerTrackName">[ドキュメント]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">SequencerTrackName</span><span class="p">(</span><span class="n">_MetaEvnet</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;SequenceTrackName is class.&quot;&quot;&quot;</span>
+
+    <span class="c1">#: str: Sequencer / Track Name</span>
+    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__bytes__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">byte_datas</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;</span><span class="se">\x03</span><span class="s2">&quot;</span>
+        <span class="n">byte_datas</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">))</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">)</span>
+        <span class="n">byte_datas</span> <span class="o">+=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__bytes__</span><span class="p">()</span> <span class="o">+</span> <span class="n">byte_datas</span>
+
+<div class="viewcode-block" id="SequencerTrackName.name"><a class="viewcode-back" href="../../../../audioworkstation.libs.sublibs.html#audioworkstation.libs.sublibs.csv2mid.SequencerTrackName.name">[ドキュメント]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;SequencerTrack Name&quot;</span><span class="p">]</span></div></div>
+
+
+<div class="viewcode-block" id="InstrumentName"><a class="viewcode-back" href="../../../../audioworkstation.libs.sublibs.html#audioworkstation.libs.sublibs.csv2mid.InstrumentName">[ドキュメント]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">InstrumentName</span><span class="p">(</span><span class="n">_MetaEvnet</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;InstrumentName is class.&quot;&quot;&quot;</span>
+
+    <span class="c1">#: str: Instrument Name</span>
+    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__bytes__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">byte_datas</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;</span><span class="se">\x04</span><span class="s2">&quot;</span>
+        <span class="n">byte_datas</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">))</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">)</span>
+        <span class="n">byte_datas</span> <span class="o">+=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__bytes__</span><span class="p">()</span> <span class="o">+</span> <span class="n">byte_datas</span>
+
+<div class="viewcode-block" id="InstrumentName.name"><a class="viewcode-back" href="../../../../audioworkstation.libs.sublibs.html#audioworkstation.libs.sublibs.csv2mid.InstrumentName.name">[ドキュメント]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;Instrument Name&quot;</span><span class="p">]</span></div></div>
+
+
+<div class="viewcode-block" id="Lyric"><a class="viewcode-back" href="../../../../audioworkstation.libs.sublibs.html#audioworkstation.libs.sublibs.csv2mid.Lyric">[ドキュメント]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Lyric</span><span class="p">(</span><span class="n">_MetaEvnet</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Lyric is class.&quot;&quot;&quot;</span>
+
+    <span class="c1">#: str: Lyric</span>
+    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__bytes__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">byte_datas</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;</span><span class="se">\x05</span><span class="s2">&quot;</span>
+        <span class="n">byte_datas</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">))</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">)</span>
+        <span class="n">byte_datas</span> <span class="o">+=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__bytes__</span><span class="p">()</span> <span class="o">+</span> <span class="n">byte_datas</span>
+
+<div class="viewcode-block" id="Lyric.name"><a class="viewcode-back" href="../../../../audioworkstation.libs.sublibs.html#audioworkstation.libs.sublibs.csv2mid.Lyric.name">[ドキュメント]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;Lyric&quot;</span><span class="p">]</span></div></div>
+
+
+<div class="viewcode-block" id="EndOfTrack"><a class="viewcode-back" href="../../../../audioworkstation.libs.sublibs.html#audioworkstation.libs.sublibs.csv2mid.EndOfTrack">[ドキュメント]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">EndOfTrack</span><span class="p">(</span><span class="n">_MetaEvnet</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;end of track&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__bytes__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__bytes__</span><span class="p">()</span> <span class="o">+</span> <span class="sa">b</span><span class="s2">&quot;</span><span class="se">\x2F\x00</span><span class="s2">&quot;</span>
+
+<div class="viewcode-block" id="EndOfTrack.name"><a class="viewcode-back" href="../../../../audioworkstation.libs.sublibs.html#audioworkstation.libs.sublibs.csv2mid.EndOfTrack.name">[ドキュメント]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;End Of Track&quot;</span><span class="p">]</span></div></div>
+
+
+<div class="viewcode-block" id="SetTempo"><a class="viewcode-back" href="../../../../audioworkstation.libs.sublibs.html#audioworkstation.libs.sublibs.csv2mid.SetTempo">[ドキュメント]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">SetTempo</span><span class="p">(</span><span class="n">_MetaEvnet</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Quarter note microsecond unit time.&quot;&quot;&quot;</span>
+
+    <span class="c1">#: str: Quarter note microsecond unit time</span>
+    <span class="n">value</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;500000&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__bytes__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">byte_datas</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;</span><span class="se">\x51</span><span class="s2">&quot;</span>
+        <span class="n">byte_datas</span> <span class="o">+=</span> <span class="sa">b</span><span class="s2">&quot;</span><span class="se">\x03</span><span class="s2">&quot;</span>
+        <span class="n">byte_datas</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__bytes__</span><span class="p">()</span> <span class="o">+</span> <span class="n">byte_datas</span>
+
+<div class="viewcode-block" id="SetTempo.name"><a class="viewcode-back" href="../../../../audioworkstation.libs.sublibs.html#audioworkstation.libs.sublibs.csv2mid.SetTempo.name">[ドキュメント]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;Set Tempo&quot;</span><span class="p">]</span></div></div>
+
+
+<div class="viewcode-block" id="TimeSignature"><a class="viewcode-back" href="../../../../audioworkstation.libs.sublibs.html#audioworkstation.libs.sublibs.csv2mid.TimeSignature">[ドキュメント]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">TimeSignature</span><span class="p">(</span><span class="n">_MetaEvnet</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;TimeSignature is expressed as four numbers.&quot;&quot;&quot;</span>
+
+    <span class="c1">#: str: rhythm beat</span>
+    <span class="n">nn</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;4&quot;</span>
+    <span class="c1">#: str: power to two, rhythm notevalue</span>
+    <span class="n">dd</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;2&quot;</span>
+    <span class="c1">#: str:</span>
+    <span class="n">cc</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;24&quot;</span>
+    <span class="c1">#: str:</span>
+    <span class="n">bb</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;8&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bar</span><span class="p">,</span> <span class="n">tick</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">_SmfEvent</span><span class="o">.</span><span class="n">set_rhythm</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nn</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dd</span><span class="p">))</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__post_init__</span><span class="p">(</span><span class="n">bar</span><span class="p">,</span> <span class="n">tick</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__bytes__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">byte_datas</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;</span><span class="se">\x58</span><span class="s2">&quot;</span>
+        <span class="n">byte_datas</span> <span class="o">+=</span> <span class="sa">b</span><span class="s2">&quot;</span><span class="se">\x04</span><span class="s2">&quot;</span>
+        <span class="n">byte_datas</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nn</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">)</span>
+        <span class="n">byte_datas</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dd</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">)</span>
+        <span class="n">byte_datas</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cc</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">)</span>
+        <span class="n">byte_datas</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bb</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__bytes__</span><span class="p">()</span> <span class="o">+</span> <span class="n">byte_datas</span>
+
+<div class="viewcode-block" id="TimeSignature.name"><a class="viewcode-back" href="../../../../audioworkstation.libs.sublibs.html#audioworkstation.libs.sublibs.csv2mid.TimeSignature.name">[ドキュメント]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;Time Signature&quot;</span><span class="p">]</span></div></div>
+
+
+<div class="viewcode-block" id="KeySignature"><a class="viewcode-back" href="../../../../audioworkstation.libs.sublibs.html#audioworkstation.libs.sublibs.csv2mid.KeySignature">[ドキュメント]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">KeySignature</span><span class="p">(</span><span class="n">_MetaEvnet</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;KeySignature is expressed as four numbers.&quot;&quot;&quot;</span>
+
+    <span class="c1">#: str: 0 is C, +1 ~ +7 is #, -1 ~ -7 is b</span>
+    <span class="n">sf</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
+    <span class="c1">#: str: 0 is major, 1 is minor</span>
+    <span class="n">mi</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__bytes__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">byte_datas</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;</span><span class="se">\x59</span><span class="s2">&quot;</span>
+        <span class="n">byte_datas</span> <span class="o">+=</span> <span class="sa">b</span><span class="s2">&quot;</span><span class="se">\x02</span><span class="s2">&quot;</span>
+        <span class="n">byte_datas</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sf</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">,</span> <span class="n">signed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">byte_datas</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mi</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__bytes__</span><span class="p">()</span> <span class="o">+</span> <span class="n">byte_datas</span>
+
+<div class="viewcode-block" id="KeySignature.name"><a class="viewcode-back" href="../../../../audioworkstation.libs.sublibs.html#audioworkstation.libs.sublibs.csv2mid.KeySignature.name">[ドキュメント]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;Key Signature&quot;</span><span class="p">]</span></div></div>
+
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">_SystemExclusiveEvent</span><span class="p">(</span><span class="n">_SmfEvent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;_SystemExclusiveEvent is the base class of &quot;Sysex Event&quot;.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__bytes__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__bytes__</span><span class="p">()</span> <span class="o">+</span> <span class="sa">b</span><span class="s2">&quot;</span><span class="se">\xF0</span><span class="s2">&quot;</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;Sysex Event&quot;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="GmSystemOn"><a class="viewcode-back" href="../../../../audioworkstation.libs.sublibs.html#audioworkstation.libs.sublibs.csv2mid.GmSystemOn">[ドキュメント]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">GmSystemOn</span><span class="p">(</span><span class="n">_SystemExclusiveEvent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;GM System Level 1.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__bytes__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__bytes__</span><span class="p">()</span> <span class="o">+</span> <span class="sa">b</span><span class="s2">&quot;</span><span class="se">\x05\x7E\x7F\x09\x01\xF7</span><span class="s2">&quot;</span>
+
+<div class="viewcode-block" id="GmSystemOn.name"><a class="viewcode-back" href="../../../../audioworkstation.libs.sublibs.html#audioworkstation.libs.sublibs.csv2mid.GmSystemOn.name">[ドキュメント]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;GM System On&quot;</span><span class="p">]</span></div></div>
+
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">_MidiEvent</span><span class="p">(</span><span class="n">_SmfEvent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;_MidiEvent is the base class of &quot;Midi Event&quot;.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__bytes__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__bytes__</span><span class="p">()</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;Midi Event&quot;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="NoteOn"><a class="viewcode-back" href="../../../../audioworkstation.libs.sublibs.html#audioworkstation.libs.sublibs.csv2mid.NoteOn">[ドキュメント]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">NoteOn</span><span class="p">(</span><span class="n">_MidiEvent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;NoteOn is &quot;Note On&quot;.&quot;&quot;&quot;</span>
+
+    <span class="c1">#: str: channel</span>
+    <span class="n">n</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
+    <span class="c1">#: str: key number</span>
+    <span class="n">kk</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;60&quot;</span>
+    <span class="c1">#: str: velocity</span>
+    <span class="n">vv</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;0x40&quot;</span>
+    <span class="c1">#: str: duration</span>
+    <span class="n">dr</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;100&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__bytes__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">byte_datas</span> <span class="o">=</span> <span class="p">(</span><span class="mh">0x90</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">)</span>
+        <span class="n">byte_datas</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">kk</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">)</span>
+        <span class="n">byte_datas</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vv</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__bytes__</span><span class="p">()</span> <span class="o">+</span> <span class="n">byte_datas</span>
+
+<div class="viewcode-block" id="NoteOn.name"><a class="viewcode-back" href="../../../../audioworkstation.libs.sublibs.html#audioworkstation.libs.sublibs.csv2mid.NoteOn.name">[ドキュメント]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;Note On&quot;</span><span class="p">]</span></div></div>
+
+
+<div class="viewcode-block" id="NoteOffAfterOn"><a class="viewcode-back" href="../../../../audioworkstation.libs.sublibs.html#audioworkstation.libs.sublibs.csv2mid.NoteOffAfterOn">[ドキュメント]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">NoteOffAfterOn</span><span class="p">(</span><span class="n">_MidiEvent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;NoteOffAfterOn is &quot;Note off&quot;.&quot;&quot;&quot;</span>
+
+    <span class="c1">#: str: channel</span>
+    <span class="n">n</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
+    <span class="c1">#: str: key number</span>
+    <span class="n">kk</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;60&quot;</span>
+    <span class="c1">#: str: velocity</span>
+    <span class="n">vv</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;0x20&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__bytes__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">byte_datas</span> <span class="o">=</span> <span class="p">(</span><span class="mh">0x80</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">)</span>
+        <span class="n">byte_datas</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">kk</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">)</span>
+        <span class="n">byte_datas</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vv</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__bytes__</span><span class="p">()</span> <span class="o">+</span> <span class="n">byte_datas</span>
+
+<div class="viewcode-block" id="NoteOffAfterOn.name"><a class="viewcode-back" href="../../../../audioworkstation.libs.sublibs.html#audioworkstation.libs.sublibs.csv2mid.NoteOffAfterOn.name">[ドキュメント]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;Note Off&quot;</span><span class="p">]</span></div></div>
+
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">_ControlChange</span><span class="p">(</span><span class="n">_MidiEvent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;_ControlChange is the base class of &quot;Midi Event - Control Change&quot;.&quot;&quot;&quot;</span>
+
+    <span class="c1">#: str: channel</span>
+    <span class="n">n</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__bytes__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">byte_datas</span> <span class="o">=</span> <span class="p">(</span><span class="mh">0xB0</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__bytes__</span><span class="p">()</span> <span class="o">+</span> <span class="n">byte_datas</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;Control Change&quot;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="ModulationWheel"><a class="viewcode-back" href="../../../../audioworkstation.libs.sublibs.html#audioworkstation.libs.sublibs.csv2mid.ModulationWheel">[ドキュメント]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">ModulationWheel</span><span class="p">(</span><span class="n">_ControlChange</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;ModulationWeel is &quot;Modulation Wheel&quot;.&quot;&quot;&quot;</span>
+
+    <span class="c1">#: str: value</span>
+    <span class="n">vv</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__bytes__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">byte_datas</span> <span class="o">=</span> <span class="p">(</span><span class="mh">0x01</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">)</span>
+        <span class="n">byte_datas</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vv</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__bytes__</span><span class="p">()</span> <span class="o">+</span> <span class="n">byte_datas</span>
+
+<div class="viewcode-block" id="ModulationWheel.name"><a class="viewcode-back" href="../../../../audioworkstation.libs.sublibs.html#audioworkstation.libs.sublibs.csv2mid.ModulationWheel.name">[ドキュメント]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;Modulation Wheel&quot;</span><span class="p">]</span></div></div>
+
+
+<div class="viewcode-block" id="ChannelVolume"><a class="viewcode-back" href="../../../../audioworkstation.libs.sublibs.html#audioworkstation.libs.sublibs.csv2mid.ChannelVolume">[ドキュメント]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">ChannelVolume</span><span class="p">(</span><span class="n">_ControlChange</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;ChannelVolume is &quot;Channel Volume&quot;.&quot;&quot;&quot;</span>
+
+    <span class="c1">#: str: value</span>
+    <span class="n">vv</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;0x70&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__bytes__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">byte_datas</span> <span class="o">=</span> <span class="p">(</span><span class="mh">0x07</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">)</span>
+        <span class="n">byte_datas</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vv</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__bytes__</span><span class="p">()</span> <span class="o">+</span> <span class="n">byte_datas</span>
+
+<div class="viewcode-block" id="ChannelVolume.name"><a class="viewcode-back" href="../../../../audioworkstation.libs.sublibs.html#audioworkstation.libs.sublibs.csv2mid.ChannelVolume.name">[ドキュメント]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;Channel Volume&quot;</span><span class="p">]</span></div></div>
+
+
+<div class="viewcode-block" id="Pan"><a class="viewcode-back" href="../../../../audioworkstation.libs.sublibs.html#audioworkstation.libs.sublibs.csv2mid.Pan">[ドキュメント]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Pan</span><span class="p">(</span><span class="n">_ControlChange</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Pan is &quot;Pan&quot;.&quot;&quot;&quot;</span>
+
+    <span class="c1">#: str:</span>
+    <span class="n">vv</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;0x40&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__bytes__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">byte_datas</span> <span class="o">=</span> <span class="p">(</span><span class="mh">0x0A</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">)</span>
+        <span class="n">byte_datas</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vv</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__bytes__</span><span class="p">()</span> <span class="o">+</span> <span class="n">byte_datas</span>
+
+<div class="viewcode-block" id="Pan.name"><a class="viewcode-back" href="../../../../audioworkstation.libs.sublibs.html#audioworkstation.libs.sublibs.csv2mid.Pan.name">[ドキュメント]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;Pan&quot;</span><span class="p">]</span></div></div>
+
+
+<div class="viewcode-block" id="Expression"><a class="viewcode-back" href="../../../../audioworkstation.libs.sublibs.html#audioworkstation.libs.sublibs.csv2mid.Expression">[ドキュメント]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Expression</span><span class="p">(</span><span class="n">_ControlChange</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Expresson is &quot;Expression&quot;.&quot;&quot;&quot;</span>
+
+    <span class="c1">#: str: value</span>
+    <span class="n">vv</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;0x70&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__bytes__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">byte_datas</span> <span class="o">=</span> <span class="p">(</span><span class="mh">0x0B</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">)</span>
+        <span class="n">byte_datas</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vv</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__bytes__</span><span class="p">()</span> <span class="o">+</span> <span class="n">byte_datas</span>
+
+<div class="viewcode-block" id="Expression.name"><a class="viewcode-back" href="../../../../audioworkstation.libs.sublibs.html#audioworkstation.libs.sublibs.csv2mid.Expression.name">[ドキュメント]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;Expression&quot;</span><span class="p">]</span></div></div>
+
+
+<div class="viewcode-block" id="SustainOn"><a class="viewcode-back" href="../../../../audioworkstation.libs.sublibs.html#audioworkstation.libs.sublibs.csv2mid.SustainOn">[ドキュメント]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">SustainOn</span><span class="p">(</span><span class="n">_ControlChange</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;SustaionOn is ***.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__bytes__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">byte_datas</span> <span class="o">=</span> <span class="p">(</span><span class="mh">0x40</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">)</span>
+        <span class="n">byte_datas</span> <span class="o">+=</span> <span class="p">(</span><span class="mh">0x40</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__bytes__</span><span class="p">()</span> <span class="o">+</span> <span class="n">byte_datas</span>
+
+<div class="viewcode-block" id="SustainOn.name"><a class="viewcode-back" href="../../../../audioworkstation.libs.sublibs.html#audioworkstation.libs.sublibs.csv2mid.SustainOn.name">[ドキュメント]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;Sustain On&quot;</span><span class="p">]</span></div></div>
+
+
+<div class="viewcode-block" id="SustainOff"><a class="viewcode-back" href="../../../../audioworkstation.libs.sublibs.html#audioworkstation.libs.sublibs.csv2mid.SustainOff">[ドキュメント]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">SustainOff</span><span class="p">(</span><span class="n">_ControlChange</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;SustaionOff is ***.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__bytes__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">byte_datas</span> <span class="o">=</span> <span class="p">(</span><span class="mh">0x40</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">)</span>
+        <span class="n">byte_datas</span> <span class="o">+=</span> <span class="p">(</span><span class="mh">0x00</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__bytes__</span><span class="p">()</span> <span class="o">+</span> <span class="n">byte_datas</span>
+
+<div class="viewcode-block" id="SustainOff.name"><a class="viewcode-back" href="../../../../audioworkstation.libs.sublibs.html#audioworkstation.libs.sublibs.csv2mid.SustainOff.name">[ドキュメント]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;Sustain Off&quot;</span><span class="p">]</span></div></div>
+
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">_ChannelMode</span><span class="p">(</span><span class="n">_MidiEvent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;_ChannelMode is base class of &quot;Midi Event - Channel Mode&quot;.&quot;&quot;&quot;</span>
+
+    <span class="c1">#: str: channel</span>
+    <span class="n">n</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__bytes__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">byte_datas</span> <span class="o">=</span> <span class="p">(</span><span class="mh">0xB0</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__bytes__</span><span class="p">()</span> <span class="o">+</span> <span class="n">byte_datas</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;Channel Mode&quot;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="ResetAllControllers"><a class="viewcode-back" href="../../../../audioworkstation.libs.sublibs.html#audioworkstation.libs.sublibs.csv2mid.ResetAllControllers">[ドキュメント]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">ResetAllControllers</span><span class="p">(</span><span class="n">_ChannelMode</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;ResetAllControllers is ***.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__bytes__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">byte_datas</span> <span class="o">=</span> <span class="p">(</span><span class="mh">0x79</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">)</span>
+        <span class="n">byte_datas</span> <span class="o">+=</span> <span class="p">(</span><span class="mh">0x00</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__bytes__</span><span class="p">()</span> <span class="o">+</span> <span class="n">byte_datas</span>
+
+<div class="viewcode-block" id="ResetAllControllers.name"><a class="viewcode-back" href="../../../../audioworkstation.libs.sublibs.html#audioworkstation.libs.sublibs.csv2mid.ResetAllControllers.name">[ドキュメント]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;Reset All Controllers&quot;</span><span class="p">]</span></div></div>
+
+
+<div class="viewcode-block" id="AllNotesOff"><a class="viewcode-back" href="../../../../audioworkstation.libs.sublibs.html#audioworkstation.libs.sublibs.csv2mid.AllNotesOff">[ドキュメント]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">AllNotesOff</span><span class="p">(</span><span class="n">_ChannelMode</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;AllNoteOff is &quot;all notes off message&quot;.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__bytes__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">byte_datas</span> <span class="o">=</span> <span class="p">(</span><span class="mh">0x7B</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">)</span>
+        <span class="n">byte_datas</span> <span class="o">+=</span> <span class="p">(</span><span class="mh">0x00</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__bytes__</span><span class="p">()</span> <span class="o">+</span> <span class="n">byte_datas</span>
+
+<div class="viewcode-block" id="AllNotesOff.name"><a class="viewcode-back" href="../../../../audioworkstation.libs.sublibs.html#audioworkstation.libs.sublibs.csv2mid.AllNotesOff.name">[ドキュメント]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;All Notes Off&quot;</span><span class="p">]</span></div></div>
+
+
+<div class="viewcode-block" id="ProgramChange"><a class="viewcode-back" href="../../../../audioworkstation.libs.sublibs.html#audioworkstation.libs.sublibs.csv2mid.ProgramChange">[ドキュメント]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">ProgramChange</span><span class="p">(</span><span class="n">_MidiEvent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;ProgramChange is ***.&quot;&quot;&quot;</span>
+
+    <span class="c1">#: str: channle</span>
+    <span class="n">n</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
+    <span class="c1">#: str: preset number</span>
+    <span class="n">vv</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__bytes__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">byte_datas</span> <span class="o">=</span> <span class="p">(</span><span class="mh">0xC0</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">)</span>
+        <span class="n">byte_datas</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vv</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__bytes__</span><span class="p">()</span> <span class="o">+</span> <span class="n">byte_datas</span>
+
+<div class="viewcode-block" id="ProgramChange.name"><a class="viewcode-back" href="../../../../audioworkstation.libs.sublibs.html#audioworkstation.libs.sublibs.csv2mid.ProgramChange.name">[ドキュメント]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;Program Change&quot;</span><span class="p">]</span></div></div>
+
+
+<div class="viewcode-block" id="ChannelPressure"><a class="viewcode-back" href="../../../../audioworkstation.libs.sublibs.html#audioworkstation.libs.sublibs.csv2mid.ChannelPressure">[ドキュメント]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">ChannelPressure</span><span class="p">(</span><span class="n">_MidiEvent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;ChannelPressure is ***.&quot;&quot;&quot;</span>
+
+    <span class="c1">#: str: channle</span>
+    <span class="n">n</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
+    <span class="c1">#: int: threshold</span>
+    <span class="n">vv</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;100&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__bytes__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">byte_datas</span> <span class="o">=</span> <span class="p">(</span><span class="mh">0xD0</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">)</span>
+        <span class="n">byte_datas</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vv</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__bytes__</span><span class="p">()</span> <span class="o">+</span> <span class="n">byte_datas</span>
+
+<div class="viewcode-block" id="ChannelPressure.name"><a class="viewcode-back" href="../../../../audioworkstation.libs.sublibs.html#audioworkstation.libs.sublibs.csv2mid.ChannelPressure.name">[ドキュメント]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;Channel Pressuire&quot;</span><span class="p">]</span></div></div>
+
+
+<div class="viewcode-block" id="PitchWheelChange"><a class="viewcode-back" href="../../../../audioworkstation.libs.sublibs.html#audioworkstation.libs.sublibs.csv2mid.PitchWheelChange">[ドキュメント]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">PitchWheelChange</span><span class="p">(</span><span class="n">_MidiEvent</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;PitchWheelChange is ***.&quot;&quot;&quot;</span>
+
+    <span class="c1">#: str: channel</span>
+    <span class="n">n</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
+    <span class="c1">#: str: LSB, centre(non-effect) is 0x00</span>
+    <span class="n">ll</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
+    <span class="c1">#: str: MSB, centre(non-effect) is 0x40</span>
+    <span class="n">mm</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;0x40&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__bytes__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">byte_datas</span> <span class="o">=</span> <span class="p">(</span><span class="mh">0xE0</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">)</span>
+        <span class="n">byte_datas</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ll</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">)</span>
+        <span class="n">byte_datas</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">to_bytes</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__bytes__</span><span class="p">()</span> <span class="o">+</span> <span class="n">byte_datas</span>
+
+<div class="viewcode-block" id="PitchWheelChange.name"><a class="viewcode-back" href="../../../../audioworkstation.libs.sublibs.html#audioworkstation.libs.sublibs.csv2mid.PitchWheelChange.name">[ドキュメント]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">name</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;Pitch Wheel Change&quot;</span><span class="p">]</span></div></div>
+
+
+<span class="k">def</span> <span class="nf">_convert_to_variable_length_quantity</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert &quot;n(delta time)&quot; to a &quot;variable length quantity&quot;.</span>
+
+<span class="sd">    :param int n: delta time</span>
+<span class="sd">    :return: variable length quantity</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">base_decimal</span><span class="p">(</span><span class="n">base</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert to a base-decimal.</span>
+
+<span class="sd">        :param int base: base</span>
+<span class="sd">        :param int n: taget number</span>
+<span class="sd">        :return: Converted value stored in list[int]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="n">base</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">n</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">digit</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="n">base_decimal</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">n</span> <span class="o">//</span> <span class="n">base</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">digit</span> <span class="o">+</span> <span class="p">[</span><span class="n">n</span> <span class="o">%</span> <span class="n">base</span><span class="p">]</span>
+
+    <span class="n">quantity</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">base_decimal</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="mi">7</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">quantity</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">quantity</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">quantity</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="mh">0x80</span>
+    <span class="k">return</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">quantity</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="event_classes"><a class="viewcode-back" href="../../../../audioworkstation.libs.sublibs.html#audioworkstation.libs.sublibs.csv2mid.event_classes">[ドキュメント]</a><span class="k">def</span> <span class="nf">event_classes</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a set of event classes.</span>
+
+<span class="sd">    :return: event classes</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">sub_classes</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">__subclasses__</span><span class="p">())</span><span class="o">.</span><span class="n">union</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">s</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__subclasses__</span><span class="p">()</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">sub_classes</span><span class="p">(</span><span class="n">c</span><span class="p">)]</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">sub_classes</span><span class="p">(</span><span class="n">_SmfEvent</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="event_data"><a class="viewcode-back" href="../../../../audioworkstation.libs.sublibs.html#audioworkstation.libs.sublibs.csv2mid.event_data">[ドキュメント]</a><span class="k">def</span> <span class="nf">event_data</span><span class="p">(</span><span class="n">params</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">object</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert CSV data list to event data object.</span>
+
+<span class="sd">    :param list params: csv data list</span>
+<span class="sd">    :return: event data object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">n_name</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">data_classes</span><span class="p">:</span> <span class="nb">set</span> <span class="o">=</span> <span class="n">event_classes</span><span class="p">()</span>
+
+    <span class="k">for</span> <span class="n">data_class</span> <span class="ow">in</span> <span class="n">data_classes</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">match</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="n">data_class</span><span class="o">.</span><span class="vm">__name__</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">set</span><span class="p">(</span><span class="n">data_class</span><span class="o">.</span><span class="n">name</span><span class="p">())</span> <span class="o">&lt;=</span> <span class="nb">set</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
+                <span class="n">n_name</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data_class</span><span class="o">.</span><span class="n">name</span><span class="p">())</span>
+                <span class="k">return</span> <span class="n">data_class</span><span class="p">(</span>
+                    <span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">params</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="o">*</span><span class="nb">tuple</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">3</span> <span class="o">+</span> <span class="n">n_name</span> <span class="p">:])</span>
+                <span class="p">)</span>
+
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="generate"><a class="viewcode-back" href="../../../../audioworkstation.libs.sublibs.html#audioworkstation.libs.sublibs.csv2mid.generate">[ドキュメント]</a><span class="k">def</span> <span class="nf">generate</span><span class="p">(</span><span class="n">csvfile</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">midifile</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate a MID file from a CSV file.</span>
+
+<span class="sd">    :param str csvfile: CSV filename to be converted.</span>
+<span class="sd">    :param str midifile: MID filename to be created.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">csv_datas</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="o">=</span><span class="n">csvfile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;rt&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">dialect</span><span class="o">=</span><span class="s2">&quot;unix&quot;</span><span class="p">):</span>
+            <span class="n">csv_datas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+    <span class="n">track_names</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">csv_datas</span><span class="p">))</span>
+    <span class="n">track_names</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">track_names</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="n">track_names</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+    <span class="n">header</span> <span class="o">=</span> <span class="n">HeaderChunk</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ntrks</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">track_names</span><span class="p">),</span> <span class="n">division</span><span class="o">=</span><span class="mi">480</span><span class="p">)</span>
+
+    <span class="n">tracks</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">track_names</span><span class="p">)):</span>
+        <span class="n">tracks</span><span class="o">.</span><span class="n">append</span><span class="p">([])</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">csv_datas</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">track_names</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                <span class="n">tracks</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">event_data</span><span class="p">(</span><span class="n">line</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">trk</span> <span class="ow">in</span> <span class="n">tracks</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">ev</span> <span class="ow">in</span> <span class="n">trk</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ev</span><span class="p">,</span> <span class="n">NoteOn</span><span class="p">):</span>
+                <span class="n">note_off</span> <span class="o">=</span> <span class="n">NoteOffAfterOn</span><span class="p">(</span><span class="n">track</span><span class="o">=</span><span class="n">ev</span><span class="o">.</span><span class="n">track</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">ev</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="n">kk</span><span class="o">=</span><span class="n">ev</span><span class="o">.</span><span class="n">kk</span><span class="p">)</span>
+                <span class="n">note_off</span><span class="o">.</span><span class="n">event_time</span> <span class="o">=</span> <span class="n">ev</span><span class="o">.</span><span class="n">event_time</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">ev</span><span class="o">.</span><span class="n">dr</span><span class="p">)</span>
+                <span class="n">trk</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">note_off</span><span class="p">)</span>
+
+        <span class="n">trk</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+        <span class="n">trk</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_delta_time</span> <span class="o">=</span> <span class="n">trk</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">event_time</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">trk</span><span class="p">)):</span>
+            <span class="n">trk</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_delta_time</span><span class="p">(</span><span class="n">trk</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">event_time</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="o">=</span><span class="n">midifile</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">smf</span><span class="p">:</span>
+        <span class="n">smf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">bytes</span><span class="p">(</span><span class="n">header</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">trk</span> <span class="ow">in</span> <span class="n">tracks</span><span class="p">:</span>
+            <span class="n">smf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span>
+                    <span class="s2">&quot;&gt;&quot;</span> <span class="s2">&quot;4s&quot;</span> <span class="s2">&quot;L&quot;</span><span class="p">,</span> <span class="sa">b</span><span class="s2">&quot;MTrk&quot;</span><span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">len</span><span class="p">,</span> <span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">bytes</span><span class="p">,</span> <span class="n">trk</span><span class="p">)))))</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">ev</span> <span class="ow">in</span> <span class="n">trk</span><span class="p">:</span>
+                <span class="n">smf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">bytes</span><span class="p">(</span><span class="n">ev</span><span class="p">))</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">クイック検索</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="検索" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>ナビゲーション</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="総合索引"
+             >索引</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Pythonモジュール索引"
+             >モジュール</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../../../index.html">AudioWorkstation 0.3 ドキュメント</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../../../index.html" >モジュールコード</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">audioworkstation.libs.sublibs.csv2mid</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2023, tomosatoP.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
+    </div>
+  </body>
+</html>

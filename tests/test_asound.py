@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+"""unittest libs/audio/asound.py and libs/audio/btaudiosink.py"""
 
 import unittest
 
-# test amixer
 from audioworkstation.libs.audio import asound as Master
 
 

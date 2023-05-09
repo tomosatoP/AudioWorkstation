@@ -12,10 +12,18 @@ parts module
    :undoc-members:
    :show-inheritance:
 
-standardmidifile module
+paramsmid module
 -----------------------------------------------------
 
-.. automodule:: audioworkstation.libs.sublibs.standardmidifile
+.. automodule:: audioworkstation.libs.sublibs.paramsmid
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+csv2mid module
+-----------------------------------------------------
+
+.. automodule:: audioworkstation.libs.sublibs.csv2mid
    :members:
    :undoc-members:
    :show-inheritance:

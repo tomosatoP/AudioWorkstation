@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+"""unittest libs/audio/fluidsynth.py"""
+
 
 import unittest
 
@@ -211,3 +213,7 @@ class TestFluidsynth(unittest.TestCase):
                 mpfs.stop()
                 f = e.submit(mpfs.playback, mpfs.total_ticks - 1000)
                 f.add_done_callback(partial(future_callback, mpfs.stop))
+
+
+if __name__ == "__main__":
+    unittest.main()
