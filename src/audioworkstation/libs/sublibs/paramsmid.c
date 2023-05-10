@@ -962,7 +962,7 @@ static const char *__pyx_filename;
 
 
 static const char *__pyx_f[] = {
-  "libs/sublibs/paramsmid.py",
+  "src/audioworkstation/libs/sublibs/paramsmid.py",
   "stringsource",
 };
 
@@ -1620,16 +1620,16 @@ static const char __pyx_k_StandardMidiFile[] = "StandardMidiFile";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
 static const char __pyx_k_StandardMidiFile_title[] = "StandardMidiFile.title";
 static const char __pyx_k_StandardMidiFile_lyrics[] = "StandardMidiFile.lyrics";
-static const char __pyx_k_libs_sublibs_paramsmid_py[] = "libs/sublibs/paramsmid.py";
 static const char __pyx_k_StandardMidiFile_total_tick[] = "StandardMidiFile.total_tick";
 static const char __pyx_k_StandardMidiFile_instruments[] = "StandardMidiFile.instruments";
 static const char __pyx_k_pyx_unpickle_StandardMidiFile[] = "__pyx_unpickle_StandardMidiFile";
-static const char __pyx_k_Analyze_MIDI_files_according_to[] = "Analyze MIDI files according to  SMF (Standard MIDI File) format.\n\n:reference: MIDI1.0\350\246\217\346\240\274\346\233\270(\346\227\245\346\234\254\350\252\236\347\211\21098.1) ISBN4-8456-0348-9 C3055\nhttp://www.amei.or.jp/\n\n2. MIDI 1.0\n4. \343\202\271\343\202\277\343\203\263\343\203\200\343\203\274\343\203\211MIDI\343\203\225\343\202\241\343\202\244\343\203\2531.0\n\n:Todo: Compile automatically.\n";
+static const char __pyx_k_Analyze_MIDI_files_according_to[] = "Analyze MIDI files according to  SMF (Standard MIDI File) format.\n\n:reference: MIDI1.0\350\246\217\346\240\274\346\233\270(\346\227\245\346\234\254\350\252\236\347\211\21098.1) ISBN4-8456-0348-9 C3055\n    http://www.amei.or.jp/\n\n    - 2. MIDI 1.0\n    - 4. \343\202\271\343\202\277\343\203\263\343\203\200\343\203\274\343\203\211MIDI\343\203\225\343\202\241\343\202\244\343\203\2531.0\n\n:Todo: Compile automatically.\n";
 static const char __pyx_k_Incompatible_checksums_0x_x_vs_0[] = "Incompatible checksums (0x%x vs (0xb9d1cb7, 0x5ac3d49, 0x1b3d44e) = (_header, _last_event_type, _smf, _tracks))";
 static const char __pyx_k_StandardMidiFile___reduce_cython[] = "StandardMidiFile.__reduce_cython__";
 static const char __pyx_k_StandardMidiFile___setstate_cyth[] = "StandardMidiFile.__setstate_cython__";
 static const char __pyx_k_StandardMidiFile_channels_preset[] = "StandardMidiFile.channels_preset";
 static const char __pyx_k_audioworkstation_libs_sublibs_pa[] = "audioworkstation.libs.sublibs.paramsmid";
+static const char __pyx_k_src_audioworkstation_libs_sublib[] = "src/audioworkstation/libs/sublibs/paramsmid.py";
 static PyObject *__pyx_kp_u_;
 static PyObject *__pyx_kp_u_4s;
 static PyObject *__pyx_kp_u_B;
@@ -1664,7 +1664,6 @@ static PyObject *__pyx_n_s_file;
 static PyObject *__pyx_n_s_getstate;
 static PyObject *__pyx_n_s_import;
 static PyObject *__pyx_n_s_instruments;
-static PyObject *__pyx_kp_s_libs_sublibs_paramsmid_py;
 static PyObject *__pyx_n_s_lyrics;
 static PyObject *__pyx_n_s_main;
 static PyObject *__pyx_n_u_main;
@@ -1690,6 +1689,7 @@ static PyObject *__pyx_n_s_self;
 static PyObject *__pyx_n_s_setstate;
 static PyObject *__pyx_n_s_setstate_cython;
 static PyObject *__pyx_n_u_sjis;
+static PyObject *__pyx_kp_s_src_audioworkstation_libs_sublib;
 static PyObject *__pyx_n_s_state;
 static PyObject *__pyx_kp_s_stringsource;
 static PyObject *__pyx_n_s_struct;
@@ -6218,7 +6218,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_getstate, __pyx_k_getstate, sizeof(__pyx_k_getstate), 0, 0, 1, 1},
   {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
   {&__pyx_n_s_instruments, __pyx_k_instruments, sizeof(__pyx_k_instruments), 0, 0, 1, 1},
-  {&__pyx_kp_s_libs_sublibs_paramsmid_py, __pyx_k_libs_sublibs_paramsmid_py, sizeof(__pyx_k_libs_sublibs_paramsmid_py), 0, 0, 1, 0},
   {&__pyx_n_s_lyrics, __pyx_k_lyrics, sizeof(__pyx_k_lyrics), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
   {&__pyx_n_u_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 1, 0, 1},
@@ -6244,6 +6243,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_setstate, __pyx_k_setstate, sizeof(__pyx_k_setstate), 0, 0, 1, 1},
   {&__pyx_n_s_setstate_cython, __pyx_k_setstate_cython, sizeof(__pyx_k_setstate_cython), 0, 0, 1, 1},
   {&__pyx_n_u_sjis, __pyx_k_sjis, sizeof(__pyx_k_sjis), 0, 1, 0, 1},
+  {&__pyx_kp_s_src_audioworkstation_libs_sublib, __pyx_k_src_audioworkstation_libs_sublib, sizeof(__pyx_k_src_audioworkstation_libs_sublib), 0, 0, 1, 0},
   {&__pyx_n_s_state, __pyx_k_state, sizeof(__pyx_k_state), 0, 0, 1, 1},
   {&__pyx_kp_s_stringsource, __pyx_k_stringsource, sizeof(__pyx_k_stringsource), 0, 0, 1, 0},
   {&__pyx_n_s_struct, __pyx_k_struct, sizeof(__pyx_k_struct), 0, 0, 1, 1},
@@ -6290,7 +6290,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__3 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(0, 61, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__3);
   __Pyx_GIVEREF(__pyx_tuple__3);
-  __pyx_codeobj__4 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__3, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_libs_sublibs_paramsmid_py, __pyx_n_s_channels_preset, 61, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__4)) __PYX_ERR(0, 61, __pyx_L1_error)
+  __pyx_codeobj__4 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__3, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_audioworkstation_libs_sublib, __pyx_n_s_channels_preset, 61, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__4)) __PYX_ERR(0, 61, __pyx_L1_error)
 
   /* "audioworkstation/libs/sublibs/paramsmid.py":73
  *         return channels
@@ -6302,7 +6302,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__5 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(0, 73, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__5);
   __Pyx_GIVEREF(__pyx_tuple__5);
-  __pyx_codeobj__6 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__5, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_libs_sublibs_paramsmid_py, __pyx_n_s_title, 73, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__6)) __PYX_ERR(0, 73, __pyx_L1_error)
+  __pyx_codeobj__6 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__5, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_audioworkstation_libs_sublib, __pyx_n_s_title, 73, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__6)) __PYX_ERR(0, 73, __pyx_L1_error)
 
   /* "audioworkstation/libs/sublibs/paramsmid.py":83
  *         return "-"
@@ -6314,7 +6314,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__7 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__7)) __PYX_ERR(0, 83, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__7);
   __Pyx_GIVEREF(__pyx_tuple__7);
-  __pyx_codeobj__8 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__7, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_libs_sublibs_paramsmid_py, __pyx_n_s_instruments, 83, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__8)) __PYX_ERR(0, 83, __pyx_L1_error)
+  __pyx_codeobj__8 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__7, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_audioworkstation_libs_sublib, __pyx_n_s_instruments, 83, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__8)) __PYX_ERR(0, 83, __pyx_L1_error)
 
   /* "audioworkstation/libs/sublibs/paramsmid.py":95
  *         return names
@@ -6326,7 +6326,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__9 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__9)) __PYX_ERR(0, 95, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__9);
   __Pyx_GIVEREF(__pyx_tuple__9);
-  __pyx_codeobj__10 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__9, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_libs_sublibs_paramsmid_py, __pyx_n_s_lyrics, 95, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__10)) __PYX_ERR(0, 95, __pyx_L1_error)
+  __pyx_codeobj__10 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__9, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_audioworkstation_libs_sublib, __pyx_n_s_lyrics, 95, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__10)) __PYX_ERR(0, 95, __pyx_L1_error)
 
   /* "audioworkstation/libs/sublibs/paramsmid.py":107
  *         return texts
@@ -6338,7 +6338,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_tuple__11 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__11)) __PYX_ERR(0, 107, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__11);
   __Pyx_GIVEREF(__pyx_tuple__11);
-  __pyx_codeobj__12 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__11, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_libs_sublibs_paramsmid_py, __pyx_n_s_total_tick, 107, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__12)) __PYX_ERR(0, 107, __pyx_L1_error)
+  __pyx_codeobj__12 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__11, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_audioworkstation_libs_sublib, __pyx_n_s_total_tick, 107, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__12)) __PYX_ERR(0, 107, __pyx_L1_error)
 
   /* "(tree fragment)":1
  * def __reduce_cython__(self):             # <<<<<<<<<<<<<<

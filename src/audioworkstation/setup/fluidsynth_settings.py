@@ -10,7 +10,7 @@ import ctypes as C
 from typing import Any
 from json import dump, load
 
-from audioworkstation.libs.audio import fluidsynth as FS
+from ..libs.audio import fluidsynth as FS
 
 
 # test foreach settings

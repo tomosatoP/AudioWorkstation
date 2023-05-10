@@ -123,7 +123,7 @@ typedef struct _fluid_midi_router_rule_t => fluid_midi_router_rule_t
 https://github.com/FluidSynth/fluidsynth/blob/master/src/midi/fluid_midi_router.c
 """
 
-from audioworkstation.libs.audio import fluidsynth as FS
+from ..libs.audio import fluidsynth as FS
 from json import dump
 
 

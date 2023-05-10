@@ -22,10 +22,11 @@ def makedirs() -> None:
 def makefiles() -> None:
     """Create various configuration files."""
 
-    from audioworkstation.setup import fluidsynth_settings as FSSET
-    from audioworkstation.setup import audioworkstation_settings as AKSET
-    from audioworkstation.setup import jack_settings as JASET
-    from audioworkstation.setup import fluidsynth_router_rule as FSRRULE
+    from ..setup import fluidsynth_settings as FSSET
+    from ..setup import audioworkstation_settings as AKSET
+    from ..setup import jack_settings as JASET
+    from ..setup import fluidsynth_router_rule as FSRRULE
+    from ..setup import compile as COM
 
     FSSET.extract_default()
     FSSET.customize()
@@ -34,6 +35,7 @@ def makefiles() -> None:
     AKSET.desktop()
     JASET.jacks()
     FSRRULE.router_rule_example()
+    COM.purepython()
 
 
 def main() -> None:
