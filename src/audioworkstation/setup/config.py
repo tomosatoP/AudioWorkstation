@@ -10,13 +10,15 @@ def makedirs() -> None:
 
     from pathlib import Path
 
+    homedir: str = str(Path.home())
+
     Path("config").mkdir(exist_ok=True)
     Path("example").mkdir(exist_ok=True)
     Path("logs").mkdir(exist_ok=True)
     Path("mid").mkdir(exist_ok=True)
     Path("sf2").mkdir(exist_ok=True)
     Path("sf3").mkdir(exist_ok=True)
-    Path("~/.icon").mkdir(exist_ok=True)
+    Path(f"{homedir}/.icons").mkdir(exist_ok=True)
 
     print("link FluidR3_GM.sf2")
 
