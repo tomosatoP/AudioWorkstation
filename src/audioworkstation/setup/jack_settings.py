@@ -11,6 +11,8 @@ def jacks() -> None:
     :note: "config/jack.json"
     """
 
+    print("Create configuration file 'config/jack.json' ...")
+
     settings = dict()
     jack_controls = [
         "jack_control stop",
@@ -52,8 +54,8 @@ def jacks() -> None:
         "jack_control ds alsa",
         "jack_control eps realtime True",
         "jack_control dps duplex True",
-        "jack_control dps device hw:S",
-        "jack_control dps playback hw:S",
+        "jack_control dps device hw:D400SP102",
+        "jack_control dps playback hw:D400SP102",
         "jack_control dps capture hw:0",
         "jack_control dps rate 96000",
         "jack_control dps nperiods 3",
@@ -61,7 +63,7 @@ def jacks() -> None:
         "jack_control dps outchannels 2",
         "jack_control start",
     ]
-    settings["hw:CARD=S"] = {"jack_control": jack_controls}
+    settings["hw:CARD=D400SP102"] = {"jack_control": jack_controls}
 
     with open(file="config/jack.json", mode="wt") as f:
         dump(obj=settings, fp=f, indent=4)

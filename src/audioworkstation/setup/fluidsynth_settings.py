@@ -38,9 +38,11 @@ def settings_option(data, name, option):
 def extract_default() -> bool:
     """Create an initial configuration file for fluidsynth.
 
-    :note: "config/fluidsynth.default.json"
+    :note: "exmaple/fluidsynth.json"
     :return: success or failure
     """
+
+    print("Create example configuration file 'example/fluidsynth.json' ...")
 
     global json_settings, option_list
     hints_id = C.c_int()
@@ -112,7 +114,7 @@ def extract_default() -> bool:
         else:
             pass
 
-    with open("config/fluidsynth.default.json", "w") as fw:
+    with open("example/fluidsynth.json", "w") as fw:
         dump(json_settings, fw, indent=4)
     return True
 
@@ -123,8 +125,10 @@ def customize() -> None:
     :note: "config/fluidsynth.json"
     """
 
+    print("Create configuration file 'config/fluidsynth.json' ...")
+
     global json_settings
-    with open("config/fluidsynth.default.json", "r") as fw:
+    with open("example/fluidsynth.json", "r") as fw:
         json_settings = load(fw)
 
     json_settings["audio.driver"]["value"] = "jack"

@@ -130,10 +130,13 @@ from json import dump
 def router_rule_example() -> bool:
     """This is an example of creating mute channel 0
 
-    :note: "config/rule.mute_chan_0.json".
+    :note: "example/rule.mute_chan_0.json".
     :var dict rules: {"name": {"type":"", "chan":"", "param1":"", "param2":""}}
     :return: True on success, otherwise False.
     """
+
+    print("Create example file 'example/rule.mute_chan_0.json'...")
+
     rules: dict = dict()
 
     # NOTE: mute channel 0
@@ -200,7 +203,7 @@ def router_rule_example() -> bool:
         "param2": None,
     }
 
-    with open("config/rule.mute_chan_0.json", "w") as fw:
+    with open("example/rule.mute_chan_0.json", "w") as fw:
         dump(rules, fw, indent=4)
 
     return True

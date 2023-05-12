@@ -12,6 +12,8 @@ def screens() -> None:
     :note: "config/screen.json"
     """
 
+    print("Create configuration file 'config/screen.json'...")
+
     settings = dict()
     fs_settings = "config/fluidsynth.json"
     sfonts = ["sf2/FluidR3_GM.sf2"]
@@ -29,6 +31,8 @@ def gmsounset() -> None:
 
     :note: "config/gmsoundsetgroping.json"
     """
+
+    print("Create configuration file 'config/gmsoundsetgroping.json'...")
 
     grouping = dict()
 
@@ -60,6 +64,8 @@ def desktop() -> None:
     :note: "~/AudioWorkstation/AudioWorkstation.sh"
     """
 
+    print("Create script file 'AudioWorkstation.sh'...")
+
     cdir: str = str(Path.cwd())
     hdir: str = str(Path.home())
 
@@ -74,6 +80,8 @@ def desktop() -> None:
             print(line, file=f)
 
     Path(filename).chmod(0o755)
+
+    print("Create desktop entry file 'AudioWorkstation.desktop'...")
 
     desktop: list[str] = list()
     desktop.append("[Desktop Entry]")

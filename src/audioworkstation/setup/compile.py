@@ -7,6 +7,13 @@ from subprocess import run
 
 
 def purepython() -> bool:
+    """purepython _summary_
+
+    :return bool: _description_
+    """
+
+    print("cythonize -i3 'paramsmid.py'...")
+
     cwd = Path(__file__).parents[1]
     py_filename: str = f"{cwd}/libs/sublibs/paramsmid.py"
     command: str = f"cythonize -i3 {py_filename}"

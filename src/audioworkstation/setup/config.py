@@ -6,17 +6,22 @@
 def makedirs() -> None:
     """Create a folder for settings."""
 
+    print("mkdir ...")
+
     from pathlib import Path
 
-    Path("config").mkdir(
-        exist_ok=True,
-    )
+    Path("config").mkdir(exist_ok=True)
+    Path("example").mkdir(exist_ok=True)
     Path("logs").mkdir(exist_ok=True)
     Path("mid").mkdir(exist_ok=True)
     Path("sf2").mkdir(exist_ok=True)
+    Path("sf3").mkdir(exist_ok=True)
+    Path("~/.icon").mkdir(exist_ok=True)
+
+    print("link FluidR3_GM.sf2")
+
     if not Path("sf2/FluidR3_GM.sf2").is_file():
         Path("sf2/FluidR3_GM.sf2").symlink_to("/usr/share/sounds/sf2/FluidR3_GM.sf2")
-    Path("sf3").mkdir(exist_ok=True)
 
 
 def makefiles() -> None:
