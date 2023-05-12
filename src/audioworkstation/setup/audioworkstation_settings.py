@@ -60,20 +60,28 @@ def gmsounset() -> None:
 def desktop() -> None:
     """Register as a desktop application
 
+    :note: "~/.icons/audioworkstation.png"
     :note: "~/.local/share/applications/AudioWorkstation.desktop"
     :note: "~/AudioWorkstation/AudioWorkstation.sh"
     """
 
-    print("Create script file 'AudioWorkstation.sh'...")
+    print("Link icon file ...")
 
-    cdir: str = str(Path.cwd())
-    hdir: str = str(Path.home())
+    pckgdir: str = str(Path(__file__).parents[1])
+    currdir: str = str(Path.cwd())
+    homedir: str = str(Path.home())
+
+    Path(f"{pckgdir}/icons/audioworkstation.png").symlink_to(
+        f"{homedir}/.icons/audioworkstation.png"
+    )
+
+    print("Create script file 'AudioWorkstation.sh'...")
 
     command: list[str] = list()
     command.append(". venv/bin/activate")
     command.append("python3 -m audioworkstation")
     command.append("deactivate")
-    filename = f"{cdir}/AudioWorkstation.sh"
+    filename = f"{currdir}/AudioWorkstation.sh"
 
     with open(file=filename, mode="wt") as f:
         for line in command:
@@ -88,13 +96,13 @@ def desktop() -> None:
     desktop.append("Name=AudioWorkstation")
     desktop.append("GenericName=MIDI sequencer")
     desktop.append("Comment=Play an instrument with a USB-MIDI keyboard")
-    desktop.append(f"Path={cdir}/")
-    desktop.append(f"Exec={cdir}/AudioWorkstation.sh")
+    desktop.append(f"Path={currdir}/")
+    desktop.append(f"Exec={currdir}/AudioWorkstation.sh")
     desktop.append("Terminal=false")
     desktop.append("Type=Application")
     desktop.append("Icon=audioworkstation")
     desktop.append("Categories=Audio;AudioVideo")
-    filename = f"{hdir}/.local/share/applications/AudioWorkstation.desktop"
+    filename = f"{homedir}/.local/share/applications/AudioWorkstation.desktop"
 
     with open(file=filename, mode="wt") as f:
         for line in desktop:
