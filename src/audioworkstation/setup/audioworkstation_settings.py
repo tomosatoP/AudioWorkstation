@@ -71,10 +71,9 @@ def desktop() -> None:
     currdir: str = str(Path.cwd())
     homedir: str = str(Path.home())
 
-    Path(f"{pckgdir}/icons/audioworkstation.png").symlink_to(
-        f"{homedir}/.icons/audioworkstation.png"
+    Path(f"{homedir}/.icons/audioworkstation.png").symlink_to(
+        f"{pckgdir}/icons/audioworkstation.png"
     )
-
     print("Create script file 'AudioWorkstation.sh'...")
 
     command: list[str] = list()
