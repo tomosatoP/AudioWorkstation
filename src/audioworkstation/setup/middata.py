@@ -17,8 +17,10 @@ def midfile():
     :note: "middata/example.csv"
     :note: "mid/example.mid"
     """
-    cwd = Path(__file__).parents[1]
 
+    print("Create mid file 'mid/example.mid' ...")
+
+    cwd = Path(__file__).parents[1]
     C2M.generate(csvfile=f"{cwd}/{CSV_FILENAME}", midifile=MID_FILENAME)
 
 
