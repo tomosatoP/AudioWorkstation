@@ -65,15 +65,19 @@ def desktop() -> None:
     :note: "~/AudioWorkstation/AudioWorkstation.sh"
     """
 
-    print("Link icon file ...")
-
     pckgdir: str = str(Path(__file__).parents[1])
     currdir: str = str(Path.cwd())
     homedir: str = str(Path.home())
 
-    Path(f"{homedir}/.icons/audioworkstation.png").symlink_to(
-        f"{pckgdir}/icons/audioworkstation.png"
-    )
+    print("Link icon file ...")
+
+    srcfile = f"{pckgdir}/icons/audioworkstation.png"
+    distfile = f"{homedir}/.icons/audioworkstation.png"
+
+    if Path(distfile).is_file():
+        Path(distfile).unlink()
+    Path(distfile).symlink_to(srcfile)
+
     print("Create script file 'AudioWorkstation.sh'...")
 
     command: list[str] = list()

@@ -19,7 +19,7 @@ def midfile():
     """
     cwd = Path(__file__).parents[1]
 
-    C2M.generate(csvfile=f"{cwd}/CSV_FILENAME", midifile=MID_FILENAME)
+    C2M.generate(csvfile=f"{cwd}/{CSV_FILENAME}", midifile=MID_FILENAME)
 
 
 if __name__ == "__main__":
