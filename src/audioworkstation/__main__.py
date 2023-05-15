@@ -18,7 +18,8 @@ log_dir = str(Path().absolute()) + "/logs"
 
 
 Config.set("kivy", "log_dir", log_dir)
-Config.set("kivy", "log_level", "debug")
+# log_level: "trace", "debug", "info", "warning", "error", "critical"
+Config.set("kivy", "log_level", "warning")
 Config.set("kivy", "window_icon", "icon/audioworkstation.png")
 
 

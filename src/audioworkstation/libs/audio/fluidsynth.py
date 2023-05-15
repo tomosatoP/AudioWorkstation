@@ -20,7 +20,8 @@ from pathlib import Path
 
 # Logger
 logger = LFS.getLogger(__name__)
-logger.setLevel(LFS.DEBUG)
+# level: NOTSET, DEBUG, INFO, WARNING, ERROR, CRITICAL
+logger.setLevel(LFS.WARNING)
 _logger_formatter = LFS.Formatter("%(asctime)s %(levelname)s %(message)s")
 # Logger FileHandler
 _logger_fh = LFS.FileHandler("logs/fluidsynth.log")

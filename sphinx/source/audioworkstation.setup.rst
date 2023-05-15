@@ -12,6 +12,14 @@ audioworkstation\_settings module
    :undoc-members:
    :show-inheritance:
 
+compile module
+------------------------------------
+
+.. automodule:: audioworkstation.setup.compile
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 config module
 ------------------------------------
 
@@ -40,6 +48,14 @@ jack\_settings module
 --------------------------------------------
 
 .. automodule:: audioworkstation.setup.jack_settings
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+middata module
+------------------------------------
+
+.. automodule:: audioworkstation.setup.middata
    :members:
    :undoc-members:
    :show-inheritance:

@@ -43,10 +43,9 @@ Format of CSV file
         - example: 0,0x60
 
 restrictions
-
-#. Only "GM System Level 1".
-#. Tempo changes and odd time signatures are not supported.
-#. The division is fixed at 480.
+    #. Only "GM System Level 1".
+    #. Tempo changes and odd time signatures are not supported.
+    #. The division is fixed at 480.
 """
 
 from dataclasses import InitVar, dataclass, field

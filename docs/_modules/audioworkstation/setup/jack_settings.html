@@ -49,6 +49,8 @@
 <span class="sd">    :note: &quot;config/jack.json&quot;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Create configuration file &#39;config/jack.json&#39; ...&quot;</span><span class="p">)</span>
+
     <span class="n">settings</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
     <span class="n">jack_controls</span> <span class="o">=</span> <span class="p">[</span>
         <span class="s2">&quot;jack_control stop&quot;</span><span class="p">,</span>
@@ -90,16 +92,16 @@
         <span class="s2">&quot;jack_control ds alsa&quot;</span><span class="p">,</span>
         <span class="s2">&quot;jack_control eps realtime True&quot;</span><span class="p">,</span>
         <span class="s2">&quot;jack_control dps duplex True&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;jack_control dps device hw:S&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;jack_control dps playback hw:S&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;jack_control dps device hw:D400SP102&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;jack_control dps playback hw:D400SP102&quot;</span><span class="p">,</span>
         <span class="s2">&quot;jack_control dps capture hw:0&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;jack_control dps rate 96000&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;jack_control dps rate 48000&quot;</span><span class="p">,</span>
         <span class="s2">&quot;jack_control dps nperiods 3&quot;</span><span class="p">,</span>
         <span class="s2">&quot;jack_control dps period 1024&quot;</span><span class="p">,</span>
         <span class="s2">&quot;jack_control dps outchannels 2&quot;</span><span class="p">,</span>
         <span class="s2">&quot;jack_control start&quot;</span><span class="p">,</span>
     <span class="p">]</span>
-    <span class="n">settings</span><span class="p">[</span><span class="s2">&quot;hw:CARD=S&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;jack_control&quot;</span><span class="p">:</span> <span class="n">jack_controls</span><span class="p">}</span>
+    <span class="n">settings</span><span class="p">[</span><span class="s2">&quot;hw:CARD=D400SP102&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;jack_control&quot;</span><span class="p">:</span> <span class="n">jack_controls</span><span class="p">}</span>
 
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="o">=</span><span class="s2">&quot;config/jack.json&quot;</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;wt&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">dump</span><span class="p">(</span><span class="n">obj</span><span class="o">=</span><span class="n">settings</span><span class="p">,</span> <span class="n">fp</span><span class="o">=</span><span class="n">f</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span></div>

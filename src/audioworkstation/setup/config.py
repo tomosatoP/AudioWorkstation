@@ -34,6 +34,7 @@ def makefiles() -> None:
     from ..setup import jack_settings as JASET
     from ..setup import fluidsynth_router_rule as FSRRULE
     from ..setup import compile as COM
+    from ..setup import middata as MID
 
     FSSET.extract_default()
     FSSET.customize()
@@ -43,6 +44,7 @@ def makefiles() -> None:
     JASET.jacks()
     FSRRULE.router_rule_example()
     COM.purepython()
+    MID.midfile()
 
 
 def main() -> None:

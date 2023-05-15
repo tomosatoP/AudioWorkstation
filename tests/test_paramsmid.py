@@ -9,7 +9,7 @@ from audioworkstation.libs.sublibs import paramsmid as PMID
 from audioworkstation.libs.sublibs import csv2mid as C2M
 
 
-CSV_FILENAME = "example/example.csv"
+CSV_FILENAME = "src/audioworkstation/middata/example.csv"
 MID_FILENAME = "mid/example.mid"
 
 

@@ -15,7 +15,6 @@
     <script src="_static/translations.js"></script>
     <link rel="index" title="索引" href="genindex.html" />
     <link rel="search" title="検索" href="search.html" />
-    <link rel="next" title="tests package" href="tests.html" />
     <link rel="prev" title="sublibs package" href="audioworkstation.libs.sublibs.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -27,9 +26,6 @@
         <li class="right" >
           <a href="py-modindex.html" title="Pythonモジュール索引"
              >モジュール</a> |</li>
-        <li class="right" >
-          <a href="tests.html" title="tests package"
-             accesskey="N">次へ</a> |</li>
         <li class="right" >
           <a href="audioworkstation.libs.sublibs.html" title="sublibs package"
              accesskey="P">前へ</a> |</li>
@@ -57,13 +53,16 @@
 <dd><p>Register as a desktop application</p>
 <dl class="field-list simple">
 <dt class="field-odd">Note<span class="colon">:</span></dt>
-<dd class="field-odd"><p>&quot;~/.local/share/applications/AudioWorkstation.desktop&quot;</p>
+<dd class="field-odd"><p>&quot;~/.icons/audioworkstation.png&quot;</p>
 </dd>
 <dt class="field-even">Note<span class="colon">:</span></dt>
-<dd class="field-even"><p>&quot;~/AudioWorkstation/AudioWorkstation.sh&quot;</p>
+<dd class="field-even"><p>&quot;~/.local/share/applications/AudioWorkstation.desktop&quot;</p>
 </dd>
-<dt class="field-odd">戻り値の型<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None</p>
+<dt class="field-odd">Note<span class="colon">:</span></dt>
+<dd class="field-odd"><p>&quot;~/AudioWorkstation/AudioWorkstation.sh&quot;</p>
+</dd>
+<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -92,6 +91,24 @@
 </dd>
 <dt class="field-even">戻り値の型<span class="colon">:</span></dt>
 <dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-audioworkstation.setup.compile">
+<span id="compile-module"></span><h2>compile module<a class="headerlink" href="#module-audioworkstation.setup.compile" title="この見出しへのパーマリンク">¶</a></h2>
+<p>Compile Cython files.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="audioworkstation.setup.compile.purepython">
+<span class="sig-name descname"><span class="pre">purepython</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/setup/compile.html#purepython"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.setup.compile.purepython" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>purepython _summary_</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return bool<span class="colon">:</span></dt>
+<dd class="field-odd"><p>_description_</p>
+</dd>
+<dt class="field-even">戻り値の型<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -402,17 +419,13 @@
 </dl>
 <dl class="field-list simple">
 <dt class="field-odd">note<span class="colon">:</span></dt>
-<dd class="field-odd"><p></p></dd>
-</dl>
-<dl class="simple">
-<dt>typedef struct _fluid_midi_router_rule_t =&gt; fluid_midi_router_rule_t</dt><dd><p>default is [min=0, max=999999, mul=1.0, add=0]</p>
+<dd class="field-odd"><p>typedef struct _fluid_midi_router_rule_t =&gt; fluid_midi_router_rule_t
+default is [min=0, max=999999, mul=1.0, add=0]</p>
+</dd>
+<dt class="field-even">reference<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://github.com/FluidSynth/fluidsynth/blob/master/src/midi/fluid_midi_router.c">https://github.com/FluidSynth/fluidsynth/blob/master/src/midi/fluid_midi_router.c</a></p>
 </dd>
 </dl>
-<dl class="field-list simple">
-<dt class="field-odd">reference<span class="colon">:</span></dt>
-<dd class="field-odd"><p></p></dd>
-</dl>
-<p><a class="reference external" href="https://github.com/FluidSynth/fluidsynth/blob/master/src/midi/fluid_midi_router.c">https://github.com/FluidSynth/fluidsynth/blob/master/src/midi/fluid_midi_router.c</a></p>
 </section>
 <dl class="py function">
 <dt class="sig sig-object py" id="audioworkstation.setup.fluidsynth_router_rule.router_rule_example">
@@ -420,7 +433,7 @@
 <dd><p>This is an example of creating mute channel 0</p>
 <dl class="field-list simple">
 <dt class="field-odd">Note<span class="colon">:</span></dt>
-<dd class="field-odd"><p>&quot;config/rule.mute_chan_0.json&quot;.</p>
+<dd class="field-odd"><p>&quot;example/rule.mute_chan_0.json&quot;.</p>
 </dd>
 <dt class="field-even">変数<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>rules</strong> (<em>dict</em>) -- {&quot;name&quot;: {&quot;type&quot;:&quot;&quot;, &quot;chan&quot;:&quot;&quot;, &quot;param1&quot;:&quot;&quot;, &quot;param2&quot;:&quot;&quot;}}</p>
@@ -460,7 +473,7 @@ After editing, the settings can be changed by loading the 'json file'.</p>
 <dd><p>Create an initial configuration file for fluidsynth.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Note<span class="colon">:</span></dt>
-<dd class="field-odd"><p>&quot;config/fluidsynth.default.json&quot;</p>
+<dd class="field-odd"><p>&quot;exmaple/fluidsynth.json&quot;</p>
 </dd>
 <dt class="field-even">戻り値<span class="colon">:</span></dt>
 <dd class="field-even"><p>success or failure</p>
@@ -490,6 +503,24 @@ After editing, the settings can be changed by loading the 'json file'.</p>
 </dd></dl>
 
 </section>
+<section id="module-audioworkstation.setup.middata">
+<span id="middata-module"></span><h2>middata module<a class="headerlink" href="#module-audioworkstation.setup.middata" title="この見出しへのパーマリンク">¶</a></h2>
+<p>Create MID file from CSV file.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="audioworkstation.setup.middata.midfile">
+<span class="sig-name descname"><span class="pre">midfile</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/setup/middata.html#midfile"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.setup.middata.midfile" title="この定義へのパーマリンク">¶</a></dt>
+<dd><p>Create MID file from CSV file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Note<span class="colon">:</span></dt>
+<dd class="field-odd"><p>&quot;middata/example.csv&quot;</p>
+</dd>
+<dt class="field-even">Note<span class="colon">:</span></dt>
+<dd class="field-even"><p>&quot;mid/example.mid&quot;</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
 <section id="module-audioworkstation.setup">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-audioworkstation.setup" title="この見出しへのパーマリンク">¶</a></h2>
 <p>Provide various initial settings when installing.</p>
@@ -512,6 +543,10 @@ After editing, the settings can be changed by loading the 'json file'.</p>
 <li><a class="reference internal" href="#audioworkstation.setup.audioworkstation_settings.desktop"><code class="docutils literal notranslate"><span class="pre">desktop()</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.setup.audioworkstation_settings.gmsounset"><code class="docutils literal notranslate"><span class="pre">gmsounset()</span></code></a></li>
 <li><a class="reference internal" href="#audioworkstation.setup.audioworkstation_settings.screens"><code class="docutils literal notranslate"><span class="pre">screens()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-audioworkstation.setup.compile">compile module</a><ul>
+<li><a class="reference internal" href="#audioworkstation.setup.compile.purepython"><code class="docutils literal notranslate"><span class="pre">purepython()</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#module-audioworkstation.setup.config">config module</a><ul>
@@ -539,6 +574,10 @@ After editing, the settings can be changed by loading the 'json file'.</p>
 <li><a class="reference internal" href="#audioworkstation.setup.jack_settings.jacks"><code class="docutils literal notranslate"><span class="pre">jacks()</span></code></a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#module-audioworkstation.setup.middata">middata module</a><ul>
+<li><a class="reference internal" href="#audioworkstation.setup.middata.midfile"><code class="docutils literal notranslate"><span class="pre">midfile()</span></code></a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#module-audioworkstation.setup">Module contents</a></li>
 </ul>
 </li>
@@ -549,11 +588,6 @@ After editing, the settings can be changed by loading the 'json file'.</p>
     <h4>前のトピックへ</h4>
     <p class="topless"><a href="audioworkstation.libs.sublibs.html"
                           title="前の章へ">sublibs package</a></p>
-  </div>
-  <div>
-    <h4>次のトピックへ</h4>
-    <p class="topless"><a href="tests.html"
-                          title="次の章へ">tests package</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>このページ</h3>
@@ -585,9 +619,6 @@ After editing, the settings can be changed by loading the 'json file'.</p>
         <li class="right" >
           <a href="py-modindex.html" title="Pythonモジュール索引"
              >モジュール</a> |</li>
-        <li class="right" >
-          <a href="tests.html" title="tests package"
-             >次へ</a> |</li>
         <li class="right" >
           <a href="audioworkstation.libs.sublibs.html" title="sublibs package"
              >前へ</a> |</li>

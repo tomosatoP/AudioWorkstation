@@ -14,7 +14,6 @@ Welcome to AudioWorkstation's documentation!
    audioworkstation.libs.audio
    audioworkstation.libs.sublibs
    audioworkstation.setup
-   tests
 
 
 Indices and tables

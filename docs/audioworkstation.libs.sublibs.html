@@ -91,15 +91,21 @@
 <p>Analyze MIDI files according to  SMF (Standard MIDI File) format.</p>
 <dl class="field-list simple">
 <dt class="field-odd">reference<span class="colon">:</span></dt>
-<dd class="field-odd"><p>MIDI1.0規格書(日本語版98.1) ISBN4-8456-0348-9 C3055</p>
+<dd class="field-odd"><p>MIDI1.0規格書(日本語版98.1) ISBN4-8456-0348-9 C3055
+<a class="reference external" href="http://www.amei.or.jp/">http://www.amei.or.jp/</a></p>
+<ul class="simple">
+<li><ol class="arabic simple" start="2">
+<li><p>MIDI 1.0</p></li>
+</ol>
+</li>
+<li><ol class="arabic simple" start="4">
+<li><p>スタンダードMIDIファイル1.0</p></li>
+</ol>
+</li>
+</ul>
 </dd>
-</dl>
-<p><a class="reference external" href="http://www.amei.or.jp/">http://www.amei.or.jp/</a></p>
-<p>2. MIDI 1.0
-4. スタンダードMIDIファイル1.0</p>
-<dl class="field-list simple">
-<dt class="field-odd">Todo<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Compile automatically.</p>
+<dt class="field-even">Todo<span class="colon">:</span></dt>
+<dd class="field-even"><p>Compile automatically.</p>
 </dd>
 </dl>
 <dl class="py class">
@@ -230,12 +236,14 @@ conversion. However, the length of a quarter note is 480 ticks.</p>
 </li>
 </ol>
 </div></blockquote>
-<p>restrictions</p>
-<ol class="arabic simple">
+<dl class="simple">
+<dt>restrictions</dt><dd><ol class="arabic simple">
 <li><p>Only &quot;GM System Level 1&quot;.</p></li>
 <li><p>Tempo changes and odd time signatures are not supported.</p></li>
 <li><p>The division is fixed at 480.</p></li>
 </ol>
+</dd>
+</dl>
 <dl class="py exception">
 <dt class="sig sig-object py" id="audioworkstation.libs.sublibs.csv2mid.SmfError">
 <em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SmfError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/audioworkstation/libs/sublibs/csv2mid.html#SmfError"><span class="viewcode-link"><span class="pre">[ソース]</span></span></a><a class="headerlink" href="#audioworkstation.libs.sublibs.csv2mid.SmfError" title="この定義へのパーマリンク">¶</a></dt>

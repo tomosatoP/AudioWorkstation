@@ -154,24 +154,26 @@
 <span class="sd">        +-------+---------+--------+</span>
 
 <span class="sd">:note:</span>
-<span class="sd">typedef struct _fluid_midi_router_rule_t =&gt; fluid_midi_router_rule_t</span>
+<span class="sd">    typedef struct _fluid_midi_router_rule_t =&gt; fluid_midi_router_rule_t</span>
 <span class="sd">    default is [min=0, max=999999, mul=1.0, add=0]</span>
-
 <span class="sd">:reference:</span>
-<span class="sd">https://github.com/FluidSynth/fluidsynth/blob/master/src/midi/fluid_midi_router.c</span>
+<span class="sd">    https://github.com/FluidSynth/fluidsynth/blob/master/src/midi/fluid_midi_router.c</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">audioworkstation.libs.audio</span> <span class="kn">import</span> <span class="n">fluidsynth</span> <span class="k">as</span> <span class="n">FS</span>
+<span class="kn">from</span> <span class="nn">..libs.audio</span> <span class="kn">import</span> <span class="n">fluidsynth</span> <span class="k">as</span> <span class="n">FS</span>
 <span class="kn">from</span> <span class="nn">json</span> <span class="kn">import</span> <span class="n">dump</span>
 
 
 <div class="viewcode-block" id="router_rule_example"><a class="viewcode-back" href="../../../audioworkstation.setup.html#audioworkstation.setup.fluidsynth_router_rule.router_rule_example">[ドキュメント]</a><span class="k">def</span> <span class="nf">router_rule_example</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;This is an example of creating mute channel 0</span>
 
-<span class="sd">    :note: &quot;config/rule.mute_chan_0.json&quot;.</span>
+<span class="sd">    :note: &quot;example/rule.mute_chan_0.json&quot;.</span>
 <span class="sd">    :var dict rules: {&quot;name&quot;: {&quot;type&quot;:&quot;&quot;, &quot;chan&quot;:&quot;&quot;, &quot;param1&quot;:&quot;&quot;, &quot;param2&quot;:&quot;&quot;}}</span>
 <span class="sd">    :return: True on success, otherwise False.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Create example file &#39;example/rule.mute_chan_0.json&#39;...&quot;</span><span class="p">)</span>
+
     <span class="n">rules</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
     <span class="c1"># NOTE: mute channel 0</span>
@@ -238,7 +240,7 @@
         <span class="s2">&quot;param2&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">}</span>
 
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;config/rule.mute_chan_0.json&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fw</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;example/rule.mute_chan_0.json&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fw</span><span class="p">:</span>
         <span class="n">dump</span><span class="p">(</span><span class="n">rules</span><span class="p">,</span> <span class="n">fw</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="kc">True</span></div>

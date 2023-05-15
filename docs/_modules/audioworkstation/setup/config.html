@@ -44,26 +44,35 @@
 <div class="viewcode-block" id="makedirs"><a class="viewcode-back" href="../../../audioworkstation.setup.html#audioworkstation.setup.config.makedirs">[ドキュメント]</a><span class="k">def</span> <span class="nf">makedirs</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a folder for settings.&quot;&quot;&quot;</span>
 
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;mkdir ...&quot;</span><span class="p">)</span>
+
     <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 
-    <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;config&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span>
-        <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="p">)</span>
+    <span class="n">homedir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="o">.</span><span class="n">home</span><span class="p">())</span>
+
+    <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;config&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;example&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;logs&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;mid&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;sf2&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;sf3&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">Path</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">homedir</span><span class="si">}</span><span class="s2">/.icons&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;link FluidR3_GM.sf2&quot;</span><span class="p">)</span>
+
     <span class="k">if</span> <span class="ow">not</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;sf2/FluidR3_GM.sf2&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
-        <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;sf2/FluidR3_GM.sf2&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">symlink_to</span><span class="p">(</span><span class="s2">&quot;/usr/share/sounds/sf2/FluidR3_GM.sf2&quot;</span><span class="p">)</span>
-    <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;sf3&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+        <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;sf2/FluidR3_GM.sf2&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">symlink_to</span><span class="p">(</span><span class="s2">&quot;/usr/share/sounds/sf2/FluidR3_GM.sf2&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="makefiles"><a class="viewcode-back" href="../../../audioworkstation.setup.html#audioworkstation.setup.config.makefiles">[ドキュメント]</a><span class="k">def</span> <span class="nf">makefiles</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Create various configuration files.&quot;&quot;&quot;</span>
 
-    <span class="kn">from</span> <span class="nn">audioworkstation.setup</span> <span class="kn">import</span> <span class="n">fluidsynth_settings</span> <span class="k">as</span> <span class="n">FSSET</span>
-    <span class="kn">from</span> <span class="nn">audioworkstation.setup</span> <span class="kn">import</span> <span class="n">audioworkstation_settings</span> <span class="k">as</span> <span class="n">AKSET</span>
-    <span class="kn">from</span> <span class="nn">audioworkstation.setup</span> <span class="kn">import</span> <span class="n">jack_settings</span> <span class="k">as</span> <span class="n">JASET</span>
-    <span class="kn">from</span> <span class="nn">audioworkstation.setup</span> <span class="kn">import</span> <span class="n">fluidsynth_router_rule</span> <span class="k">as</span> <span class="n">FSRRULE</span>
+    <span class="kn">from</span> <span class="nn">..setup</span> <span class="kn">import</span> <span class="n">fluidsynth_settings</span> <span class="k">as</span> <span class="n">FSSET</span>
+    <span class="kn">from</span> <span class="nn">..setup</span> <span class="kn">import</span> <span class="n">audioworkstation_settings</span> <span class="k">as</span> <span class="n">AKSET</span>
+    <span class="kn">from</span> <span class="nn">..setup</span> <span class="kn">import</span> <span class="n">jack_settings</span> <span class="k">as</span> <span class="n">JASET</span>
+    <span class="kn">from</span> <span class="nn">..setup</span> <span class="kn">import</span> <span class="n">fluidsynth_router_rule</span> <span class="k">as</span> <span class="n">FSRRULE</span>
+    <span class="kn">from</span> <span class="nn">..setup</span> <span class="kn">import</span> <span class="nb">compile</span> <span class="k">as</span> <span class="n">COM</span>
+    <span class="kn">from</span> <span class="nn">..setup</span> <span class="kn">import</span> <span class="n">middata</span> <span class="k">as</span> <span class="n">MID</span>
 
     <span class="n">FSSET</span><span class="o">.</span><span class="n">extract_default</span><span class="p">()</span>
     <span class="n">FSSET</span><span class="o">.</span><span class="n">customize</span><span class="p">()</span>
@@ -71,7 +80,9 @@
     <span class="n">AKSET</span><span class="o">.</span><span class="n">gmsounset</span><span class="p">()</span>
     <span class="n">AKSET</span><span class="o">.</span><span class="n">desktop</span><span class="p">()</span>
     <span class="n">JASET</span><span class="o">.</span><span class="n">jacks</span><span class="p">()</span>
-    <span class="n">FSRRULE</span><span class="o">.</span><span class="n">router_rule_example</span><span class="p">()</span></div>
+    <span class="n">FSRRULE</span><span class="o">.</span><span class="n">router_rule_example</span><span class="p">()</span>
+    <span class="n">COM</span><span class="o">.</span><span class="n">purepython</span><span class="p">()</span>
+    <span class="n">MID</span><span class="o">.</span><span class="n">midfile</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../audioworkstation.setup.html#audioworkstation.setup.config.main">[ドキュメント]</a><span class="k">def</span> <span class="nf">main</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>

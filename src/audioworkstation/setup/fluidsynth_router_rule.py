@@ -116,11 +116,10 @@ Not supported in GM1 system
         +-------+---------+--------+
 
 :note:
-typedef struct _fluid_midi_router_rule_t => fluid_midi_router_rule_t
+    typedef struct _fluid_midi_router_rule_t => fluid_midi_router_rule_t
     default is [min=0, max=999999, mul=1.0, add=0]
-
 :reference:
-https://github.com/FluidSynth/fluidsynth/blob/master/src/midi/fluid_midi_router.c
+    https://github.com/FluidSynth/fluidsynth/blob/master/src/midi/fluid_midi_router.c
 """
 
 from ..libs.audio import fluidsynth as FS
