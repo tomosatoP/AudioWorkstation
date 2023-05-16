@@ -20,7 +20,7 @@ def makedirs() -> None:
     Path("sf3").mkdir(exist_ok=True)
     Path(f"{homedir}/.icons").mkdir(exist_ok=True)
 
-    print("link FluidR3_GM.sf2")
+    print("Link 'FluidR3_GM.sf2' ...")
 
     if not Path("sf2/FluidR3_GM.sf2").is_file():
         Path("sf2/FluidR3_GM.sf2").symlink_to("/usr/share/sounds/sf2/FluidR3_GM.sf2")

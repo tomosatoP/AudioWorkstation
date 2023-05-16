@@ -34,7 +34,7 @@ USB MIDI 鍵盤を繋げて、ピアノ風の演奏を楽しむために。
 ~ $ sudo apt -y install fonts-ipaexfont
 # jackd(jackd2) with qjackctl 
 # fluidsynth with libfluidsynth2, qsynth, fluid-soundfont-gm)
-~ $ sudo apt -y install jackd pulseaudio-module-jack fluidsynth
+~ $ sudo apt -y install jackd pulseaudio-module-jack fluidsynth libbluetooth-dev
 ~~~
 > Bluetoothデバイスへ音出しするには、[RaspberryPi4 - Bluetooth A2DP 接続](memorandum/bluetooth-devices.md)を参照
 ## インストール
@@ -42,6 +42,7 @@ USB MIDI 鍵盤を繋げて、ピアノ風の演奏を楽しむために。
 ~ $ python3 -m venv AudioWorkstation/venv --upgrade-deps
 ~ $ cd AudioWorkstation
 ~/AudioWorkstation $ source venv/bin/activate
+(venv) ~/AudioWorkstation $ pip install -U git+https://github.com/bluez/pybluez.git
 (venv) ~/AudioWorkstation $ pip install -U git+https://github.com/tomosatoP/AudioWorkstation.git
 (venv) ~/AudioWorkstation $ initialize
 # Audioworkstation/sf2フォルダにsf2サウンドフォントファイルを設置

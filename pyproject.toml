@@ -29,6 +29,7 @@ keywords = [
   "Kivy",
   "JACK Audio Connection Kit",
   "FluidSynth",
+  "PyBluez",
   "BlueALSA",
 ]
 license = {file = "LICENSE"}
@@ -53,8 +54,8 @@ dev = [
 ]
 
 [tool.setuptools]
-package-dir = {"" = "src"}
 include-package-data = true
+package-dir = {"" = "src"}
 
 [tool.setuptools.dynamic]
 version = {attr = "audioworkstation.version.version"}

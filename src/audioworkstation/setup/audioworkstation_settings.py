@@ -74,7 +74,7 @@ def desktop() -> None:
     srcfile = f"{pckgdir}/icons/audioworkstation.png"
     distfile = f"{homedir}/.icons/audioworkstation.png"
 
-    if Path(distfile).is_file():
+    if any([Path(distfile).is_file(), Path(distfile).is_symlink()]):
         Path(distfile).unlink()
     Path(distfile).symlink_to(srcfile)
 
