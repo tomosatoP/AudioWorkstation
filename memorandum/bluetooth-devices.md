@@ -10,7 +10,7 @@ https://github.com/Arkq/bluez-alsa
 # essential development libraries
 ~ $ sudo apt install libasound2-dev libbluetooth-dev libdbus-1-dev libglib2.0-dev libsbc-dev
 # libraries for profile A2DP codec AAC
-~ $ sudo apt install libfkd-aac2 libfdk-aac-dev
+~ $ sudo apt install libfdk-aac2 libfdk-aac-dev
 ~~~
 ### Create configure script
 ~~~sh
@@ -38,7 +38,7 @@ https://github.com/Arkq/bluez-alsa
 ~~~
 ### Update
 ~~~sh
-~ $ autoreconf --install --force
+~/bluez-alsa $ autoreconf --install --force
 ~/bluez-alsa/build $ ../configure [OPTION ...]
 ~/bluez-alsa/build $ make clean
 ~/bluez-alsa/build $ make
@@ -71,6 +71,10 @@ PulseAudio を Bluetooth デバイスから切り離して、**BlueALSA** を有
 + defaults.bluealsa.codec "aac"
 + pcm.!default pulse
 + ctl.!default pulse
+~~~
+~~~sh
+~ $ sudo systemctl enable bluealsa
+~ $ sudo systemctl restart bluealsa
 ~~~
 ---
 ## ペアリング
