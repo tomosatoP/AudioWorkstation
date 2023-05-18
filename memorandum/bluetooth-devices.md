@@ -76,6 +76,9 @@ PulseAudio を Bluetooth デバイスから切り離して、**BlueALSA** を有
 ~ $ sudo systemctl enable bluealsa
 ~ $ sudo systemctl restart bluealsa
 ~~~
+~~~sh
+(venv) ~AudioWorkstation $ pip install -U git+https://github.com/bluez/pybluez.git
+~~~
 ---
 ## ペアリング
 - Bluetoothデバイスをペアリングモードにする

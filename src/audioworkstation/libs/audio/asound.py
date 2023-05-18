@@ -16,8 +16,6 @@ from ctypes.util import find_library
 import logging as LAS
 
 
-from audioworkstation.libs.audio import btaudiosink
-
 # Logger
 logger = LAS.getLogger(__name__)
 logger.setLevel(LAS.DEBUG)
@@ -592,11 +590,22 @@ def mixer_device() -> list[str]:
     :examples: ["hw:CARD=Headphones", "PCM", "default", "Master", "Headphones"]
     :examples: ["", "", "", "", ""] if not found.
     """
+
     result: list[str] = ["", "", "", "", ""]
-    logger.info("Mixer Device: Search Bluetooth devices...")
-    btdevice: dict[str, str] = btaudiosink.device_info()
+
+    from importlib.util import find_spec
+
+    btdevice: dict[str, str] = {"": ""}
+    if find_spec(name="bluetooth", package="PyBluez") is not None:
+        from audioworkstation.libs.audio import btaudiosink
+
+        logger.info("Mixer Device: Search Bluetooth devices...")
+        btdevice = btaudiosink.device_info()
+
     logger.info("Mixer Device: Search Physical Sound devices...")
     soundcard: list[str] = _physical_mixer_names()
+
+    print("btdevice" in locals())
 
     if "" not in btdevice:
         result[0] = "bluealsa:00:00:00:00:00:00"
@@ -643,3 +652,5 @@ def start_jackserver() -> list[str]:
 
 if __name__ == "__main__":
     print(__file__)
+
+    print(mixer_device())

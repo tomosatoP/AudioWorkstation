@@ -45,7 +45,6 @@
 ~~~sh
 ~ $ python3 -m venv AudioWorkstation/venv --upgrade-deps
 ~/AudioWorkstation $ . venv/bin/activate
-(venv) ~AudioWorkstation $ pip install -U git+https://github.com/bluez/pybluez.git
 (venv) ~AudioWorkstation $ pip install build
 (venv) ~AudioWorkstation $ python3 -m build
 (venv) ~AudioWorkstation $ pip install -e .
