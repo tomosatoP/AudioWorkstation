@@ -32,15 +32,6 @@
 ~ $ sudo apt -y install python3 python3-pip
 ~ $ sudo -H python3 -m pip install --upgrade pip
 ~~~
-### git ユーザー設定 (https://github.com/tomosatoP)
-~~~sh
-~ $ git config --global user.name [username]
-~ $ git config --global user.email [useremail]
-~~~
-### git 復元
-~~~sh
-~ $ git clone https://github.com/tomosatoP/AudioWorkstation.git
-~~~
 ### package化 と 開発インストール
 ~~~sh
 ~ $ python3 -m venv AudioWorkstation/venv --upgrade-deps
@@ -48,29 +39,6 @@
 (venv) ~AudioWorkstation $ pip install build
 (venv) ~AudioWorkstation $ python3 -m build
 (venv) ~AudioWorkstation $ pip install -e .
-~~~
-### git プロジェクト設定
-> github.com で行った方が楽
-~~~sh
-~/AudioWorkstation $ echo "# AudioWorkstation" >> README.md
-~/AudioWorkstation $ git init
-~/AudioWorkstation $ git add README.md
-~/AudioWorkstation $ git commit -m "first commit"
-~/AudioWorkstation $ git branch -M main
-~~~
-### git リモートリポジトリ同期
-~~~sh
-~/AudioWorkstation $ git remote add origin https://github.com/tomosatoP/AudioWorkstation.git
-~/AudioWorkstation $ git push -u origin main
-~~~
-### git バージョンタグ付け
-~~~sh
-# 軽量版tag
-~/AudioWorkstation $ git tag v0.1
-# 注釈付きtag
-~/AudioWorkstation $ git tag -a v0.1 -m "add player"
-# tagの共有
-~/AudioWorkstation $ git push origin v0.1
 ~~~
 ### ROM化
 ~~~sh
